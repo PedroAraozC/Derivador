@@ -13,6 +13,8 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import logoMuni from '../../assets/Logo_Muni200x200.png'
 import './navbar.css'
+import Tabla from '../Tablas/Tabla';
+import Form from '../Form/Form';
 
 const drawerWidth = 240;
 
@@ -112,7 +114,14 @@ const SideBar = () => {
         
       </Drawer>
       <Main open={open}>
-       
+        <div className='d-flex justify-content-center align-items-center container layoutContainer'>
+          <div className='col-4 d-flex justify-content-center'>
+            <Form/>
+          </div>
+          <div className='col-8 d-flex justify-content-center'>
+            <Tabla/>
+          </div>
+        </div>
       </Main>
     </Box>
   );

@@ -1,4 +1,3 @@
-import { Alert, Button } from "react-bootstrap";
 import "./login.css";
 import logoMuni from '../../assets/logomuni_piedepagina.png'
 import { useContext, useEffect, useState } from "react";
@@ -6,6 +5,7 @@ import { COMContext } from "../../context/COMContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { Button } from "@mui/material";
 
 
 export const Login = () => {
@@ -80,16 +80,11 @@ export const Login = () => {
                 {error}
               </Alert>
             ))} */}
-          {/* <input 
-          // disabled={botonState} 
-          type="submit" 
-          value="Entrar" 
-        className="mt-4" /> */}
-          <Button 
+         
+          <Button variant="contained"
+            className="btn-light mt-4"
             onClick={() => navigate("/home")}
-          className="btn-light mt-4">
-            Entrar
-          </Button>
+          >Ingresar</Button>
         </form>
       </div>
     </div>
