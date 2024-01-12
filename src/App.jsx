@@ -4,16 +4,15 @@ import Login from './components/Login/Login'
 import ProviderCOM from './context/COMContext'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import React from 'react';
+import Layout from './common/Layout'
 
 
 function App() {
   
-
   return (
     <>
     <Router>
-      <ProviderCOM>
-        {/* <Layout> */}
+        <Layout>
           <Routes>
             <Route
               path="/*"
@@ -24,8 +23,7 @@ function App() {
               element={<Home/>}
             />
           </Routes>
-        {/* <Layout/> */}
-      </ProviderCOM>
+        </Layout>
       </Router>
     </>
   )

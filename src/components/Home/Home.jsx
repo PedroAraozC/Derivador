@@ -1,10 +1,9 @@
-import Sidebar from '../SideBar/Sidebar'
 import './Home.css'
 
 
 const Home = () => {
   return (
-    <Sidebar/>
+    <div>Home</div>
   )
 }
 

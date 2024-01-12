@@ -1,16 +1,17 @@
 import "./login.css";
 import logoMuni from '../../assets/logomuni_piedepagina.png'
 import { useContext, useEffect, useState } from "react";
-import { COMContext } from "../../context/COMContext";
+// import { COMContext } from "../../context/COMContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@mui/material";
+import useStore from "../Zustand/Zustand";
 
 
 export const Login = () => {
-  const { login, authenticated, botonState } = useContext(COMContext);
-
+  // const { login, authenticated, botonState } = useContext(COMContext);
+  const { login } = useStore();
  const location = useLocation();
  const navigate = useNavigate();
 
@@ -25,11 +26,16 @@ export const Login = () => {
   };
 
 
-  useEffect(() => {
-    if (authenticated) {
-      navigate("/home");
-    }
-  }, [authenticated]);
+  // useEffect(() => {
+  //   if (authenticated) {
+  //     navigate("/home");
+  //   }
+  // }, [authenticated]);
+
+const handleLogin = () =>{
+  login()
+  navigate("/home")
+}
 
   return (
     <div className="d-flex justify-content-center align-items-center layoutHeight">
@@ -83,7 +89,7 @@ export const Login = () => {
          
           <Button variant="contained"
             className="btn-light mt-4"
-            onClick={() => navigate("/home")}
+            onClick={handleLogin}
           >Ingresar</Button>
         </form>
       </div>

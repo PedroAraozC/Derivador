@@ -5,7 +5,6 @@ import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -113,16 +112,17 @@ const SideBar = () => {
         <Divider />
         
       </Drawer>
-      <Main open={open}>
-        <div className='d-flex justify-content-center align-items-center container layoutContainer'>
-          <div className='col-4 d-flex justify-content-center'>
+      {/* <Main open={open} className='container'>
+        <div className='d-flex justify-content-center align-items-center mt-5 row m-0'>
+          <div className='col-12 col-md-4 mb-3 d-flex justify-content-center align-items-center mt-5'>
             <Form/>
-          </div>
-          <div className='col-8 d-flex justify-content-center'>
+         </div>
+          <div className='col-12 col-md-8 mb-3 d-flex justify-content-center align-items-center mt-5'>
             <Tabla/>
           </div>
         </div>
-      </Main>
+      </Main> */}
+
     </Box>
   );
 }
