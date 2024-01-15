@@ -1,4 +1,4 @@
-import SideBar from "../components/SideBar/Sidebar"
+import SideBar from "./SideBar/Sidebar"
 import useStore from "../components/Zustand/Zustand";
 
 const Layout = ({children}) => {

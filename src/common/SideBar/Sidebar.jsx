@@ -12,8 +12,8 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import logoMuni from '../../assets/Logo_Muni200x200.png'
 import './navbar.css'
-import Tabla from '../Tablas/Tabla';
-import Form from '../Form/Form';
+import { Link } from 'react-router-dom';
+
 
 const drawerWidth = 240;
 
@@ -110,7 +110,8 @@ const SideBar = () => {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        
+        <Link to="/home" className='text-center linksSidebar'>Inicio</Link>
+        <Link to="/cap-humano" className='text-center linksSidebar'>Capital Humano</Link>
       </Drawer>
       {/* <Main open={open} className='container'>
         <div className='d-flex justify-content-center align-items-center mt-5 row m-0'>

@@ -6,10 +6,10 @@ import Select from '@mui/material/Select';
 import axios from '../../config/axios';
 import useStore from '../Zustand/Zustand';
 
-const Form = ()=> {
+const FormCapitalHumano = ()=> {
   const [procedimientos, setProcedimientos] = React.useState([]);
   const [procedimientoElegido, setProcedimientoElegido] = React.useState({procedimiento: ""});
-  const { setResultSearch } = useStore();
+  const { setResultSearch, setValuesCapHumano } = useStore();
 
   const formatProcedimientoName = (procedimiento) => {
     const palabras = procedimiento.substring(2).split("_");
@@ -50,6 +50,7 @@ const Form = ()=> {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    setValuesCapHumano(value)
     getData(value)
   };
 
@@ -81,4 +82,4 @@ const Form = ()=> {
   );
 }
 
-export default Form;
+export default FormCapitalHumano;

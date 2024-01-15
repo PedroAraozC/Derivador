@@ -1,7 +1,8 @@
 import * as React from 'react';
 import useStore from '../Zustand/Zustand';
 import { DataGrid } from '@mui/x-data-grid';
-const  Tabla =() => {
+
+const  TablaCapitalHumano =() => {
 
   const { resultSearch } = useStore();
   const [llave, setLlave] = React.useState([])
@@ -13,10 +14,7 @@ React.useEffect(() => {
       clave: key,
       llave: value.toString().length
     })));
-console.log(Object.entries(resultSearch[0][0]).map(([key, value]) => ({
-  clave: key,
-  llave: value.toString().length
-})))
+
   }
 }, [resultSearch])
 
@@ -32,7 +30,7 @@ const mayorWidth = (llave, clave) =>{
 //item y reparticion
 
   return (
-    <div style={{ height: 400, width: '100%' }}>
+    <div style={{ height: 300, width: '100%' }}>
       {
         resultSearch.length > 0 && 
         <DataGrid
@@ -57,4 +55,4 @@ const mayorWidth = (llave, clave) =>{
   );
 }
 
-export default Tabla;
+export default TablaCapitalHumano;

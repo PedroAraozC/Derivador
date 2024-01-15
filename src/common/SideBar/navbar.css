@@ -1,0 +1,14 @@
+
+.logoMuni2{
+    height: 80px !important;
+    padding: 10px;
+}
+.linksSidebar{
+    text-decoration: none;
+    color: #000;
+    margin-top: 10px;
+}
+.linksSidebar:hover{
+    color: #1f89f6;
+    text-decoration: underline;
+}
