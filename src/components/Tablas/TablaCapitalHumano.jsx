@@ -1,6 +1,7 @@
 import * as React from 'react';
-import useStore from '../Zustand/Zustand';
+import useStore from '../../Zustand/Zustand';
 import { DataGrid } from '@mui/x-data-grid';
+import TablaEsqueleto from '../Esqueletos/TablaEsqueleto';
 
 const  TablaCapitalHumano =() => {
 
@@ -30,9 +31,9 @@ const mayorWidth = (llave, clave) =>{
 //item y reparticion
 
   return (
-    <div style={{ height: 300, width: '100%' }}>
+    <div style={{ height: 374, width: '100%' }}>
       {
-        resultSearch.length > 0 && 
+        resultSearch.length > 0 ? 
         <DataGrid
         rows={resultSearch[0].map((rs, index) => ({ ...rs, id: index }))}
         columns={llave.map((ll) => ({
@@ -46,10 +47,13 @@ const mayorWidth = (llave, clave) =>{
             paginationModel: { page: 0, pageSize: 5 },
           },
         }}
-        pageSizeOptions={[5, 10]}
+        pageSizeOptions={[5, 10, 15]}
         checkboxSelection
       />
-      
+      :
+      (
+        <TablaEsqueleto/>
+      )
       }
     </div>
   );

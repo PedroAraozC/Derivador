@@ -7,7 +7,6 @@ const useStore = create((set) => ({
     logout: () => set({ authenticated: false }),
     
     resultSearch: [],
-    // setResultSearch: (item) => set((state) => ({ resultSearch: [...state.resultSearch, item] })),
     setResultSearch: (item) => set(() => ({ resultSearch: [item] })),
 
     valuesGraficos: {

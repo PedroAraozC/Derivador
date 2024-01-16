@@ -13,9 +13,10 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import logoMuni from '../../assets/Logo_Muni200x200.png'
 import './navbar.css'
 import { Link } from 'react-router-dom';
-
+import useStore from '../../Zustand/Zustand';
 
 const drawerWidth = 240;
+
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
@@ -110,8 +111,9 @@ const SideBar = () => {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <Link to="/home" className='text-center linksSidebar'>Inicio</Link>
-        <Link to="/cap-humano" className='text-center linksSidebar'>Capital Humano</Link>
+        <Link to="/home" className='text-center linksSidebar' >Inicio</Link>
+        <Link to="/cap-humano" className='text-center linksSidebar' >Capital Humano</Link>
+        <Link to="/reclamos-estadisticas" className='text-center linksSidebar' >Reclamos Estadisticas</Link>
       </Drawer>
       {/* <Main open={open} className='container'>
         <div className='d-flex justify-content-center align-items-center mt-5 row m-0'>

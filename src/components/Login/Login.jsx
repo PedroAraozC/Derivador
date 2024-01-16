@@ -6,7 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@mui/material";
-import useStore from "../Zustand/Zustand";
+import useStore from "../../Zustand/Zustand";
 
 
 export const Login = () => {

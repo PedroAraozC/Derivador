@@ -9,9 +9,9 @@ import {
   Legend,
 } from "chart.js";
 import { Pie } from "react-chartjs-2";
-import useStore from "../../Zustand/Zustand";
 import { useEffect, useState } from "react";
 import {getRandomColor} from '../../../helpers/getRandomColor'
+import useStore from "../../../Zustand/Zustand";
 
 ChartJS.register(
   CategoryScale,
@@ -25,7 +25,7 @@ ChartJS.register(
 
 const GraficosCapHumanoPlantaMunicipal = () => {
 
-  const { resultSearch } = useStore();
+  const { resultSearch } = useStore ();
   const [arrayFiltrado, setArrayFiltrado] = useState([])
 
   useEffect(() => {

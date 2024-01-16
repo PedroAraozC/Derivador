@@ -1,11 +1,10 @@
 import Home from './components/Home/Home';
 import Login from './components/Login/Login'
-import ProviderCOM from './context/COMContext'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import React from 'react';
 import Layout from './common/Layout'
 import CapitalHumano from './pages/CapitalHumano/CapitalHumano';
-
+import Reclamos from './pages/EstadisticasReclamos/Reclamos'
 
 function App() {
   
@@ -25,6 +24,10 @@ function App() {
             <Route
               path="/cap-humano"
               element={<CapitalHumano/>}
+            />
+            <Route
+              path="/reclamos-estadisticas"
+              element={<Reclamos/>}
             />
           </Routes>
         </Layout>

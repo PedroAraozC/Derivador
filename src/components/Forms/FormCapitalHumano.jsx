@@ -4,7 +4,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import axios from '../../config/axios';
-import useStore from '../Zustand/Zustand';
+import useStore from '../../Zustand/Zustand';
 
 const FormCapitalHumano = ()=> {
   const [procedimientos, setProcedimientos] = React.useState([]);

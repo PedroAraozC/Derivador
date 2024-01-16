@@ -1,5 +1,5 @@
 import SideBar from "./SideBar/Sidebar"
-import useStore from "../components/Zustand/Zustand";
+import useStore from "../Zustand/Zustand";
 
 const Layout = ({children}) => {
   const { authenticated } = useStore();

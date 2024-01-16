@@ -9,9 +9,9 @@ import {
     Legend,
   } from "chart.js";
   import { Pie } from "react-chartjs-2";
-  import useStore from "../../Zustand/Zustand";
   import { useEffect, useState } from "react";
-  import {getRandomColor} from '../../../helpers/getRandomColor'
+  import { getRandomColor } from "../../../helpers/getRandomColor";
+import useStore from "../../../Zustand/Zustand";
   
   ChartJS.register(
     CategoryScale,
