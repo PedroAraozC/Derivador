@@ -213,7 +213,7 @@
     color: #23242a;
     cursor: pointer;
     position: absolute;
-    z-index: 10;
+    z-index: 30;
 }
 
 @media (max-height: 768px) {

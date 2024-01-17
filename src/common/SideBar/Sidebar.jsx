@@ -12,33 +12,15 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import logoMuni from '../../assets/Logo_Muni200x200.png'
 import './navbar.css'
-import { Link } from 'react-router-dom';
+import { Link} from 'react-router-dom';
 import useStore from '../../Zustand/Zustand';
 
 const drawerWidth = 240;
 
 
-const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginLeft: `-${drawerWidth}px`,
-    ...(open && {
-      transition: theme.transitions.create('margin', {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-      marginLeft: 0,
-    }),
-  }),
-);
-
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
+  
+  const AppBar = styled(MuiAppBar, {
+    shouldForwardProp: (prop) => prop !== 'open',
 })(({ theme, open }) => ({
   transition: theme.transitions.create(['margin', 'width'], {
     easing: theme.transitions.easing.sharp,
@@ -66,14 +48,16 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 const SideBar = () => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-
+  
   const handleDrawerOpen = () => {
     setOpen(true);
   };
-
+  
+  
   const handleDrawerClose = () => {
     setOpen(false);
   };
+  
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -111,9 +95,9 @@ const SideBar = () => {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <Link to="/home" className='text-center linksSidebar' >Inicio</Link>
-        <Link to="/cap-humano" className='text-center linksSidebar' >Capital Humano</Link>
-        <Link to="/reclamos-estadisticas" className='text-center linksSidebar' >Reclamos Estadisticas</Link>
+        <Link to="/home" className='text-center linksSidebar' onClick={handleDrawerClose} >Inicio</Link>
+        <Link to="/cap-humano" className='text-center linksSidebar'  onClick={handleDrawerClose} >Capital Humano</Link>
+        <Link to="/reclamos-estadisticas" className='text-center linksSidebar'  onClick={handleDrawerClose}  >Reclamos Estadisticas</Link>
       </Drawer>
       {/* <Main open={open} className='container'>
         <div className='d-flex justify-content-center align-items-center mt-5 row m-0'>
