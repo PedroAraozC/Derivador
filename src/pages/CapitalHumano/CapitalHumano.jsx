@@ -16,7 +16,7 @@ const CapitalHumano = () => {
 
   return (
     <>
-        <div className='layoutContainer d-flex flex-column justify-content-center align-items-center container pt-5'>
+        <div className='d-flex flex-column justify-content-center align-items-center container mt-5'>
             <FormCapitalHumano/>
             {
               resultSearch[0]?.length > 0?

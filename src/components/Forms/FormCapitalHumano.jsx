@@ -55,7 +55,7 @@ const FormCapitalHumano = ()=> {
   };
 
   return (
-    <div>
+    <div className='mb-3'>
       <FormControl sx={{ m: 1, minWidth: 180 }}>
         <InputLabel id="">Procedimientos</InputLabel>
         <Select

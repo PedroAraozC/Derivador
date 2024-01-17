@@ -78,7 +78,6 @@ const FormReclamos = ({ funcionCerrar }) => {
   const obtenerProcedimientosAlmacenados = async () => {
     try {
       const resultado = await axios.get("/reclamos/listarProcedimientos");
-      console.log(resultado.data);
       setStoreProcedures(resultado.data.results);
     } catch (error) {
       console.log(error);
@@ -111,7 +110,7 @@ const FormReclamos = ({ funcionCerrar }) => {
   return (
     <>
       {storeProcedures.length == 0 ? (
-        <div className="d-flex justify-content-center align-items-center pt-5 mt-5">
+        <div className="d-flex justify-content-center align-items-center mt-5">
           <div className="d-flex flex-column w-50 justify-content-center align-items-center">
             <Typography variant="h3" width={"100%"}>
               {" "}
@@ -130,7 +129,7 @@ const FormReclamos = ({ funcionCerrar }) => {
           </div>
         </div>
       ) : (
-        <div className="d-flex justify-content-center align-items-center px-3 mt-5 pt-5">
+        <div className="d-flex justify-content-center align-items-center px-3 mt-5">
           <Form className="d-flex flex-column gap-3" onSubmit={getData}>
             <FormSelect
               value={values.procedimiento}

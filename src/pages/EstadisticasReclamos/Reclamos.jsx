@@ -7,7 +7,6 @@ import { useEffect } from "react";
 const Reclamos = () => {
 
  const { resultSearch, setResultSearch,valuesGraficos,setValuesGraficos } = useStore();
-console.log(valuesGraficos);
  useEffect(() => {
   setResultSearch([])
   setValuesGraficos({procedimiento: "",

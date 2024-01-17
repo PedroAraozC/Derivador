@@ -1,5 +1,6 @@
 import SideBar from "./SideBar/Sidebar"
 import useStore from "../Zustand/Zustand";
+import NavBar from "./NavBar";
 
 const Layout = ({children}) => {
   const { authenticated } = useStore();
@@ -7,7 +8,9 @@ const Layout = ({children}) => {
   return (
     <>
     {authenticated? 
-    <SideBar/> : <></>
+    // <SideBar/>
+    <NavBar/>
+     : <></>
   }
     {children}
     </>
