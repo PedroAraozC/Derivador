@@ -1,39 +1,40 @@
-import Home from './components/Home/Home';
-import Login from './components/Login/Login'
+import Home from "./components/Home/Home";
+import Login from "./components/Login/Login";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import React from 'react';
-import Layout from './common/Layout'
-import CapitalHumano from './pages/CapitalHumano/CapitalHumano';
-import Reclamos from './pages/EstadisticasReclamos/Reclamos'
+import Layout from "./common/Layout";
+import CapitalHumano from "./pages/CapitalHumano/CapitalHumano";
+import Reclamos from "./pages/EstadisticasReclamos/Reclamos";
+import PrivateRoute from "./routes/PrivateRoute";
 
 function App() {
-  
   return (
     <>
-    <Router>
+      <Router>
         <Layout>
           <Routes>
-            <Route
-              path="/*"
-              element={<Login/>}
-            />
-            <Route
-              path="/home"
-              element={<Home/>}
-            />
+            <Route path="/login" element={<Login />} />
+            <Route path="/*" element={<Home />} />
             <Route
               path="/cap-humano"
-              element={<CapitalHumano/>}
+              element={
+                <PrivateRoute>
+                  <CapitalHumano />
+                </PrivateRoute>
+              }
             />
             <Route
               path="/reclamos-estadisticas"
-              element={<Reclamos/>}
+              element={
+                <PrivateRoute>
+                  <Reclamos />
+                </PrivateRoute>
+              }
             />
           </Routes>
         </Layout>
       </Router>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
