@@ -5,9 +5,14 @@ import Toolbar from "@mui/material/Toolbar";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import logoMuni from "../../src/assets/Logo_Muni200x200.png";
-import SideBar from "./SideBar/Sidebar";
-import { useEffect } from "react";
+import SideBar from "./Sidebar";
+import { useEffect, useState } from "react";
 import useStore from "../Zustand/Zustand";
+import NavBarEsqueleto from "../components/Esqueletos/NavBarEsqueleto";
+import './Navbar.css'
+import { IconButton, Menu, MenuItem } from "@mui/material";
+import { AccountCircle } from "@mui/icons-material";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -52,21 +57,72 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function NavBar() {
-  const { getAuth, authenticated } = useStore();
+  const { getAuth, authenticated, logout } = useStore();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const navigate = useNavigate();
+
+  const location = useLocation();
 
   useEffect(() => {
     getAuth();
   }, []);
-
+  
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const handleLogout = () => {
+    logout()
+    navigate("/")
+    setAnchorEl(null);
+  }
+  
   return (
     <>
-      {authenticated && (
+      {authenticated ? (
         <Box sx={{ flexGrow: 1 }}>
           <AppBar position="static">
             <Toolbar>
               <SideBar />
-              <img src={logoMuni} className="logoMuni2" />
-              <Search>
+              <div className="d-flex justify-content-between align-items-center w-100">
+                <img src={logoMuni} className="logoMuni2" />
+                {authenticated && (
+                  <div>
+                    <IconButton
+                      size="large"
+                      aria-label="account of current user"
+                      aria-controls="menu-appbar"
+                      aria-haspopup="true"
+                      onClick={handleMenu}
+                      color="inherit"
+                    >
+                      <AccountCircle />
+                    </IconButton>
+                    <Menu
+                      id="menu-appbar"
+                      anchorEl={anchorEl}
+                      anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                      }}
+                      keepMounted
+                      transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                      }}
+                      open={Boolean(anchorEl)}
+                      onClose={handleClose}
+                    >
+                      <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                      {/* <MenuItem onClick={handleClose}>My account</MenuItem> */}
+                    </Menu>
+                  </div>
+                )}
+              </div>
+              {/* <Search>
                 <SearchIconWrapper>
                   <SearchIcon />
                 </SearchIconWrapper>
@@ -74,10 +130,14 @@ export default function NavBar() {
                   placeholder="Search…"
                   inputProps={{ "aria-label": "search" }}
                 />
-              </Search>
+              </Search> */}
             </Toolbar>
           </AppBar>
         </Box>
+      ) : (
+         localStorage.getItem("token") ?    (
+          < NavBarEsqueleto /> 
+        ) : (<></>)
       )}
     </>
   );

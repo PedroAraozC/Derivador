@@ -25,6 +25,11 @@ const useStore = create((set) => ({
       set({ botonState: false });
     }
   },
+  logout:() => {
+    set({authenticated: false });
+      localStorage.removeItem("token");
+    
+  },
 
   getAuth: async () => {
     try {

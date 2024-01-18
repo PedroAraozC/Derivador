@@ -1,4 +1,3 @@
-import { Spinner } from "react-bootstrap";
 import { Navigate } from "react-router-dom";
 import useStore from "../Zustand/Zustand";
 import { useEffect } from "react";
@@ -12,7 +11,7 @@ const PrivateRoute = ({ children }) => {
   }, []);
 
   return loading ? (
-    <Spinner />
+    <></>
   ) : authenticated ? (
     children
   ) : (

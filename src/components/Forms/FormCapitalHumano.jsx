@@ -5,6 +5,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import axios from "../../config/axios";
 import useStore from "../../Zustand/Zustand";
+import { Skeleton, Typography } from "@mui/material";
 
 const FormCapitalHumano = () => {
   const [procedimientos, setProcedimientos] = React.useState([]);
@@ -54,29 +55,41 @@ const FormCapitalHumano = () => {
   };
 
   return (
-    <div className="mb-3">
+    <>
+    {obtenerProcedimientosAlmacenados.length == 0 ? (
+      <div className="mb-3">
       <FormControl sx={{ m: 1, minWidth: 180 }}>
         <InputLabel id="">Procedimientos</InputLabel>
         <Select onChange={handleChange} autoWidth label="Procedimientos">
           {procedimientos?.length > 0 ? (
             procedimientos
-              ?.filter(
-                (sp) =>
-                  sp.ROUTINE_NAME.includes("sp_plantaporreparticion") ||
-                  sp.ROUTINE_NAME.includes("sp_plantamunicipal")
+            ?.filter(
+              (sp) =>
+              sp.ROUTINE_NAME.includes("sp_plantaporreparticion") ||
+              sp.ROUTINE_NAME.includes("sp_plantamunicipal")
               )
               .map((st, index) => (
                 <MenuItem value={st.ROUTINE_NAME} key={index}>
                   {formatProcedimientoName(st.ROUTINE_NAME)}
                 </MenuItem>
               ))
-          ) : (
-            <p></p>
-          )}
+              ) : (
+                <p></p>
+                )}
         </Select>
       </FormControl>
     </div>
-  );
-};
+    ):
+    <div className="d-flex w-50 justify-content-center align-items-center ">
+          <div className="d-flex flex-column w-50 justify-content-center align-items-center">
+            <Typography variant="h1"  width={"80%"}>
+              {" "}
+              <Skeleton/>
+            </Typography>
+          </div>
+        </div>}
+    </>
+    );
+  };
 
 export default FormCapitalHumano;
