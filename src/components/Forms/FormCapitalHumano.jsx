@@ -1,14 +1,14 @@
-import * as React from 'react';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import axios from '../../config/axios';
-import useStore from '../../Zustand/Zustand';
+import * as React from "react";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import axios from "../../config/axios";
+import useStore from "../../Zustand/Zustand";
 
-const FormCapitalHumano = ()=> {
+const FormCapitalHumano = () => {
   const [procedimientos, setProcedimientos] = React.useState([]);
-  const [procedimientoElegido, setProcedimientoElegido] = React.useState({procedimiento: ""});
+
   const { setResultSearch, setValuesCapHumano } = useStore();
 
   const formatProcedimientoName = (procedimiento) => {
@@ -20,7 +20,7 @@ const FormCapitalHumano = ()=> {
         return primeraLetra + restoPalabra;
       })
       .join(" ");
-  
+
     return nombreFormateado;
   };
 
@@ -35,7 +35,7 @@ const FormCapitalHumano = ()=> {
 
   const getData = async (SP) => {
     try {
-      const obj = {procedimiento : SP}
+      const obj = { procedimiento: SP };
       const resultado = await axios.post("/listar/ejecutarProcedimiento", obj);
       setResultSearch(resultado.data);
     } catch (error) {
@@ -47,39 +47,36 @@ const FormCapitalHumano = ()=> {
     obtenerProcedimientosAlmacenados();
   }, []);
 
-
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setValuesCapHumano(value)
-    getData(value)
+    const { value } = e.target;
+    setValuesCapHumano(value);
+    getData(value);
   };
 
   return (
-    <div className='mb-3'>
+    <div className="mb-3">
       <FormControl sx={{ m: 1, minWidth: 180 }}>
         <InputLabel id="">Procedimientos</InputLabel>
-        <Select
-          value={procedimientoElegido.value}
-          onChange={handleChange}
-          autoWidth
-          label="Procedimientos"
-        >
-          {procedimientos?.length > 0 ?
-                procedimientos
-                  ?.filter(
-                    (sp) =>
-                        sp.ROUTINE_NAME.includes("sp_plantaporreparticion") ||
-                        sp.ROUTINE_NAME.includes("sp_plantamunicipal") 
-                  )
-                  .map((st, index) => (
-                    <MenuItem value={st.ROUTINE_NAME} key={index}>
-                      {formatProcedimientoName(st.ROUTINE_NAME)}
-                    </MenuItem>
-                  )) : <p></p>} 
+        <Select onChange={handleChange} autoWidth label="Procedimientos">
+          {procedimientos?.length > 0 ? (
+            procedimientos
+              ?.filter(
+                (sp) =>
+                  sp.ROUTINE_NAME.includes("sp_plantaporreparticion") ||
+                  sp.ROUTINE_NAME.includes("sp_plantamunicipal")
+              )
+              .map((st, index) => (
+                <MenuItem value={st.ROUTINE_NAME} key={index}>
+                  {formatProcedimientoName(st.ROUTINE_NAME)}
+                </MenuItem>
+              ))
+          ) : (
+            <p></p>
+          )}
         </Select>
       </FormControl>
     </div>
   );
-}
+};
 
 export default FormCapitalHumano;
