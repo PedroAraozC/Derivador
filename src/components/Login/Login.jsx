@@ -72,7 +72,7 @@ const Login = () => {
 
           <Button
             variant="contained"
-            className="btn-light mt-4"
+            className="btn-light mt-4 buttonLoginColor"
             disabled={botonState}
             type="submit"
           >
