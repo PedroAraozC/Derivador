@@ -13,7 +13,7 @@ const Reclamos = () => {
   return (
     <>
       <FormReclamos />
-      {resultSearch.length !== 0 && <GraficoReclamos />}
+      {resultSearch[0]?.length !== 0 && <GraficoReclamos />}
     </>
   );
 };

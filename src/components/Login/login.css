@@ -11,7 +11,7 @@
     position: sticky;
     width: 350px;
     height: 460px;
-    background: #1f89f6;
+    /* background: #0066ff !important; */
     border-radius: 8px;
     overflow: hidden;
     z-index: 1;
@@ -81,6 +81,10 @@
     animation-delay: -4.5s;
 }
 
+.buttonLoginColor{
+background-color: #2eb1ff !important;
+}
+
 @keyframes animate {
     0% {
         transform: rotate(0deg);
@@ -94,7 +98,7 @@
 .box form {
     position: absolute;
     inset: 4px;
-    background:#1f89f6;
+    background:#0066ff;
     padding: 50px 40px;
     border-radius: 8px;
     z-index: 2;

@@ -114,22 +114,22 @@ const FormReclamos = ({ funcionCerrar }) => {
           <div className="d-flex flex-column w-50 justify-content-center align-items-center">
             <Typography variant="h3" width={"100%"}>
               {" "}
-              <Skeleton  />
+              <Skeleton />
             </Typography>
 
-            <Typography variant="h3"  width={"100%"}>
+            <Typography variant="h3" width={"100%"}>
               {" "}
               <Skeleton />
             </Typography>
 
-            <Typography variant="h3"  width={"100%"}>
+            <Typography variant="h3" width={"100%"}>
               {" "}
-              <Skeleton/>
+              <Skeleton />
             </Typography>
           </div>
         </div>
       ) : (
-        <div className="d-flex justify-content-center align-items-center px-3 mt-5">
+        <div className="d-flex flex-column justify-content-center align-items-center px-3 mt-5">
           <Form className="d-flex flex-column gap-3" onSubmit={getData}>
             <FormSelect
               value={values.procedimiento}
@@ -163,7 +163,7 @@ const FormReclamos = ({ funcionCerrar }) => {
                     }
                   })}
             </FormSelect>
-            <div className="d-flex">
+            <div className="d-flex  felx-column">
               <Form.Control
                 type="date"
                 name="desde"
@@ -182,10 +182,10 @@ const FormReclamos = ({ funcionCerrar }) => {
             <Button disabled={flagButton ? true : false} type="submit">
               <FontAwesomeIcon icon={faMagnifyingGlass} />
             </Button>
-            <div className="container">
-              {error != "" && <Alert variant="danger">{error}</Alert>}
-            </div>
           </Form>
+          <div className="mt-2">
+            {error != "" && <Alert variant="danger">{error}</Alert>}
+          </div>
         </div>
       )}
     </>
