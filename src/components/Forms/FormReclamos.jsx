@@ -1,10 +1,20 @@
 import axios from "../../config/axios";
 import { useEffect, useState } from "react";
-import { FormSelect, Form, Alert, Button } from "react-bootstrap";
+
 import useStore from "../../Zustand/Zustand";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Skeleton, Typography } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Skeleton,
+  TextField,
+  Typography,
+} from "@mui/material";
+import Alert from '@mui/material/Alert';
+import Button from "@mui/material/Button";
 
 // eslint-disable-next-line react/prop-types
 const FormReclamos = ({ funcionCerrar }) => {
@@ -130,61 +140,81 @@ const FormReclamos = ({ funcionCerrar }) => {
         </div>
       ) : (
         <div className="d-flex flex-column justify-content-center align-items-center px-3 mt-5">
-          <Form className="d-flex flex-column gap-3" onSubmit={getData}>
-            <FormSelect
-              value={values.procedimiento}
-              onChange={handleInputChange}
-              name="procedimiento"
-              required
+          <form onSubmit={getData}>
+            <FormControl
+              sx={{ m: 1, minWidth: 200 }}
+              className="d-flex flex-column gap-3"
             >
-              <option value="">Elija un tipo de Reclamo</option>
-              {storeProcedures.length !== 0 &&
-                storeProcedures
-                  .filter(
-                    (sp) =>
-                      !sp.routine_name.includes("insert") &&
-                      !sp.routine_name.includes("detalle") &&
-                      !sp.routine_name.includes("tipo") &&
-                      // !sp.routine_name.includes("estados") &&
-                      !sp.routine_name.includes("mapa") &&
-                      !sp.routine_name.includes("area") &&
-                      !sp.routine_name.includes("usuario")
-                  )
-                  .map((st, index) => {
-                    if (
-                      formatProcedimientoName(st.routine_name) !=
-                      "Por Estado Sec Repar Oficina"
-                    ) {
-                      return (
-                        <option value={st.routine_name} key={index}>
-                          {formatProcedimientoName(st.routine_name)}
-                        </option>
-                      );
-                    }
-                  })}
-            </FormSelect>
-            <div className="d-flex  felx-column">
-              <Form.Control
-                type="date"
-                name="desde"
-                value={values.desde}
+              <InputLabel>Procedimientos</InputLabel>
+              <Select
+                value={values.procedimiento}
                 onChange={handleInputChange}
+                name="procedimiento"
                 required
-              />
-              <Form.Control
-                type="date"
-                name="hasta"
-                value={values.hasta}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-            <Button disabled={flagButton ? true : false} type="submit">
-              <FontAwesomeIcon icon={faMagnifyingGlass} />
-            </Button>
-          </Form>
+                label="Procedimientos"
+                autoWidth
+              >
+                {storeProcedures.length > 0 &&
+                  storeProcedures
+                    .filter(
+                      (sp) =>
+                        !sp.routine_name.includes("insert") &&
+                        !sp.routine_name.includes("detalle") &&
+                        !sp.routine_name.includes("tipo") &&
+                        // !sp.routine_name.includes("estados") &&
+                        !sp.routine_name.includes("mapa") &&
+                        !sp.routine_name.includes("area") &&
+                        !sp.routine_name.includes("usuario")
+                    )
+                    .map((st, index) => {
+                      if (
+                        formatProcedimientoName(st.routine_name) !=
+                        "Por Estado Sec Repar Oficina"
+                      ) {
+                        return (
+                          <MenuItem key={index} value={st.routine_name}>
+                            {formatProcedimientoName(st.routine_name)}
+                          </MenuItem>
+                        );
+                      }
+                    })}
+              </Select>
+              <div className="d-flex felx-column">
+                <TextField
+                  className="me-1"
+                  label="Desde"
+                  type="date"
+                  value={values.desde}
+                  name="desde"
+                  onChange={handleInputChange}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+                <TextField
+                  label="Hasta"
+                  type="date"
+                  value={values.hasta}
+                  name="hasta"
+                  onChange={handleInputChange}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </div>
+              <Button
+                disabled={flagButton ? true : false}
+                type="submit"
+                variant="contained"
+              >
+                {" "}
+                <FontAwesomeIcon icon={faMagnifyingGlass} />
+              </Button>
+            </FormControl>
+          </form>
+
           <div className="mt-2">
-            {error != "" && <Alert variant="danger">{error}</Alert>}
+            {error != "" && <Alert severity="error">{error}</Alert>}
           </div>
         </div>
       )}
