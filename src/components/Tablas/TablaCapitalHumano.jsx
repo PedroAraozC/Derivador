@@ -31,7 +31,7 @@ const mayorWidth = (llave, clave) =>{
 //item y reparticion
 
   return (
-    <div style={{ height: 374, width: '100%' }}>
+    <div style={{ height: 270, width: '100%' }}>
       {
         resultSearch.length > 0 ? 
         <DataGrid
