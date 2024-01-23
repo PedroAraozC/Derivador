@@ -70,7 +70,7 @@ const FormCapitalHumano = () => {
               )
               .map((st, index) => (
                 <MenuItem value={st.ROUTINE_NAME} key={index}>
-                  {formatProcedimientoName(st.ROUTINE_NAME)}
+                  {formatProcedimientoName(st.ROUTINE_NAME).includes("Plantaporreparticion")? "Planta por Repartición": "Planta Municipal"}
                 </MenuItem>
               ))
               ) : (
