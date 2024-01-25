@@ -11,19 +11,17 @@ const useStore = create((set) => ({
     set({ botonState: true });
     try {
       const { data } = await axios.post("/usuarios/login", values);
-      const isAuthenticated = !!data.user; // Verifica si data.user tiene un valor truthy
       set({
-        authenticated: isAuthenticated,
-        user: isAuthenticated ? data.user : null,
-        botonState: false,
+        authenticated: !!data.user,
+        user: data.user
       });
       axios.defaults.headers.common["Authorization"] = data.token;
       localStorage.setItem("token", data.token);
     } catch (error) {
       // toast.error(error.response?.data.message || error.message);
       console.log(error);
-      set({ botonState: false });
     }
+    set({ botonState: false });
   },
   logout:() => {
     set({authenticated: false });
@@ -40,12 +38,13 @@ const useStore = create((set) => ({
       }
       axios.defaults.headers.common["Authorization"] = token;
       const { data } = await axios.get("/usuarios/authStatus");
-      set({ user: data.user, authenticated: true, loading: false });
+      set({ user: data.user, authenticated: true});
     } catch (error) {
-      set({ authenticated: false, loading: false });
-      // toast.error("Error de autenticación. Ingrese nuevamente");
+      set({ authenticated: false});
+      localStorage.removeItem("token");
       console.log("error de auth");
     }
+    set({ loading: false});
   },
 
   resultSearch: [],
