@@ -1,9 +1,9 @@
 * {
-     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+     font-family: 'Poppins', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 .logoMuni{
-    height: 100px;
+    height: 150px;
     object-fit: contain;
 }
 
@@ -11,7 +11,7 @@
     position: sticky;
     width: 350px;
     height: 460px;
-    /* background: #0066ff !important; */
+    /* background: #fff !important; */
     border-radius: 8px;
     overflow: hidden;
     z-index: 1;
@@ -27,7 +27,7 @@
     left: -50%;
     width: 300px;
     height: 420px;
-    background: linear-gradient(0deg, transparent, #45f3ff, #45f3ff, #45f3ff);
+    background: linear-gradient(0deg, transparent, #0066ff, #0066ff, #0066ff);
     z-index: -1;
     transform-origin: bottom right;
     animation: animate 6s linear infinite;
@@ -40,7 +40,7 @@
     left: -50%;
     width: 300px;
     height: 420px;
-    background: linear-gradient(0deg, transparent, #45f3ff, #45f3ff, #45f3ff);
+    background: linear-gradient(0deg, transparent, #0066ff, #0066ff, #0066ff);
     z-index: -1;
     transform-origin: bottom right;
     animation: animate 6s linear infinite;
@@ -60,7 +60,7 @@
     left: -50%;
     width: 300px;
     height: 420px;
-    background: linear-gradient(0deg, transparent, #fff, #fff, #fff);
+    background: linear-gradient(0deg, transparent, #333333, #333333, #333333);
     z-index: -1;
     transform-origin: bottom right;
     animation: animate 6s linear infinite;
@@ -74,7 +74,7 @@
     left: -50%;
     width: 300px;
     height: 420px;
-    background: linear-gradient(0deg, transparent, #fff, #fff, #fff);
+    background: linear-gradient(0deg, transparent, #333333, #333333, #333333);
     z-index: -1;
     transform-origin: bottom right;
     animation: animate 6s linear infinite;
@@ -82,7 +82,7 @@
 }
 
 .buttonLoginColor{
-background-color: #2eb1ff !important;
+background-color: #0066ff !important;
 }
 
 @keyframes animate {
@@ -98,7 +98,7 @@ background-color: #2eb1ff !important;
 .box form {
     position: absolute;
     inset: 4px;
-    background:#0066ff;
+    background:#ffffff;
     padding: 50px 40px;
     border-radius: 8px;
     z-index: 2;
@@ -107,7 +107,7 @@ background-color: #2eb1ff !important;
 }
 
 .box form h2 {
-    color: #fff;
+    color: #000;
     font-weight: 500;
     text-align: center;
     letter-spacing: 0.1em;
@@ -127,7 +127,7 @@ background-color: #2eb1ff !important;
     outline: none;
     border: none;
     box-shadow: none;
-    color: #000000;
+    color: #000;
     font-size: 1em;
     letter-spacing: 0.05em;
     transition: 0.5s;
@@ -139,7 +139,7 @@ background-color: #2eb1ff !important;
     left: 0;
     padding: 10px 0px 10px;
     pointer-events: none;
-    color: #fff;
+    color: #000;
     font-size: 1em;
     letter-spacing: 0.05em;
     transition: 0.5s;
@@ -147,7 +147,7 @@ background-color: #2eb1ff !important;
 
 .box form .inputBox input:valid~span,
 .box form .inputBox input:focus~span {
-    color: #fff;
+    color: #000;
     font-size: 0.75em;
     transform: translateY(-34px);
     z-index: 0;
@@ -160,7 +160,7 @@ background-color: #2eb1ff !important;
     bottom: 0;
     width: 100%;
     height: 2px;
-    background: #fff;
+    background: #c9c8c8;
     border-radius: 4px;
     overflow: hidden;
     transition: 0.5s;
@@ -184,20 +184,20 @@ background-color: #2eb1ff !important;
 .box form .links a {
     margin: 10px 0;
     font-size: 0.75em;
-    color: #fff;
+    color: #000;
     text-decoration: none;
 }
 
 .box form .links a:hover,
 .box form .links a:nth-child(2) {
-    color: #fff;
+    color: #000;
 }
 
 .box form input[type="submit"] {
     border: none;
     outline: none;
     padding: 9px 25px;
-    background: #fff;
+    background: #000;
     cursor: pointer;
     font-size: 0.9em;
     border-radius: 4px;
@@ -227,7 +227,7 @@ background-color: #2eb1ff !important;
         left: 0;
         padding: 10px 0px 10px;
         pointer-events: none;
-        color: #fff;
+        color: #000;
         font-size: 1em;
         letter-spacing: 0.05em;
         transition: 0.5s;
@@ -236,7 +236,7 @@ background-color: #2eb1ff !important;
 
     .box form .inputBox input:valid~span,
     .box form .inputBox input:focus~span {
-        color: #fff;
+        color: #000;
         font-size: 0.75em;
         transform: translateY(-32px);
         z-index: 0;
@@ -246,7 +246,7 @@ background-color: #2eb1ff !important;
         border: none;
         outline: none;
         padding: 9px 25px;
-        background: #ffffff;
+        background: #000;
         cursor: pointer;
         font-size: 0.9em;
         border-radius: 4px;
@@ -260,7 +260,7 @@ background-color: #2eb1ff !important;
 .icono-password-login {
     left: 230px;
     bottom: 14px;
-    color: #ffff;
+    color: #000000;
     cursor: pointer;
     position: absolute;
     z-index: 30;
