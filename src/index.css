@@ -8,7 +8,7 @@
 }
 .layoutHeight {
   height: 100dvh;
-  background: #0066ff !important;
+  background: #afafaf !important;
 }
 .layoutContainer {
   min-height: 100vh;
@@ -18,7 +18,7 @@
 }
 
 body {
-  font-family: "Poppins";
+  font-family: "Poppins", sans-serif;
   /* background: linear-gradient(45deg, #141f27, #1b384a); */
 }
 .css-yfo96e {

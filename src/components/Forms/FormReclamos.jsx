@@ -17,7 +17,7 @@ import Alert from '@mui/material/Alert';
 import Button from "@mui/material/Button";
 
 // eslint-disable-next-line react/prop-types
-const FormReclamos = ({ funcionCerrar }) => {
+const FormReclamos = () => {
   const { setResultSearch, setValuesGraficos } = useStore();
 
   const [error, setError] = useState("");
@@ -39,7 +39,6 @@ const FormReclamos = ({ funcionCerrar }) => {
       setValuesGraficos(values);
       console.log(resultado);
       setFlagButton(false);
-      funcionCerrar();
     } catch (error) {
       console.log("mal");
     }

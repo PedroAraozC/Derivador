@@ -1,5 +1,5 @@
 import "./login.css";
-import logoMuni from "../../assets/logomuni_piedepagina.png";
+import logoMuni from "../../assets/logoMuniNuevo.png";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
@@ -32,6 +32,7 @@ const Login = () => {
     if (authenticated) {
       navigate("/home");
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authenticated]);
 
   return (

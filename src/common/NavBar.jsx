@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 // import InputBase from "@mui/material/InputBase";
 // import SearchIcon from "@mui/icons-material/Search";
-import logoMuni from "../../src/assets/Logo_Muni200x200.png";
+// import logoMuni from "../../src/assets/logoMuniNuevo.png";
 import SideBar from "./Sidebar";
 import { useEffect, useState } from "react";
 import useStore from "../Zustand/Zustand";
@@ -89,7 +89,8 @@ export default function NavBar() {
             <Toolbar>
               <SideBar />
               <div className="d-flex justify-content-between align-items-center w-100">
-                <img src={logoMuni} className="logoMuni2" />
+                {/* <img src={logoMuni} className="logoMuni2" /> */}
+                <p></p>
                 {authenticated && (
                   <div>
                     <IconButton
