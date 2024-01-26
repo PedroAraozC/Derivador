@@ -49,6 +49,7 @@ const FormCapitalHumano = () => {
   }, []);
 
   const handleChange = (e) => {
+    setResultSearch([]);
     const { value } = e.target;
     setValuesCapHumano(value);
     getData(value);
