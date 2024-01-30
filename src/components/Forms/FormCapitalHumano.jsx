@@ -57,7 +57,7 @@ const FormCapitalHumano = () => {
 
   return (
     <>
-    {obtenerProcedimientosAlmacenados.length == 0 ? (
+    {procedimientos.length !== 0 ? (
       <div className="mb-3">
       <FormControl sx={{ m: 1, minWidth: 180 }}>
         <InputLabel id="">Procedimientos</InputLabel>
