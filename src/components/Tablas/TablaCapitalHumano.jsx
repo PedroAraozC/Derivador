@@ -33,7 +33,7 @@ const mayorWidth = (llave, clave) =>{
   return (
     <div style={{ height: 270, width: '100%' }}>
       {
-        resultSearch.length > 0 ? 
+        resultSearch[0].length > 0 ? 
         <DataGrid
         rows={resultSearch[0].map((rs, index) => ({ ...rs, id: index }))}
         columns={llave.map((ll) => ({

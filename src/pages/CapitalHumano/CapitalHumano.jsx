@@ -6,6 +6,7 @@ import TablaCapitalHumano from "../../components/Tablas/TablaCapitalHumano";
 import useStore from "../../Zustand/Zustand";
 import "./CapitalHumano.css";
 import { Box, CircularProgress } from "@mui/material";
+import TablaPlantaPorCatego from "../../components/Tablas/TablaPlantaPorCatego";
 
 const CapitalHumano = () => {
   const { resultSearch, valuesCapHumano, setResultSearch, setValuesCapHumano } = useStore();
@@ -19,7 +20,11 @@ const CapitalHumano = () => {
     <>
       <div className="d-flex flex-column justify-content-center align-items-center container mt-5">
         <FormCapitalHumano />
-        {resultSearch[0]?.length !== 0 && <TablaCapitalHumano /> }
+        {valuesCapHumano.includes("catego") && resultSearch[0]?.length !== 0 ? (
+          <TablaPlantaPorCatego />
+        ) : (
+          resultSearch[0]?.length !== 0 && <TablaCapitalHumano />
+        )}
       </div>
       {resultSearch[0]?.length !== 0 ? (
         <div className="container containerGrafico mb-3">
@@ -33,11 +38,13 @@ const CapitalHumano = () => {
             <></>
           )}
         </div>
-      ): valuesCapHumano != "" &&
-       <Box className="d-flex justify-content-center">
-        <CircularProgress />
-       </Box>
-    }
+      ) : (
+        valuesCapHumano != "" && (
+          <Box className="d-flex justify-content-center">
+            <CircularProgress />
+          </Box>
+        )
+      )}
     </>
   );
 };
