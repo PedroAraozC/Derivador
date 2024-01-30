@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import axios from '../config/axios';
 
 const useStore = create((set) => ({
+  errors: "",
 
   authenticated: false,
   user: null,
@@ -10,6 +11,7 @@ const useStore = create((set) => ({
   login: async (values) => {
     set({ botonState: true });
     try {
+      set({errors : ""})
       const { data } = await axios.post("/usuarios/login", values);
       set({
         authenticated: !!data.user,
@@ -19,7 +21,7 @@ const useStore = create((set) => ({
       localStorage.setItem("token", data.token);
     } catch (error) {
       // toast.error(error.response?.data.message || error.message);
-      console.log(error);
+        set({errors : error.response?.data.message || error.message });
     }
     set({ botonState: false });
   },
@@ -59,6 +61,7 @@ const useStore = create((set) => ({
 
 
   valuesCapHumano: "",
+  // eslint-disable-next-line no-unused-vars
   setValuesCapHumano: (newValues) => set((state) => ({ valuesCapHumano: newValues }))
 }))
 
