@@ -6,7 +6,7 @@ import { IconButton, ListItemButton, ListItemIcon, ListItemText } from '@mui/mat
 import { useNavigate } from 'react-router-dom';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import HomeIcon from '@mui/icons-material/Home';
-import BarChartIcon from '@mui/icons-material/BarChart';
+import FeedbackIcon from '@mui/icons-material/Feedback';
 
 export default function ListaPrueba() {
   const [state, setState] = React.useState({
@@ -63,9 +63,9 @@ const redirigir =(ruta)=>{
           className="w-100"
         >
             <ListItemIcon>
-            <BarChartIcon />
+            <FeedbackIcon />
           </ListItemIcon>
-          <ListItemText primary="Reclamos" />
+          <ListItemText primary="Atención Ciudadana" />
         </ListItemButton>
       
       </div>

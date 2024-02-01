@@ -3,7 +3,7 @@ import './Home.css'
 const Home = () => {
   return (
     <div className='d-flex justify-content-center align-items-center'>
-      <h1>HOME</h1>
+      <h1>Paneles de Visualización de Gestión</h1>
     </div>
   )
 }
