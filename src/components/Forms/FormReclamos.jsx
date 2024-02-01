@@ -144,13 +144,13 @@ const FormReclamos = () => {
               sx={{ m: 1, minWidth: 200 }}
               className="d-flex flex-column gap-3"
             >
-              <InputLabel>Procedimientos</InputLabel>
+              <InputLabel>Informes</InputLabel>
               <Select
                 value={values.procedimiento}
                 onChange={handleInputChange}
                 name="procedimiento"
                 required
-                label="Procedimientos"
+                label="Informes"
                 autoWidth
               >
                 {storeProcedures.length > 0 &&

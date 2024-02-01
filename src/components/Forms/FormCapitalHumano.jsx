@@ -39,7 +39,6 @@ const FormCapitalHumano = () => {
       const obj = { procedimiento: SP };
       const resultado = await axios.post("/listar/ejecutarProcedimiento", obj);
       setResultSearch(resultado.data);
-      console.log(resultado.data);
     } catch (error) {
       console.log(error);
     }
@@ -52,7 +51,6 @@ const FormCapitalHumano = () => {
   const handleChange = (e) => {
     setResultSearch([]);
     const { value } = e.target;
-    console.log(value);
     setValuesCapHumano(value);
     getData(value);
   };
@@ -62,8 +60,8 @@ const FormCapitalHumano = () => {
     {procedimientos.length !== 0 ? (
       <div className="mb-3">
       <FormControl sx={{ m: 1, minWidth: 180 }}>
-        <InputLabel id="">Procedimientos</InputLabel>
-        <Select onChange={handleChange} autoWidth label="Procedimientos">
+        <InputLabel id="">Informes</InputLabel>
+        <Select onChange={handleChange} autoWidth label="Informes">
           {procedimientos?.length > 0 ? (
             procedimientos
             ?.filter(
