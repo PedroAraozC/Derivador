@@ -45,6 +45,7 @@ const useStore = create((set) => ({
       set({ authenticated: false});
       localStorage.removeItem("token");
       console.log("error de auth");
+      console.log(error)
     }
     set({ loading: false});
   },

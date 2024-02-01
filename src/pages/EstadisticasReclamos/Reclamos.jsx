@@ -8,6 +8,7 @@ const Reclamos = () => {
   useEffect(() => {
     setResultSearch([]);
     setValuesGraficos({ procedimiento: "", desde: "", hasta: "" });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
