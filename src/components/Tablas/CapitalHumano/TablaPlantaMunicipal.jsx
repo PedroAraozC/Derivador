@@ -167,11 +167,30 @@ export default function TablaPlantaMunicipal() {
   };  
 
   const handleClick = (event, row) => {
+
     setResultSearch(copiaResultSearch[0].filter(rs => rs.sexo.includes(row.sexo)));
     setSelected([]);
     // Seleccionar la fila individual
     setSelected([row]);
     setSelectedTotal(false)
+
+  //   console.log(row);
+  //   console.log(copiaResultSearch);
+  //  setResultSearch(copiaResultSearch[0].filter(rs=>rs.sexo.includes(row.sexo)))
+  //   const selectedIndex = selected.indexOf(row);
+  //   let newSelected = [];
+  
+  //   if (selectedIndex === -1) {
+  //     // Si no está seleccionado, selecciona el nuevo
+  //     newSelected = [row];
+  //   } else {
+  //     // Si ya está seleccionado, deselecciona todos
+  //     newSelected = [];
+  //     setResultSearch(copiaResultSearch[0]);
+  //   }
+  
+  //   setSelected(newSelected);
+
   };
   
   const isSelected = (id) => selected.indexOf(id) !== -1;

@@ -22,8 +22,23 @@ import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import useStore from '../../../Zustand/Zustand';
+import { TablePagination } from '@mui/material';
 
+function descendingComparator(a, b, orderBy) {
+  if (b[orderBy] < a[orderBy]) {
+    return -1;
+  }
+  if (b[orderBy] > a[orderBy]) {
+    return 1;
+  }
+  return 0;
+}
 
+function getComparator(order, orderBy) {
+  return order === 'desc'
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy);
+}
 
 function EnhancedTableHead(props) {
     const [cabeceras, setCabeceras] = React.useState([])
@@ -64,7 +79,7 @@ function EnhancedTableHead(props) {
               active={orderBy === headCell.id}
               onClick={createSortHandler(headCell.id)}
             >
-              {headCell}
+              {headCell=="CODI_07"? "Item" : headCell == "DETA_07"? "Repartición" : headCell.toLowerCase()}
               
             </TableSortLabel>
           </TableCell>
@@ -142,7 +157,9 @@ export default function TablaPorReparticion() {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
+  const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
   
   const { resultSearch,setResultSearch } = useStore();
   const [copiaResultSearch] = React.useState(resultSearch)
@@ -161,7 +178,7 @@ export default function TablaPorReparticion() {
   const handleClick = (event, row) => {
     console.log(row);
     console.log(copiaResultSearch);
-   setResultSearch(copiaResultSearch[0].filter(rs=>rs.sexo.includes(row.sexo)))
+   setResultSearch(copiaResultSearch[0].filter(rs=>rs.DETA_07.includes(row.DETA_07)))
     const selectedIndex = selected.indexOf(row);
     let newSelected = [];
   
@@ -171,20 +188,44 @@ export default function TablaPorReparticion() {
     } else {
       // Si ya está seleccionado, deselecciona todos
       newSelected = [];
+      setResultSearch(copiaResultSearch[0])
     }
   
     setSelected(newSelected);
   };
   
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
 
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+  
   const handleChangeDense = (event) => {
     setDense(event.target.checked);
   };
 
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
+  function stableSort(array, comparator) {
+    const stabilizedThis = array.map((el, index) => [el, index]);
+    stabilizedThis.sort((a, b) => {
+      const order = comparator(a[0], b[0]);
+      if (order !== 0) {
+        return order;
+      }
+      return a[1] - b[1];
+    });
+    return stabilizedThis.map((el) => el[0]);
+  }
 
-      
+  const visibleRows = stableSort(copiaResultSearch[0], getComparator(order, orderBy)).slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage,
+  )
+
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
@@ -207,7 +248,7 @@ export default function TablaPorReparticion() {
             {
             copiaResultSearch.length > 0 &&
             <TableBody>
-              {copiaResultSearch[0].map((row, index) => {
+              {visibleRows.map((row, index) => {
                 const isItemSelected = isSelected(row);
                 const labelId = `enhanced-table-checkbox-${index}`;
 
@@ -231,10 +272,10 @@ export default function TablaPorReparticion() {
                         }}
                       />
                     </TableCell>
-                    <TableCell >{row.sexo}</TableCell>
-                    <TableCell >{row.PLANTA}</TableCell>
-                    <TableCell >{row.CONTRATO}</TableCell>
-                    <TableCell >{row.FUNCIONARIOS}</TableCell>
+                    <TableCell >{row.CODI_07}</TableCell>
+                    <TableCell >{row.DETA_07}</TableCell>
+                    <TableCell >{row.MUJERES}</TableCell>
+                    <TableCell >{row.VARONES}</TableCell>
                   </TableRow>
                 );
               })}
@@ -242,6 +283,15 @@ export default function TablaPorReparticion() {
             </TableBody>
             }
           </Table>
+          <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={resultSearch[0].length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
         </TableContainer>
       </Paper>
       <FormControlLabel
