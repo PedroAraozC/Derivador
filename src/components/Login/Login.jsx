@@ -90,18 +90,28 @@ const Login = () => {
           >
             Ingresar
           </Button>
+          <div className="d-flex flex-column justify-content-center align-items-center">
+            <p className="footer p-1" style={{fontSize:"0.7em"}}>
+              Desarrollado por DiTec{" "}
+              <span style={{ fontSize: "1.4em", verticalAlign: "-0.1em" }}>
+                ©
+              </span>{" "}
+              2024
+            </p>
+          </div>
         </form>
       </div>
-        {(errors) != "" ?
-            <Snackbar
-            open={openSnackbar}
-            autoHideDuration={5000}
-            onClose={handleCloseSnackbar}
-            >
-              <Alert severity="warning">{errors}</Alert>
-            </Snackbar>
-         : <></>
-            }
+      {errors != "" ? (
+        <Snackbar
+          open={openSnackbar}
+          autoHideDuration={5000}
+          onClose={handleCloseSnackbar}
+        >
+          <Alert severity="warning">{errors}</Alert>
+        </Snackbar>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

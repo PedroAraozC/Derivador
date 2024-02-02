@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import HomeIcon from '@mui/icons-material/Home';
 import FeedbackIcon from '@mui/icons-material/Feedback';
+import "./SideBar.css"
 
 export default function ListaPrueba() {
   const [state, setState] = React.useState({
@@ -63,15 +64,18 @@ const redirigir =(ruta)=>{
           component="a"
           className="w-100"
         >
-            <ListItemIcon>
+          <ListItemIcon>
             <FeedbackIcon />
           </ListItemIcon>
           <ListItemText primary="Atención Ciudadana" />
         </ListItemButton>
-      
       </div>
-      <div className="d-flex flex-column justify-content-center align-items-center "> 
-        <p className='footer'>Desarrollado por DiTec ®2024</p>
+      <div className="d-flex flex-column justify-content-center align-items-center">
+        <p className="footer">
+          Desarrollado por DiTec{" "}
+          <span style={{ fontSize: "1.4em", verticalAlign: "-0.1em" }}>©</span>{" "}
+          2024
+        </p>
       </div>
     </Box>
   );

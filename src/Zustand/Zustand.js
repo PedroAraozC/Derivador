@@ -14,9 +14,9 @@ const useStore = create((set) => ({
       set({errors : ""})
       const { data } = await axios.post("/usuarios/login", values);
       set({
-        authenticated: !!data.user,
-        user: data.user
+        authenticated: !!data.user
       });
+      set({user:data.user});
       axios.defaults.headers.common["Authorization"] = data.token;
       localStorage.setItem("token", data.token);
     } catch (error) {
@@ -40,7 +40,10 @@ const useStore = create((set) => ({
       }
       axios.defaults.headers.common["Authorization"] = token;
       const { data } = await axios.get("/usuarios/authStatus");
-      set({ user: data.user, authenticated: true});
+      set({
+        authenticated: true
+      });
+      set({user:data.usuarioSinContraseña});
     } catch (error) {
       set({ authenticated: false});
       localStorage.removeItem("token");

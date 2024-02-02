@@ -39,7 +39,6 @@ function getComparator(order, orderBy) {
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-
 function stableSort(array, comparator) {
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
@@ -222,6 +221,7 @@ export default function TablaPorCategoria() {
     } else {
       // Si ya está seleccionado, deselecciona todos
       newSelected = [];
+      setResultSearch(copiaResultSearch[0]);
     }
   
     setSelected(newSelected);

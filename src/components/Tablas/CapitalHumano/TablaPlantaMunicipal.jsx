@@ -171,6 +171,7 @@ export default function TablaPlantaMunicipal() {
     } else {
       // Si ya está seleccionado, deselecciona todos
       newSelected = [];
+      setResultSearch(copiaResultSearch[0]);
     }
   
     setSelected(newSelected);
