@@ -17,8 +17,6 @@ import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import useStore from '../../../Zustand/Zustand';
@@ -32,9 +30,11 @@ function EnhancedTableHead(props) {
       props;
 
       React.useEffect(() => {
-        if( resultSearch.length > 0){
         
-          setCabeceras(Object.keys(copiaResultSearch[0][0]))
+        if( resultSearch.length > 0){
+          let arrTotal = [Object.keys(copiaResultSearch[0][0])]
+          arrTotal[0].push('Total')
+          setCabeceras(arrTotal)
         }
       }, [resultSearch])
 
@@ -52,20 +52,17 @@ function EnhancedTableHead(props) {
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
             inputProps={{
-              'aria-label': 'select all desserts',
+              "aria-label": "select all desserts",
             }}
           />
         </TableCell>
-        {cabeceras.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-          >
+        {cabeceras[0]?.map((columnName, index) => (
+          <TableCell key={index}>
             <TableSortLabel
-              active={orderBy === headCell.id}
-              onClick={createSortHandler(headCell.id)}
+              active={orderBy === columnName}
+              onClick={createSortHandler(columnName)}
             >
-              {headCell}
-              
+              {columnName}
             </TableSortLabel>
           </TableCell>
         ))}
@@ -139,115 +136,126 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function TablaPlantaMunicipal() {
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
-  const [dense, setDense] = React.useState(false);
-  
+  const [selectedTotal, setSelectedTotal] = React.useState(true);
   const { resultSearch,setResultSearch } = useStore();
   const [copiaResultSearch] = React.useState(resultSearch)
 
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
+  const sumarColumna = (filas, nombreColumna) => {
+    return filas.reduce((total, fila) => {
+      const valor = parseInt(fila[nombreColumna], 10);
+      return isNaN(valor) ? total : total + valor;
+    }, 0);
   };
+  const totalizarFilas = (filas) => {
+    return filas.map((fila) => {
+      const totalFila = Object.values(fila).reduce((subtotal, valor) => {
+        const num = parseInt(valor, 10);
+        return isNaN(num) ? subtotal : subtotal + num;
+      }, 0);
+      return totalFila;
+    });
+  };
+  const totalesFilas = totalizarFilas(copiaResultSearch[0]);
+  const totalPlanta = totalesFilas[0] + totalesFilas[1]
+
 
   const handleSelectAllClick = () => {
-    setResultSearch(copiaResultSearch[0])
+    setResultSearch(copiaResultSearch[0]);
     setSelected([]);
-  };
+    setSelectedTotal(true)
+  };  
 
   const handleClick = (event, row) => {
-    console.log(row);
-    console.log(copiaResultSearch);
-   setResultSearch(copiaResultSearch[0].filter(rs=>rs.sexo.includes(row.sexo)))
-    const selectedIndex = selected.indexOf(row);
-    let newSelected = [];
-  
-    if (selectedIndex === -1) {
-      // Si no está seleccionado, selecciona el nuevo
-      newSelected = [row];
-    } else {
-      // Si ya está seleccionado, deselecciona todos
-      newSelected = [];
-    }
-  
-    setSelected(newSelected);
+    setResultSearch(copiaResultSearch[0].filter(rs => rs.sexo.includes(row.sexo)));
+    setSelected([]);
+    // Seleccionar la fila individual
+    setSelected([row]);
+    setSelectedTotal(false)
   };
   
-
-  const handleChangeDense = (event) => {
-    setDense(event.target.checked);
-  };
-
   const isSelected = (id) => selected.indexOf(id) !== -1;
-
-
-      
+  
   return (
-    <Box sx={{ width: '100%' }}>
-      <Paper sx={{ width: '100%', mb: 2 }}>
+    <Box sx={{ width: "100%" }}>
+      <Paper sx={{ width: "100%", mb: 2 }}>
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
             aria-labelledby="tableTitle"
-            size={dense ? 'small' : 'medium'}
+            aria-label="spanning table"
           >
             <EnhancedTableHead
               numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
-              onRequestSort={handleRequestSort}
               rowCount={copiaResultSearch.length}
               copiaResultSearch={copiaResultSearch}
             />
-            {
-            copiaResultSearch.length > 0 &&
-            <TableBody>
-              {copiaResultSearch[0].map((row, index) => {
-                const isItemSelected = isSelected(row);
-                const labelId = `enhanced-table-checkbox-${index}`;
+            {copiaResultSearch.length > 0 && (
+              <TableBody>
+                {copiaResultSearch[0].map((row, index) => {
+                  const isItemSelected = isSelected(row);
+                  const labelId = `enhanced-table-checkbox-${index}`;
 
-                return (
-                  <TableRow
-                    hover
-                    onClick={(event) => handleClick(event, row)}
-                    role="checkbox"
-                    aria-checked={isItemSelected}
-                    tabIndex={-1}
-                    key={index}
-                    selected={isItemSelected}
-                    sx={{ cursor: 'pointer' }}
-                  >
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        color="primary"
-                        checked={isItemSelected}
-                        inputProps={{
-                          'aria-labelledby': labelId,
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell >{row.sexo}</TableCell>
-                    <TableCell >{row.PLANTA}</TableCell>
-                    <TableCell >{row.CONTRATO}</TableCell>
-                    <TableCell >{row.FUNCIONARIOS}</TableCell>
-                  </TableRow>
-                );
-              })}
-       
-            </TableBody>
-            }
+                  return (
+                    <TableRow
+                      hover
+                      onClick={(event) => handleClick(event, row)}
+                      role="checkbox"
+                      aria-checked={isItemSelected}
+                      tabIndex={-1}
+                      key={index}
+                      selected={isItemSelected}
+                      sx={{ cursor: "pointer" }}
+                    >
+                      <TableCell padding="checkbox">
+                        <Checkbox
+                          color="primary"
+                          checked={isItemSelected}
+                          inputProps={{
+                            "aria-labelledby": labelId,
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell>{row.sexo}</TableCell>
+                      <TableCell>{row.PLANTA}</TableCell>
+                      <TableCell>{row.CONTRATO}</TableCell>
+                      <TableCell>{row.FUNCIONARIOS}</TableCell>
+                      <TableCell>{totalesFilas[index]}</TableCell>
+                    </TableRow>
+                  );
+                })}
+                <TableRow 
+                  sx={{ cursor: "pointer" }} 
+                  hover 
+                  role="checkbox" 
+                  onClick={handleSelectAllClick}
+                  aria-checked={selectedTotal}
+                  selected={selectedTotal}
+                >
+                  <TableCell padding="checkbox">
+                    <Checkbox color="primary" checked={selectedTotal}/>
+                  </TableCell>
+                  <TableCell sx={{fontStyle: 'bold'}}>Total</TableCell>
+                  <TableCell align="left">
+                    {sumarColumna(copiaResultSearch[0], "PLANTA")}
+                  </TableCell>
+                  <TableCell align="left">
+                    {sumarColumna(copiaResultSearch[0], "CONTRATO")}
+                  </TableCell>
+                  <TableCell align="left">
+                    {sumarColumna(copiaResultSearch[0], "FUNCIONARIOS")}
+                  </TableCell>
+                  <TableCell align="left" sx={{ fontWeight: 'bold' }}>
+                    {totalPlanta}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            )}
           </Table>
         </TableContainer>
       </Paper>
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
-      />
     </Box>
   );
 }
