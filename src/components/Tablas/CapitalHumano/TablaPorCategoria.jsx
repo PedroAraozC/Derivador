@@ -190,7 +190,7 @@ export default function TablaPorCategoria() {
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
+  const [dense, setDense] = React.useState(true);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   
   const { resultSearch,setResultSearch } = useStore();
@@ -394,7 +394,7 @@ filasTabla.forEach((objeto) => {
       </Paper>
       <FormControlLabel
         control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
+        label="Comprimir tabla"
       />
     </Box>
   );

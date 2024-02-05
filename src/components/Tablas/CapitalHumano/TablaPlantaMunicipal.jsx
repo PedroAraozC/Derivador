@@ -142,7 +142,7 @@ export default function TablaPlantaMunicipal() {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
-  const [dense, setDense] = React.useState(false);
+  const [dense, setDense] = React.useState(true);
   
   const { resultSearch,setResultSearch } = useStore();
   const [copiaResultSearch] = React.useState(resultSearch)
@@ -247,7 +247,7 @@ export default function TablaPlantaMunicipal() {
       </Paper>
       <FormControlLabel
         control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
+        label="Comprimir tabla"
       />
     </Box>
   );
