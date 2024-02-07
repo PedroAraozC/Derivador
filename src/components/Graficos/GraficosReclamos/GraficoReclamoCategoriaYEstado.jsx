@@ -32,10 +32,12 @@ const GraficoReclamoCategoriaYEstado = ({ data }) => {
   const [categorias, setCategorias] = useState([]);
 
   const [categoriaSelected, setCategoriaSelected] = useState("todas");
+  // eslint-disable-next-line react/prop-types
+  const [copiaResultSearch] = useState(data.resultSearch[0])
 
   useEffect(() => {
     // eslint-disable-next-line react/prop-types
-    const categoriasSP = data.resultSearch[0].map(
+    const categoriasSP = copiaResultSearch.map(
       (cat) => cat.nombre_categoria
     );
     const categoriasSinRepetidos = [...new Set(categoriasSP)];
@@ -64,7 +66,7 @@ const GraficoReclamoCategoriaYEstado = ({ data }) => {
 
   const dataPorCategoriasYestados = {
     // eslint-disable-next-line react/prop-types
-    labels: data.resultSearch[0]
+    labels: copiaResultSearch
       // eslint-disable-next-line react/prop-types
       .filter((elemento) => elemento.nombre_categoria === categoriaSelected)
       .map((elemento) => elemento.descripcion),
@@ -72,7 +74,7 @@ const GraficoReclamoCategoriaYEstado = ({ data }) => {
       {
         label: "Cantidad de Reclamos por Categoria",
         // eslint-disable-next-line react/prop-types
-        data: data.resultSearch[0]
+        data: copiaResultSearch
           // eslint-disable-next-line react/prop-types
           ?.filter((cat) => cat.nombre_categoria == categoriaSelected)
           .map((elemento) => elemento.cantidad),
@@ -85,7 +87,7 @@ const GraficoReclamoCategoriaYEstado = ({ data }) => {
     {
       label: "INICIADO",
       // eslint-disable-next-line react/prop-types
-      data: data.resultSearch[0]
+      data: copiaResultSearch
         // eslint-disable-next-line react/prop-types
         ?.filter((e) => e.descripcion == "INICIADO")
         .map((cat) => cat.cantidad),
@@ -96,7 +98,7 @@ const GraficoReclamoCategoriaYEstado = ({ data }) => {
     {
       label: "FINALIZADO",
       // eslint-disable-next-line react/prop-types
-      data: data.resultSearch[0]
+      data: copiaResultSearch
         // eslint-disable-next-line react/prop-types
         ?.filter((e) => e.descripcion == "FINALIZADO")
         .map((cat) => cat.cantidad),
@@ -106,9 +108,21 @@ const GraficoReclamoCategoriaYEstado = ({ data }) => {
     },
     // Puedes añadir más datasets según los estados que quieras mostrar
   ];
-  console.log(data);
+
   const chartData = { labels: categorias, datasets };
 
+  useEffect(() => {
+  // eslint-disable-next-line react/prop-types
+  if(data.resultSearch[0].length >=24){
+    setCategoriaSelected("todas")
+  }else{
+
+    // eslint-disable-next-line react/prop-types
+    setCategoriaSelected(data.resultSearch[0][0].nombre_categoria)
+  }
+  // eslint-disable-next-line react/prop-types
+  }, [data.resultSearch])
+  
   return (
     <div className="d-flex  flex-column container">
       <div>
@@ -119,10 +133,11 @@ const GraficoReclamoCategoriaYEstado = ({ data }) => {
             value={categoriaSelected}
             label="Categorias"
             autoWidth
+            disabled
             onChange={(e) => setCategoriaSelected(e.target.value)}
           >
             <MenuItem selected value="todas">
-              Todas
+              todas
             </MenuItem>
             {categorias.length > 0 ? (
               categorias.map(
@@ -168,7 +183,3 @@ const GraficoReclamoCategoriaYEstado = ({ data }) => {
 };
 
 export default GraficoReclamoCategoriaYEstado;
-
-{
-  /*  */
-}

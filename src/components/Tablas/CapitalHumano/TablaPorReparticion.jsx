@@ -286,7 +286,7 @@ export default function TablaPorReparticion() {
           <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={resultSearch[0].length}
+          count={copiaResultSearch[0].length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

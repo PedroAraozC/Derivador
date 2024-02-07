@@ -37,7 +37,7 @@ const FormReclamos = () => {
       const resultado = await axios.post("/reclamos/listar", values);
       setResultSearch(resultado.data.resultado[0]);
       setValuesGraficos(values);
-      console.log(resultado);
+      // setFormFlagReclamos(false)
       setFlagButton(false);
     } catch (error) {
       console.log("mal");
@@ -45,7 +45,6 @@ const FormReclamos = () => {
   };
 
   const handleInputChange = (e) => {
-    // setFlagShowGraphic(false);
     const { name, value } = e.target;
     if (name != "procedimiento") {
       // Validación para asegurarse de que 'desde' no sea mayor que 'hasta'
