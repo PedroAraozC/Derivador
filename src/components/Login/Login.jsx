@@ -92,7 +92,7 @@ const Login = () => {
           </Button>
           <div className="d-flex flex-column justify-content-center align-items-center">
             <p className="footer p-1" style={{fontSize:"0.7em"}}>
-              Desarrollado por DiTec{" "}
+              Dir. de Innovación Tecnologica{" "}
               <span style={{ fontSize: "1.4em", verticalAlign: "-0.1em" }}>
                 ©
               </span>{" "}

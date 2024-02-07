@@ -1,6 +1,6 @@
 import Home from "./components/Home/Home";
 import Login from "./components/Login/Login";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route, HashRouter } from "react-router-dom";
 import Layout from "./common/Layout";
 import CapitalHumano from "./pages/CapitalHumano/CapitalHumano";
 import Reclamos from "./pages/EstadisticasReclamos/Reclamos";
@@ -9,12 +9,12 @@ import PrivateRoute from "./routes/PrivateRoute";
 function App() {
   return (
     <>
-      <Router>
+    <HashRouter>
         <Layout>
           <Routes>
-            <Route path="/*" element={<Login />} />
-            <Route path="/home" element={<Home />} />
-            <Route
+            <Route exact path="/*" element={<Login />} />
+            <Route exact path="/home" element={<Home />} />
+            <Route exact
               path="/cap-humano"
               element={
                 <PrivateRoute>
@@ -22,7 +22,7 @@ function App() {
                 </PrivateRoute>
               }
             />
-            <Route
+            <Route exact
               path="/reclamos-estadisticas"
               element={
                 <PrivateRoute>
@@ -32,7 +32,7 @@ function App() {
             />
           </Routes>
         </Layout>
-      </Router>
+      </HashRouter>
     </>
   );
 }

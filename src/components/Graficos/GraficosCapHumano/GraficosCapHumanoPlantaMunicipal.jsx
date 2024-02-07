@@ -10,9 +10,10 @@ import {
 } from "chart.js";
 import { Pie } from "react-chartjs-2";
 import { useEffect, useState } from "react";
-import { getRandomColor } from "../../../helpers/getRandomColor";
+// import { getRandomColor } from "../../../helpers/getRandomColor";
 import useStore from "../../../Zustand/Zustand";
 import GraficoPieEsqueleto from "../../Esqueletos/GraficoPieEsqueleto";
+import { coloresContrato } from "../../../helpers/constantes";
 
 ChartJS.register(
   CategoryScale,
@@ -62,7 +63,7 @@ const GraficosCapHumanoPlantaMunicipal = () => {
       {
         label: "",
         data: arrayFiltrado.map((rs) => rs.cantidad),
-        backgroundColor: getRandomColor(),
+        backgroundColor: arrayFiltrado.map((rs) => coloresContrato[rs.nombre]),
         hoverOffset: 4,
       },
     ],

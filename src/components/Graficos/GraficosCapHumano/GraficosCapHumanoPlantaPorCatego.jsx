@@ -10,7 +10,7 @@ import {
   } from "chart.js";
   import { Pie } from "react-chartjs-2";
   import { useEffect, useState } from "react";
-  import { getRandomColor } from "../../../helpers/getRandomColor";
+  import { coloresCategoriasMun } from "../../../helpers/constantes";
   import useStore from "../../../Zustand/Zustand";
   import GraficoPieEsqueleto from "../../Esqueletos/GraficoPieEsqueleto";
   
@@ -70,7 +70,7 @@ console.log("Valores actualizados:", sumatoriaPorCodi10);
         {
           label: "",
           data: Object.values(categorias),
-          backgroundColor: getRandomColor(),
+          backgroundColor: Object.keys(categorias).map((cat) => coloresCategoriasMun[cat]),
           hoverOffset: 4,
         },
       ],

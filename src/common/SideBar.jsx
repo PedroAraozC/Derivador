@@ -71,8 +71,8 @@ const redirigir =(ruta)=>{
         </ListItemButton>
       </div>
       <div className="d-flex flex-column justify-content-center align-items-center">
-        <p className="footer">
-          Desarrollado por DiTec{" "}
+        <p className="footer text-center">
+          Desarrollado por Dirección de Innovación Tecnológica{" "}
           <span style={{ fontSize: "1.4em", verticalAlign: "-0.1em" }}>©</span>{" "}
           2024
         </p>
