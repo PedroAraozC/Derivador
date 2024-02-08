@@ -30,7 +30,7 @@ const GraficosCapHumanoPlantaPorReparticion = () => {
 
   useEffect(() => {
     const newArray = [];
-
+  
     if (resultSearch[0].length > 0) {
       resultSearch[0].forEach((obj) => {
         Object.keys(obj).forEach((key) => {
@@ -53,7 +53,6 @@ const GraficosCapHumanoPlantaPorReparticion = () => {
           }
         });
       });
-
       setArrayFiltrado(newArray);
     }
   }, [resultSearch]);
@@ -87,7 +86,57 @@ const GraficosCapHumanoPlantaPorReparticion = () => {
   return (
     <>
       {resultSearch[0].length != 0 ? (
-        <Pie data={data} options={options} />
+        <>
+          <div className="d-flex-col w-100 d-sm-none">
+            <div className=" d-flex justify-content-center">
+              <p className="me-2">
+                Total Mujeres:
+                <b className="ms-1">
+                  {arrayFiltrado?.length > 0 &&
+                  arrayFiltrado[0]?.cantidad == null
+                    ? 0
+                    : arrayFiltrado[0]?.cantidad}
+                </b>
+              </p>
+
+              <p className="ms-2">
+                Total Varones:
+                <b className="ms-2">
+                  {arrayFiltrado?.length > 0 &&
+                  arrayFiltrado[1]?.cantidad == null
+                    ? 0
+                    : arrayFiltrado[1]?.cantidad}
+                </b>
+              </p>
+            </div>
+            <Pie data={data} options={options} />
+          </div>
+          {/* se repite el div por el tema del width */}
+          <div className="d-flex-col w-50 d-none d-sm-block">
+            <div className=" d-flex justify-content-center">
+              <p className="me-2">
+                Total Mujeres:
+                <b className="ms-1">
+                  {arrayFiltrado?.length > 0 &&
+                  arrayFiltrado[0]?.cantidad == null
+                    ? 0
+                    : arrayFiltrado[0]?.cantidad}
+                </b>
+              </p>
+
+              <p className="ms-2">
+                Total Varones:
+                <b className="ms-2">
+                  {arrayFiltrado?.length > 0 &&
+                  arrayFiltrado[1]?.cantidad == null
+                    ? 0
+                    : arrayFiltrado[1]?.cantidad}
+                </b>
+              </p>
+            </div>
+            <Pie data={data} options={options} />
+          </div>
+        </>
       ) : (
         <GraficoPieEsqueleto />
       )}

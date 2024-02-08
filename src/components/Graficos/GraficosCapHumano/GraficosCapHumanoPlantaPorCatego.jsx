@@ -91,7 +91,37 @@ console.log("Valores actualizados:", sumatoriaPorCodi10);
   return (
     <>
     {resultSearch[0].length != 0 ? (
-      <Pie data={data} options={options} />
+      <>
+        <div className="d-flex-col w-100 d-sm-none">
+          <div className=" d-flex justify-content-center">
+            {
+              Object.entries(categorias).map(([propiedad, valor], index) => ( 
+              <div key={index}>
+               <p className="me-3"> {propiedad}: {valor} </p>
+              </div>
+            ))
+            }
+           
+           
+          </div>
+          <Pie data={data} options={options} />
+        </div>
+        {/* se repite el div por el tema del width */}
+        <div className="d-flex-col w-50 d-none d-sm-block">
+          <div className=" d-flex justify-content-center">
+            {
+              Object.entries(categorias).map(([propiedad, valor], index) => ( 
+              <div key={index}>
+              <p className="me-3"> {propiedad}: {valor} </p>
+              </div>
+            ))
+            }
+           
+           
+          </div>
+          <Pie data={data} options={options} />
+        </div>
+      </>
     ) : (
       <GraficoPieEsqueleto />
     )}

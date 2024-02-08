@@ -176,8 +176,7 @@ export default function TablaPorReparticion() {
   };
 
   const handleClick = (event, row) => {
-    console.log(row);
-    console.log(copiaResultSearch);
+  
    setResultSearch(copiaResultSearch[0].filter(rs=>rs.DETA_07.includes(row.DETA_07)))
     const selectedIndex = selected.indexOf(row);
     let newSelected = [];
