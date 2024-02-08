@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import {
   Chart as ChartJS,
@@ -12,7 +14,7 @@ import {
 import "./GraficoReclamos.css";
 import { Bar, Pie } from "react-chartjs-2";
 import { formatearFecha } from "../../../helpers/convertirFecha";
-import { getRandomColor } from "../../../helpers/getRandomColor";
+import { coloresEstadosReclamos } from "../../../helpers/constantes";
 import GraficoBarraEsqueleto from "../../Esqueletos/GraficoBarraEsqueleto";
 import GraficoPieEsqueleto from "../../Esqueletos/GraficoPieEsqueleto";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
@@ -27,23 +29,19 @@ ChartJS.register(
   Legend
 );
 
-// eslint-disable-next-line react/prop-types
 const GraficoReclamoCategoriaYEstado = ({ data }) => {
   const [categorias, setCategorias] = useState([]);
 
   const [categoriaSelected, setCategoriaSelected] = useState("todas");
-  // eslint-disable-next-line react/prop-types
   const [copiaResultSearch] = useState(data.resultSearch[0])
 
   useEffect(() => {
-    // eslint-disable-next-line react/prop-types
     const categoriasSP = copiaResultSearch.map(
       (cat) => cat.nombre_categoria
     );
     const categoriasSinRepetidos = [...new Set(categoriasSP)];
     setCategorias(categoriasSinRepetidos);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const options = {
@@ -55,9 +53,7 @@ const GraficoReclamoCategoriaYEstado = ({ data }) => {
       },
       title: {
         display: false,
-        // eslint-disable-next-line react/prop-types
         text: `${formatearFecha(data.values.desde)} - ${formatearFecha(
-          // eslint-disable-next-line react/prop-types
           data.values.hasta
         )}`,
       },
@@ -65,30 +61,25 @@ const GraficoReclamoCategoriaYEstado = ({ data }) => {
   };
 
   const dataPorCategoriasYestados = {
-    // eslint-disable-next-line react/prop-types
     labels: copiaResultSearch
-      // eslint-disable-next-line react/prop-types
       .filter((elemento) => elemento.nombre_categoria === categoriaSelected)
       .map((elemento) => elemento.descripcion),
     datasets: [
       {
         label: "Cantidad de Reclamos por Categoria",
-        // eslint-disable-next-line react/prop-types
         data: copiaResultSearch
-          // eslint-disable-next-line react/prop-types
           ?.filter((cat) => cat.nombre_categoria == categoriaSelected)
           .map((elemento) => elemento.cantidad),
-        backgroundColor: getRandomColor(),
+        backgroundColor: data.resultSearch[0]?.map((elemento)=>coloresEstadosReclamos[elemento.descripcion]),
       },
     ],
   };
+  console.log(copiaResultSearch)
 
   const datasets = [
     {
       label: "INICIADO",
-      // eslint-disable-next-line react/prop-types
       data: copiaResultSearch
-        // eslint-disable-next-line react/prop-types
         ?.filter((e) => e.descripcion == "INICIADO")
         .map((cat) => cat.cantidad),
       backgroundColor: "rgba(255, 99, 132, 0.2)",
@@ -97,9 +88,7 @@ const GraficoReclamoCategoriaYEstado = ({ data }) => {
     },
     {
       label: "FINALIZADO",
-      // eslint-disable-next-line react/prop-types
       data: copiaResultSearch
-        // eslint-disable-next-line react/prop-types
         ?.filter((e) => e.descripcion == "FINALIZADO")
         .map((cat) => cat.cantidad),
       backgroundColor: "rgba(54, 162, 235, 0.2)",
@@ -112,15 +101,12 @@ const GraficoReclamoCategoriaYEstado = ({ data }) => {
   const chartData = { labels: categorias, datasets };
 
   useEffect(() => {
-  // eslint-disable-next-line react/prop-types
   if(data.resultSearch[0].length >=24){
     setCategoriaSelected("todas")
   }else{
 
-    // eslint-disable-next-line react/prop-types
     setCategoriaSelected(data.resultSearch[0][0].nombre_categoria)
   }
-  // eslint-disable-next-line react/prop-types
   }, [data.resultSearch])
   
   return (
