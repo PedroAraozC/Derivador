@@ -91,21 +91,21 @@ const GraficoReclamoDeriva = ({ data }) => {
   };
 
   // eslint-disable-next-line react/prop-types
-  const oficinasFiltradas = data.resultSearch[0].filter(
-    (oficina) => oficina.nombre_reparti === grafico2
-  );
+  // const oficinasFiltradas = data.resultSearch[0].filter(
+  //   (oficina) => oficina.nombre_reparti === grafico2
+  // );
 
-  const dataDerivaOficina = {
-    labels: oficinasFiltradas.map((o) => o.nombre_oficina),
-    datasets: [
-      {
-        label: "Cantidad de Reclamos",
-        // eslint-disable-next-line react/prop-types
-        data: oficinasFiltradas.map((elemento) => elemento.Cantidad),
-        backgroundColor: getRandomColor(),
-      },
-    ],
-  };
+  // const dataDerivaOficina = {
+  //   labels: oficinasFiltradas.map((o) => o.nombre_oficina),
+  //   datasets: [
+  //     {
+  //       label: "Cantidad de Reclamos",
+  //       // eslint-disable-next-line react/prop-types
+  //       data: oficinasFiltradas.map((elemento) => elemento.Cantidad),
+  //       backgroundColor: getRandomColor(),
+  //     },
+  //   ],
+  // };
 
   const handleClick = (elements) => {
     if (elements.length > 0) {
@@ -133,11 +133,11 @@ const GraficoReclamoDeriva = ({ data }) => {
               onClick: (evt, elements) => handleClick(elements),
             }}
           />
-          {grafico2 != "" ? (
+          {/* {grafico2 != "" ? (
             <Pie data={dataDerivaOficina} options={options} />
           ) : (
             <></>
-          )}
+          )} */}
         </div>
       ) : (
         <GraficoPieEsqueleto />

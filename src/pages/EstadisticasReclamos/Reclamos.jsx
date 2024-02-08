@@ -6,6 +6,8 @@ import TablaPorCategoria from "../../components/Tablas/Reclamos/TablaPorCategori
 import TablaPorCategoriaYEstado from "../../components/Tablas/Reclamos/TablaPorCategoriaYEstado";
 import TablaPorOficina from "../../components/Tablas/Reclamos/TablaPorOficina";
 import TablaPorEstados from "../../components/Tablas/Reclamos/TablaPorEstados";
+import TablaPorOrigen from "../../components/Tablas/Reclamos/TablaPorOrigen";
+import TablaPorDerivacion from "../../components/Tablas/Reclamos/TablaPorDerivacion";
 // import ReplyIcon from '@mui/icons-material/Reply';
 // import { Button } from "@mui/material";
 
@@ -53,9 +55,15 @@ const Reclamos = () => {
         ) : valuesGraficos.procedimiento == "sp_reclamos_por_estados" &&
           resultSearch[0]?.length !== 0 ? (
           <TablaPorEstados />
-        ) : (
+        ) : valuesGraficos.procedimiento == 'sp_reclamos_por_origen' &&
+        resultSearch[0]?.length !== 0 ? (
+          <TablaPorOrigen/>
+        ): valuesGraficos.procedimiento == 'sp_reclamos_por_rep_deriva' &&
+        resultSearch[0]?.length !== 0 ?
+      <TablaPorDerivacion/>
+      :
           <></>
-        )}
+      }
       </div>
       {resultSearch[0]?.length !== 0 && <GraficoReclamos />}
     </>

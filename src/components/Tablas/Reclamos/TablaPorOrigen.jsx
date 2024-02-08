@@ -61,7 +61,7 @@ function descendingComparator(a, b, orderBy) {
       onRequestSort(event, property);
     };
   
-  const columnas = ["Estados", "Total"];
+  const columnas = ["Orígen", "Total"];
   
     return (
       <TableHead>
@@ -167,138 +167,138 @@ function descendingComparator(a, b, orderBy) {
     numSelected: PropTypes.number.isRequired,
   };
 
-const TablaPorEstados = () => {
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('calories');
-  const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(true);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+const TablaPorOrigen = () => {
+    const [order, setOrder] = React.useState('asc');
+    const [orderBy, setOrderBy] = React.useState('calories');
+    const [selected, setSelected] = React.useState([]);
+    const [page, setPage] = React.useState(0);
+    const [dense, setDense] = React.useState(true);
+    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    
+    const { resultSearch,setResultSearch } = useStore();
+    const [copiaResultSearch] = React.useState(resultSearch)
   
-  const { resultSearch,setResultSearch } = useStore();
-  const [copiaResultSearch] = React.useState(resultSearch)
-
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
-  };
-
-  const handleSelectAllClick = () => {
-    setResultSearch(copiaResultSearch[0])
-    setSelected([]);
-  };
-
-  const handleClick = (event, row) => {
- 
-   setResultSearch(copiaResultSearch[0].filter(rs=>rs.id_estado==row.id_estado))
-    const selectedIndex = selected.indexOf(row);
-    let newSelected = [];
+    const handleRequestSort = (event, property) => {
+      const isAsc = orderBy === property && order === 'asc';
+      setOrder(isAsc ? 'desc' : 'asc');
+      setOrderBy(property);
+    };
   
-    if (selectedIndex === -1) {
-      // Si no está seleccionado, selecciona el nuevo
-      newSelected = [row];
-    } else {
-      // Si ya está seleccionado, deselecciona todos
-      newSelected = [];
-      setResultSearch(copiaResultSearch[0]);
-    }
+    const handleSelectAllClick = () => {
+      setResultSearch(copiaResultSearch[0])
+      setSelected([]);
+    };
   
-    setSelected(newSelected);
-  };
+    const handleClick = (event, row) => {
+   
+     setResultSearch(copiaResultSearch[0].filter(rs=>rs.id_oreclamo==row.id_oreclamo))
+      const selectedIndex = selected.indexOf(row);
+      let newSelected = [];
+    
+      if (selectedIndex === -1) {
+        // Si no está seleccionado, selecciona el nuevo
+        newSelected = [row];
+      } else {
+        // Si ya está seleccionado, deselecciona todos
+        newSelected = [];
+        setResultSearch(copiaResultSearch[0]);
+      }
+    
+      setSelected(newSelected);
+    };
+    
+    const handleChangePage = (event, newPage) => {
+      setPage(newPage);
+    };
   
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+    const handleChangeRowsPerPage = (event) => {
+      setRowsPerPage(parseInt(event.target.value, 10));
+      setPage(0);
+    };
+  
+    const handleChangeDense = (event) => {
+      setDense(event.target.checked);
+    };
+  
+    const isSelected = (id) => selected.indexOf(id) !== -1;
+  
+    const visibleRows = stableSort(copiaResultSearch[0], getComparator(order, orderBy)).slice(
+          page * rowsPerPage,
+          page * rowsPerPage + rowsPerPage,
+        )
+  return (
+    <Box sx={{ width: "100%" }}>
+      <Paper sx={{ width: "100%", mb: 2 }}>
+        {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
+        <TableContainer>
+          <Table
+            sx={{ minWidth: 750 }}
+            aria-labelledby="tableTitle"
+            size={dense ? "small" : "medium"}
+          >
+            <EnhancedTableHead
+              numSelected={selected.length}
+              order={order}
+              orderBy={orderBy}
+              onSelectAllClick={handleSelectAllClick}
+              onRequestSort={handleRequestSort}
+              rowCount={resultSearch[0].length}
+              copiaResultSearch={copiaResultSearch}
+            />
+            {copiaResultSearch[0].length > 0 && (
+              <TableBody>
+                {visibleRows.map((row, index) => {
+                  const isItemSelected = isSelected(row);
+                  const labelId = `enhanced-table-checkbox-${index}`;
+  
+                  return (
+                    <TableRow
+                      hover
+                      onClick={(event) => handleClick(event, row)}
+                      role="checkbox"
+                      aria-checked={isItemSelected}
+                      tabIndex={-1}
+                      key={index}
+                      selected={isItemSelected}
+                      sx={{ cursor: "pointer" }}
+                    >
+                      <TableCell padding="checkbox">
+                        <Checkbox
+                          color="primary"
+                          checked={isItemSelected}
+                          inputProps={{
+                            "aria-labelledby": labelId,
+                          }}
+                        />
+                      </TableCell>
+  
+                      <TableCell>{row.nombre_oreclamo}</TableCell>
+                      <TableCell>{row.cantidad}</TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            )}
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={copiaResultSearch[0].length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </Paper>
+      <div className="d-flex justify-content-end">
+        <FormControlLabel
+          control={<Switch checked={dense} onChange={handleChangeDense} />}
+          label="Comprimir tabla"
+        />
+      </div>
+    </Box>
+  );
+  }  
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const handleChangeDense = (event) => {
-    setDense(event.target.checked);
-  };
-
-  const isSelected = (id) => selected.indexOf(id) !== -1;
-
-  const visibleRows = stableSort(copiaResultSearch[0], getComparator(order, orderBy)).slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage,
-      )
-return (
-  <Box sx={{ width: "100%" }}>
-    <Paper sx={{ width: "100%", mb: 2 }}>
-      {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
-      <TableContainer>
-        <Table
-          sx={{ minWidth: 750 }}
-          aria-labelledby="tableTitle"
-          size={dense ? "small" : "medium"}
-        >
-          <EnhancedTableHead
-            numSelected={selected.length}
-            order={order}
-            orderBy={orderBy}
-            onSelectAllClick={handleSelectAllClick}
-            onRequestSort={handleRequestSort}
-            rowCount={resultSearch[0].length}
-            copiaResultSearch={copiaResultSearch}
-          />
-          {copiaResultSearch[0].length > 0 && (
-            <TableBody>
-              {visibleRows.map((row, index) => {
-                const isItemSelected = isSelected(row);
-                const labelId = `enhanced-table-checkbox-${index}`;
-
-                return (
-                  <TableRow
-                    hover
-                    onClick={(event) => handleClick(event, row)}
-                    role="checkbox"
-                    aria-checked={isItemSelected}
-                    tabIndex={-1}
-                    key={index}
-                    selected={isItemSelected}
-                    sx={{ cursor: "pointer" }}
-                  >
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        color="primary"
-                        checked={isItemSelected}
-                        inputProps={{
-                          "aria-labelledby": labelId,
-                        }}
-                      />
-                    </TableCell>
-
-                    <TableCell>{row.nombre_estado}</TableCell>
-                    <TableCell>{row.cantidad}</TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          )}
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={copiaResultSearch[0].length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </Paper>
-    <div className="d-flex justify-content-end">
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Comprimir tabla"
-      />
-    </div>
-  </Box>
-);
-}
-
-export default TablaPorEstados
+export default TablaPorOrigen
