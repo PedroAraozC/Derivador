@@ -46,3 +46,11 @@ export const coloresCategoriasMun = {
     "23": '#0EA94B',
     "24": '#A0A90E'
 }
+export const coloresEstadosReclamos = {
+    "INICIADO": '#A23E3A',
+    "DERIVADO": '#DCCC10',
+    "EN PROCESO": '#850EA9',
+    "FINALIZADO": '#160EA9',
+    "FINALIZADO CON DERIVACION": '#0E8DA9',
+    "SIN MOVIMIENTO": '#5B04DA'
+}
