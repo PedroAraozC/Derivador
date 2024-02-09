@@ -27,7 +27,6 @@ ChartJS.register(
 
 // eslint-disable-next-line react/prop-types
 const GraficoReclamoPorOrigen = ({ data }) => {
-  console.log(data);
 
   // eslint-disable-next-line react/prop-types
   const labels = data.resultSearch[0]?.map(

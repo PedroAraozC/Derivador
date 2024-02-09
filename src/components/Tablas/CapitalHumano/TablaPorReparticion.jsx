@@ -274,7 +274,7 @@ export default function TablaPorReparticion() {
                     <TableCell >{row.CODI_07}</TableCell>
                     <TableCell >{row.DETA_07}</TableCell>
                     <TableCell >{row.MUJERES}</TableCell>
-                    <TableCell >{row.VARONES}</TableCell>
+                    <TableCell >{row.VARONES == null? 0 : row.VARONES}</TableCell>
                   </TableRow>
                 );
               })}

@@ -209,8 +209,7 @@ export default function TablaPorCategoria() {
   };
 
   const handleClick = (event, row) => {
-    console.log(row);
-    console.log(copiaResultSearch);
+   
    setResultSearch(copiaResultSearch[0].filter(rs=>rs.deta_07.includes(row.Repartición)))
     const selectedIndex = selected.indexOf(row);
     let newSelected = [];

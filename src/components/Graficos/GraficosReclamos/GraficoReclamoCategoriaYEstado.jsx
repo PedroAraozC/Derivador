@@ -15,7 +15,7 @@ import { formatearFecha } from "../../../helpers/convertirFecha";
 import { getRandomColor } from "../../../helpers/getRandomColor";
 import GraficoBarraEsqueleto from "../../Esqueletos/GraficoBarraEsqueleto";
 import GraficoPieEsqueleto from "../../Esqueletos/GraficoPieEsqueleto";
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+// import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 ChartJS.register(
   CategoryScale,
@@ -125,7 +125,7 @@ const GraficoReclamoCategoriaYEstado = ({ data }) => {
   
   return (
     <div className="d-flex  flex-column container">
-      <div>
+      {/* <div>
         <FormControl sx={{ m: 1, minWidth: 100 }}>
           <InputLabel>Categorias</InputLabel>
           <Select
@@ -155,7 +155,7 @@ const GraficoReclamoCategoriaYEstado = ({ data }) => {
             )}
           </Select>
         </FormControl>
-      </div>
+      </div> */}
 
       {categoriaSelected != "todas" ? (
         <>

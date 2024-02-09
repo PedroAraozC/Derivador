@@ -29,39 +29,39 @@ const GraficosCapHumanoPlantaPorCatego = () => {
     const [categorias, setCategorias] = useState([]);
   
     useEffect(() => {
-     console.log(resultSearch);
+      let sumatoriaPorCodi10 = {};
 
-     let sumatoriaPorCodi10 = {};
+      // Itera sobre cada objeto y realiza la sumatoria
+      resultSearch[0].forEach((objeto) => {
+        const codi10 = objeto.CODI_10;
+        const valor = objeto[""];
 
-// Itera sobre cada objeto y realiza la sumatoria
-resultSearch[0].forEach(objeto => {
-  const codi10 = objeto.CODI_10;
-  const valor = objeto[""];
+        // Si ya hay una entrada para este CODI_10, suma el valor
+        if (sumatoriaPorCodi10[codi10]) {
+          sumatoriaPorCodi10[codi10] += valor;
+        } else {
+          // Si no hay una entrada, crea una nueva
+          sumatoriaPorCodi10[codi10] = valor;
+        }
+      });
 
-  // Si ya hay una entrada para este CODI_10, suma el valor
-  if (sumatoriaPorCodi10[codi10]) {
-    sumatoriaPorCodi10[codi10] += valor;
-  } else {
-    // Si no hay una entrada, crea una nueva
-    sumatoriaPorCodi10[codi10] = valor;
-  }
-});
+      sumatoriaPorCodi10[18] +=
+        (sumatoriaPorCodi10[15] || 0) +
+        (sumatoriaPorCodi10[16] || 0) +
+        (sumatoriaPorCodi10[17] || 0);
 
-sumatoriaPorCodi10[18] += (sumatoriaPorCodi10[15] || 0) + (sumatoriaPorCodi10[16] || 0) + (sumatoriaPorCodi10[17] || 0);
+      // Elimina las entradas de 15, 16 y 17
+      delete sumatoriaPorCodi10[15];
+      delete sumatoriaPorCodi10[16];
+      delete sumatoriaPorCodi10[17];
 
-// Elimina las entradas de 15, 16 y 17
-delete sumatoriaPorCodi10[15];
-delete sumatoriaPorCodi10[16];
-delete sumatoriaPorCodi10[17];
+      for (let clave in sumatoriaPorCodi10) {
+        if (parseInt(clave) >= 50) {
+          delete sumatoriaPorCodi10[clave];
+        }
+      }
 
-for (let clave in sumatoriaPorCodi10) {
-  if (parseInt(clave) >= 50) {
-    delete sumatoriaPorCodi10[clave];
-  }
-}
-
-setCategorias(sumatoriaPorCodi10)
-console.log("Valores actualizados:", sumatoriaPorCodi10);
+      setCategorias(sumatoriaPorCodi10);
     }, [resultSearch]);
   
     const data = {
@@ -80,7 +80,8 @@ console.log("Valores actualizados:", sumatoriaPorCodi10);
       responsive: true,
       plugins: {
         legend: {
-          position: "top",
+          display: false, // Configuración para ocultar los labels
+          position: "top"
         },
         title: {
           display: true,
@@ -97,7 +98,7 @@ console.log("Valores actualizados:", sumatoriaPorCodi10);
             {
               Object.entries(categorias).map(([propiedad, valor], index) => ( 
               <div key={index}>
-               <p className="me-3"> {propiedad}: {valor} </p>
+               <p style={{"background-color":`${coloresCategoriasMun[propiedad]}`,"color":"white","border-radius":"5px"}} className="me-3 px-1"> {propiedad}: {isNaN(valor)? 0 : valor} </p>
               </div>
             ))
             }
@@ -112,7 +113,7 @@ console.log("Valores actualizados:", sumatoriaPorCodi10);
             {
               Object.entries(categorias).map(([propiedad, valor], index) => ( 
               <div key={index}>
-              <p className="me-3"> {propiedad}: {valor} </p>
+              <p style={{"background-color":`${coloresCategoriasMun[propiedad]}`,"color":"white","border-radius":"5px"}} className="me-3 px-1">{propiedad}: {isNaN(valor)? 0 : valor} </p>
               </div>
             ))
             }

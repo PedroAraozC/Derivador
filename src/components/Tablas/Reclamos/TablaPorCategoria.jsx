@@ -190,8 +190,7 @@ const TablaPorCategoria = () => {
     };
   
     const handleClick = (event, row) => {
-      console.log(row);
-      console.log(copiaResultSearch);
+      
      setResultSearch(copiaResultSearch[0].filter(rs=>rs.id_categoria==row.id_categoria))
       const selectedIndex = selected.indexOf(row);
       let newSelected = [];
