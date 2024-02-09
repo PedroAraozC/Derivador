@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -12,7 +13,7 @@ import "./GraficoReclamos.css";
 import { Bar } from "react-chartjs-2";
 import { formatearFecha } from "../../../helpers/convertirFecha";
 import GraficoBarraEsqueleto from "../../Esqueletos/GraficoBarraEsqueleto";
-
+import {coloresCategorias} from '../../../helpers/constantes'
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -23,7 +24,8 @@ ChartJS.register(
   Legend
 );
 
-// eslint-disable-next-line react/prop-types
+const getRandomColor = () => `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
+
 const GraficoReclamoCategoria = ({ data }) => {
   const options = {
     maintainAspectRatio: false,
@@ -40,30 +42,21 @@ const GraficoReclamoCategoria = ({ data }) => {
   };
 
   const labels = [
-    // eslint-disable-next-line no-unused-vars, react/prop-types
-    `${formatearFecha(data.values.desde)} - ${formatearFecha(
-      // eslint-disable-next-line react/prop-types
-      data.values.hasta
-    )}`,
+    `${formatearFecha(data.values.desde)} - ${formatearFecha(data.values.hasta)}`,
   ];
 
   const dataCategoria = {
     labels,
-    // eslint-disable-next-line no-unused-vars, react/prop-types
+    // eslint-disable-next-line no-unused-vars
     datasets: data.resultSearch[0]?.map((categoria, index) => ({
       label: `${categoria.nombre_categoria}`,
       data: labels.map(() => categoria.cantidad),
-      borderColor: `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${
-        Math.random() * 255
-      })`,
-      backgroundColor: `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${
-        Math.random() * 255
-      }, 0.5)`,
+      borderColor: coloresCategorias[categoria.nombre_categoria] || getRandomColor(),
+      backgroundColor: coloresCategorias[categoria.nombre_categoria] || getRandomColor(),
     })),
   };
 
   return (
-    // eslint-disable-next-line react/prop-types
     <>
       {data.resultSearch[0]?.length !== 0 ? (
         <div className="w-100">

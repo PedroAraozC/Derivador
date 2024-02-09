@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import axios from '../config/axios';
 
 const useStore = create((set) => ({
+  errors: "",
 
   authenticated: false,
   user: null,
@@ -10,16 +11,17 @@ const useStore = create((set) => ({
   login: async (values) => {
     set({ botonState: true });
     try {
+      set({errors : ""})
       const { data } = await axios.post("/usuarios/login", values);
       set({
-        authenticated: !!data.user,
-        user: data.user
+        authenticated: !!data.user
       });
+      set({user:data.user});
       axios.defaults.headers.common["Authorization"] = data.token;
       localStorage.setItem("token", data.token);
     } catch (error) {
       // toast.error(error.response?.data.message || error.message);
-      console.log(error);
+        set({errors : error.response?.data.message || error.message});
     }
     set({ botonState: false });
   },
@@ -38,11 +40,15 @@ const useStore = create((set) => ({
       }
       axios.defaults.headers.common["Authorization"] = token;
       const { data } = await axios.get("/usuarios/authStatus");
-      set({ user: data.user, authenticated: true});
+      set({
+        authenticated: true
+      });
+      set({user:data.usuarioSinContraseña});
     } catch (error) {
       set({ authenticated: false});
       localStorage.removeItem("token");
       console.log("error de auth");
+      console.log(error)
     }
     set({ loading: false});
   },
@@ -59,11 +65,11 @@ const useStore = create((set) => ({
 
 
   valuesCapHumano: "",
-  setValuesCapHumano: (newValues) => set((state) => ({ valuesCapHumano: newValues }))
+  // eslint-disable-next-line no-unused-vars
+  setValuesCapHumano: (newValues) => set((state) => ({ valuesCapHumano: newValues })),
+
+  formFlagReclamos: true,
+  setFormFlagReclamos: () => set((state) => ({ ...state, formFlagReclamos: !state.formFlagReclamos })),
 }))
 
-
 export default useStore;
-
-// flagShowGraphic: false,
-// setFlagShowGraphic: () => set((state) => ({ ...state, flagShowGraphic: !state.flagShowGraphic })),

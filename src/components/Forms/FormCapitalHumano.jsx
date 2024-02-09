@@ -57,21 +57,22 @@ const FormCapitalHumano = () => {
 
   return (
     <>
-    {obtenerProcedimientosAlmacenados.length == 0 ? (
+    {procedimientos.length !== 0 ? (
       <div className="mb-3">
       <FormControl sx={{ m: 1, minWidth: 180 }}>
-        <InputLabel id="">Procedimientos</InputLabel>
-        <Select onChange={handleChange} autoWidth label="Procedimientos">
+        <InputLabel id="">Informes</InputLabel>
+        <Select onChange={handleChange} autoWidth label="Informes">
           {procedimientos?.length > 0 ? (
             procedimientos
             ?.filter(
               (sp) =>
               sp.ROUTINE_NAME.includes("sp_plantaporreparticion") ||
-              sp.ROUTINE_NAME.includes("sp_plantamunicipal")
+              sp.ROUTINE_NAME.includes("sp_plantamunicipal") ||
+              sp.ROUTINE_NAME.includes("sp_plantaporcatego")
               )
               .map((st, index) => (
                 <MenuItem value={st.ROUTINE_NAME} key={index}>
-                  {formatProcedimientoName(st.ROUTINE_NAME).includes("Plantaporreparticion")? "Planta por Repartición": "Planta Municipal"}
+                  {formatProcedimientoName(st.ROUTINE_NAME).includes("Plantaporreparticion")? "Planta por Repartición":formatProcedimientoName(st.ROUTINE_NAME).includes("Plantamunicipal")? "Planta Municipal":"Planta por Categoría"}
                 </MenuItem>
               ))
               ) : (

@@ -7,7 +7,7 @@ const NavBarEsqueleto = () => {
 
             <Skeleton
                 variant="rectangular"
-                animation="none"
+                animation={false}
                 width={"100%"} height={"79px"}
                 className="me-3 navSkeleton"
                 

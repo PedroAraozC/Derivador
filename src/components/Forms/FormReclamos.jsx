@@ -37,7 +37,7 @@ const FormReclamos = () => {
       const resultado = await axios.post("/reclamos/listar", values);
       setResultSearch(resultado.data.resultado[0]);
       setValuesGraficos(values);
-      console.log(resultado);
+      // setFormFlagReclamos(false)
       setFlagButton(false);
     } catch (error) {
       console.log("mal");
@@ -45,7 +45,6 @@ const FormReclamos = () => {
   };
 
   const handleInputChange = (e) => {
-    // setFlagShowGraphic(false);
     const { name, value } = e.target;
     if (name != "procedimiento") {
       // Validación para asegurarse de que 'desde' no sea mayor que 'hasta'
@@ -108,13 +107,21 @@ const FormReclamos = () => {
   function formatProcedimientoName(procedimiento) {
     const palabras = procedimiento.substring(2).split("_");
     let nombreFormateado = palabras
-      .map((palabra) => palabra.charAt(0).toUpperCase() + palabra.slice(1))
+      .map((palabra) => {
+        if (palabra.toLowerCase() === "categoria" ) {
+          return "Categoría";
+        }else if(palabra.toLowerCase() === "origen"){
+          return "Orígen"
+        } else {
+          return palabra.charAt(0).toUpperCase() + palabra.slice(1);
+        }
+      })
       .join(" ");
-
+  
     nombreFormateado = nombreFormateado.replace("Reclamos", "");
-
+  
     return nombreFormateado.trim();
-  }
+  }  
 
   return (
     <>
@@ -144,13 +151,13 @@ const FormReclamos = () => {
               sx={{ m: 1, minWidth: 200 }}
               className="d-flex flex-column gap-3"
             >
-              <InputLabel>Procedimientos</InputLabel>
+              <InputLabel>Reclamos</InputLabel>
               <Select
                 value={values.procedimiento}
                 onChange={handleInputChange}
                 name="procedimiento"
                 required
-                label="Procedimientos"
+                label="Reclamos"
                 autoWidth
               >
                 {storeProcedures.length > 0 &&
@@ -172,7 +179,7 @@ const FormReclamos = () => {
                       ) {
                         return (
                           <MenuItem key={index} value={st.routine_name}>
-                            {formatProcedimientoName(st.routine_name)}
+                            {formatProcedimientoName(st.routine_name)=="Por Categoría Estado"? "Por Categoría y Estado":formatProcedimientoName(st.routine_name)=="Por Rep Deriva"? "Por Derivación": formatProcedimientoName(st.routine_name)=="Por Estado Sec Repar Oficina Cuadro"? "Por Oficina":  formatProcedimientoName(st.routine_name)}
                           </MenuItem>
                         );
                       }
@@ -180,6 +187,7 @@ const FormReclamos = () => {
               </Select>
               <div className="d-flex felx-column">
                 <TextField
+                  required
                   className="me-1"
                   label="Desde"
                   type="date"
@@ -191,6 +199,7 @@ const FormReclamos = () => {
                   }}
                 />
                 <TextField
+                  required
                   label="Hasta"
                   type="date"
                   value={values.hasta}

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -26,7 +27,6 @@ ChartJS.register(
 
 // eslint-disable-next-line react/prop-types
 const GraficoReclamoPorOrigen = ({ data }) => {
-  console.log(data);
 
   // eslint-disable-next-line react/prop-types
   const labels = data.resultSearch[0]?.map(
@@ -64,7 +64,6 @@ const GraficoReclamoPorOrigen = ({ data }) => {
   };
 
   return (
-    <>
       <>
         {data.resultSearch[0].length !== 0 ? (
           <div className="LayoutHeight d-flex justify-content-center w-100">
@@ -74,27 +73,6 @@ const GraficoReclamoPorOrigen = ({ data }) => {
           <GraficoPieEsqueleto />
         )}
       </>
-      {/* {data.resultSeatch[0]?.length !== 0 ? ( */}
-      {/* ) : ( */}
-      {/* <> */}
-      {/* <div className="layoutHeight d-flex justify-content-center align-items-end pt-4 "> */}
-      {/* <Spinner variant="light" /> */}
-
-      {/* {Array.from({ length: 12 }).map(() => (
-        <tr className="h-50 pb-0 ">
-
-        <td className="pe-2" >
-            <SkeletonTheme baseColor="#202020" highlightColor="blue" className=" d-flex align-items-end">
-              <Skeleton height={Math.floor(Math.random()*500)} width={"10vh"}/>
-            </SkeletonTheme>
-          </td>
-      
-      </tr>
-        ))} */}
-      {/* </div > */}
-      {/* </> */}
-      {/* )} */}
-    </>
   );
 };
 

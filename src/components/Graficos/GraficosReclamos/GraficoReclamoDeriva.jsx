@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -14,6 +15,7 @@ import { formatearFecha } from "../../../helpers/convertirFecha";
 import { getRandomColor } from "../../../helpers/getRandomColor";
 import { useEffect, useState } from "react";
 import GraficoPieEsqueleto from "../../Esqueletos/GraficoPieEsqueleto";
+import { coloresDirecciones } from "../../../helpers/constantes";
 
 ChartJS.register(
   CategoryScale,
@@ -29,6 +31,7 @@ ChartJS.register(
 const GraficoReclamoDeriva = ({ data }) => {
   const [reparticiones, setReparticiones] = useState([]);
   const [grafico2, setGrafico2] = useState("");
+  
 
   useEffect(() => {
     // eslint-disable-next-line react/prop-types
@@ -82,27 +85,27 @@ const GraficoReclamoDeriva = ({ data }) => {
         label: "Cantidad de Reclamos",
         // eslint-disable-next-line react/prop-types
         data: result.map((elemento) => elemento.Cantidad),
-        backgroundColor: getRandomColor(),
+        backgroundColor: reparticiones.map((reparticion) => coloresDirecciones[reparticion] || getRandomColor()),
       },
     ],
   };
 
   // eslint-disable-next-line react/prop-types
-  const oficinasFiltradas = data.resultSearch[0].filter(
-    (oficina) => oficina.nombre_reparti === grafico2
-  );
+  // const oficinasFiltradas = data.resultSearch[0].filter(
+  //   (oficina) => oficina.nombre_reparti === grafico2
+  // );
 
-  const dataDerivaOficina = {
-    labels: oficinasFiltradas.map((o) => o.nombre_oficina),
-    datasets: [
-      {
-        label: "Cantidad de Reclamos",
-        // eslint-disable-next-line react/prop-types
-        data: oficinasFiltradas.map((elemento) => elemento.Cantidad),
-        backgroundColor: getRandomColor(),
-      },
-    ],
-  };
+  // const dataDerivaOficina = {
+  //   labels: oficinasFiltradas.map((o) => o.nombre_oficina),
+  //   datasets: [
+  //     {
+  //       label: "Cantidad de Reclamos",
+  //       // eslint-disable-next-line react/prop-types
+  //       data: oficinasFiltradas.map((elemento) => elemento.Cantidad),
+  //       backgroundColor: getRandomColor(),
+  //     },
+  //   ],
+  // };
 
   const handleClick = (elements) => {
     if (elements.length > 0) {
@@ -130,11 +133,11 @@ const GraficoReclamoDeriva = ({ data }) => {
               onClick: (evt, elements) => handleClick(elements),
             }}
           />
-          {grafico2 != "" ? (
+          {/* {grafico2 != "" ? (
             <Pie data={dataDerivaOficina} options={options} />
           ) : (
             <></>
-          )}
+          )} */}
         </div>
       ) : (
         <GraficoPieEsqueleto />

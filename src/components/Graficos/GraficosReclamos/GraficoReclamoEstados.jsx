@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -12,6 +13,7 @@ import "./GraficoReclamos.css";
 import { Pie } from "react-chartjs-2";
 import { formatearFecha } from "../../../helpers/convertirFecha";
 import { getRandomColor } from "../../../helpers/getRandomColor";
+import { coloresEstadosReclamos } from "../../../helpers/constantes";
 import GraficoPieEsqueleto from "../../Esqueletos/GraficoPieEsqueleto";
 
 ChartJS.register(
@@ -47,16 +49,13 @@ const GraficoReclamoEstados = ({ data }) => {
     },
   };
   const dataPorCategoriasYestados = {
-    // eslint-disable-next-line react/prop-types
     labels,
     datasets: [
       {
         label: "Cantidad de Reclamos por estado",
-        // eslint-disable-next-line react/prop-types
         data: data.resultSearch[0]
-          // eslint-disable-next-line react/prop-types
           ?.map((elemento) => elemento.cantidad),
-        backgroundColor: getRandomColor(),
+        backgroundColor: data.resultSearch[0]?.map((elemento) => coloresEstadosReclamos[elemento.nombre_estado]) || getRandomColor(),
       },
     ],
   };

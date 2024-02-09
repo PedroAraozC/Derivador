@@ -11,95 +11,23 @@
     position: sticky;
     width: 350px;
     height: 460px;
-    /* background: #fff !important; */
     border-radius: 8px;
     overflow: hidden;
     z-index: 1;
     top: 10%;
-    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
 
-}
-
-.box::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 300px;
-    height: 420px;
-    background: linear-gradient(0deg, transparent, #0066ff, #0066ff, #0066ff);
-    z-index: -1;
-    transform-origin: bottom right;
-    animation: animate 6s linear infinite;
-}
-
-.box::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 300px;
-    height: 420px;
-    background: linear-gradient(0deg, transparent, #0066ff, #0066ff, #0066ff);
-    z-index: -1;
-    transform-origin: bottom right;
-    animation: animate 6s linear infinite;
-    animation-delay: -3s;
-}
-
-.borderLine {
-    position: absolute;
-    top: 0;
-    inset: 0;
-}
-
-.borderLine::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 300px;
-    height: 420px;
-    background: linear-gradient(0deg, transparent, #333333, #333333, #333333);
-    z-index: -1;
-    transform-origin: bottom right;
-    animation: animate 6s linear infinite;
-    animation-delay: -1.5s;
-}
-
-.borderLine::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 300px;
-    height: 420px;
-    background: linear-gradient(0deg, transparent, #333333, #333333, #333333);
-    z-index: -1;
-    transform-origin: bottom right;
-    animation: animate 6s linear infinite;
-    animation-delay: -4.5s;
 }
 
 .buttonLoginColor{
 background-color: #0066ff !important;
 }
 
-@keyframes animate {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
-}
 
 .box form {
     position: absolute;
     inset: 4px;
     background:#ffffff;
-    padding: 50px 40px;
+    padding: 40px 30px;
     border-radius: 8px;
     z-index: 2;
     display: flex;

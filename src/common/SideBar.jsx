@@ -6,7 +6,8 @@ import { IconButton, ListItemButton, ListItemIcon, ListItemText } from '@mui/mat
 import { useNavigate } from 'react-router-dom';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import HomeIcon from '@mui/icons-material/Home';
-import BarChartIcon from '@mui/icons-material/BarChart';
+import FeedbackIcon from '@mui/icons-material/Feedback';
+import "./SideBar.css"
 
 export default function ListaPrueba() {
   const [state, setState] = React.useState({
@@ -35,6 +36,7 @@ const redirigir =(ruta)=>{
       role="presentation"
       onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}
+      className="d-flex justify-content-between flex-column h-100"
     >
       <div className="d-flex flex-column justify-content-center align-items-center mt-5 ">
         <ListItemButton
@@ -62,12 +64,18 @@ const redirigir =(ruta)=>{
           component="a"
           className="w-100"
         >
-            <ListItemIcon>
-            <BarChartIcon />
+          <ListItemIcon>
+            <FeedbackIcon />
           </ListItemIcon>
-          <ListItemText primary="Reclamos" />
+          <ListItemText primary="Atención Ciudadana" />
         </ListItemButton>
-      
+      </div>
+      <div className="d-flex flex-column justify-content-center align-items-center">
+        <p className="footer text-center">
+          Desarrollado por Dirección de Innovación Tecnológica
+          {/* <span style={{ fontSize: "1.4em", verticalAlign: "-0.1em" }}>©</span>{" "}
+          2024 */}
+        </p>
       </div>
     </Box>
   );
