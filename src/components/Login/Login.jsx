@@ -9,7 +9,7 @@ import { LOGIN_VALUES } from "../../helpers/constantes";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const { authenticated, botonState, login, errors } = useStore();
+  const { authenticated, botonState, login, errors, setErrors } = useStore();
   const [showPassword, setShowPassword] = useState(false);
   const [values, setValues] = useState(LOGIN_VALUES);
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -23,11 +23,39 @@ const Login = () => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
+  const handleErrors = (campos) => {
+    setErrors("");
+    let errores = {};
+    if (!campos.nombreUsuario) {
+      errores.nombreUsuario = "El nombre de usuario es obligatorio";
+    } else if (campos.nombreUsuario.length > 15) {
+      errores.nombreUsuario = "El Usuario no debe poseer más de 15 caracteres";
+    } else if (campos.nombreUsuario.length < 4){
+      errores.nombreUsuario = "El Usuario debe tener como mínimo 4 caracteres";
+    }
+
+    if (!campos.password) {
+      errores.password = "La contraseña es obligatoria";
+    } else if (campos.password.length < 6) {
+      errores.password = "La contraseña debe tener como mínimo 6 caracteres";
+    } else if (campos.password.length > 30) {
+      errores.password = "La contraseña no debe poseer más de 30 caracteres";
+    }
+    if (Object.keys(errores).length > 0) {
+      setErrors(errores);
+      return true;
+    } else return false;
+  };
+
   const handleLogin = (e) => {
     // Realizar el login con el estado y funciones proporcionadas por el store
     e.preventDefault();
-    login(values);
 
+    const flag = handleErrors(values);
+
+    if (!flag) {
+      login(values);
+    }
   };
 
   useEffect(() => {
@@ -91,7 +119,7 @@ const Login = () => {
             Ingresar
           </Button>
           <div className="d-flex flex-column justify-content-center align-items-center">
-            <p className="footer p-1" style={{fontSize:"0.7em"}}>
+            <p className="footer p-1" style={{ fontSize: "0.7em" }}>
               Dir. de Innovación Tecnologica{" "}
               <span style={{ fontSize: "1.4em", verticalAlign: "-0.1em" }}>
                 ©
@@ -101,16 +129,28 @@ const Login = () => {
           </div>
         </form>
       </div>
-      {errors != "" ? (
+      {typeof errors == "string" ? (
         <Snackbar
           open={openSnackbar}
           autoHideDuration={5000}
           onClose={handleCloseSnackbar}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }} // Ajusta la posición del Snackbar
         >
           <Alert severity="warning">{errors}</Alert>
         </Snackbar>
       ) : (
-        <></>
+        Object.values(errors).map((error, index) => (
+          <Snackbar
+            key={index}
+            open={openSnackbar}
+            autoHideDuration={5000}
+            onClose={handleCloseSnackbar}
+            anchorOrigin={{ vertical: "top", horizontal: "center" }} // Ajusta la posición del Snackbar
+            style={{ marginTop: index * 75 }} // Ajusta el espacio entre Snackbars
+          >
+            <Alert severity="warning">{error}</Alert>
+          </Snackbar>
+        ))
       )}
     </div>
   );

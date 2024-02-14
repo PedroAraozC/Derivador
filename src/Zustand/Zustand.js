@@ -3,7 +3,7 @@ import axios from '../config/axios';
 
 const useStore = create((set) => ({
   errors: "",
-
+  setErrors: (newValues) => set(() => ({ errors: newValues })),
   authenticated: false,
   user: null,
   loading: true,
@@ -20,8 +20,7 @@ const useStore = create((set) => ({
       axios.defaults.headers.common["Authorization"] = data.token;
       localStorage.setItem("token", data.token);
     } catch (error) {
-      // toast.error(error.response?.data.message || error.message);
-        set({errors : error.response?.data.message || error.message});
+        set({errors : error.response.data?.errors?.length > 0 ?  error.response.data.errors[0].msg : error.response?.data?.message? error.response?.data.message: error.message});
     }
     set({ botonState: false });
   },
