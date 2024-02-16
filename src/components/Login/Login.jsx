@@ -81,7 +81,7 @@ const Login = () => {
         <span className="borderLine"></span>
         <form onSubmit={handleLogin}>
           <img src={logoMuni} alt="logo Municipalidad" className="logoMuni" />
-          <div className="inputBox">
+          <div className="inputBox w-100">
             <input
               name="nombreUsuario"
               type="text"
@@ -93,7 +93,7 @@ const Login = () => {
             <span>Nombre de Usuario</span>
             <i></i>
           </div>
-          <div className="inputBox">
+          <div className="inputBox w-100">
             <input
               name="password"
               type={showPassword ? "text" : "password"}
