@@ -22,6 +22,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import useStore from '../../../Zustand/Zustand';
+import { Button } from '@mui/material';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -193,7 +194,7 @@ export default function TablaPorCategoria() {
   const [dense, setDense] = React.useState(true);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   
-  const { resultSearch,setResultSearch } = useStore();
+  const { resultSearch,setResultSearch, setFlagCategoriasFuncionarios} = useStore();
   const [copiaResultSearch] = React.useState(resultSearch)
   const [filas,setFilas] = React.useState([])
 
@@ -320,6 +321,8 @@ filasTabla.forEach((objeto) => {
   
   return (
     <Box sx={{ width: '100%' }}>
+      <Button onClick={()=>setFlagCategoriasFuncionarios(true)}>Funcionarios</Button>
+      <Switch onClick={()=>setFlagCategoriasFuncionarios(true)}/>
       <Paper sx={{ width: '100%', mb: 2 }}>
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>

@@ -4,10 +4,15 @@ import axios from '../config/axios';
 const useStore = create((set) => ({
   errors: "",
   setErrors: (newValues) => set(() => ({ errors: newValues })),
+
   authenticated: false,
+
   user: null,
+
   loading: true,
+  
   botonState: false,
+
   login: async (values) => {
     set({ botonState: true });
     try {
@@ -24,6 +29,7 @@ const useStore = create((set) => ({
     }
     set({ botonState: false });
   },
+
   logout:() => {
     set({authenticated: false });
       localStorage.removeItem("token");
@@ -69,6 +75,9 @@ const useStore = create((set) => ({
 
   formFlagReclamos: true,
   setFormFlagReclamos: () => set((state) => ({ ...state, formFlagReclamos: !state.formFlagReclamos })),
+
+  flagCategoriasFuncionarios: false,
+  setFlagCategoriasFuncionarios: () => set((state) => ({ ...state, flagCategoriasFuncionarios: !state.flagCategoriasFuncionarios })),
 }))
 
 export default useStore;
