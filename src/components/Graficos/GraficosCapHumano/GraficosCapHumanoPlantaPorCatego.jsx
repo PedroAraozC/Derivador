@@ -111,7 +111,7 @@ const GraficosCapHumanoPlantaPorCatego = () => {
         {/* se repite el div por el tema del width */}
         <div className="d-flex-col w-50 d-none d-sm-block">
           <p className="text-center"><b>Total por Categoría</b></p>
-          <div className=" d-flex justify-content-center">
+          <div className="d-flex justify-content-center flex-wrap">
             {
               Object.entries(categorias).map(([propiedad, valor], index) => ( 
               <div key={index}>
