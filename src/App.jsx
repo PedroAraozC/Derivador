@@ -5,6 +5,7 @@ import Layout from "./common/Layout";
 import CapitalHumano from "./pages/CapitalHumano/CapitalHumano";
 import Reclamos from "./pages/EstadisticasReclamos/Reclamos";
 import PrivateRoute from "./routes/PrivateRoute";
+import Perfil from "./pages/Perfil/Perfil";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
                 </PrivateRoute>
               }
             />
+            <Route exact path="/perfil" element={<Perfil />} />
           </Routes>
         </Layout>
       </HashRouter>

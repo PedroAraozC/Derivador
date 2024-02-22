@@ -90,7 +90,7 @@ const Login = () => {
               value={values.nombreUsuario}
               onChange={handleChange}
             />
-            <span>Nombre de Usuario</span>
+            <span>Nº Documento</span>
             <i></i>
           </div>
           <div className="inputBox w-100">

@@ -17,6 +17,7 @@ export default function NavBar() {
 
   useEffect(() => {
     getAuth();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleMenu = (event) => {
@@ -25,6 +26,11 @@ export default function NavBar() {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const goToPerfil = () => {
+    setAnchorEl(null);
+    navigate('/perfil')
   };
   
   const handleLogout = () => {
@@ -73,8 +79,9 @@ export default function NavBar() {
                       open={Boolean(anchorEl)}
                       onClose={handleClose}
                     >
+                      {/* crear la funcion y componente perfil  */}
+                      <MenuItem onClick={goToPerfil}>Mi perfil</MenuItem>
                       <MenuItem onClick={handleLogout}>Cerrar Sesión</MenuItem>
-                      {/* <MenuItem onClick={handleClose}>My account</MenuItem> */}
                     </Menu>
                   </div>
                 )}
