@@ -5,7 +5,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import axios from "../../config/axios";
 import useStore from "../../Zustand/Zustand";
-import { Skeleton, Typography } from "@mui/material";
+import { Alert, Skeleton, Snackbar, Typography } from "@mui/material";
 
 const FormCapitalHumano = () => {
   const [procedimientos, setProcedimientos] = React.useState([]);
@@ -25,13 +25,19 @@ const FormCapitalHumano = () => {
     return nombreFormateado;
   };
 
+  const [error, setError] = React.useState("");
   const obtenerProcedimientosAlmacenados = async () => {
     try {
       const resultado = await axios.get("/listar/listarProcedimientos");
       setProcedimientos(resultado.data);
     } catch (error) {
       console.log(error);
+      setError(error.response.data.message)
     }
+  };
+
+  const handleCloseSnackbar = () => {
+    setError("");
   };
 
   const getData = async (SP) => {
@@ -41,6 +47,7 @@ const FormCapitalHumano = () => {
       setResultSearch(resultado.data);
     } catch (error) {
       console.log(error);
+      setError(error.response.data.message)
     }
   };
 
@@ -90,6 +97,17 @@ const FormCapitalHumano = () => {
             </Typography>
           </div>
         </div>}
+        {
+          error != "" &&
+          <Snackbar
+          open={error != "" ? true : false}
+          autoHideDuration={5000}
+          onClose={handleCloseSnackbar}
+          anchorOrigin={{ vertical: "center", horizontal: "center" }} // Ajusta la posición del Snackbar
+        >
+          <Alert severity="warning">{error}</Alert>
+        </Snackbar>
+        }
     </>
     );
   };

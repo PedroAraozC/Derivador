@@ -10,6 +10,7 @@ import {
   MenuItem,
   Select,
   Skeleton,
+  Snackbar,
   TextField,
   Typography,
 } from "@mui/material";
@@ -41,6 +42,7 @@ const FormReclamos = () => {
       setFlagButton(false);
     } catch (error) {
       console.log("mal");
+      setErrorPermiso(error.response.data.message)
     }
   };
 
@@ -83,13 +85,19 @@ const FormReclamos = () => {
     }
   };
 
+  const [errorPermiso, setErrorPermiso] = useState("");
   const obtenerProcedimientosAlmacenados = async () => {
     try {
       const resultado = await axios.get("/reclamos/listarProcedimientos");
       setStoreProcedures(resultado.data.results);
     } catch (error) {
       console.log(error);
+      setErrorPermiso(error.response.data.message)
     }
+  };
+
+  const handleCloseSnackbar = () => {
+    setErrorPermiso("");
   };
 
   useEffect(() => {
@@ -226,6 +234,17 @@ const FormReclamos = () => {
           </div>
         </div>
       )}
+          {
+          errorPermiso != "" &&
+          <Snackbar
+          open={errorPermiso != "" ? true : false}
+          autoHideDuration={5000}
+          onClose={handleCloseSnackbar}
+          anchorOrigin={{ vertical: "center", horizontal: "center" }} // Ajusta la posición del Snackbar
+        >
+          <Alert severity="warning">{errorPermiso}</Alert>
+        </Snackbar>
+        }
     </>
   );
 };
