@@ -42,7 +42,7 @@ const FormReclamos = () => {
       setFlagButton(false);
     } catch (error) {
       console.log("mal");
-      setErrorPermiso(error.response.data.message)
+      setErrorPermiso(error.response.data?.message || error.message)
     }
   };
 
@@ -92,7 +92,7 @@ const FormReclamos = () => {
       setStoreProcedures(resultado.data.results);
     } catch (error) {
       console.log(error);
-      setErrorPermiso(error.response.data.message)
+      setErrorPermiso(error.response.data?.message || error.message)
     }
   };
 

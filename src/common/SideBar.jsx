@@ -21,23 +21,21 @@ export default function ListaPrueba() {
   const [state, setState] = React.useState({
     left: false,
   });
-  const [openList, setOpenList] = React.useState(false);
+  const [openListEstadistica, setOpenListEstadistica] = React.useState(false);
+
   const navigate = useNavigate();
+
   const redirigir = (ruta) => {
     navigate(ruta);
+    setState(false)
+    setOpenListEstadistica(false)
   };
-  const handleClick = () => {
-    setOpenList(!openList);
-  };
-  const toggleDrawer = (open) => (event) => {
-    if (
-      event &&
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
 
+  const handleClickEstadistica = () => {
+    setOpenListEstadistica(!openListEstadistica);
+  };
+
+  const toggleDrawer = (open)  => {
     setState({ left: open });
   };
 
@@ -45,8 +43,6 @@ export default function ListaPrueba() {
     <Box
       sx={{ width: 250 }}
       role="presentation"
-      // onClick={toggleDrawer(false)}
-      onKeyDown={toggleDrawer(false)}
       className="d-flex justify-content-between flex-column h-100"
     >
       <div className="d-flex flex-column justify-content-center align-items-center mt-5 ">
@@ -61,13 +57,13 @@ export default function ListaPrueba() {
           <ListItemText primary="Inicio" />
         </ListItemButton>
 
-        <ListItemButton onClick={handleClick} className="w-100">
+        <ListItemButton onClick={handleClickEstadistica} className="w-100">
           <ListItemIcon>🤷‍♂️</ListItemIcon>
           <ListItemText primary="Estadisticas" />
-          {openList ? <ExpandLess /> : <ExpandMore />}
-        </ListItemButton>
-        <Collapse in={openList} timeout="auto" unmountOnExit>
-          <List component="div">
+          {openListEstadistica ? <ExpandLess /> : <ExpandMore />}
+        </ListItemButton> 
+         <Collapse in={openListEstadistica} timeout="auto" unmountOnExit> 
+           <List component="div">
             <ListItemButton
               onClick={() => redirigir("/cap-humano")}
               component="a"
@@ -88,14 +84,15 @@ export default function ListaPrueba() {
               </ListItemIcon>
               <ListItemText primary="Atención Ciudadana" />
             </ListItemButton>
-          </List>
+           </List> 
         </Collapse>
+
       </div>
       <div className="d-flex flex-column justify-content-center align-items-center">
         <p className="footer text-center">
           Desarrollado por Dirección de Innovación Tecnológica
-          {/* <span style={{ fontSize: "1.4em", verticalAlign: "-0.1em" }}>©</span>{" "}
-          2024 */}
+          <span style={{ fontSize: "1.4em", verticalAlign: "-0.1em" }}>©</span>{" "}
+          2024 
         </p>
       </div>
     </Box>
@@ -109,15 +106,15 @@ export default function ListaPrueba() {
         color="inherit"
         aria-label="open drawer"
         sx={{ mr: 2 }}
-        onClick={toggleDrawer(true)}
+        onClick={()=>toggleDrawer(true)}
       >
         <MenuIcon />
       </IconButton>
       <SwipeableDrawer
         anchor="left"
         open={state.left}
-        onClose={toggleDrawer(false)}
-        onOpen={toggleDrawer(true)}
+        onClose={()=>toggleDrawer(false)}
+        onOpen={()=>toggleDrawer(true)}
       >
         {list()}
       </SwipeableDrawer>

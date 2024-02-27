@@ -32,7 +32,7 @@ const FormCapitalHumano = () => {
       setProcedimientos(resultado.data);
     } catch (error) {
       console.log(error);
-      setError(error.response.data.message)
+      setError(error.response.data?.message || error.message)
     }
   };
 
@@ -47,7 +47,7 @@ const FormCapitalHumano = () => {
       setResultSearch(resultado.data);
     } catch (error) {
       console.log(error);
-      setError(error.response.data.message)
+      setError(error.response.data?.message || error.message)
     }
   };
 
@@ -101,9 +101,9 @@ const FormCapitalHumano = () => {
           error != "" &&
           <Snackbar
           open={error != "" ? true : false}
-          autoHideDuration={5000}
+          autoHideDuration={5000000}
           onClose={handleCloseSnackbar}
-          anchorOrigin={{ vertical: "center", horizontal: "center" }} // Ajusta la posición del Snackbar
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }} // Ajusta la posición del Snackbar
         >
           <Alert severity="warning">{error}</Alert>
         </Snackbar>

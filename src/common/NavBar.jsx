@@ -32,7 +32,7 @@ export default function NavBar() {
     setAnchorEl(null);
     navigate('/perfil')
   };
-  
+
   const handleLogout = () => {
     logout();
     navigate("/");
@@ -51,7 +51,7 @@ export default function NavBar() {
                 <p></p>
                 {authenticated && (
                   <div>
-                    {user.nombreUsuario}
+                    {user.nombre_persona}
                     <IconButton
                       size="large"
                       aria-label="account of current user"
