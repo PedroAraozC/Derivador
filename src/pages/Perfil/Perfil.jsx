@@ -7,10 +7,12 @@ import { Button } from "@mui/material";
 
 const Perfil = () => {
   const [validado, setValidado] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(true);
+
   const validator = () => {
     setValidado(!validado);
   };
+  
   const handleEditDatos = () =>{
     setIsEditing(!isEditing)
   }
@@ -18,32 +20,38 @@ const Perfil = () => {
   return (
     <div className="d-flex align-items-center justify-content-center">
       <div className="d-flex flex-column p-2 mt-3 contenedorPerfil">
-        <div className="d-flex py-4 px-2 justify-content-start align-items-center gap-3">
+        <div className="d-flex py-4 px-2 justify-content-between align-items-center gap-3">
           <img src={fotoDefault} alt="Foto de perfil" className="fotoPerfil" />
           {validado ? (
-            <FontAwesomeIcon icon={faCheck} onClick={validator} />
+            <div className="d-flex align-items-center justify-content-center gap-2">
+              <p className="m-0">Usuario validado: </p>
+              <FontAwesomeIcon icon={faCheck} onClick={validator} />
+            </div>
           ) : (
-            <FontAwesomeIcon icon={faXmark} onClick={validator} />
+            <div className="d-flex align-items-center justify-content-center gap-2">
+              <p className="m-0">Usuario validado: </p>
+              <FontAwesomeIcon icon={faXmark} onClick={validator} />
+            </div>
           )}
         </div>
         {isEditing ? (
           <div className="px-2">
-            <p>Nombres: Tobias</p>
-            <p>Apellidos: Alvarez</p>
-            <p>DNI: 42270169</p>
-            <p>Fecha nacimiento: 20/12/1999</p>
-            <p>Localidad: Las Talitas</p>
-            <p>Domicilio: Mi casa</p>
-            <p>Telefono: 3814462981</p>
-            <p>Email: tosal1099@gmail.com</p>
-            <p>Contraseña: ***********</p>
+            <p className="datoUsuario">Nombres:</p> <p>Tobias</p>
+            <p className="datoUsuario">Apellidos:</p> <p> Alvarez</p>
+            <p className="datoUsuario">DNI:</p> <p> *******</p>
+            <p className="datoUsuario">Fecha nacimiento:</p> <p> 20/12/1999</p>
+            <p className="datoUsuario">Localidad:</p> <p> Las Talitas</p>
+            <p className="datoUsuario">Domicilio:</p> <p> Mi casa</p>
+            <p className="datoUsuario">Telefono:</p> <p> 3811234567</p>
+            <p className="datoUsuario">Email:</p> <p> tosal1099@gmail.com</p>
+            <p className="datoUsuario">Contraseña:</p> <p> ***********</p>
           </div>
-        ) : (
+        ) : ( 
           <form className="px-2 d-flex flex-column formEdit">
             <input type="text" placeholder="Localidad" className="inputEditPerfil"/>
             <input type="text" placeholder="Domicilio" className="inputEditPerfil"/>
             <input type="text" placeholder="Telefono o Celular" className="inputEditPerfil"/>
-            <input type="text" placeholder="Correo electronico" className="inputEditPerfil"/>
+            <input type="email" placeholder="Correo electronico" className="inputEditPerfil"/>
             <input type="password" placeholder="Contraseña nueva" className="inputEditPerfil"/>
             <input type="password" placeholder="Confirmar contraseña" className="inputEditPerfil"/>
           </form>
