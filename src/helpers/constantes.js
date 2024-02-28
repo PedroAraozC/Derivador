@@ -1,5 +1,5 @@
 export const LOGIN_VALUES = {
-    nombreUsuario: "",
+    dni: "",
     password: "",
   };
 

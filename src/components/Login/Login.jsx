@@ -26,12 +26,12 @@ const Login = () => {
   const handleErrors = (campos) => {
     setErrors("");
     let errores = {};
-    if (!campos.nombreUsuario) {
-      errores.nombreUsuario = "El nombre de usuario es obligatorio";
-    } else if (campos.nombreUsuario.length > 15) {
-      errores.nombreUsuario = "El Usuario no debe poseer más de 15 caracteres";
-    } else if (campos.nombreUsuario.length < 4){
-      errores.nombreUsuario = "El Usuario debe tener como mínimo 4 caracteres";
+    if (!campos.dni) {
+      errores.dni = "El DNI es obligatorio";
+    } else if (campos.dni.length > 8) {
+      errores.dni = "El DNI no debe poseer más de 8 caracteres";
+    } else if (campos.dni.length < 7){
+      errores.dni = "El DNI debe tener como mínimo 7 caracteres";
     }
 
     if (!campos.password) {
@@ -83,12 +83,23 @@ const Login = () => {
           <img src={logoMuni} alt="logo Municipalidad" className="logoMuni" />
           <div className="inputBox w-100">
             <input
-              name="nombreUsuario"
+              name="dni"
               type="text"
               required="required"
-              maxLength={15}
-              value={values.nombreUsuario}
-              onChange={handleChange}
+              maxLength={8}
+              value={values.dni}
+              onChange={(e) => {
+                // Filtra solo los caracteres numéricos
+                const numericValue = e.target.value.replace(/\D/g, "");
+
+                // Actualiza el estado solo si la entrada es numérica
+                handleChange({
+                  target: {
+                    name: "dni",
+                    value: numericValue,
+                  },
+                });
+              }}
             />
             <span>Nº Documento</span>
             <i></i>

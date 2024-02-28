@@ -33,7 +33,7 @@ export default function NavBar() {
     setAnchorEl(null);
     navigate('/perfil')
   };
-  
+
   const handleLogout = () => {
     logout();
     navigate("/");
@@ -50,8 +50,13 @@ export default function NavBar() {
               <div className="d-flex justify-content-between w-100">
                 <img src={logoMuni} className="logoMuni2" />
                 {authenticated && (
+<<<<<<< HEAD
                   <div className="d-flex justify-content-right align-items-center">
                     {user.nombreUsuario}
+=======
+                  <div>
+                    {user.nombre_persona}
+>>>>>>> 700038a6336e51f5cb28e96ebd7bca0d5d91c1f6
                     <IconButton
                       size="large"
                       aria-label="account of current user"
