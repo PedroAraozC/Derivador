@@ -76,9 +76,9 @@ export default function ListaPrueba() {
             <QueryStatsIcon/>
           </ListItemIcon>
           <ListItemText primary="Estadisticas" />
-          {setOpenListEstadistica ? <ExpandLess /> : <ExpandMore />}
+          {openListEstadistica ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
-          <Collapse in={setOpenListEstadistica} timeout="auto" unmountOnExit>
+          <Collapse in={openListEstadistica} timeout="auto" unmountOnExit>
             <List component="div">
               <ListItemButton
                 onClick={() => redirigir("/cap-humano")}
