@@ -9,6 +9,7 @@ import "./Navbar.css";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import logoMuni from '../assets/Logo_SMT_neg_4.png'
 
 export default function NavBar() {
   const { getAuth, authenticated, logout, user } = useStore();
@@ -17,6 +18,7 @@ export default function NavBar() {
 
   useEffect(() => {
     getAuth();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleMenu = (event) => {
@@ -26,7 +28,12 @@ export default function NavBar() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  
+
+  const goToPerfil = () => {
+    setAnchorEl(null);
+    navigate('/perfil')
+  };
+
   const handleLogout = () => {
     logout();
     navigate("/");
@@ -41,11 +48,10 @@ export default function NavBar() {
             <Toolbar>
               <SideBar />
               <div className="d-flex justify-content-between align-items-center w-100">
-                {/* <img src={logoMuni} className="logoMuni2" /> */}
-                <p></p>
+                <img src={logoMuni} className="logoMuni2" />
                 {authenticated && (
                   <div>
-                    {user.nombreUsuario}
+                    {user.nombre_persona}
                     <IconButton
                       size="large"
                       aria-label="account of current user"
@@ -73,8 +79,9 @@ export default function NavBar() {
                       open={Boolean(anchorEl)}
                       onClose={handleClose}
                     >
+                      {/* crear la funcion y componente perfil  */}
+                      <MenuItem onClick={goToPerfil}>Mi perfil</MenuItem>
                       <MenuItem onClick={handleLogout}>Cerrar Sesión</MenuItem>
-                      {/* <MenuItem onClick={handleClose}>My account</MenuItem> */}
                     </Menu>
                   </div>
                 )}

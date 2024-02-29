@@ -10,7 +10,7 @@
 .box {
     position: sticky;
     width: 350px;
-    height: 460px;
+    height: 500px;
     border-radius: 8px;
     overflow: hidden;
     z-index: 1;
@@ -186,7 +186,7 @@ background-color: #0066ff !important;
 
 }
 .icono-password-login {
-    left: 230px;
+    left: 250px;
     bottom: 14px;
     color: #000000;
     cursor: pointer;

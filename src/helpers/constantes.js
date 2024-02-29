@@ -1,5 +1,5 @@
 export const LOGIN_VALUES = {
-    nombreUsuario: "",
+    dni: "",
     password: "",
   };
 
@@ -46,6 +46,19 @@ export const coloresCategoriasMun = {
     "23": '#0EA94B',
     "24": '#A0A90E'
 }
+
+export const coloresCategoriasFun = {
+  "50": '#A23E3A',
+  "52": '#B81560',
+  "53": '#850EA9',
+  "54": '#160EA9',
+  "56": '#0E8DA9',
+  "57": '#0EA94B',
+  "58": '#1520B8',
+  "59": '#A06E10',
+  "60": '#319F38',
+}
+
 export const coloresEstadosReclamos = {
     "INICIADO": '#A23E3A',
     "DERIVADO": '#DCCC10',
