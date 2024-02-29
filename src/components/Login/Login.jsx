@@ -122,7 +122,10 @@ const Login = () => {
             <i></i>
           </div>
         <div className="d-flex justify-content-center align-items-center mt-4">
-          <a href="" target="_blank">Registrarse</a>
+          
+          
+
+          
         </div>
           <Button
             variant="contained"
@@ -132,6 +135,16 @@ const Login = () => {
           >
             Ingresar
           </Button>
+          <Button
+onClick={()=>navigate("/registro")}
+
+>
+Registrarse
+
+          </Button>
+
+
+
           <div className="d-flex flex-column justify-content-center align-items-center">
             <p className="footer p-1 m-0" style={{ fontSize: "0.7em" }}>
               Dir. de Innovación Tecnologica{" "}
