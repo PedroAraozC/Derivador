@@ -121,7 +121,7 @@ if( formData.clave !== confirmarContraseña){
           return Swal.fire({
               icon: 'error',
               title: '¡Ups!',
-              text: 'El DNI debe tener 5 caracteres como mínimo',                
+              text: 'La clave debe tener 5 caracteres como mínimo',                
             })
       }
 
@@ -129,7 +129,7 @@ if( formData.clave !== confirmarContraseña){
         return Swal.fire({
             icon: 'error',
             title: '¡Ups!',
-            text: 'El DNI debe tener 30 caracteres como máximo',                
+            text: 'La clave debe tener 30 caracteres como máximo',                
           })
     }
 
@@ -154,7 +154,7 @@ if( formData.clave !== confirmarContraseña){
       return Swal.fire({
           icon: 'error',
           title: '¡Ups!',
-          text: 'El nro de documento no puede ser negativo',                
+          text: 'El DNI no puede ser negativo',                
         })
   }
 
