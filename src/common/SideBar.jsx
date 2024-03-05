@@ -14,6 +14,8 @@ import { useNavigate } from "react-router-dom";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import HomeIcon from "@mui/icons-material/Home";
 import FeedbackIcon from "@mui/icons-material/Feedback";
+import QueryStatsIcon from '@mui/icons-material/QueryStats';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import "./SideBar.css";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 
@@ -56,37 +58,51 @@ export default function ListaPrueba() {
           </ListItemIcon>
           <ListItemText primary="Inicio" />
         </ListItemButton>
-
+        {/* GESTION FINANCIERA */}
+          <ListItemButton
+            onClick={() => redirigir("/home")}
+            component="a"
+            className="w-100"
+            >
+            <ListItemIcon>
+              <AttachMoneyIcon/>
+            </ListItemIcon>
+            <ListItemText primary="Gestión Financiera" />
+          </ListItemButton>
+         {/* GESTION FINANCIERA */}
+         {/* ESTADISTICAS */}
         <ListItemButton onClick={handleClickEstadistica} className="w-100">
-          <ListItemIcon>🤷‍♂️</ListItemIcon>
+          <ListItemIcon>
+            <QueryStatsIcon/>
+          </ListItemIcon>
           <ListItemText primary="Estadisticas" />
           {openListEstadistica ? <ExpandLess /> : <ExpandMore />}
-        </ListItemButton> 
-         <Collapse in={openListEstadistica} timeout="auto" unmountOnExit> 
-           <List component="div">
-            <ListItemButton
-              onClick={() => redirigir("/cap-humano")}
-              component="a"
-              className="w-100"
-            >
-              <ListItemIcon>
-                <AssignmentIndIcon />
-              </ListItemIcon>
-              <ListItemText primary="Capital Humano" />
-            </ListItemButton>
-            <ListItemButton
-              onClick={() => redirigir("/reclamos-estadisticas")}
-              component="a"
-              className="w-100"
-            >
-              <ListItemIcon>
-                <FeedbackIcon />
-              </ListItemIcon>
-              <ListItemText primary="Atención Ciudadana" />
-            </ListItemButton>
-           </List> 
-        </Collapse>
-
+        </ListItemButton>
+          <Collapse in={openListEstadistica} timeout="auto" unmountOnExit>
+            <List component="div">
+              <ListItemButton
+                onClick={() => redirigir("/cap-humano")}
+                component="a"
+                className="w-100"
+                >
+                <ListItemIcon>
+                  <AssignmentIndIcon />
+                </ListItemIcon>
+                <ListItemText primary="Capital Humano" />
+              </ListItemButton>
+              <ListItemButton
+                onClick={() => redirigir("/reclamos-estadisticas")}
+                component="a"
+                className="w-100"
+              >
+                <ListItemIcon>
+                  <FeedbackIcon />
+                </ListItemIcon>
+                <ListItemText primary="Atención Ciudadana" />
+              </ListItemButton>
+            </List>
+          </Collapse>
+          {/* ESTADISTICAS */}
       </div>
       <div className="d-flex flex-column justify-content-center align-items-center">
         <p className="footer text-center">

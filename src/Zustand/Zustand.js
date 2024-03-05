@@ -79,6 +79,10 @@ const useStore = create((set) => ({
 
   flagCategoriasFuncionarios: false,
   setFlagCategoriasFuncionarios: () => set((state) => ({ ...state, flagCategoriasFuncionarios: !state.flagCategoriasFuncionarios })),
+
+  updateUser: (newUserData) => {
+    set({ user: newUserData });
+  },
 }))
 
 export default useStore;

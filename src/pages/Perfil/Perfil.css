@@ -9,6 +9,10 @@
 .fotoPerfil{
     height: 50px;
 }
+.datoUsuario{
+    font-weight: 600;
+    margin: 0;
+}
 .inputEditPerfil{
     border: 1px solid #ccc;
     height: 50px;

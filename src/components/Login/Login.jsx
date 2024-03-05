@@ -121,6 +121,12 @@ const Login = () => {
             <span>Contraseña</span>
             <i></i>
           </div>
+        <div className="d-flex justify-content-center align-items-center mt-4">
+          
+          
+
+          
+        </div>
           <Button
             variant="contained"
             className="btn-light mt-4 buttonLoginColor"
@@ -129,8 +135,18 @@ const Login = () => {
           >
             Ingresar
           </Button>
+          <Button
+onClick={()=>navigate("/registro")}
+
+>
+Registrarse
+
+          </Button>
+
+
+
           <div className="d-flex flex-column justify-content-center align-items-center">
-            <p className="footer p-1" style={{ fontSize: "0.7em" }}>
+            <p className="footer p-1 m-0" style={{ fontSize: "0.7em" }}>
               Dir. de Innovación Tecnologica{" "}
               <span style={{ fontSize: "1.4em", verticalAlign: "-0.1em" }}>
                 ©
