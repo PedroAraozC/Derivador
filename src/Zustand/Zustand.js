@@ -18,10 +18,11 @@ const useStore = create((set) => ({
     try {
       set({errors : ""})
       const { data } = await axios.post("/usuarios/login", values);
+      console.log(data);
       set({
-        authenticated: !!data.user
+        authenticated: !!data.user.usuarioSinContraseña
       });
-      set({user:data.user});
+      set({user:data.user.usuarioSinContraseña});
       axios.defaults.headers.common["Authorization"] = data.token;
       localStorage.setItem("token", data.token);
     } catch (error) {
