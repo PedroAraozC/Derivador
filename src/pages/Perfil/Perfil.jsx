@@ -7,12 +7,13 @@ import { Button } from "@mui/material";
 import useStore from "../../Zustand/Zustand";
 import Swal from "sweetalert2";
 import cdigitalApi from '../../config/axios';
+import { Validacion } from "../../components/Registro/Validacion";
 
 const Perfil = () => {
  
   const [isEditing, setIsEditing] = useState(true);
   // eslint-disable-next-line no-unused-vars
-  const { getAuth, authenticated, logout, user } = useStore();
+  const { user,updateUser } = useStore();
   const [confirmarContraseña, setConfirmarContraseña] = useState('');
 
   const[formData, setFormData]= useState({
@@ -26,7 +27,35 @@ const Perfil = () => {
     domicilio_persona:user.domicilio_persona,
     localidad_persona:user.localidad_persona,
  })
+
+ const [modalAbierto, setModalAbierto] = useState(false);
+ const abrirModal = () => {
+    
+     setModalAbierto(true);
+ };
+ const cerrarModal=() => setModalAbierto(false)
+
+
+
   const usuario=user;
+
+  const actualizarUsuarioConFormData = (objeto1, objeto2) => {
+    for (const key in objeto2) {
+      // eslint-disable-next-line no-prototype-builtins
+      if (objeto2.hasOwnProperty(key) && objeto1.hasOwnProperty(key)) {
+        // Verificar si el valor del campo es de tipo string
+        if (typeof objeto2[key] === 'string') {
+          // Aplicar toUpperCase() al valor del campo
+          objeto1[key] = objeto2[key].toUpperCase();
+        } else {
+          // Si no es de tipo string, asignar el valor sin modificar
+          objeto1[key] = objeto2[key];
+        }
+      }
+    }
+  };
+  
+  
  
   const handleChange = (e, lon) => {
     let value = e.target.value; // Eliminar espacios en blanco alrededor del valor
@@ -52,7 +81,7 @@ const Perfil = () => {
   {
   
       try{
-          await cdigitalApi.put(`/usuarios/${user.id_persona}`,data);
+          await cdigitalApi.put(`/usuarios/editar`,data);
           
           Swal.fire({
             position: "center",
@@ -61,8 +90,11 @@ const Perfil = () => {
             showConfirmButton: false,
             timer: 2500
           });
+
+          actualizarUsuarioConFormData(user, data);
+          console.log(user)
           
-          console.log(data)
+          updateUser(user);
            setIsEditing(!isEditing)
         
         
@@ -221,15 +253,31 @@ EditarCiudadanoDB(formData)
              onChange={(e) => setConfirmarContraseña(e.target.value)} required/>
           </form>
         )}
-        <div>
+        <div className="d-flex justify-content-between">
           {
             isEditing?
             <Button onClick={() => setIsEditing(!isEditing)}>Editar datos</Button>
             :
             <Button onClick={handleEditDatos}>Guardar Cambios</Button>
+            
           }
+          <Button onClick={abrirModal} >Validar email</Button>
         </div>
+   
+      
       </div>
+
+      {modalAbierto && (
+  <Validacion 
+  data={formData}
+  cerrarModal={cerrarModal}
+  setModalAbierto={setModalAbierto}
+  />
+)} 
+
+
+
+
     </div>
   );
 };

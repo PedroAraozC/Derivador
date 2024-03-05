@@ -42,7 +42,7 @@ export const Validacion = (props) => {
 
     const ValidarCiudadanoDB = async () => {
       try {
-          const resp = await cdigitalApi.put("/usuarios", datos);
+          const resp = await cdigitalApi.put("/usuarios/validar", datos);
   
           if (resp.data.ok) {
               Swal.fire({

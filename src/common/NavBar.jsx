@@ -14,15 +14,18 @@ import logoMuni from '../assets/Logo_SMT_neg_4.png'
 export default function NavBar() {
   const { getAuth, authenticated, logout, user } = useStore();
   const [anchorEl, setAnchorEl] = useState(null);
-  //const [nombreUser, setNombreUser] = useState('');
+  
+ 
   const navigate = useNavigate();
-console.log(user)
+
+ 
+  
   useEffect(() => {
-    getAuth();
-    // let nombre = user.nombre_persona
-    // setNombreUser(nombre)
+   
+      getAuth();
+ 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, []); 
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -52,7 +55,9 @@ console.log(user)
               <SideBar />
               <div className="d-flex justify-content-between align-items-center w-100">
                 <img src={logoMuni} className="logoMuni2" />
-                {authenticated && (
+                {
+                authenticated &&
+                 (
                   <div className="d-flex align-items-center">
                     <p className="m-0">{user.nombre_persona}</p>
                     <IconButton

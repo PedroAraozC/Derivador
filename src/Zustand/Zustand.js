@@ -19,9 +19,9 @@ const useStore = create((set) => ({
       set({errors : ""})
       const { data } = await axios.post("/usuarios/login", values);
       set({
-        authenticated: !!data.user
+        authenticated: !!data.user.usuarioSinContraseña
       });
-      set({user:data.user});
+      set({user:data.user.usuarioSinContraseña});
       axios.defaults.headers.common["Authorization"] = data.token;
       localStorage.setItem("token", data.token);
     } catch (error) {
@@ -78,6 +78,10 @@ const useStore = create((set) => ({
 
   flagCategoriasFuncionarios: false,
   setFlagCategoriasFuncionarios: () => set((state) => ({ ...state, flagCategoriasFuncionarios: !state.flagCategoriasFuncionarios })),
+
+  updateUser: (newUserData) => {
+    set({ user: newUserData });
+  },
 }))
 
 export default useStore;
