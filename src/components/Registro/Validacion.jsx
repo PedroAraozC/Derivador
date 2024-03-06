@@ -72,7 +72,7 @@ export const Validacion = (props) => {
                 showCancelButton: true,
                 confirmButtonText: 'Intentar de nuevo',
                 cancelButtonText: 'Cancelar',
-                confirmButtonColor: "#3085d6",
+                confirmButtonColor:"#6495ED" ,
                 cancelButtonColor: "#d33",
               }).then((result) => {
                   if (result.isConfirmed) { // Si el usuario hace clic en "Intentar de nuevo"

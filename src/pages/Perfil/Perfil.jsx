@@ -5,12 +5,15 @@ import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { Button } from "@mui/material";
 import useStore from "../../Zustand/Zustand";
-import Swal from "sweetalert2";
 import cdigitalApi from '../../config/axios';
 import { Validacion } from "../../components/Registro/Validacion";
 import SaveIcon from '@mui/icons-material/Save';
 import EditIcon from '@mui/icons-material/Edit';
 import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead';
+import Swal from "sweetalert2";
+import { CambiarContraseña } from "../../pages/Perfil/CambiarContraseña";
+
+
 
 const Perfil = () => {
  
@@ -18,7 +21,8 @@ const Perfil = () => {
   // eslint-disable-next-line no-unused-vars
   const { user,updateUser } = useStore();
  // const [confirmarContraseña, setConfirmarContraseña] = useState('');
-
+ const [saveChanges, setSaveChanges] = useState(false);
+ console.log(user);
   const[formData, setFormData]= useState({
       
     documento_persona:user.documento_persona,
@@ -31,17 +35,23 @@ const Perfil = () => {
  })
 
  const [modalAbierto, setModalAbierto] = useState(false);
- const abrirModal = () => {
-    
-     setModalAbierto(true);
- };
- const cerrarModal=() => setModalAbierto(false)
-
+ const [modal2Abierto, setModal2Abierto] = useState(false);
+ const abrirModal = () => setModalAbierto(true);
+ const abrirModal2 = () => setModal2Abierto(true);
+ const cerrarModal=() => setModalAbierto(false);
+ const cerrarModal2=() => setModal2Abierto(false);
 
 
   const usuario=user;
 
   const validarEmail=async ()=>{
+
+    if(usuario.validado==1){
+
+return Swal.fire({text:"Su email ya está validado!",
+confirmButtonColor:"#1F89F6"});
+
+    }
 
 try {
 
@@ -113,6 +123,7 @@ console.log(error);
           
           updateUser(user);
            setIsEditing(!isEditing)
+           setSaveChanges(true);
         
         
       }
@@ -137,41 +148,13 @@ console.log(error);
             return Swal.fire({
                 icon: 'error',
                 title: '¡Ups!',
-                text: 'El correo electronico que ingresaste no es válido',                
+                text: 'El correo electronico que ingresaste no es válido',
+                confirmButtonColor:"#6495ED" 
+                      
               })
         }
 
-//  if( formData.clave.length == ""){
-//           return Swal.fire({
-//               icon: 'error',
-//               title: '¡Ups!',
-//               text: 'Debe ingresar una clave',                
-//             })
-//       }
-       
-// if( formData.clave !== confirmarContraseña){
-//             return Swal.fire({
-//                 icon: 'error',
-//                 title: '¡Ups!',
-//                 text: 'Las claves no coinciden',                
-//               })
-//         }
 
-// if( formData.clave.length < 6){
-//           return Swal.fire({
-//               icon: 'error',
-//               title: '¡Ups!',
-//               text: 'La clave debe tener 6 caracteres como mínimo',                
-//             })
-//       }
-
-// if( formData.clave.length > 30){
-//         return Swal.fire({
-//             icon: 'error',
-//             title: '¡Ups!',
-//             text: 'La clave debe tener 30 caracteres como máximo',                
-//           })
-//     }
 
 //  if( formData.documento_persona.length > 8){
 //           return Swal.fire({
@@ -185,7 +168,8 @@ console.log(error);
         return Swal.fire({
             icon: 'error',
             title: '¡Ups!',
-            text: 'El nro de celular no puede ser negativo',                
+            text: 'El nro de celular no puede ser negativo',  
+            confirmButtonColor:"#6495ED"               
           })
     }
 
@@ -193,7 +177,8 @@ console.log(error);
       return Swal.fire({
           icon: 'error',
           title: '¡Ups!',
-          text: 'El DNI no puede ser negativo',                
+          text: 'El DNI no puede ser negativo',   
+          confirmButtonColor:"#6495ED"              
         })
   }
 
@@ -201,7 +186,8 @@ console.log(error);
         return Swal.fire({
             icon: 'error',
             title: '¡Ups!',
-            text: 'El nro de celular debe tener 10 dígitos sin guiones ejemplo: 3814123456',                
+            text: 'El nro de celular debe tener 10 dígitos sin guiones ejemplo: 3814123456',  
+            confirmButtonColor:"#6495ED"               
           })
     }
 
@@ -226,7 +212,9 @@ EditarCiudadanoDB(formData)
               <FontAwesomeIcon icon={faXmark}  />
             </div>
           )}
+          
         </div>
+  
         {isEditing ? (
           <div className="px-2">
             <p className="datoUsuario">Nombre/s:</p> <p>{usuario.nombre_persona}</p>
@@ -237,7 +225,7 @@ EditarCiudadanoDB(formData)
             <p className="datoUsuario">Domicilio:</p> <p> {usuario.domicilio_persona}</p>
             <p className="datoUsuario">Telefono:</p> <p> {usuario.telefono_persona}</p>
             <p className="datoUsuario">Email:</p> <p>{usuario.email_persona}</p>
-            <p className="datoUsuario">Contraseña:</p> <p> ***********</p>
+            <p className="datoUsuario">Clave:</p> <p> ***********</p>
           </div>
         ) : ( 
           <form className="px-2 d-flex flex-column formEdit">
@@ -262,6 +250,8 @@ EditarCiudadanoDB(formData)
  <p className="datoUsuario">Email:</p>
             <input type="email" placeholder="Correo electronico" className="inputEditPerfil"
              onChange={handleChange} value={formData.email_persona} name="email_persona" />
+          <p className="datoPie mt-2 text-center ">¿Desea cambiar su clave? Haga click <a onClick={abrirModal2}><strong>aquí</strong></a> </p> 
+             
 {/* <p className="datoUsuario">Contraseña:</p>
             <input type="password" placeholder="Contraseña nueva" className="inputEditPerfil"
              onChange={handleChange} value={formData.clave} name="clave" required/>
@@ -271,6 +261,11 @@ EditarCiudadanoDB(formData)
 
           </form>
         )}
+       
+        
+        
+        
+        
         <div className={isEditing? "d-flex justify-content-between" : "d-flex justify-content-center" }>
           {
             isEditing?
@@ -282,8 +277,9 @@ EditarCiudadanoDB(formData)
                    </Button>
                    </> )
             :
-            <Button onClick={handleEditDatos} variant="outlined" className="text-center">
-             <SaveIcon className="me-2" color="primary" /> Guardar Cambios
+            <Button onClick={handleEditDatos} variant="outlined" className="text-center" disabled={saveChanges}>
+
+             <SaveIcon className="me-2" color={saveChanges?"disabled":"primary"} /> Guardar Cambios
               
               </Button>
               
@@ -299,13 +295,20 @@ EditarCiudadanoDB(formData)
   data={formData}
   cerrarModal={cerrarModal}
   setModalAbierto={setModalAbierto}
-  />
+  /> 
+)} 
+
+{modal2Abierto && (
+  <CambiarContraseña
+ 
+  cerrarModal={cerrarModal2}
+  setModalAbierto={setModal2Abierto}
+  /> 
 )} 
 
 
-
-
     </div>
+    
   );
 };
 

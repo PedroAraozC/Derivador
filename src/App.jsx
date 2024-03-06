@@ -33,7 +33,9 @@ function App() {
                 </PrivateRoute>
               }
             />
-            <Route exact path="/perfil" element={<Perfil />} />
+            <Route exact path="/perfil" element={
+            <PrivateRoute><Perfil /></PrivateRoute>
+            } />
           </Routes>
         </Layout>
       </HashRouter>

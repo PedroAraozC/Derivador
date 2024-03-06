@@ -45,6 +45,7 @@ const useStore = create((set) => ({
       }
       axios.defaults.headers.common["Authorization"] = token;
       const { data } = await axios.get("/usuarios/authStatus");
+      console.log(data);
       set({
         authenticated: true
       });
