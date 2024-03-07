@@ -7,6 +7,7 @@ import { Alert, Button, Snackbar } from "@mui/material";
 import useStore from "../../Zustand/Zustand";
 import { LOGIN_VALUES } from "../../helpers/constantes";
 import { useNavigate } from "react-router-dom";
+import { RestablecerClave } from "./RestablecerClave";
 
 const Login = () => {
   const { authenticated, botonState, login, errors, setErrors } = useStore();
@@ -14,6 +15,9 @@ const Login = () => {
   const [values, setValues] = useState(LOGIN_VALUES);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const navigate = useNavigate();
+  const [modalAbierto, setModalAbierto] = useState(false);
+  const abrirModal = () => setModalAbierto(true);
+  const cerrarModal=() => setModalAbierto(false);
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -143,7 +147,9 @@ Registrarse
 
           </Button>
 
-
+          <p className="datoPie mt-2 text-center ">¿Olvidó su clave? Haga click <a 
+          onClick={abrirModal}
+          ><strong>aquí</strong></a> </p> 
 
           <div className="d-flex flex-column justify-content-center align-items-center">
             <p className="footer p-1 m-0" style={{ fontSize: "0.7em" }}>
@@ -179,7 +185,26 @@ Registrarse
           </Snackbar>
         ))
       )}
+
+
+{modalAbierto && (
+  <RestablecerClave 
+  
+  cerrarModal={cerrarModal}
+  setModalAbierto={setModalAbierto}
+  /> 
+)}
+
+
+
+
     </div>
+
+
+
+
+
+
   );
 };
 

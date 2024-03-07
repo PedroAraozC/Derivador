@@ -108,7 +108,7 @@ console.log(error);
   {
   
       try{
-          await cdigitalApi.put(`/usuarios/editar`,data);
+          await cdigitalApi.put(`/usuarios/editarUsuario`,data);
           
           Swal.fire({
             position: "center",
@@ -300,7 +300,7 @@ EditarCiudadanoDB(formData)
 
 {modal2Abierto && (
   <CambiarContraseña
- 
+ documento={user.documento_persona}
   cerrarModal={cerrarModal2}
   setModalAbierto={setModal2Abierto}
   /> 

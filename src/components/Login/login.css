@@ -10,7 +10,7 @@
 .box {
     position: sticky;
     width: 350px;
-    height: 500px;
+    height: 550px;
     border-radius: 8px;
     overflow: hidden;
     z-index: 1;
@@ -192,4 +192,10 @@ background-color: #0066ff !important;
     cursor: pointer;
     position: absolute;
     z-index: 30;
+}
+
+.datoPie{
+    font-size: 50 !important;
+    margin-top: 10 !important;
+    color:#6495ED
 }

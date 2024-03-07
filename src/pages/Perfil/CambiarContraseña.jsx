@@ -4,21 +4,23 @@ import React, { useState } from 'react'
 import Swal from 'sweetalert2';
 import { Button, Form, Modal, ModalBody, ModalFooter} from 'react-bootstrap';
 import cdigitalApi from '../../config/axios';
-import { useNavigate } from 'react-router-dom/dist';
+
+
 
 
 export const CambiarContraseña = (props) => {
    
-  
+
   // eslint-disable-next-line react/prop-types
-  const {  cerrarModal, setModalAbierto } = props;
+  const { documento, cerrarModal, setModalAbierto } = props;
     // eslint-disable-next-line react/prop-types
     const[datos,setDatos]= useState({
+      documento_persona:documento,
         clave_actual:"",
         clave_nueva:""
     });
     const [confirmarContraseña, setConfirmarContraseña] = useState('');
-   const navigate = useNavigate();
+   
     
 
 
@@ -71,37 +73,37 @@ if( datos.clave_nueva.length > 30){
     }
 
 
-
-
-
-        console.log(datos);
-       setModalAbierto(false);
-
       try {
-         // const resp = await cdigitalApi.put("/usuarios/validar", datos);
+
+
+         const resp = await cdigitalApi.put("/usuarios/editarClave", datos);
   
-        //   if (resp.data.ok) {
-        //       Swal.fire({
-        //           position: "center",
-        //           icon: "success",
-        //           title: `Clave cambiada!`,
-        //           showConfirmButton: false,
-        //           timer: 2000
-        //       });
+          if (resp.data.ok) {
+              Swal.fire({
+                  position: "center",
+                  icon: "success",
+                  title: resp.data.message,
+                  showConfirmButton: false,
+                  timer: 2000
+              });
   
-        //       setTimeout(() => {
-        //           navigate("/");
-        //       }, 2500);
+              setModalAbierto(false);
 
-
-      
-
-
-
-        //   } 
+          } 
+          else{
+            Swal.fire({
+              position: "center",
+              icon: "error",
+              title: resp.data.message,
+              showConfirmButton: false,
+              timer: 2000
+          });
+          }
           
         
-      } catch (error) {
+      } 
+      
+      catch (error) {
           console.log(error);
       }
   }
