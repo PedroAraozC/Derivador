@@ -34,7 +34,7 @@ export default function ListaPrueba() {
   };
 
 const irAGAF = () => {
-  const token = sessionStorage.getItem("token");
+  const token = localStorage.getItem("token");
   const url = new URL(`http://localhost:5173/`);
   url.searchParams.append("GAF", token);
   window.open(url.toString(), "_blank");

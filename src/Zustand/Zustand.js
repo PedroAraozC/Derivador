@@ -24,7 +24,7 @@ const useStore = create((set) => ({
       });
       set({user:data.user.usuarioSinContraseña});
       axios.defaults.headers.common["Authorization"] = data.token;
-      sessionStorage.setItem("token", data.token);
+      localStorage.setItem("token", data.token);
     } catch (error) {
         set({errors : error.response.data?.errors?.length > 0 ?  error.response.data.errors[0].msg : error.response?.data?.message? error.response?.data.message: error.message});
     }
@@ -33,13 +33,13 @@ const useStore = create((set) => ({
 
   logout:() => {
     set({authenticated: false });
-    sessionStorage.removeItem("token");
+    localStorage.removeItem("token");
     
   },
 
   getAuth: async () => {
     try {
-      const token = sessionStorage.getItem("token");
+      const token = localStorage.getItem("token");
       if (!token) {
         set({ loading: false, authenticated: false });
         return;
@@ -52,7 +52,7 @@ const useStore = create((set) => ({
       set({user:data.usuarioSinContraseña});
     } catch (error) {
       set({ authenticated: false});
-      sessionStorage.removeItem("token");
+      localStorage.removeItem("token");
       console.log("error de auth");
       console.log(error)
     }
