@@ -24,12 +24,12 @@ function App() {
         <Layout>
           <Routes>
             <Route exact path="/*" element={<Login />} />
-            <Route exact path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
+            <Route exact path="/home" element={<PrivateRoute key="home"><Home /></PrivateRoute>} />
             <Route exact path="/registro" element={<Registro />} />
             <Route exact
               path="/cap-humano"
               element={
-                <PrivateRoute>
+                <PrivateRoute key="cap-humano">
                   <CapitalHumano />
                 </PrivateRoute>
               }
@@ -37,7 +37,7 @@ function App() {
             <Route exact
               path="/reclamos-estadisticas"
               element={
-                <PrivateRoute>
+                <PrivateRoute key="reclamos">
                   <Reclamos />
                 </PrivateRoute>
               }

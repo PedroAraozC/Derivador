@@ -6,9 +6,10 @@ import { Box, CircularProgress } from "@mui/material";
 // eslint-disable-next-line react/prop-types
 const PrivateRoute = ({ children }) => {
   const { getAuth, authenticated, loading } = useStore();
-
+  
   useEffect(() => {
     getAuth();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return loading ? (

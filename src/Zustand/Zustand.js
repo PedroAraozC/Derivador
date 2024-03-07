@@ -41,18 +41,18 @@ const useStore = create((set) => ({
     try {
       const token = localStorage.getItem("token");
       if (!token) {
-        set({ loading: false, authenticated: false });
-        return;
+        set({ loading: false});
+        return set({authenticated:false})
       }
       axios.defaults.headers.common["Authorization"] = token;
       const { data } = await axios.get("/usuarios/authStatus");
+      set({user:data.usuarioSinContraseña});
       set({
         authenticated: true
       });
-      set({user:data.usuarioSinContraseña});
     } catch (error) {
       set({ authenticated: false});
-      localStorage.removeItem("token");
+      // localStorage.removeItem("token");
       console.log("error de auth");
       console.log(error)
     }
