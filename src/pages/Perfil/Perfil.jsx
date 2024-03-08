@@ -21,7 +21,7 @@ const Perfil = () => {
   // eslint-disable-next-line no-unused-vars
   const { user,updateUser } = useStore();
  // const [confirmarContraseña, setConfirmarContraseña] = useState('');
- const [saveChanges, setSaveChanges] = useState(false);
+ const [saveChanges, setSaveChanges] = useState(JSON.parse(localStorage.getItem("saveChanges")) || false);
  console.log(user);
   const[formData, setFormData]= useState({
       
@@ -124,7 +124,7 @@ console.log(error);
           updateUser(user);
            setIsEditing(!isEditing)
            setSaveChanges(true);
-        
+           localStorage.setItem("saveChanges", JSON.stringify(true));
         
       }
   
