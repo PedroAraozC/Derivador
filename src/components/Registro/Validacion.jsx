@@ -42,7 +42,7 @@ export const Validacion = (props) => {
 
     const ValidarCiudadanoDB = async () => {
       try {
-          const resp = await cdigitalApi.put("/usuarios", datos);
+          const resp = await cdigitalApi.put("/usuarios/validar", datos);
   
           if (resp.data.ok) {
               Swal.fire({
@@ -112,7 +112,7 @@ export const Validacion = (props) => {
 
 
  <Modal.Header  >
-          <Modal.Title>Le enviamos un email de validación a <strong>{data.email_persona}</strong>  con un código de 4 dígitos</Modal.Title>
+          <Modal.Title>Le enviamos un email de validación a <strong>{datos.email_persona}</strong>  con un código de 4 dígitos</Modal.Title>
         </Modal.Header>
 
 

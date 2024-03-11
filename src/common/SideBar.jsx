@@ -33,6 +33,13 @@ export default function ListaPrueba() {
     setOpenListEstadistica(false)
   };
 
+const irAGAF = () => {
+  const token = localStorage.getItem("token");
+  const url = new URL(`http://localhost:5173/`);
+  url.searchParams.append("GAF", token);
+  window.open(url.toString(), "_blank");
+};
+
   const handleClickEstadistica = () => {
     setOpenListEstadistica(!openListEstadistica);
   };
@@ -60,7 +67,7 @@ export default function ListaPrueba() {
         </ListItemButton>
         {/* GESTION FINANCIERA */}
           <ListItemButton
-            onClick={() => redirigir("/home")}
+            onClick={() => irAGAF()}
             component="a"
             className="w-100"
             >

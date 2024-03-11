@@ -18,10 +18,11 @@ const useStore = create((set) => ({
     try {
       set({errors : ""})
       const { data } = await axios.post("/usuarios/login", values);
+    
       set({
-        authenticated: !!data.user
+        authenticated: !!data.user.usuarioSinContraseña
       });
-      set({user:data.user});
+      set({user:data.user.usuarioSinContraseña});
       axios.defaults.headers.common["Authorization"] = data.token;
       localStorage.setItem("token", data.token);
     } catch (error) {
@@ -32,7 +33,7 @@ const useStore = create((set) => ({
 
   logout:() => {
     set({authenticated: false });
-      localStorage.removeItem("token");
+    localStorage.removeItem("token");
     
   },
 
@@ -40,18 +41,18 @@ const useStore = create((set) => ({
     try {
       const token = localStorage.getItem("token");
       if (!token) {
-        set({ loading: false, authenticated: false });
-        return;
+        set({ loading: false});
+        return set({authenticated:false})
       }
       axios.defaults.headers.common["Authorization"] = token;
       const { data } = await axios.get("/usuarios/authStatus");
+      set({user:data.usuarioSinContraseña});
       set({
         authenticated: true
       });
-      set({user:data.usuarioSinContraseña});
     } catch (error) {
       set({ authenticated: false});
-      localStorage.removeItem("token");
+      // localStorage.removeItem("token");
       console.log("error de auth");
       console.log(error)
     }
@@ -78,6 +79,10 @@ const useStore = create((set) => ({
 
   flagCategoriasFuncionarios: false,
   setFlagCategoriasFuncionarios: () => set((state) => ({ ...state, flagCategoriasFuncionarios: !state.flagCategoriasFuncionarios })),
+
+  updateUser: (newUserData) => {
+    set({ user: newUserData });
+  },
 }))
 
 export default useStore;

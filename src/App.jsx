@@ -9,18 +9,27 @@ import Perfil from "./pages/Perfil/Perfil";
 import { Registro } from "./components/Registro/Registro";
 
 function App() {
+  const url = new URL(window.location.href);
+  const logout = url.searchParams.get("logout");
+
+  url.searchParams.delete("logout");
+  history.replaceState(null, '', url.toString());
+
+  if(logout){
+    localStorage.removeItem("token");
+  }
   return (
     <>
     <HashRouter>
         <Layout>
           <Routes>
             <Route exact path="/*" element={<Login />} />
-            <Route exact path="/home" element={<Home />} />
+            <Route exact path="/home" element={<PrivateRoute key="home"><Home /></PrivateRoute>} />
             <Route exact path="/registro" element={<Registro />} />
             <Route exact
               path="/cap-humano"
               element={
-                <PrivateRoute>
+                <PrivateRoute key="cap-humano">
                   <CapitalHumano />
                 </PrivateRoute>
               }
@@ -28,7 +37,7 @@ function App() {
             <Route exact
               path="/reclamos-estadisticas"
               element={
-                <PrivateRoute>
+                <PrivateRoute key="reclamos">
                   <Reclamos />
                 </PrivateRoute>
               }
