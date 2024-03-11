@@ -18,7 +18,7 @@ const useStore = create((set) => ({
     try {
       set({errors : ""})
       const { data } = await axios.post("/usuarios/login", values);
-      console.log(data);
+    
       set({
         authenticated: !!data.user.usuarioSinContraseña
       });
