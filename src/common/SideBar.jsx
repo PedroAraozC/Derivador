@@ -15,7 +15,7 @@ import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import HomeIcon from "@mui/icons-material/Home";
 import FeedbackIcon from "@mui/icons-material/Feedback";
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+// import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import "./SideBar.css";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 
@@ -33,12 +33,12 @@ export default function ListaPrueba() {
     setOpenListEstadistica(false)
   };
 
-const irAGAF = () => {
-  const token = localStorage.getItem("token");
-  const url = new URL(`http://localhost:5173/`);
-  url.searchParams.append("GAF", token);
-  window.open(url.toString(), "_blank");
-};
+// const irAGAF = () => {
+//   const token = localStorage.getItem("token");
+//   const url = new URL(`http://localhost:5173/`);
+//   url.searchParams.append("GAF", token);
+//   window.open(url.toString(), "_blank");
+// };
 
   const handleClickEstadistica = () => {
     setOpenListEstadistica(!openListEstadistica);
