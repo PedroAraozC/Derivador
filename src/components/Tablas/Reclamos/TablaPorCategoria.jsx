@@ -292,6 +292,7 @@ const TablaPorCategoria = () => {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+        labelRowsPerPage="Filas por página"
       />
     </Paper>
     <FormControlLabel

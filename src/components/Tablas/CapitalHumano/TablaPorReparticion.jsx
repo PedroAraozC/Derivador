@@ -290,6 +290,7 @@ export default function TablaPorReparticion() {
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
+          labelRowsPerPage="Filas por página"
         />
         </TableContainer>
       </Paper>

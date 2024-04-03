@@ -290,6 +290,7 @@ const TablaPorOficina = () => {
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
+          labelRowsPerPage="Filas por página"
         />
       </Paper>
       <div className="d-flex justify-content-end">

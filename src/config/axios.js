@@ -1,9 +1,7 @@
 import axiosOriginal from 'axios'
 
 const axios = axiosOriginal.create({
-    // baseURL: import.meta.env.VITE_APP_RUTA_BACK
-   // baseURL: "http://172.16.9.243:4000"
-    baseURL: "http://localhost:4000"
+    baseURL: import.meta.env.VITE_APP_RUTA_BACK
 })
 
 export default axios;
