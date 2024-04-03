@@ -66,7 +66,7 @@ const irAGAF = () => {
           <ListItemText primary="Inicio" />
         </ListItemButton>
         {/* GESTION FINANCIERA */}
-          <ListItemButton
+          {/* <ListItemButton
             onClick={() => irAGAF()}
             component="a"
             className="w-100"
@@ -75,7 +75,7 @@ const irAGAF = () => {
               <AttachMoneyIcon/>
             </ListItemIcon>
             <ListItemText primary="Gestión Financiera" />
-          </ListItemButton>
+          </ListItemButton> */}
          {/* GESTION FINANCIERA */}
          {/* ESTADISTICAS */}
         <ListItemButton onClick={handleClickEstadistica} className="w-100">
