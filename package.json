@@ -19,6 +19,8 @@
     "@mui/material": "^5.15.3",
     "@mui/styled-engine-sc": "^6.0.0-alpha.11",
     "@mui/x-data-grid": "^6.18.7",
+    "@sweetalert2/theme-material-ui": "^5.0.16",
+    "@sweetalert2/themes": "^5.0.16",
     "bootstrap": "^5.3.2",
     "chart.js": "^4.4.1",
     "moment-timezone": "^0.5.45",
@@ -43,6 +45,7 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
+    "sass": "^1.71.1",
     "vite": "^5.0.8"
   }
 }

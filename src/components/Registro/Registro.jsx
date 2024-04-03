@@ -105,7 +105,8 @@ export const Registro = () => {
             return Swal.fire({
                 icon: 'error',
                 title: '¡Ups!',
-                text: 'El correo electronico que ingresaste no es válido',                
+                text: 'El correo electronico que ingresaste no es válido',  
+                confirmButtonColor:"#6495ED"               
               })
         }
         // ! Verificar que las contraseñas sean iguales
@@ -113,7 +114,8 @@ if( formData.clave !== confirmarContraseña){
             return Swal.fire({
                 icon: 'error',
                 title: '¡Ups!',
-                text: 'Las claves no coinciden',                
+                text: 'Las claves no coinciden',   
+                confirmButtonColor:"#6495ED"              
               })
         }
 
@@ -121,7 +123,8 @@ if( formData.clave !== confirmarContraseña){
           return Swal.fire({
               icon: 'error',
               title: '¡Ups!',
-              text: 'La clave debe tener 5 caracteres como mínimo',                
+              text: 'La clave debe tener 5 caracteres como mínimo',    
+              confirmButtonColor:"#6495ED"             
             })
       }
 
@@ -129,7 +132,8 @@ if( formData.clave !== confirmarContraseña){
         return Swal.fire({
             icon: 'error',
             title: '¡Ups!',
-            text: 'La clave debe tener 30 caracteres como máximo',                
+            text: 'La clave debe tener 30 caracteres como máximo',    
+            confirmButtonColor:"#6495ED"             
           })
     }
 
@@ -138,7 +142,8 @@ if( formData.clave !== confirmarContraseña){
           return Swal.fire({
               icon: 'error',
               title: '¡Ups!',
-              text: 'El DNI no puede tener mas de 8 dígitos',                
+              text: 'El DNI no puede tener mas de 8 dígitos', 
+              confirmButtonColor:"#6495ED"                
             })
       }
 
@@ -146,7 +151,8 @@ if( formData.clave !== confirmarContraseña){
         return Swal.fire({
             icon: 'error',
             title: '¡Ups!',
-            text: 'El nro de celular no puede ser negativo',                
+            text: 'El nro de celular no puede ser negativo',   
+            confirmButtonColor:"#6495ED"              
           })
     }
 
@@ -154,7 +160,8 @@ if( formData.clave !== confirmarContraseña){
       return Swal.fire({
           icon: 'error',
           title: '¡Ups!',
-          text: 'El DNI no puede ser negativo',                
+          text: 'El DNI no puede ser negativo',  
+          confirmButtonColor:"#6495ED"               
         })
   }
 
@@ -164,7 +171,8 @@ if( formData.clave !== confirmarContraseña){
         return Swal.fire({
             icon: 'error',
             title: '¡Ups!',
-            text: 'El nro de celular debe tener 10 dígitos sin guiones ejemplo: 3814123456',                
+            text: 'El nro de celular debe tener 10 dígitos sin guiones ejemplo: 3814123456',
+            confirmButtonColor:"#6495ED"                 
           })
     }
 
@@ -173,14 +181,16 @@ if( formData.clave !== confirmarContraseña){
     return Swal.fire({
         icon: 'error',
         title: '¡Ups!',
-        text: 'Debe seleccionar una provincia',                
+        text: 'Debe seleccionar una provincia',
+        confirmButtonColor:"#6495ED"                 
       })
 }
 if( formData.id_pais == 0){
   return Swal.fire({
       icon: 'error',
       title: '¡Ups!',
-      text: 'Debe seleccionar un país',                
+      text: 'Debe seleccionar un país',   
+      confirmButtonColor:"#6495ED"              
     })
 }
 
@@ -188,14 +198,16 @@ if( formData.id_genero == 0){
   return Swal.fire({
       icon: 'error',
       title: '¡Ups!',
-      text: 'Debe seleccionar un género',                
+      text: 'Debe seleccionar un género',  
+      confirmButtonColor:"#6495ED"               
     })
 }
 if( formData.id_tdocumento == 0){
   return Swal.fire({
       icon: 'error',
       title: '¡Ups!',
-      text: 'Debe seleccionar un tipo de documento',                
+      text: 'Debe seleccionar un tipo de documento', 
+      confirmButtonColor:"#6495ED"                
     })
 }
 
@@ -209,7 +221,8 @@ try{
   return Swal.fire({
     icon: 'error',
     title: '¡Ups!',
-    text: 'El DNI ingresado ya se encuentra registrado',                
+    text: 'El DNI ingresado ya se encuentra registrado',  
+    confirmButtonColor:"#6495ED"              
   })
 
 }
@@ -217,7 +230,8 @@ if(resp2.data.ciudadano){
   return Swal.fire({
     icon: 'error',
     title: '¡Ups!',
-    text: 'El Email ingresado ya se encuentra registrado',                
+    text: 'El Email ingresado ya se encuentra registrado',  
+    confirmButtonColor:"#6495ED"               
   })
 
 }

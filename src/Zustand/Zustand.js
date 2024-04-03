@@ -34,7 +34,7 @@ const useStore = create((set) => ({
   logout:() => {
     set({authenticated: false });
     localStorage.removeItem("token");
-    
+    localStorage.removeItem("saveChanges");
   },
 
   getAuth: async () => {
