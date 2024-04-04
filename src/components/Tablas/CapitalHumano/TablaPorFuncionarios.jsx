@@ -378,6 +378,7 @@ const TablaPorFuncionarios = () => {
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
             labelRowsPerPage="Filas por página"
+            labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count}`}
           />
         </Paper>
         <FormControlLabel

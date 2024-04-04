@@ -74,7 +74,6 @@ const GraficoReclamoCategoriaYEstado = ({ data }) => {
       },
     ],
   };
-  console.log(copiaResultSearch)
 
   const datasets = [
     {
