@@ -32,8 +32,36 @@ ChartJS.register(
 const GraficoReclamoCategoriaYEstado = ({ data }) => {
   const [categorias, setCategorias] = useState([]);
 
-  const [categoriaSelected, setCategoriaSelected] = useState("todas");
+  const [categoriaSelected, setCategoriaSelected] = useState(null);
   const [copiaResultSearch] = useState(data.resultSearch[0])
+
+
+  // INICIO trabajar array
+  function tieneEstadoFinalizado(categoria, array) {
+    return array.some(objeto => objeto.id_categoria === categoria.id_categoria && objeto.estado === 4);
+}
+
+// Obtenemos todas las categorías únicas
+const categoriasUnicas = [...new Set(data.resultSearch[0].map(objeto => objeto.id_categoria))];
+
+// Creamos un nuevo array con las categorías y sus estados actualizados
+const arrayActualizado = categoriasUnicas.flatMap(id_categoria => {
+    const categoria = data.resultSearch[0].find(objeto => objeto.id_categoria === id_categoria);
+    if (!tieneEstadoFinalizado(categoria, data.resultSearch[0])) {
+        return [
+            ...data.resultSearch[0].filter(objeto => objeto.id_categoria === id_categoria),
+            {
+                id_categoria: categoria.id_categoria,
+                nombre_categoria: categoria.nombre_categoria,
+                estado: 4,
+                descripcion: 'FINALIZADO',
+                cantidad: 0
+            }
+        ];
+    }
+    return data.resultSearch[0].filter(objeto => objeto.id_categoria === id_categoria);
+});
+// FIN trabajar array
 
   useEffect(() => {
     const categoriasSP = copiaResultSearch.map(
@@ -42,7 +70,7 @@ const GraficoReclamoCategoriaYEstado = ({ data }) => {
     const categoriasSinRepetidos = [...new Set(categoriasSP)];
     setCategorias(categoriasSinRepetidos);
 
-  }, []);
+  }, []);  
 
   const options = {
     maintainAspectRatio: false,
@@ -78,7 +106,7 @@ const GraficoReclamoCategoriaYEstado = ({ data }) => {
   const datasets = [
     {
       label: "INICIADO",
-      data: copiaResultSearch
+      data: arrayActualizado
         ?.filter((e) => e.descripcion == "INICIADO")
         .map((cat) => cat.cantidad),
       backgroundColor: "rgba(255, 99, 132, 0.2)",
@@ -87,7 +115,7 @@ const GraficoReclamoCategoriaYEstado = ({ data }) => {
     },
     {
       label: "FINALIZADO",
-      data: copiaResultSearch
+      data: arrayActualizado
         ?.filter((e) => e.descripcion == "FINALIZADO")
         .map((cat) => cat.cantidad),
       backgroundColor: "rgba(54, 162, 235, 0.2)",
@@ -100,8 +128,8 @@ const GraficoReclamoCategoriaYEstado = ({ data }) => {
   const chartData = { labels: categorias, datasets };
 
   useEffect(() => {
-  if(data.resultSearch[0].length >=24){
-    setCategoriaSelected("todas")
+  if(data.resultSearch[0].length > 5){
+    setCategoriaSelected(null)
   }else{
 
     setCategoriaSelected(data.resultSearch[0][0].nombre_categoria)
@@ -110,41 +138,10 @@ const GraficoReclamoCategoriaYEstado = ({ data }) => {
   
   return (
     <div className="d-flex  flex-column container">
-      {/* <div>
-        <FormControl sx={{ m: 1, minWidth: 100 }}>
-          <InputLabel>Categorias</InputLabel>
-          <Select
-            labelId="categoria"
-            value={categoriaSelected}
-            label="Categorias"
-            autoWidth
-            disabled
-            onChange={(e) => setCategoriaSelected(e.target.value)}
-          >
-            <MenuItem selected value="todas">
-              todas
-            </MenuItem>
-            {categorias.length > 0 ? (
-              categorias.map(
-                (
-                  cat,
-                  index // Agregué un índice para las keys en elementos iterados
-                ) => (
-                  <MenuItem key={index} value={cat}>
-                    {cat}
-                  </MenuItem>
-                )
-              )
-            ) : (
-              <MenuItem disabled>No hay categorías disponibles</MenuItem>
-            )}
-          </Select>
-        </FormControl>
-      </div> */}
 
-      {categoriaSelected != "todas" ? (
+      {categoriaSelected != null ? (
         <>
-          {categoriaSelected != "todas" ? (
+          {categoriaSelected != null ? (
             <div className="LayoutHeight2 d-flex justify-content-center w-100 ">
               <Pie data={dataPorCategoriasYestados} options={options} />
             </div>
