@@ -28,7 +28,7 @@ function App() {
             <Route exact path="/home" element={<PrivateRoute key="home"><Home /></PrivateRoute>} />
             <Route exact path="/registro" element={<Registro />} />
             <Route exact
-              path="/estadistica_ac"
+              path="/estadistica_rrhh"
               element={
                 <PrivateRoute key="cap-humano">
                   <CapitalHumano />
@@ -36,7 +36,7 @@ function App() {
               }
             />
             <Route exact
-              path="/estadistica_rrhh"
+              path="/estadistica_ac"
               element={
                 <PrivateRoute key="reclamos">
                   <Reclamos />

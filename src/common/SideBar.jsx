@@ -37,6 +37,7 @@ export default function ListaPrueba() {
     url.searchParams.append("GAF", token);
     window.open(url.toString(), "_blank");
   };
+
   const { user, obtenerPermisos, permisos } = useStore();
   const [state, setState] = React.useState({
     left: false,
@@ -137,7 +138,7 @@ export default function ListaPrueba() {
               <List component="div">
                 {item.subItems.map((subItem, subIndex) => (
                   <ListItemButton key={subIndex} component="a" className="w-100">
-                    <ListItemText primary={subItem.descripcion} onClick={()=>redirigir(`/${subItem.label}`)}/>
+                    <ListItemText primary={subItem.descripcion} onClick={subItem.descripcion == "Gestión Financiera"?() => irAGAF():()=>redirigir(`/${subItem.label}`)}/>
                   </ListItemButton>
                 ))}
               </List>
