@@ -5,39 +5,66 @@ import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { Button } from "@mui/material";
 import useStore from "../../Zustand/Zustand";
-import Swal from "sweetalert2";
 import cdigitalApi from '../../config/axios';
 import { Validacion } from "../../components/Registro/Validacion";
+import SaveIcon from '@mui/icons-material/Save';
+import EditIcon from '@mui/icons-material/Edit';
+import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead';
+import Swal from "sweetalert2";
+import { CambiarContraseña } from "../../pages/Perfil/CambiarContraseña";
+
+
 
 const Perfil = () => {
  
   const [isEditing, setIsEditing] = useState(true);
   // eslint-disable-next-line no-unused-vars
   const { user,updateUser } = useStore();
-  const [confirmarContraseña, setConfirmarContraseña] = useState('');
-
+ // const [confirmarContraseña, setConfirmarContraseña] = useState('');
+ const [saveChanges, setSaveChanges] = useState(JSON.parse(localStorage.getItem("saveChanges")) || false);
+ console.log(user);
   const[formData, setFormData]= useState({
       
     documento_persona:user.documento_persona,
     nombre_persona:user.nombre_persona,
     apellido_persona:user.apellido_persona,
     email_persona:user.email_persona,
-    clave:"",
     telefono_persona:user.telefono_persona,
     domicilio_persona:user.domicilio_persona,
     localidad_persona:user.localidad_persona,
  })
 
  const [modalAbierto, setModalAbierto] = useState(false);
- const abrirModal = () => {
-    
-     setModalAbierto(true);
- };
- const cerrarModal=() => setModalAbierto(false)
-
+ const [modal2Abierto, setModal2Abierto] = useState(false);
+ const abrirModal = () => setModalAbierto(true);
+ const abrirModal2 = () => setModal2Abierto(true);
+ const cerrarModal=() => setModalAbierto(false);
+ const cerrarModal2=() => setModal2Abierto(false);
 
 
   const usuario=user;
+
+  const validarEmail=async ()=>{
+
+    if(usuario.validado==1){
+
+return Swal.fire({text:"Su email ya está validado!",
+confirmButtonColor:"#1F89F6"});
+
+    }
+
+try {
+
+  await cdigitalApi.post(`/usuarios/email`,{email_persona:user.email_persona,documento_persona:user.documento_persona});
+abrirModal();
+  
+} 
+catch(error)
+{
+console.log(error);
+}
+
+  }
 
   const actualizarUsuarioConFormData = (objeto1, objeto2) => {
     for (const key in objeto2) {
@@ -81,7 +108,7 @@ const Perfil = () => {
   {
   
       try{
-          await cdigitalApi.put(`/usuarios/editar`,data);
+          await cdigitalApi.put(`/usuarios/editarUsuario`,data);
           
           Swal.fire({
             position: "center",
@@ -96,7 +123,8 @@ const Perfil = () => {
           
           updateUser(user);
            setIsEditing(!isEditing)
-        
+           setSaveChanges(true);
+           localStorage.setItem("saveChanges", JSON.stringify(true));
         
       }
   
@@ -120,55 +148,28 @@ const Perfil = () => {
             return Swal.fire({
                 icon: 'error',
                 title: '¡Ups!',
-                text: 'El correo electronico que ingresaste no es válido',                
+                text: 'El correo electronico que ingresaste no es válido',
+                confirmButtonColor:"#6495ED" 
+                      
               })
         }
 
- if( formData.clave.length == ""){
-          return Swal.fire({
-              icon: 'error',
-              title: '¡Ups!',
-              text: 'Debe ingresar una clave',                
-            })
-      }
-       
-if( formData.clave !== confirmarContraseña){
-            return Swal.fire({
-                icon: 'error',
-                title: '¡Ups!',
-                text: 'Las claves no coinciden',                
-              })
-        }
 
-if( formData.clave.length < 6){
-          return Swal.fire({
-              icon: 'error',
-              title: '¡Ups!',
-              text: 'La clave debe tener 6 caracteres como mínimo',                
-            })
-      }
 
-if( formData.clave.length > 30){
-        return Swal.fire({
-            icon: 'error',
-            title: '¡Ups!',
-            text: 'La clave debe tener 30 caracteres como máximo',                
-          })
-    }
-
- if( formData.documento_persona.length > 8){
-          return Swal.fire({
-              icon: 'error',
-              title: '¡Ups!',
-              text: 'El DNI no puede tener mas de 8 dígitos',                
-            })
-      }
+//  if( formData.documento_persona.length > 8){
+//           return Swal.fire({
+//               icon: 'error',
+//               title: '¡Ups!',
+//               text: 'El DNI no puede tener mas de 8 dígitos',                
+//             })
+//       }
 
  if( formData.telefono_persona <0){
         return Swal.fire({
             icon: 'error',
             title: '¡Ups!',
-            text: 'El nro de celular no puede ser negativo',                
+            text: 'El nro de celular no puede ser negativo',  
+            confirmButtonColor:"#6495ED"               
           })
     }
 
@@ -176,7 +177,8 @@ if( formData.clave.length > 30){
       return Swal.fire({
           icon: 'error',
           title: '¡Ups!',
-          text: 'El DNI no puede ser negativo',                
+          text: 'El DNI no puede ser negativo',   
+          confirmButtonColor:"#6495ED"              
         })
   }
 
@@ -184,7 +186,8 @@ if( formData.clave.length > 30){
         return Swal.fire({
             icon: 'error',
             title: '¡Ups!',
-            text: 'El nro de celular debe tener 10 dígitos sin guiones ejemplo: 3814123456',                
+            text: 'El nro de celular debe tener 10 dígitos sin guiones ejemplo: 3814123456',  
+            confirmButtonColor:"#6495ED"               
           })
     }
 
@@ -209,7 +212,9 @@ EditarCiudadanoDB(formData)
               <FontAwesomeIcon icon={faXmark}  />
             </div>
           )}
+          
         </div>
+  
         {isEditing ? (
           <div className="px-2">
             <p className="datoUsuario">Nombre/s:</p> <p>{usuario.nombre_persona}</p>
@@ -220,7 +225,7 @@ EditarCiudadanoDB(formData)
             <p className="datoUsuario">Domicilio:</p> <p> {usuario.domicilio_persona}</p>
             <p className="datoUsuario">Telefono:</p> <p> {usuario.telefono_persona}</p>
             <p className="datoUsuario">Email:</p> <p>{usuario.email_persona}</p>
-            <p className="datoUsuario">Contraseña:</p> <p> ***********</p>
+            <p className="datoUsuario">Clave:</p> <p> ***********</p>
           </div>
         ) : ( 
           <form className="px-2 d-flex flex-column formEdit">
@@ -230,9 +235,9 @@ EditarCiudadanoDB(formData)
 <p className="datoUsuario">Apellidos:</p>
             <input type="text" placeholder="Apellido" className="inputEditPerfil" 
              onChange={handleChange} value={formData.apellido_persona} name="apellido_persona"/>
- <p className="datoUsuario">DNI:</p>
+ {/* <p className="datoUsuario">DNI:</p>
             <input type="number" placeholder="Documento" className="inputEditPerfil" 
-             onChange={(e) => handleChange(e, 8)} value={formData.documento_persona} name="documento_persona"/>
+             onChange={(e) => handleChange(e, 8)} value={formData.documento_persona} name="documento_persona"/> */}
 {/* <p className="datoUsuario">Localidad:</p>
             <input type="text" placeholder="Localidad" className="inputEditPerfil" 
              onChange={handleChange} value={formData.localidad_persona} name="localidad_persona"/> */}
@@ -245,23 +250,41 @@ EditarCiudadanoDB(formData)
  <p className="datoUsuario">Email:</p>
             <input type="email" placeholder="Correo electronico" className="inputEditPerfil"
              onChange={handleChange} value={formData.email_persona} name="email_persona" />
-<p className="datoUsuario">Contraseña:</p>
+          <p className="datoPie mt-2 text-center ">¿Desea cambiar su clave? Haga click <a onClick={abrirModal2}><strong>aquí</strong></a> </p> 
+             
+{/* <p className="datoUsuario">Contraseña:</p>
             <input type="password" placeholder="Contraseña nueva" className="inputEditPerfil"
              onChange={handleChange} value={formData.clave} name="clave" required/>
 <p className="datoUsuario">Confirmar contraseña:</p>
             <input type="password" placeholder="Confirmar contraseña" className="inputEditPerfil" 
-             onChange={(e) => setConfirmarContraseña(e.target.value)} required/>
+             onChange={(e) => setConfirmarContraseña(e.target.value)} required/> */}
+
           </form>
         )}
-        <div className="d-flex justify-content-between">
+       
+        
+        
+        
+        
+        <div className={isEditing? "d-flex justify-content-between" : "d-flex justify-content-center" }>
           {
             isEditing?
-            <Button onClick={() => setIsEditing(!isEditing)}>Editar datos</Button>
+          (<> <Button onClick={() => setIsEditing(!isEditing)} variant="outlined">
+            <EditIcon className="me-2" color="primary" />  Editar datos
+              </Button>
+                  <Button onClick={validarEmail} variant="outlined">
+                  <MarkEmailReadIcon className="me-2" color="primary"  /> Validar email
+                   </Button>
+                   </> )
             :
-            <Button onClick={handleEditDatos}>Guardar Cambios</Button>
-            
+            <Button onClick={handleEditDatos} variant="outlined" className="text-center" disabled={saveChanges}>
+
+             <SaveIcon className="me-2" color={saveChanges?"disabled":"primary"} /> Guardar Cambios
+              
+              </Button>
+              
           }
-          <Button onClick={abrirModal} >Validar email</Button>
+      
         </div>
    
       
@@ -272,13 +295,20 @@ EditarCiudadanoDB(formData)
   data={formData}
   cerrarModal={cerrarModal}
   setModalAbierto={setModalAbierto}
-  />
+  /> 
+)} 
+
+{modal2Abierto && (
+  <CambiarContraseña
+ documento={user.documento_persona}
+  cerrarModal={cerrarModal2}
+  setModalAbierto={setModal2Abierto}
+  /> 
 )} 
 
 
-
-
     </div>
+    
   );
 };
 

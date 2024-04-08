@@ -7,6 +7,7 @@ import Reclamos from "./pages/EstadisticasReclamos/Reclamos";
 import PrivateRoute from "./routes/PrivateRoute";
 import Perfil from "./pages/Perfil/Perfil";
 import { Registro } from "./components/Registro/Registro";
+import PanelAdmin from "./components/Admin/PanelAdmin";
 
 function App() {
   const url = new URL(window.location.href);
@@ -27,7 +28,7 @@ function App() {
             <Route exact path="/home" element={<PrivateRoute key="home"><Home /></PrivateRoute>} />
             <Route exact path="/registro" element={<Registro />} />
             <Route exact
-              path="/cap-humano"
+              path="/estadistica_ac"
               element={
                 <PrivateRoute key="cap-humano">
                   <CapitalHumano />
@@ -35,14 +36,20 @@ function App() {
               }
             />
             <Route exact
-              path="/reclamos-estadisticas"
+              path="/estadistica_rrhh"
               element={
                 <PrivateRoute key="reclamos">
                   <Reclamos />
                 </PrivateRoute>
               }
             />
-            <Route exact path="/perfil" element={<Perfil />} />
+
+            <Route exact path="/perfil" element={
+            <PrivateRoute><Perfil /></PrivateRoute>
+            } />
+
+            <Route exact path="/panel_admin" element={<PanelAdmin />} />
+
           </Routes>
         </Layout>
       </HashRouter>

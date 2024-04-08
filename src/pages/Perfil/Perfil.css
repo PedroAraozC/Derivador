@@ -13,6 +13,11 @@
     font-weight: 600;
     margin: 0;
 }
+.datoPie{
+    font-size: 50 !important;
+    margin-top: 10 !important;
+    color:#6495ED
+}
 .inputEditPerfil{
     border: 1px solid #ccc;
     height: 50px;
