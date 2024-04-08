@@ -19,7 +19,7 @@ import Button from "@mui/material/Button";
 
 // eslint-disable-next-line react/prop-types
 const FormReclamos = () => {
-  const { setResultSearch, setValuesGraficos } = useStore();
+  const { setResultSearch, setValuesGraficos,setFormFlagReclamos } = useStore();
 
   const [error, setError] = useState("");
   const [storeProcedures, setStoreProcedures] = useState([]);
@@ -32,6 +32,7 @@ const FormReclamos = () => {
   const [flagButton, setFlagButton] = useState(false);
 
   const getData = async (e) => {
+    setFormFlagReclamos(false);
     e.preventDefault();
     try {
       setFlagButton(true);
@@ -44,6 +45,7 @@ const FormReclamos = () => {
       console.log("mal");
       setErrorPermiso(error.response.data?.message || error.message)
     }
+    setFormFlagReclamos(true);
   };
 
   const handleInputChange = (e) => {

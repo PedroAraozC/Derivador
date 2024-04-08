@@ -96,7 +96,7 @@ const useStore = create((set) => ({
       });
     } catch (error) {
       set({ authenticated: false});
-      // localStorage.removeItem("token");
+      localStorage.removeItem("token");
       console.log("error de auth");
       console.log(error)
     }

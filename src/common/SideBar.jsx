@@ -146,6 +146,7 @@ export default function ListaPrueba() {
         </div>
       ))}
     </div>
+
       <div className="d-flex flex-column justify-content-center align-items-center">
         <p className="footer text-center">
           Desarrollado por Dirección de Innovación Tecnológica
