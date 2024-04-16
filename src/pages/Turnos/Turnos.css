@@ -1,0 +1,55 @@
+.turnos-container {
+    background-color: #1F89F6   ;
+    padding: 5px;
+    border-radius: 10px;
+    width: 800px;
+    margin-bottom: 10px;
+  }
+  
+  .turnos-title {
+    text-align: center;
+  }
+  
+  .input-group {
+    margin-bottom: 10px;
+  }
+  
+  .input-group label {
+    display: block;
+  }
+  
+  .input-group input {
+    width: 770px;
+    padding: 15px;
+    margin-top: 5px;
+  }
+  
+  .contenedor {
+
+    border-radius: 5px;
+    border: solid 1px;
+    width: 800px;
+    border-radius: 10px;
+  }
+
+  .contenedorTurno {
+
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .contBtn{
+
+    justify-content: end;
+    align-content: flex-end;
+    display: flex !important;
+  width: 100% !important;
+  }
+
+  .boton {
+
+  }
+
