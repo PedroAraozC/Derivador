@@ -8,6 +8,7 @@ import PrivateRoute from "./routes/PrivateRoute";
 import Perfil from "./pages/Perfil/Perfil";
 import { Registro } from "./components/Registro/Registro";
 import PanelAdmin from "./components/Admin/PanelAdmin";
+import Turnos from "./pages/Turnos/Turnos";
 
 function App() {
   const url = new URL(window.location.href);
@@ -49,6 +50,7 @@ function App() {
             } />
 
             <Route exact path="/panel_admin" element={<PanelAdmin />} />
+            <Route exact path="/turnos" element={<Turnos/>} />
 
           </Routes>
         </Layout>
