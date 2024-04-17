@@ -38,10 +38,10 @@ function Turnero() {
       <form onSubmit={handleSubmit}>
         <div className="input-group">
           <TextField
-            label="Numero de Documento" 
+            label="Numero de Documento"
             className="inputNroDocumento"
             type="text"
-            ></TextField>
+           ></TextField>
          </div>
         <div className="input-group">
           <TextField
