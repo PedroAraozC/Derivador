@@ -1,8 +1,8 @@
-.turnos-container {
-  background-color: #0066ff;
+ .turnos-container {
+  background-color: #1F89F6;
     padding: 5px;
     border-radius: 5px;
-    width: 808px;
+      
     margin-bottom: 30px;
     margin-left: -2px;
    color:white;
@@ -13,43 +13,6 @@
     font-size: 25px;
   }
   
-  .input-group {
-    width: 795px !important;
-    margin-bottom: 10px;
-    margin-left: 5px;
-    
-  }
-  
-  .input-group label {
-    display: block;
-  }
-  
-  .input-group input {
-    width: 770px;
-    padding: 15px;
-    margin-top: 5px;
-  }
-  
-  .contenedorTurno {
-  
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-  }
-  .contenedor {
-
-    border: solid 3px;
-    border-color: #0066ff;
-    width: 810px;
-    height: 350px;
-    border-radius: 10px;
-   /* background-color: rgba(190, 190, 190, 0.589); */
-   box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
-  }
-  
 
   .contBtn{
 
@@ -57,14 +20,58 @@
     align-content: center;
     display: flex !important;
     /* width: 100% !important; */
-    padding-top: 10px;
-
+    padding-top: 50px; 
   }
 
-  .label.Mui-focused {
-    border: solid 1px;
-    background-color: #0066ff;
-  }
+  .selectTramite {
+    
+    width: 250px !important;
+    margin-left: 10px !important;
+    margin-bottom: 25px;
+        
+    }
 
+.select-container {
+  display: flex;
+  flex-direction: row;
+  width: 100% !important;
+  margin-left: 10px;
+}
+
+
+.tipoTramite {
+  margin-top: 13px;
+  margin-left: 690px;
+  margin-bottom: 200px;
+}
+
+.inputsContainer{
+  
+  flex-direction: column !important;
+  columns: 4 !important;
+  margin-left: 390px;
+  
+}
+
+.inputNombre {
+  width: 500px !important;
+  margin-bottom: 20px !important;
+}
+
+.inputApellido {
+  width: 500px !important;
+  margin-left: 250px !important;
+}
+
+.inputCuil {
+  width: 500px !important;
+  margin-bottom: 20px !important;
+}
+
+.inputMail {
+  width: 500px !important;
+  margin-left: 250px !important;
+  margin-top: 20px !important;
+}
 
 
