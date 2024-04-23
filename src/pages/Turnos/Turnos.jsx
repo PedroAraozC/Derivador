@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./Turnos.css";
-import { Input } from "@mui/base/Input";
 import {
   TextField,
   Button,
@@ -9,42 +8,33 @@ import {
   FormControl,
   InputLabel,
 } from "@mui/material";
+import "cally";
 
 function Turnero() {
-  // const [documento, setDocumento] = useState("");
-  // const [nombre, setNombre] = useState("");
-  // const [apellido, setApellido] = useState("");
+  const [selectedValue, setSelectedValue] = useState("");
+  const [selectedDate, setSelectedDate] = useState( Date());
+  const currentDate = new Date();
+  const lastDayOfYear = new Date(currentDate.getFullYear(), 11, 31);
 
-  // const handleDocumentoChange = (event) => {
-  //   setDocumento(event.target.value);
-  // };
-
-  // const handleNombreChange = (event) => {
-  //   setNombre(event.target.value);
-  // };
-
-  // const handleApellidoChange = (event) => {
-  //   setApellido(event.target.value);
-  // };
-
-  const handleSubmit = (event) => {
-    //   event.preventDefault();
-    //   // Aquí puedes enviar los datos a donde necesites
-    //   console.log("Documento:", documento);
-    //   console.log("Nombre:", nombre);
-    //   console.log("Apellido:", apellido);
+  const handleChange = (date) => {
+    console.log("Fecha seleccionada:", date);
+    setSelectedDate(date);
   };
 
-  const [selectedValue, setSelectedValue] = useState("");
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    // Manejar envío del formulario
+  };
 
-  const handleChange = (event) => {
+  const handleTipoTramiteChange = (event) => {
+    // Manejar cambio de tipo de trámite
     setSelectedValue(event.target.value);
   };
 
   return (
     <>
-      <div className="turnos-container">
-        <h2 className="turnos-title">Solicitud de Turnos</h2>
+      <div className="turnosContainer">
+        <h2 className="turnosTitle">Solicitud de Turnos</h2>
       </div>
       <div className="select-container">
         <h4 className="tipoTramite">Tipo de tramite:</h4>
@@ -55,7 +45,7 @@ function Turnero() {
             className="selectTramite"
             labelId="selectTramite"
             value={selectedValue}
-            onChange={handleChange}
+            onChange={handleTipoTramiteChange}
           >
             <MenuItem value="">
               <em>None</em>
@@ -66,12 +56,12 @@ function Turnero() {
           </Select>
         </FormControl>
       </div>
-    <div className="inputsContainer">
-      <TextField label="Ingrese su Nombre" className="inputNombre" type="text"></TextField>
-      <TextField label="Ingrese su N° de CUIL" className="inputCuil" type="text"></TextField>
-      <TextField label="Ingrese su Apellido" className="inputApellido" type="text"></TextField>
-      <TextField label="Ingrese su Correo Electronico" className="inputMail" type="text"></TextField>
-</div>
+      <div className="inputsContainer">
+        <TextField label="Ingrese su Nombre" className="inputNombre" type="text"></TextField>
+        <TextField label="Ingrese su N° de CUIL" className="inputCuil" type="text"></TextField>
+        <TextField label="Ingrese su Apellido" className="inputApellido" type="text"></TextField>
+        <TextField label="Ingrese su Correo Electronico" className="inputMail" type="text"></TextField>
+      </div>
       <form onSubmit={handleSubmit}>
         <div className="contBtn">
           <Button className="boton" variant="contained" type="submit">
@@ -79,6 +69,29 @@ function Turnero() {
           </Button>
         </div>
       </form>
+      <div className="fechaContainer">
+        <h2 className="fechaTitle">Turnos Disponibles</h2>
+      </div>
+      <calendar-date
+       value={selectedDate}
+        onClick={(e) => {
+          console.log("Fecha seleccionada:", selectedDate);
+          handleChange( Date(selectedDate));
+        }}
+      >
+  <calendar-month></calendar-month>
+</calendar-date>
+{/* <input
+     type="date"
+        value={selectedDate}
+        onChange={(e) => {
+          console.log("Fecha seleccionada:", e);
+          handleChange(new Date(e.detail));
+        }}
+      >
+</input> */}
+
+
     </>
   );
 }

@@ -1,14 +1,13 @@
- .turnos-container {
+ .turnosContainer {
   background-color: #1F89F6;
     padding: 5px;
     border-radius: 5px;
-      
     margin-bottom: 30px;
     margin-left: -2px;
    color:white;
   }
   
-  .turnos-title {
+  .turnosTitle {
     text-align: center;
     font-size: 25px;
   }
@@ -75,3 +74,25 @@
 }
 
 
+.separadorTurnos {
+    width: 1915px;
+    height: 50px; 
+    background-color: #1F89F6;
+    margin-top: 60px;
+}
+
+.fechaContainer {
+  background-color: #1F89F6;
+  padding: 5px;
+  border-radius: 5px;
+  margin-top: 75px;
+  margin-bottom: 30px;
+  margin-left: -2px;
+ color:white;
+}
+
+.fechaTitle {
+  text-align: center;
+  font-size: 25px;
+
+}
