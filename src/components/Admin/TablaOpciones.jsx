@@ -48,13 +48,13 @@ export default function TablaOpciones() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-
   const handleRowClick = (nombre_opcion) => {
     setOpenRows((prevOpenRows) => ({
       ...prevOpenRows,
       [nombre_opcion]: !prevOpenRows[nombre_opcion]
     }));
   };
+
   const groupedOptions = Array.isArray(opciones.opciones) ? opciones.opciones.reduce((acc, opcion) => {
     const { nombre_opcion } = opcion;
     const existingOption = acc.find(item => item.nombre_opcion === nombre_opcion);
@@ -177,15 +177,12 @@ export default function TablaOpciones() {
                   <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={9}>
                     <Collapse in={openRows[option.nombre_opcion]} timeout="auto" unmountOnExit>
                       <Box sx={{ margin: 1 }}>
-                        <p>
-                          Procesos
-                        </p>
                         <Table size="small" aria-label="sub-items">
                           <TableBody>
                             {option.subItems.map((subItem, subIndex) => (
                               <TableRow key={subIndex}>
                                 {/* Agrega celdas vacías */}
-                                <TableCell></TableCell>
+                                <TableCell>Proceso:</TableCell>
                                 <TableCell></TableCell>
                                 <TableCell>{subItem.nombre_proceso}</TableCell>
                                 <TableCell>
