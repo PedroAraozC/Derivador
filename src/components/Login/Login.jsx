@@ -32,8 +32,8 @@ const Login = () => {
     let errores = {};
     if (!campos.dni) {
       errores.dni = "El DNI es obligatorio";
-    } else if (campos.dni.length > 8) {
-      errores.dni = "El DNI no debe poseer más de 8 caracteres";
+    } else if (campos.dni.length > 11) {
+      errores.dni = "El DNI no debe poseer más de 11 caracteres";
     } else if (campos.dni.length < 7){
       errores.dni = "El DNI debe tener como mínimo 7 caracteres";
     }
@@ -90,7 +90,7 @@ const Login = () => {
               name="dni"
               type="text"
               required="required"
-              maxLength={8}
+              maxLength={11}
               value={values.dni}
               onChange={(e) => {
                 // Filtra solo los caracteres numéricos
