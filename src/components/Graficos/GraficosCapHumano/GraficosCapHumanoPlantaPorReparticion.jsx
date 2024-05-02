@@ -87,10 +87,10 @@ const GraficosCapHumanoPlantaPorReparticion = () => {
     <>
       {resultSearch[0].length != 0 ? (
         <>
-          <div className="d-flex-col w-100 d-sm-none">
+          <div className="d-flex-col w-100 d-sm-none mt-4">
             <div className=" d-flex justify-content-center">
               <p className="me-2">
-                Total Mujeres:
+                Mujeres:
                 <b className="ms-1">
                   {arrayFiltrado?.length > 0 &&
                   arrayFiltrado[0]?.cantidad == null
@@ -100,12 +100,23 @@ const GraficosCapHumanoPlantaPorReparticion = () => {
               </p>
 
               <p className="ms-2">
-                Total Varones:
+                Varones:
                 <b className="ms-2">
                   {arrayFiltrado?.length > 0 &&
                   arrayFiltrado[1]?.cantidad == null
                     ? 0
                     : arrayFiltrado[1]?.cantidad}
+                </b>
+              </p>
+            </div>
+            <div className="d-flex justify-content-center">
+            <p>
+                Total:
+                <b className="ms-2">
+                  {arrayFiltrado?.length > 0 &&
+                  arrayFiltrado[1]?.cantidad == 0
+                    ? 0
+                    : arrayFiltrado[1]?.cantidad + arrayFiltrado[0]?.cantidad}
                 </b>
               </p>
             </div>
@@ -113,9 +124,10 @@ const GraficosCapHumanoPlantaPorReparticion = () => {
           </div>
           {/* se repite el div por el tema del width */}
           <div className="d-flex-col w-50 d-none d-sm-block">
+           
             <div className=" d-flex justify-content-center">
               <p className="me-2">
-                Total Mujeres:
+                Mujeres:
                 <b className="ms-1">
                   {arrayFiltrado?.length > 0 &&
                   arrayFiltrado[0]?.cantidad == null
@@ -125,7 +137,7 @@ const GraficosCapHumanoPlantaPorReparticion = () => {
               </p>
 
               <p className="ms-2">
-                Total Varones:
+                Varones:
                 <b className="ms-2">
                   {arrayFiltrado?.length > 0 &&
                   arrayFiltrado[1]?.cantidad == null
@@ -134,6 +146,18 @@ const GraficosCapHumanoPlantaPorReparticion = () => {
                 </b>
               </p>
             </div>
+            <div className="d-flex justify-content-center">
+            <p>
+                Total:
+                <b className="ms-2">
+                  {arrayFiltrado?.length > 0 &&
+                  arrayFiltrado[1]?.cantidad == 0
+                    ? 0
+                    : arrayFiltrado[1]?.cantidad + arrayFiltrado[0]?.cantidad}
+                </b>
+              </p>
+            </div>
+           
             <Pie data={data} options={options} />
           </div>
         </>

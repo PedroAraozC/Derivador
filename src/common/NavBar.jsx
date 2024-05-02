@@ -4,29 +4,21 @@ import Toolbar from "@mui/material/Toolbar";
 import SideBar from "./SideBar";
 import { useEffect, useState } from "react";
 import useStore from "../Zustand/Zustand";
-import NavBarEsqueleto from "../components/Esqueletos/NavBarEsqueleto";
+// import NavBarEsqueleto from "../components/Esqueletos/NavBarEsqueleto";
 import "./Navbar.css";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import logoMuni from '../assets/Logo_SMT_neg_4.png'
+import logoMuni from "../assets/Logo_SMT_neg_4.png";
 
 export default function NavBar() {
-  const { getAuth, authenticated, logout, user } = useStore();
+  const { getAuth, authenticated, logout, user } =
+    useStore();
   const [anchorEl, setAnchorEl] = useState(null);
-  
- 
+
   const navigate = useNavigate();
 
- 
   
-  useEffect(() => {
-   
-      getAuth();
- 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); 
-
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -34,10 +26,10 @@ export default function NavBar() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+  
   const goToPerfil = () => {
     setAnchorEl(null);
-    navigate('/perfil')
+    navigate("/perfil");
   };
 
   const handleLogout = () => {
@@ -45,6 +37,10 @@ export default function NavBar() {
     navigate("/");
     setAnchorEl(null);
   };
+  useEffect(() => {
+    getAuth();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
@@ -55,9 +51,7 @@ export default function NavBar() {
               <SideBar />
               <div className="d-flex justify-content-between align-items-center w-100">
                 <img src={logoMuni} className="logoMuni2" />
-                {
-                authenticated &&
-                 (
+                {authenticated && (
                   <div className="d-flex align-items-center">
                     <p className="m-0">{user.nombre_persona}</p>
                     <IconButton
@@ -68,8 +62,7 @@ export default function NavBar() {
                       onClick={handleMenu}
                       color="inherit"
                     >
-                      <AccountCircle
-                      />
+                      <AccountCircle />
                     </IconButton>
                     <Menu
                       className="logOut"
@@ -87,7 +80,7 @@ export default function NavBar() {
                       open={Boolean(anchorEl)}
                       onClose={handleClose}
                     >
-                      <MenuItem onClick={goToPerfil}>Mi perfil</MenuItem>
+                        <MenuItem onClick={goToPerfil}>Mi perfil</MenuItem>
                       <MenuItem onClick={handleLogout}>Cerrar Sesión</MenuItem>
                     </Menu>
                   </div>
@@ -106,7 +99,8 @@ export default function NavBar() {
           </AppBar>
         </Box>
       ) : localStorage.getItem("token") ? (
-        <NavBarEsqueleto />
+        // <NavBarEsqueleto />
+        <></>
       ) : (
         <></>
       )}
