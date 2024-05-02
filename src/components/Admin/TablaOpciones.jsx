@@ -17,8 +17,10 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import useStore from '../../Zustand/Zustand';
 import { Modal } from '@mui/base';
-import { TextField } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import axios from '../../config/axios';
+import Swal from 'sweetalert2';
+import AgregarProceso from './AgregarProceso';
 
 // eslint-disable-next-line react/prop-types
 export default function TablaOpciones() {
@@ -46,14 +48,13 @@ export default function TablaOpciones() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-
   const handleRowClick = (nombre_opcion) => {
     setOpenRows((prevOpenRows) => ({
       ...prevOpenRows,
       [nombre_opcion]: !prevOpenRows[nombre_opcion]
     }));
   };
-  // Agrupar opciones por su nombre de opción
+
   const groupedOptions = Array.isArray(opciones.opciones) ? opciones.opciones.reduce((acc, opcion) => {
     const { nombre_opcion } = opcion;
     const existingOption = acc.find(item => item.nombre_opcion === nombre_opcion);
@@ -66,6 +67,12 @@ export default function TablaOpciones() {
     }
     return acc;
   }, []) : [];
+
+  const groupedOptionsWithId = groupedOptions.map((option, index) => ({
+    id: index + 1, // El índice comienza desde 0, por lo que sumamos 1 para obtener un ID que comience desde 1
+    nombre_opcion: option.nombre_opcion,
+    subItems: option.subItems
+  }));
 
   const styleModal = {
     position: 'absolute',
@@ -93,23 +100,54 @@ export default function TablaOpciones() {
             throw new Error("Error al agregar la opcion");
           }
   };
+  
+  const handleBorrar = async (option) => {
+    let id = option.subItems[0].id_opcion
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "¡No podrás revertir esto!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, bórralo"
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const response = await axios.post("/admin/borrarOpcion", { id });
+          console.log(response.data);
+          // Si deseas hacer algo después de eliminar el elemento, puedes hacerlo aquí
+          // Por ejemplo, actualizar la tabla o mostrar una notificación
+          Swal.fire({
+            title: "¡Eliminado!",
+            text: "Tu opción ha sido eliminado.",
+            icon: "success"
+          });
+        } catch (error) {
+          console.error("Error al borrar la opción:", error);
+          throw new Error("Error al borrar la opción");
+        }
+      }
+    });
+  };
 
   return (
     <>
+    <div className='d-flex justify-content-end my-2'>
+      <button className='btn btn-primary' onClick={handleOpen}>Agregar OPCION</button>
+    </div>
       <TableContainer component={Paper} sx={{ marginBottom: 10 }}>
         <Table aria-label="collapsible table">
           <TableHead>
             <TableRow>
               <TableCell></TableCell>
               <TableCell>Opciones menú</TableCell>
-              <TableCell>
-                <button className='btn btn-primary' onClick={handleOpen}>Agregar</button>
-              </TableCell>
+              <TableCell></TableCell>
               {/* Agrega celdas vacías para mantener la estructura */}
             </TableRow>
           </TableHead>
           <TableBody>
-            {groupedOptions.map((option, index) => (
+            {groupedOptionsWithId.map((option, index) => (
               <React.Fragment key={index}>
                 <TableRow>
                   <TableCell>
@@ -122,21 +160,29 @@ export default function TablaOpciones() {
                     </IconButton>
                   </TableCell>
                   <TableCell>{option.nombre_opcion}</TableCell>
+                  <TableCell>
+                    <button className='btn' onClick={()=> handleBorrar(option)}>
+                      <DeleteIcon/>
+                    </button>
+                    <button className='btn'>
+                      <EditIcon/>
+                    </button>
+                    <button className='btn'>
+                      <AgregarProceso option={option}/>
+                    </button>
+                  </TableCell>
                   {/* Agrega celdas vacías */}
                 </TableRow>
                 <TableRow>
                   <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={9}>
                     <Collapse in={openRows[option.nombre_opcion]} timeout="auto" unmountOnExit>
                       <Box sx={{ margin: 1 }}>
-                        <p>
-                          Procesos
-                        </p>
                         <Table size="small" aria-label="sub-items">
                           <TableBody>
                             {option.subItems.map((subItem, subIndex) => (
                               <TableRow key={subIndex}>
                                 {/* Agrega celdas vacías */}
-                                <TableCell></TableCell>
+                                <TableCell>Proceso:</TableCell>
                                 <TableCell></TableCell>
                                 <TableCell>{subItem.nombre_proceso}</TableCell>
                                 <TableCell>
@@ -177,7 +223,7 @@ export default function TablaOpciones() {
                 <CancelIcon/>
               </button>
             </div>
-            <form className='container' onSubmit={(event) => handleAgregar(event, opcionValues)}>
+            <form className='container d-flex flex-column' onSubmit={(event) => handleAgregar(event, opcionValues)}>
               <TextField 
                 placeholder='Ingrese el nombre de la opcion'
                 onChange={handleInputChange}
@@ -186,6 +232,7 @@ export default function TablaOpciones() {
                 sx={{width: 300, marginBottom: 2}}
                 required={true}
               />
+              <Button variant='outlined' sx={{width: 300}}>Aceptar</Button>
             </form>
           </div>
         </Box>

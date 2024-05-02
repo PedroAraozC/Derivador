@@ -35,7 +35,6 @@ export const Registro = () => {
   const[formData, setFormData]= useState({
       
       documento_persona:"",
-      id_tdocumento:"",
       nombre_persona:"",
       apellido_persona:"",
       email_persona:"",
@@ -66,6 +65,46 @@ export const Registro = () => {
 
   moment.tz.setDefault('America/Buenos_Aires');
   const maxDate = new Date();
+
+
+  function validarCUIL(cuil) {
+    // Verificar que el CUIL tenga 11 dígitos
+    // if (cuil.length !== 11 || !/^\d+$/.test(cuil)) {
+    //     return false;
+    // }
+    var cuilStr = cuil.toString();
+    // Extraer los primeros 10 dígitos
+    var digitos = cuilStr.substring(0, 10);
+
+    // Extraer el dígito verificador
+    var digitoVerificador = parseInt(cuilStr.charAt(10));
+
+    // Definir los pesos para cada posición
+    var pesos = [5, 4, 3, 2, 7, 6, 5, 4, 3, 2];
+
+    // Calcular la suma de productos
+    var suma = 0;
+    for (var i = 0; i < 10; i++) {
+        suma += parseInt(digitos.charAt(i)) * pesos[i];
+    }
+
+    // Calcular el residuo de la división por 11
+    var residuo = suma % 11;
+
+    // Calcular el dígito verificador esperado
+    var digitoEsperado = residuo === 0 ? 0 : 11 - residuo;
+
+    // Si el residuo es 0, el dígito esperado es 0
+    if (residuo === 0) {
+        digitoEsperado = 0;
+    } else {
+        digitoEsperado = 11 - residuo;
+    }
+
+    // Verificar si el dígito verificador coincide
+    return digitoVerificador === digitoEsperado;
+}
+
  
     const obtenerDatosDB= async()=>{ try {
       const paisesDB = await cdigitalApi.get("/ciudadanoDigital/paises");
@@ -96,10 +135,20 @@ export const Registro = () => {
  const handleRegister = async (e)=>{
       e.preventDefault();
   
-   
-      
+   const cuilValidado=validarCUIL(formData.documento_persona)
+   console.log(cuilValidado) 
         // ! Verificar Email
         const patronEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if(!cuilValidado){
+          return Swal.fire({
+              icon: 'error',
+              title: '¡Ups!',
+              text: 'El CUIL ingresado no es valido',  
+              confirmButtonColor:"#6495ED"               
+            })
+      }
+
 
  if(!patronEmail.test(formData.email_persona)){
             return Swal.fire({
@@ -138,11 +187,11 @@ if( formData.clave !== confirmarContraseña){
     }
 
 
- if( formData.documento_persona.length > 8){
+ if( formData.documento_persona.length < 11){
           return Swal.fire({
               icon: 'error',
               title: '¡Ups!',
-              text: 'El DNI no puede tener mas de 8 dígitos', 
+              text: 'El CUIL no puede tener menos de 11 dígitos', 
               confirmButtonColor:"#6495ED"                
             })
       }
@@ -202,14 +251,14 @@ if( formData.id_genero == 0){
       confirmButtonColor:"#6495ED"               
     })
 }
-if( formData.id_tdocumento == 0){
-  return Swal.fire({
-      icon: 'error',
-      title: '¡Ups!',
-      text: 'Debe seleccionar un tipo de documento', 
-      confirmButtonColor:"#6495ED"                
-    })
-}
+// if( formData.id_tdocumento == 0){
+//   return Swal.fire({
+//       icon: 'error',
+//       title: '¡Ups!',
+//       text: 'Debe seleccionar un tipo de documento', 
+//       confirmButtonColor:"#6495ED"                
+//     })
+// }
 
 
 try{
@@ -221,7 +270,7 @@ try{
   return Swal.fire({
     icon: 'error',
     title: '¡Ups!',
-    text: 'El DNI ingresado ya se encuentra registrado',  
+    text: 'El CUIL ingresado ya se encuentra registrado',  
     confirmButtonColor:"#6495ED"              
   })
 
@@ -268,7 +317,7 @@ console.log(formData);
     const handleChange = (e, lon) => {
       let value = e.target.value; // Eliminar espacios en blanco alrededor del valor
       
-      if (e.target.name === "id_provincia" || e.target.name === "id_pais" || e.target.name === "documento_persona" ||e.target.name==="id_genero" || e.target.name=="id_tdocumento") {
+      if (e.target.name === "id_provincia" || e.target.name === "id_pais" || e.target.name === "documento_persona" ||e.target.name==="id_genero" ) {
         value = value !== "" ? parseInt(value.slice(0, lon), 10) : ""; // Convertir a número si no está vacío
       } else if (e.target.type === "number") {
         value = value.slice(0, lon); // Limitar la longitud si es necesario
@@ -338,36 +387,17 @@ return (
 {paises.length==0 ||provincias.length==0 || generos.length==0 || tipoDocumento.length==0   ? ( <Skeleton count={7} height={37} className='esqueleto'/>) : (
 
 <div>
-<Form.Group className="mb-3" controlId="tdocumento">
-  <Form.Label> <strong>Tipo de Documento</strong> </Form.Label>
-  <Form.Select
-     
-     onChange={(e) => handleChange(e, 2)}
-     value={formData.id_tdocumento}
-     name="id_tdocumento"
-     maxLength={2}
-     required
-     className='input'
-     
-   >
-     <option value={0}>SELECCIONE UN TIPO DE DOCUMENTO</option>
-     {tipoDocumento.map((tipo, index) => (
-       <option key={index} value={tipo.id_tdocumento}>
-         {tipo.nombre_tdocumento}
-       </option>
-     ))}
-   </Form.Select>
-</Form.Group>
+
 
 <Form.Group className="mb-3" controlId="dni">
-  <Form.Label ><strong>Nro. Documento</strong></Form.Label>
+  <Form.Label ><strong>CUIL (sin guiones)</strong></Form.Label>
   
 
     <Form.Control
      
       type="number"
-      placeholder="Ej: 16234568"
-      onChange={(e) => handleChange(e, 8)}
+      placeholder="Ej: 20162345686"
+      onChange={(e) => handleChange(e, 11)}
       value={formData.documento_persona}
       name="documento_persona"
       required
@@ -692,7 +722,7 @@ return (
 
 {modalAbierto && (
   <Validacion 
-  data={formData}
+  email={formData.email_persona}
   cerrarModal={cerrarModal}
   setModalAbierto={setModalAbierto}
   />

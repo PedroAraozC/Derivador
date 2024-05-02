@@ -59,7 +59,6 @@ const useStore = create((set) => ({
       set({ errors: "" });
       const response = await axios.get("/usuarios/opciones");
       const data = response.data;
-      console.log(response.data)
       set({ opciones: data });
     } catch (error) {
       let errorMessage = "Algo salió mal :(";

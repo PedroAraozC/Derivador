@@ -17,9 +17,9 @@ export const Validacion = (props) => {
    
   
   // eslint-disable-next-line react/prop-types
-  const { data, cerrarModal, setModalAbierto } = props;
+  const { email, cerrarModal, setModalAbierto } = props;
     // eslint-disable-next-line react/prop-types
-    const[datos,setDatos]= useState({email_persona:data.email_persona,
+    const[datos,setDatos]= useState({email_persona:email,
     codigo_verif:undefined});
    const navigate = useNavigate();
     
