@@ -13,7 +13,7 @@ export const ReenviarValidacion = (props) => {
    
 
   // eslint-disable-next-line react/prop-types
-  const { cerrarModal, setModalAbierto,documento } = props;
+  const { cerrarModal } = props;
     // eslint-disable-next-line react/prop-types
     const[email,setEmail]= useState("");
    
@@ -25,22 +25,17 @@ export const ReenviarValidacion = (props) => {
     const cerrarModalValidar=() => setModalAbiertoValidar(false);
   
     
-
-
-
-
-
     const validar = async (e) => {
         e.preventDefault();
 
-
-console.log("hola")
       try {
 
-
+       
          const resp =  await cdigitalApi.post(`/usuarios/email`,{email_persona:email});
-  
+        
+
           if (resp.data.ok) {
+
         abrirModalValidar();
 
           } 
@@ -48,7 +43,7 @@ console.log("hola")
             Swal.fire({
               position: "center",
               icon: "error",
-              title: resp.data.message,
+              title: resp.data.mge,
               showConfirmButton: false,
               timer: 2000
           });
@@ -82,12 +77,10 @@ console.log("hola")
 
        
  <Modal  show={true} onHide={cerrarModal} 
- //backdrop="static"
-//  keyboard={false}
   >
 
 
- <Modal.Header  >
+ <Modal.Header closeButton >
           <Modal.Title>Reenviar email de validación</Modal.Title>
         </Modal.Header>
 

@@ -329,11 +329,6 @@ console.log(formData);
       });
     };
 
-
-    
-    
-    
-
  const AgregarCiudadanoDB= async (data) =>
        {
        

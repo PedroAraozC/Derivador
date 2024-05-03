@@ -155,9 +155,9 @@ const Login = () => {
             onClick={abrirModal}
           ><strong>aquí</strong></a> </p>
 
-<p className="datoPie mt-2 text-center "> <a
+<p className="datoPie mb-3 text-center "> <a
             onClick={abrirModal2}
-          ><strong>Reenviar email de validación</strong></a> </p>
+          >Reenviar email de validación</a> </p>
 
           <div className="d-flex flex-column justify-content-center align-items-center">
             <p className="footer p-1 m-0" style={{ fontSize: "0.7em" }}>
@@ -207,9 +207,9 @@ const Login = () => {
 {modalAbierto2 && (
         <ReenviarValidacion
 
-          cerrarModal={cerrarModal}
-          setModalAbierto={setModalAbierto}
-          documento={values.dni}
+          cerrarModal={cerrarModal2}
+         
+        
         />
       )}
 
