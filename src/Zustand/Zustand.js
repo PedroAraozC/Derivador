@@ -12,6 +12,10 @@ const useStore = create((set) => ({
   permisos: [],
   
   opciones: [],
+  
+  instrumentosC: [],
+
+  tiposContratacion: [],
 
   loading: true,
   
@@ -52,8 +56,29 @@ const useStore = create((set) => ({
       }
       set({ errors: errorMessage });
     }
+  },
+//------------------------------PANEL PARA CONTRATACIONES ---------------------------------------
+obtenerInstrumentos : async () => {
+  try {
+    const resultado = await axios.get("/admin/listarTipoIntrumentos");
+    const data = resultado.data.instrumentos;
+    set({ instrumentosC: data });
+  } catch (error) {
+    console.log(error);
   }
-  ,
+},
+
+obtenerTiposContratacion : async () => {
+  try {
+    const resultado = await axios.get("/admin/listaTipoContratacion");
+    const data = resultado.data.contrataciones;
+    set({ tiposContratacion: data });
+  } catch (error) {
+    console.log(error);
+  }
+},
+//-----------------------------PANEL PARA CONTRATACIONES ------------------------------------
+
   obtenerOpciones: async () => {
     try {
       set({ errors: "" });
