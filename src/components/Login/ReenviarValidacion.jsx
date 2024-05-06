@@ -4,52 +4,46 @@ import React, { useState } from 'react'
 import Swal from 'sweetalert2';
 import { Button, Form, Modal, ModalBody, ModalFooter} from 'react-bootstrap';
 import cdigitalApi from '../../config/axios';
+import { Validacion } from '../Registro/Validacion';
 
 
 
 
-export const RestablecerClave = (props) => {
+export const ReenviarValidacion = (props) => {
    
 
   // eslint-disable-next-line react/prop-types
-  const { cerrarModal, setModalAbierto } = props;
+  const { cerrarModal } = props;
     // eslint-disable-next-line react/prop-types
     const[email,setEmail]= useState("");
    
+
+    const [modalAbiertoValidar, setModalAbiertoValidar] = useState(false);
+   
+    const abrirModalValidar = () => setModalAbiertoValidar(true);
+   
+    const cerrarModalValidar=() => setModalAbiertoValidar(false);
   
     
-
-
-
-
-
-    const restablecerContraseñaDB = async (e) => {
+    const validar = async (e) => {
         e.preventDefault();
-
- console.log(email)
 
       try {
 
+       
+         const resp =  await cdigitalApi.post(`/usuarios/email`,{email_persona:email});
+        
 
-         const resp = await cdigitalApi.put("/usuarios/restablecerClave", {email:email});
-  
           if (resp.data.ok) {
-              Swal.fire({
-                  position: "center",
-                  icon: "success",
-                  title: resp.data.message,
-                  showConfirmButton: false,
-                  timer: 2000
-              });
-  
-              setModalAbierto(false);
+
+        abrirModalValidar();
 
           } 
           else{
             Swal.fire({
               position: "center",
               icon: "error",
-              title: resp.data.message,
+              title: resp.data.mge,
               showConfirmButton: false,
               timer: 2000
           });
@@ -66,7 +60,10 @@ export const RestablecerClave = (props) => {
 
 
     const handleChange = (e) => {
-      setEmail(
+
+     
+
+          setEmail(
             e.target.value 
             
         );
@@ -80,18 +77,17 @@ export const RestablecerClave = (props) => {
 
        
  <Modal  show={true} onHide={cerrarModal} 
- //backdrop="static"
-  keyboard={false}>
+  >
 
 
- <Modal.Header  closeButton>
-          <Modal.Title>Restablecer clave</Modal.Title>
+ <Modal.Header closeButton >
+          <Modal.Title>Reenviar email de validación</Modal.Title>
         </Modal.Header>
 
 
 <ModalBody>
 
-<Form  onSubmit={restablecerContraseñaDB} className='m-1 p-3 '>
+<Form  onSubmit={validar} className='m-1 p-3 '>
   
 
   <Form.Group className="mb-3" controlId="email">
@@ -127,7 +123,13 @@ export const RestablecerClave = (props) => {
 
 
 
-
+ {modalAbiertoValidar && (
+  <Validacion 
+  email={email}
+  cerrarModal={cerrarModalValidar}
+  setModalAbierto={setModalAbiertoValidar}
+  /> 
+)} 
 
            
            

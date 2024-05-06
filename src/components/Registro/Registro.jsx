@@ -329,11 +329,6 @@ console.log(formData);
       });
     };
 
-
-    
-    
-    
-
  const AgregarCiudadanoDB= async (data) =>
        {
        
@@ -722,7 +717,7 @@ return (
 
 {modalAbierto && (
   <Validacion 
-  data={formData}
+  email={formData.email_persona}
   cerrarModal={cerrarModal}
   setModalAbierto={setModalAbierto}
   />

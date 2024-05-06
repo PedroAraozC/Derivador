@@ -8,6 +8,7 @@ import useStore from "../../Zustand/Zustand";
 import { LOGIN_VALUES } from "../../helpers/constantes";
 import { useNavigate } from "react-router-dom";
 import { RestablecerClave } from "./RestablecerClave";
+import { ReenviarValidacion } from "./ReenviarValidacion";
 
 const Login = () => {
   const { authenticated, botonState, login, errors, setErrors } = useStore();
@@ -16,8 +17,11 @@ const Login = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const navigate = useNavigate();
   const [modalAbierto, setModalAbierto] = useState(false);
+  const [modalAbierto2, setModalAbierto2] = useState(false);
   const abrirModal = () => setModalAbierto(true);
   const cerrarModal = () => setModalAbierto(false);
+  const abrirModal2 = () => setModalAbierto2(true);
+  const cerrarModal2 = () => setModalAbierto2(false);
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -151,6 +155,10 @@ const Login = () => {
             onClick={abrirModal}
           ><strong>aquí</strong></a> </p>
 
+<p className="datoPie mb-3 text-center "> <a
+            onClick={abrirModal2}
+          >Reenviar email de validación</a> </p>
+
           <div className="d-flex flex-column justify-content-center align-items-center">
             <p className="footer p-1 m-0" style={{ fontSize: "0.7em" }}>
               Dir. de Innovación Tecnologica{" "}
@@ -196,6 +204,14 @@ const Login = () => {
       )}
 
 
+{modalAbierto2 && (
+        <ReenviarValidacion
+
+          cerrarModal={cerrarModal2}
+         
+        
+        />
+      )}
 
 
     </div>
