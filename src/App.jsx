@@ -9,26 +9,36 @@ import Perfil from "./pages/Perfil/Perfil";
 import { Registro } from "./components/Registro/Registro";
 import PanelAdmin from "./components/Admin/PanelAdmin";
 import Turnos from "./pages/Turnos/Turnos";
+import PanelContratacion from "./components/Admin/Contratacion/PanelContratacion";
 
 function App() {
   const url = new URL(window.location.href);
   const logout = url.searchParams.get("logout");
 
   url.searchParams.delete("logout");
-  history.replaceState(null, '', url.toString());
+  history.replaceState(null, "", url.toString());
 
-  if(logout){
+  if (logout) {
     localStorage.removeItem("token");
   }
   return (
     <>
-    <HashRouter>
+      <HashRouter>
         <Layout>
           <Routes>
             <Route exact path="/*" element={<Login />} />
-            <Route exact path="/home" element={<PrivateRoute key="home"><Home /></PrivateRoute>} />
+            <Route
+              exact
+              path="/home"
+              element={
+                <PrivateRoute key="home">
+                  <Home />
+                </PrivateRoute>
+              }
+            />
             <Route exact path="/registro" element={<Registro />} />
-            <Route exact
+            <Route
+              exact
               path="/estadistica_rrhh"
               element={
                 <PrivateRoute key="cap-humano">
@@ -36,7 +46,8 @@ function App() {
                 </PrivateRoute>
               }
             />
-            <Route exact
+            <Route
+              exact
               path="/estadistica_ac"
               element={
                 <PrivateRoute key="reclamos">
@@ -45,13 +56,23 @@ function App() {
               }
             />
 
-            <Route exact path="/perfil" element={
-            <PrivateRoute key="perfil"><Perfil /></PrivateRoute>
-            } />
+            <Route
+              exact
+              path="/perfil"
+              element={
+                <PrivateRoute key="perfil">
+                  <Perfil />
+                </PrivateRoute>
+              }
+            />
 
             <Route exact path="/panel_admin" element={<PanelAdmin />} />
-            <Route exact path="/turnos" element={<Turnos/>} />
-
+            <Route exact path="/turnos" element={<Turnos />} />
+            <Route
+              exact
+              path="/panel_contratacion"
+              element={<PanelContratacion />}
+            />
           </Routes>
         </Layout>
       </HashRouter>

@@ -17,7 +17,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [modalAbierto, setModalAbierto] = useState(false);
   const abrirModal = () => setModalAbierto(true);
-  const cerrarModal=() => setModalAbierto(false);
+  const cerrarModal = () => setModalAbierto(false);
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -31,11 +31,11 @@ const Login = () => {
     setErrors("");
     let errores = {};
     if (!campos.dni) {
-      errores.dni = "El DNI es obligatorio";
+      errores.dni = "El CUIL es obligatorio";
     } else if (campos.dni.length > 11) {
-      errores.dni = "El DNI no debe poseer más de 11 caracteres";
-    } else if (campos.dni.length < 7){
-      errores.dni = "El DNI debe tener como mínimo 7 caracteres";
+      errores.dni = "El CUIL no debe poseer más de 11 digitos";
+    } else if (campos.dni.length < 11) {
+      errores.dni = "El CUIL debe tener 11 digitos";
     }
 
     if (!campos.password) {
@@ -66,7 +66,7 @@ const Login = () => {
     if (authenticated) {
       navigate("/home");
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authenticated]);
 
   useEffect(() => {
@@ -105,7 +105,7 @@ const Login = () => {
                 });
               }}
             />
-            <span>Nº Documento</span>
+            <span>Nº CUIL</span>
             <i></i>
           </div>
           <div className="inputBox w-100">
@@ -125,12 +125,12 @@ const Login = () => {
             <span>Contraseña</span>
             <i></i>
           </div>
-        <div className="d-flex justify-content-center align-items-center mt-4">
-          
-          
+          <div className="d-flex justify-content-center align-items-center mt-4">
 
-          
-        </div>
+
+
+
+          </div>
           <Button
             variant="contained"
             className="btn-light mt-4 buttonLoginColor"
@@ -140,16 +140,16 @@ const Login = () => {
             Ingresar
           </Button>
           <Button
-onClick={()=>navigate("/registro")}
+            onClick={() => navigate("/registro")}
 
->
-Registrarse
+          >
+            Registrarse
 
           </Button>
 
-          <p className="datoPie mt-2 text-center ">¿Olvidó su clave? Haga click <a 
-          onClick={abrirModal}
-          ><strong>aquí</strong></a> </p> 
+          <p className="datoPie mt-2 text-center ">¿Olvidó su clave? Haga click <a
+            onClick={abrirModal}
+          ><strong>aquí</strong></a> </p>
 
           <div className="d-flex flex-column justify-content-center align-items-center">
             <p className="footer p-1 m-0" style={{ fontSize: "0.7em" }}>
@@ -187,13 +187,13 @@ Registrarse
       )}
 
 
-{modalAbierto && (
-  <RestablecerClave 
-  
-  cerrarModal={cerrarModal}
-  setModalAbierto={setModalAbierto}
-  /> 
-)}
+      {modalAbierto && (
+        <RestablecerClave
+
+          cerrarModal={cerrarModal}
+          setModalAbierto={setModalAbierto}
+        />
+      )}
 
 
 
