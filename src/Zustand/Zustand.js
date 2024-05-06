@@ -13,6 +13,8 @@ const useStore = create((set) => ({
   
   opciones: [],
   
+  contrataciones: [],
+
   instrumentosC: [],
 
   tiposContratacion: [],
@@ -58,6 +60,16 @@ const useStore = create((set) => ({
     }
   },
 //------------------------------PANEL PARA CONTRATACIONES ---------------------------------------
+obtenerContrataciones : async () => {
+  try {
+    const resultado = await axios.get("/admin/listarContratacionBack");
+    const data = resultado.data.contrataciones;
+    set({ contrataciones: data });
+  } catch (error) {
+    console.log(error);
+  }
+},
+
 obtenerInstrumentos : async () => {
   try {
     const resultado = await axios.get("/admin/listarTipoIntrumentos");

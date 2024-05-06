@@ -9,6 +9,7 @@ import Perfil from "./pages/Perfil/Perfil";
 import { Registro } from "./components/Registro/Registro";
 import PanelAdmin from "./components/Admin/PanelAdmin";
 import PanelContratacion from "./components/Admin/Contratacion/PanelContratacion";
+import Licitaciones from "./components/Licitaciones/Licitaciones";
 
 function App() {
   const url = new URL(window.location.href);
@@ -51,6 +52,7 @@ function App() {
 
             <Route exact path="/panel_admin" element={<PanelAdmin />} />
             <Route exact path="/panel_contratacion" element={<PanelContratacion />} />
+            <Route exact path="/licitaciones_concursos" element={<Licitaciones />} />
 
           </Routes>
         </Layout>

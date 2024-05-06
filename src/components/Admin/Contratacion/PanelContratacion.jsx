@@ -2,15 +2,18 @@ import { Alert, Button, InputLabel, MenuItem, Select, Snackbar, Switch, TextFiel
 import { useState, useEffect, useRef } from "react";
 import useStore from "../../../Zustand/Zustand";
 import axios from "../../../config/axios";
+import TablaContratacion from "./TablaContratacion";
 // import { formatearFecha } from "../../../helpers/convertirFecha";
 
 const PanelContratacion = () => {
   const [addContratacion, setAddContratacion] = useState(false);
+  const [listarContrataciones, setListarContrataciones] = useState(false);
   const { obtenerInstrumentos, obtenerTiposContratacion, tiposContratacion, instrumentosC,} = useStore();
-  const [archivo, setArchivo] = useState(null);
+  // const [archivo, setArchivo] = useState(null);
   const [formularioValues, setFormularioValues] = useState({});
   const [snackbarMensaje, setSnackbarMensaje] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [buttonDis, setButtonDis] = useState(false);
   const fileInputRef = useRef(null);
   const [errores, setErrores] = useState({});
   const handleSnackbarClose = () => {
@@ -57,10 +60,10 @@ const validarFormulario = () => {
     });
   };
 
-  const handleFileInputChange = () => {
-    const file = fileInputRef.current.files[0];
-    setArchivo(file); // Asignar el archivo al estado
-  };
+  // const handleFileInputChange = () => {
+  //   const file = fileInputRef.current.files[0];
+  //   setArchivo(file); // Asignar el archivo al estado
+  // };
 
   const handleAgregar = async (event, contratacion) => {
     event.preventDefault();
@@ -78,10 +81,9 @@ const validarFormulario = () => {
         //   },
         // }
       );
-        
-        console.log(response.data);
         setSnackbarMensaje("Contratación creada.");
         setSnackbarOpen(true);
+        setButtonDis(true)
         return response.data;
       } catch (error) {
         console.error("Error al agregar la contratacion:", error);
@@ -104,11 +106,14 @@ const validarFormulario = () => {
     <>
       <div className="container mt-4 d-flex justify-content-around">
         <h2>Panel de Contrataciones</h2>
-        <Button variant="outlined" onClick={() => setAddContratacion(true)}>
-          Agregar Contratación
+        <Button variant="outlined" color={addContratacion? "error" : "primary"} sx={{width: 250}} onClick={() => setAddContratacion(!addContratacion)}>
+          {addContratacion? "Cancelar" : "Agregar Contratación"}
+        </Button>
+        <Button variant="outlined" sx={{width: 230}} onClick={() => setListarContrataciones(!listarContrataciones)}>
+          Listar Contrataciones 
         </Button>
       </div>
-      <div className="container mt-5">
+      <div className="container mt-5 mb-5">
         {addContratacion ? (
           <>
             <form className="d-flex gap-5" onSubmit={(event) => handleAgregar(event, formularioValues)} encType="multipart/form-data">
@@ -234,7 +239,7 @@ const validarFormulario = () => {
                     name="habilita"
                     sx={{ marginTop: 2 }}
                   />
-                  <Button variant="contained" color="success" type="submit" sx={{ marginTop: 6 }}>AGREGAR</Button>
+                  <Button variant="contained" color="success" type="submit" sx={{ marginTop: 6 }} disabled={buttonDis}>AGREGAR</Button>
               </div>
               <div>
                 <InputLabel sx={{ marginTop: 4 }}>NOMBRE ARCHIVO</InputLabel>
@@ -242,7 +247,7 @@ const validarFormulario = () => {
                   type="file"
                   accept=".pdf"
                   ref={fileInputRef}
-                  onChange={handleFileInputChange}
+                  // onChange={handleFileInputChange}
                   required={false}
                   style={{ width: 300, paddingTop: 5, paddingBottom: 30 }}
                 />
@@ -259,6 +264,11 @@ const validarFormulario = () => {
         ) : (
           <></>
         )}
+      </div>
+      <div className="mb-5">
+        {listarContrataciones? <>
+          <TablaContratacion/>
+        </> : <></>}
       </div>
     </>
   );
