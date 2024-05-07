@@ -68,7 +68,7 @@ const Login = () => {
 
   useEffect(() => {
     if (authenticated) {
-      navigate("/home");
+      navigate("/turnos");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authenticated]);
@@ -152,11 +152,11 @@ const Login = () => {
           </Button>
 
           <p className="datoPie mt-2 text-center ">¿Olvidó su clave? Haga click <a
-            onClick={abrirModal}
+            onClick={abrirModal} style={{ cursor: 'pointer' }} 
           ><strong>aquí</strong></a> </p>
 
 <p className="datoPie mb-3 text-center "> <a
-            onClick={abrirModal2}
+            onClick={abrirModal2} style={{ cursor: 'pointer' }} 
           >Reenviar email de validación</a> </p>
 
           <div className="d-flex flex-column justify-content-center align-items-center">
