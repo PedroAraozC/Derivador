@@ -9,16 +9,15 @@ import useStore from "../../../Zustand/Zustand";
 const ModalContratacion = ({ contratacion, modalAbierto, handleClose, modoEdicion, }) => {
 
     const [deviceWidth, setDeviceWidth] = useState(window.innerWidth);
-    const { obtenerInstrumentos, obtenerTiposContratacion, tiposContratacion, instrumentosC, } = useStore();
+    const { obtenerInstrumentos, obtenerTiposContratacion, tiposContratacion, instrumentosC, obtenerContrataciones } = useStore();
     const fileInputRef = useRef(null);
     const [archivo, setArchivo] = useState(null);
-    const [formularioValues, setFormularioValues] = useState({});
     const [errores, setErrores] = useState({});
     const [snackbarMensaje, setSnackbarMensaje] = useState('');
     const [snackbarOpen, setSnackbarOpen] = useState(false);
-    const handleSnackbarClose = () => {
-        setSnackbarOpen(false);
-    };
+    const [datosOld, setDatosOld] = useState('');
+    const [formularioValues, setFormularioValues] = useState({});
+    const handleSnackbarClose = () => {setSnackbarOpen(false);};
 
     useEffect(() => {
         const fetchData = async () => {
@@ -33,13 +32,51 @@ const ModalContratacion = ({ contratacion, modalAbierto, handleClose, modoEdicio
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [modoEdicion]);
 
+    const validarFormulario = () => {
+        const nuevosErrores = {};
+        if (!formularioValues.id_tcontratacion) {
+            nuevosErrores.id_tcontratacion = "El campo Tipo contratación es obligatorio";
+        }
+        if (!formularioValues.hora_apertura || !/^\d{2}:\d{2}:\d{2}$/.test(formularioValues.hora_apertura)) {
+            nuevosErrores.hora_publica = "Ingrese una hora válida (formato: HH:MM:SS)";
+            setSnackbarMensaje("Ingrese una hora válida (formato: HH:MM:SS)");
+        }
+        if (!formularioValues.hora_presentacion || !/^\d{2}:\d{2}:\d{2}$/.test(formularioValues.hora_presentacion)) {
+            nuevosErrores.hora_designa = "Ingrese una hora válida (formato: HH:MM:SS)";
+            setSnackbarMensaje("Ingrese una hora válida (formato: HH:MM:SS)");
+        }
+        setErrores(nuevosErrores);
+        // Si hay errores, muestra el Snackbar
+        if (Object.keys(nuevosErrores).length > 0) {
+            setSnackbarOpen(true);
+        }
+        return Object.keys(nuevosErrores).length === 0; // Retorna true si no hay errores
+    };
+
     useEffect(() => {
         if (contratacion) {
-            // Si hay una convocatoria y el modal está abierto, establece los valores del formulario
+            // Si hay una contratacion y el modal está abierto, establece los valores del formulario
+            //Se parsea las fechas para poder establecer el valor por default segun viene de la base de datos
+            const fechaPresentacion = new Date(contratacion.fecha_presentacion);
+            const fechaApertura = new Date(contratacion.fecha_apertura);
+            const fechaPresentacionFormatted = `${fechaPresentacion.getFullYear()}-${(fechaPresentacion.getMonth() + 1).toString().padStart(2, '0')}-${fechaPresentacion.getDate().toString().padStart(2, '0')}`;
+            const fechaAperturaFormatted = `${fechaApertura.getFullYear()}-${(fechaApertura.getMonth() + 1).toString().padStart(2, '0')}-${fechaApertura.getDate().toString().padStart(2, '0')}`;
             setFormularioValues({
                 id: contratacion.id_contratacion,
+                nombre_contratacion: contratacion.nombre_contratacion,
+                id_tcontratacion: contratacion.id_tcontratacion,
+                fecha_presentacion: fechaPresentacionFormatted,
+                hora_presentacion: contratacion.hora_presentacion,
+                num_instrumento: contratacion.num_instrumento,
+                valor_pliego: contratacion.valor_pliego,
+                expte: contratacion.expte,
+                id_tinstrumento: contratacion.id_tinstrumento,
+                fecha_apertura: fechaAperturaFormatted,
+                hora_apertura: contratacion.fecha_apertura,
+                habilita: contratacion.habilita
             });
-            // setDatosOld(`CONVOCATORIA_${convocatoria.num_convocatoria}_${convocatoria.anio_convocatoria}_EXPTE_${convocatoria.expte}.pdf`)
+            setDatosOld(`CONTRATACION_${contratacion.num_instrumento}_EXPTE_${contratacion.expte}.pdf`)
+            console.log(fechaPresentacionFormatted)
         }
     }, [contratacion]);
 
@@ -81,25 +118,32 @@ const ModalContratacion = ({ contratacion, modalAbierto, handleClose, modoEdicio
     };
 
     const editarContratacion = async (contratacion) => {
-        try {
-            contratacion.archivo = archivo;
-            contratacion.oldName = datosOld
-            console.log(contratacion)
-            const response = await axios.put(
-                "/admin/editarContratacion",
-                contratacion, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-            //   obtenerConvocatorias(idNivel)
-            handleClose()
-            setSnackbarMensaje("Contratación editada.");
+        const formularioValido = validarFormulario();
+        if (formularioValido) {
+            try {
+                contratacion.archivo = archivo;
+                contratacion.oldName = datosOld
+                console.log(contratacion)
+                const response = await axios.put(
+                    "/admin/editarContratacion",
+                    contratacion, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+                handleClose()
+                setSnackbarMensaje("Contratación editada.");
+                setSnackbarOpen(true);
+                obtenerContrataciones()
+                return response.data;
+            } catch (error) {
+                console.error("Error al editar la contratación:", error);
+                throw new Error("Error al editar la contratación");
+            }
+        } else {
+            console.log('Algo salió mal :(');
+            setSnackbarMensaje("Por favor, corrige los errores en el formulario.");
             setSnackbarOpen(true);
-            return response.data;
-        } catch (error) {
-            console.error("Error al editar la contratación:", error);
-            throw new Error("Error al editar la contratación");
         }
     };
 
@@ -271,7 +315,7 @@ const ModalContratacion = ({ contratacion, modalAbierto, handleClose, modoEdicio
                     ) : <></>}
 
                     <Button
-                        onClick={() => editarConvocatoria(formularioValues)}
+                        onClick={() => editarContratacion(formularioValues)}
                         className="mt-3"
                         variant="outlined"
                     >

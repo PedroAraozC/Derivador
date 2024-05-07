@@ -9,7 +9,7 @@ const PanelContratacion = () => {
   const [addContratacion, setAddContratacion] = useState(false);
   const [listarContrataciones, setListarContrataciones] = useState(false);
   const { obtenerInstrumentos, obtenerTiposContratacion, tiposContratacion, instrumentosC,} = useStore();
-  // const [archivo, setArchivo] = useState(null);
+  const [archivo, setArchivo] = useState(null);
   const [formularioValues, setFormularioValues] = useState({});
   const [snackbarMensaje, setSnackbarMensaje] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -60,26 +60,25 @@ const validarFormulario = () => {
     });
   };
 
-  // const handleFileInputChange = () => {
-  //   const file = fileInputRef.current.files[0];
-  //   setArchivo(file); // Asignar el archivo al estado
-  // };
+  const handleFileInputChange = () => {
+    const file = fileInputRef.current.files[0];
+    setArchivo(file); // Asignar el archivo al estado
+  };
 
   const handleAgregar = async (event, contratacion) => {
     event.preventDefault();
     const formularioValido = validarFormulario();
     if (formularioValido) {
       try {
-        // contratacion.archivo = archivo;
+        contratacion.archivo = archivo;
         
         console.log(contratacion)
         // Realiza la solicitud con formData
-        const response = await axios.post("/admin/agregarContratacion", contratacion 
-        // {
-        //   headers: {
-        //     'Content-Type': 'multipart/form-data',
-        //   },
-        // }
+        const response = await axios.post("/admin/agregarContratacion", contratacion, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
       );
         setSnackbarMensaje("Contratación creada.");
         setSnackbarOpen(true);
@@ -87,6 +86,8 @@ const validarFormulario = () => {
         return response.data;
       } catch (error) {
         console.error("Error al agregar la contratacion:", error);
+        setSnackbarMensaje("Error al agregar la contratacion.");
+        setSnackbarOpen(true);
         throw new Error("Error al agregar la contratacion");
       }
     } else {
@@ -247,7 +248,7 @@ const validarFormulario = () => {
                   type="file"
                   accept=".pdf"
                   ref={fileInputRef}
-                  // onChange={handleFileInputChange}
+                  onChange={handleFileInputChange}
                   required={false}
                   style={{ width: 300, paddingTop: 5, paddingBottom: 30 }}
                 />
