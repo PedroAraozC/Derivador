@@ -17,7 +17,7 @@ const ModalContratacion = ({ contratacion, modalAbierto, handleClose, modoEdicio
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [datosOld, setDatosOld] = useState('');
     const [formularioValues, setFormularioValues] = useState({});
-    const handleSnackbarClose = () => {setSnackbarOpen(false);};
+    const handleSnackbarClose = () => { setSnackbarOpen(false); };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -73,7 +73,8 @@ const ModalContratacion = ({ contratacion, modalAbierto, handleClose, modoEdicio
                 id_tinstrumento: contratacion.id_tinstrumento,
                 fecha_apertura: fechaAperturaFormatted,
                 hora_apertura: contratacion.fecha_apertura,
-                habilita: contratacion.habilita
+                habilita: contratacion.habilita,
+                detalle: contratacion.detalle
             });
             setDatosOld(`CONTRATACION_${contratacion.num_instrumento}_EXPTE_${contratacion.expte}.pdf`)
             console.log(fechaPresentacionFormatted)
@@ -303,6 +304,13 @@ const ModalContratacion = ({ contratacion, modalAbierto, handleClose, modoEdicio
                                 onChange={handleFileInputChange}
                                 required={false}
                                 style={{ width: 300, paddingTop: 5, paddingBottom: 30 }}
+                            />
+                            <textarea
+                                placeholder="Información Adicional..."
+                                onChange={handleInputChange}
+                                name="detalle"
+                                value={formularioValues.detalle}
+                                style={{ width: 400, marginTop: 5, borderRadius: 5, padding: 5 }}
                             />
                         </div>
                     </form>

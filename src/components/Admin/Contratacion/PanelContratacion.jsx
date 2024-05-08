@@ -71,7 +71,6 @@ const validarFormulario = () => {
     if (formularioValido) {
       try {
         contratacion.archivo = archivo;
-        
         console.log(contratacion)
         // Realiza la solicitud con formData
         const response = await axios.post("/admin/agregarContratacion", contratacion, {
@@ -174,11 +173,12 @@ const validarFormulario = () => {
                   value={formularioValues.num_instrumento}
                   required={true}
                 />
+                <InputLabel sx={{ marginTop: 2}}>Valor Pliego</InputLabel>
                   <TextField
                     id="standard-basic"
-                    label="Valor de Pliego"
+                    label="Ej: 100000.00"
                     variant="outlined"
-                    sx={{ marginTop: 5, width: 300 }}
+                    sx={{ marginTop: 2, width: 300 }}
                     onChange={handleInputChange}
                     name="valor_pliego"
                     value={formularioValues.valor_pliego}
@@ -233,6 +233,7 @@ const validarFormulario = () => {
                     sx={{ width: 300, marginTop: 2 }}
                     required={true}
                   />
+                  
                   <InputLabel sx={{ marginTop: 2 }}>HABILITA</InputLabel>
                   <Switch
                     checked={formularioValues.habilita === 1}
@@ -242,16 +243,32 @@ const validarFormulario = () => {
                   />
                   <Button variant="contained" color="success" type="submit" sx={{ marginTop: 6 }} disabled={buttonDis}>AGREGAR</Button>
               </div>
-              <div>
-                <InputLabel sx={{ marginTop: 4 }}>NOMBRE ARCHIVO</InputLabel>
+              <div className="d-flex flex-column">
+                <InputLabel sx={{ marginTop: 4 }}>INGRESE EL PLIEGO</InputLabel>
                 <input
                   type="file"
                   accept=".pdf"
                   ref={fileInputRef}
                   onChange={handleFileInputChange}
                   required={false}
-                  style={{ width: 300, paddingTop: 5, paddingBottom: 30 }}
+                  style={{ width: 400, paddingTop: 5, paddingBottom: 30 }}
                 />
+                {/* <InputLabel sx={{ marginTop: 4 }}>ANEXO</InputLabel>
+                <input
+                  type="file"
+                  accept=".pdf"
+                  ref={fileInputRef}
+                  onChange={handleFileInputChange}
+                  required={false}
+                  style={{ width: 400, paddingTop: 5, paddingBottom: 30 }}
+                /> */}
+                <textarea
+                    placeholder="Información Adicional..."
+                    onChange={handleInputChange}
+                    name="detalle"
+                    value={formularioValues.detalle}
+                    style={{ width: 400, marginTop: 5, borderRadius: 5, padding: 5 }}
+                  />
               </div>
             </form>
             {errores ? (

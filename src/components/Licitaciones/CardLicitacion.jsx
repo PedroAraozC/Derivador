@@ -1,61 +1,66 @@
 /* eslint-disable react/prop-types */
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import privado from '../../assets/Licitaciones/user-shield.svg'
-import publico from '../../assets/Licitaciones/public.svg'
-import azar from '../../assets/Licitaciones/dice-3.svg'
-import directo from '../../assets/Licitaciones/location-arrow.svg'
 import { useNavigate } from 'react-router-dom';
 
-const CardLicitacion = ({contratacion}) => {
+const CardLicitacion = ({ contratacion }) => {
 
     const navigate = useNavigate()
     const handleNavigation = (id) => {
         navigate(`/licitacion/${id}`);
     };
     // Función para obtener la imagen según el tipo de contratación
-    const obtenerImagen = (tipo) => {
+    const obtenerTipo = (tipo) => {
         switch (tipo) {
             case 1:
-                return privado;
+                return <p><b>Licitación Privada</b></p>;
             case 2:
-                return publico;
+                return <p><b>Licitación Pública</b></p>;
             case 3:
-                return directo;
+                return <p><b>Compra Directa</b></p>;
             case 4:
-                return azar;
+                return <p><b>Concurso de Precio</b></p>;
             default:
                 return null;
         }
     }
+    const Tipo = obtenerTipo(contratacion.id_tcontratacion);
 
-    // Obtener la imagen correspondiente al tipo de contratación
-    const imagen = obtenerImagen(contratacion.id_tcontratacion);
+    const obtenerInstrumento = (tipo) => {
+        switch (tipo) {
+            case 1:
+                return <p>N° DECRETO</p>;
+            case 2:
+                return <p>N° ORDENANZA </p>;
+            case 3:
+                return <p>N° RESOLUCIÓN </p>;
+            default:
+                return null;
+        }
+    }
+    const Instrumento = obtenerInstrumento(contratacion.id_tinstrumento);
 
     return (
-        <Card sx={{ minWidth: 250, maxWidth: 350 }}>
-            <img
-                style={{objectFit: 'contain', display: 'flex', justifyContent: 'center', width: '100%', height: 50, marginTop: 20, marginBottom: 20}}
-                src={imagen}
-                // title="green iguana"
-            />
+        <Card sx={{ minWidth: 350, maxWidth: 350, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+            <p style={{ objectFit: 'contain', display: 'flex', justifyContent: 'center', width: '100%', height: 20, marginTop: 20 }}>
+                {Tipo}
+            </p>
             <CardContent>
-                <Typography gutterBottom variant="h5" component="div" sx={{textAlign: 'center'}}>
+                <Typography gutterBottom variant="p" component="div" sx={{ textAlign: 'center', marginBottom: 4 }}>
                     {contratacion.nombre_contratacion}
                 </Typography>
-                <Typography variant="body2" color="text.secondary" sx={{textAlign: 'center'}}>
-                    Numero de EXPTE : <b>{contratacion.expte}</b>
+                <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', marginBottom: 1 }}>
+                    N° EXPEDIENTE: <b>{contratacion.expte}</b>
                 </Typography>
-                <Typography variant="body2" color="text.secondary" sx={{textAlign: 'center'}}>
-                    Numero de instrumento : <b>{contratacion.num_instrumento}</b>
+                <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', display: 'flex', justifyContent: 'center' }}>
+                    {Instrumento}: <p className='ms-1'><b>{contratacion.num_instrumento}</b></p>
                 </Typography>
             </CardContent>
-            <CardActions>
+            <div className='pb-3 px-3 d-flex justify-content-end'>
                 <Button size="small" onClick={() => handleNavigation(contratacion.id_contratacion)}>Ver más</Button>
-            </CardActions>
+            </div>
         </Card>
     )
 }
