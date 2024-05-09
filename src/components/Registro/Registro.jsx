@@ -1,13 +1,13 @@
 
 // eslint-disable-next-line no-unused-vars
-import React, { useState } from 'react'
+import React, { forwardRef, useRef, useState } from 'react'
 import './registro.css';
 import Swal from 'sweetalert2';
 import {  Col, Container, Form, Row } from 'react-bootstrap';
 //import logo from '../assets/logo1.png';
 import logo2 from '../../assets/Logo_SMT_neg_4.png';
 import logo3 from '../../assets/Logo_SMT_neg_3.png';
-import { FaEye, FaEyeSlash} from "react-icons/fa";
+import { FaEye, FaEyeSlash,FaCalendar} from "react-icons/fa";
 import { Validacion } from './Validacion';
 import cdigitalApi from '../../config/axios';
 import { useEffect } from 'react';
@@ -18,33 +18,49 @@ import es from 'date-fns/locale/es';
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import { Button} from '@mui/material';
-
-
+import { useNavigate } from "react-router-dom";
+import useStore from '../../Zustand/Zustand';
+import { Terminos } from './Terminos';
 
 export const Registro = () => {
-   
-  const [confirmarContraseña, setConfirmarContraseña] = useState('');
-  
+
+  const [confirmarContraseña, setConfirmarContraseña] = useState(''); 
   const [modalAbierto, setModalAbierto] = useState(false);
+
+  const { authenticated} = useStore();
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    if (authenticated) {
+      navigate("/home");
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authenticated]);
+
+  const [modalAbierto2, setModalAbierto2] = useState(false);
+
   const abrirModal = () => {
-      console.log("Abriendo modal...");
+      
       setModalAbierto(true);
   };
-  const cerrarModal=() => setModalAbierto(false)
-    
+  const abrirModal2 = () => {
+      
+    setModalAbierto2(true);
+};
+  const cerrarModal=() => setModalAbierto(false)  
+  const cerrarModal2=() => setModalAbierto2(false)  
   const[formData, setFormData]= useState({
       
       documento_persona:"",
-      id_tdocumento:"",
       nombre_persona:"",
       apellido_persona:"",
       email_persona:"",
       clave:"",
       telefono_persona:"",
-      domicilio_persona:"",
-      id_provincia:"",
-      localidad_persona:"",
-      id_pais:"",
+      domicilio_persona:null,
+      id_provincia:null,
+      localidad_persona:null,
+      id_pais:null,
       fecha_nacimiento_persona:"",
       id_genero:"",
       validado:false,
@@ -57,7 +73,7 @@ export const Registro = () => {
   const [provincias,setProvincias] = useState([]);
   const [generos,setGeneros] = useState([]);
   const [tipoDocumento,setTipoDocumento] = useState([]);
-  
+  const datePickerRef = useRef(null);
 
   useEffect(() => {
  
@@ -66,8 +82,52 @@ export const Registro = () => {
 
   moment.tz.setDefault('America/Buenos_Aires');
   const maxDate = new Date();
+
+function validarCUIL(cuil) {
+    // Verificar que el CUIL tenga 11 dígitos
+    // if (cuil.length !== 11 || !/^\d+$/.test(cuil)) {
+    //     return false;
+    // }
+    var cuilStr = cuil.toString();
+    // Extraer los primeros 10 dígitos
+    var digitos = cuilStr.substring(0, 10);
+
+    // Extraer el dígito verificador
+    var digitoVerificador = parseInt(cuilStr.charAt(10));
+
+    // Definir los pesos para cada posición
+    var pesos = [5, 4, 3, 2, 7, 6, 5, 4, 3, 2];
+
+    // Calcular la suma de productos
+    var suma = 0;
+    for (var i = 0; i < 10; i++) {
+        suma += parseInt(digitos.charAt(i)) * pesos[i];
+    }
+
+    // Calcular el residuo de la división por 11
+    var residuo = suma % 11;
+
+    // Calcular el dígito verificador esperado
+    var digitoEsperado = residuo === 0 ? 0 : 11 - residuo;
+
+    // Si el residuo es 0, el dígito esperado es 0
+    if (residuo === 0) {
+        digitoEsperado = 0;
+    } else {
+        digitoEsperado = 11 - residuo;
+    }
+
+    // Verificar si el dígito verificador coincide
+    return digitoVerificador === digitoEsperado;
+}
+
+function validarClave(clave) {
+  // La expresión regular busca al menos un número (\d) y al menos una letra mayúscula ([A-Z])
+  const regex = /^(?=.*\d)(?=.*[A-Z])/;
+  return regex.test(clave);
+}
  
-    const obtenerDatosDB= async()=>{ try {
+const obtenerDatosDB= async()=>{ try {
       const paisesDB = await cdigitalApi.get("/ciudadanoDigital/paises");
       const provinciasDB = await cdigitalApi.get("/ciudadanoDigital/provincias");
       const generosDB = await cdigitalApi.get("/ciudadanoDigital/genero");
@@ -84,7 +144,6 @@ export const Registro = () => {
     }
   }
   
-
  const handleTogglePassword = () => {
       setShowPassword(!showPassword);
       
@@ -95,11 +154,26 @@ export const Registro = () => {
 
  const handleRegister = async (e)=>{
       e.preventDefault();
-  
-   
-      
+      let diferenciaTiempo = maxDate.getTime() - formData.fecha_nacimiento_persona.getTime();
+      let edad = Math.floor(diferenciaTiempo / (1000 * 60 * 60 * 24 * 365));
+   const cuilValidado=validarCUIL(formData.documento_persona)
+
         // ! Verificar Email
-        const patronEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        // const patronEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const patronEmail =/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.(com|net|org|gov|edu|info)$/i
+
+
+        ;
+
+        if(!cuilValidado){
+          return Swal.fire({
+              icon: 'error',
+              title: '¡Ups!',
+              text: 'El CUIL ingresado no es valido',  
+              confirmButtonColor:"#6495ED"               
+            })
+      }
+
 
  if(!patronEmail.test(formData.email_persona)){
             return Swal.fire({
@@ -119,30 +193,41 @@ if( formData.clave !== confirmarContraseña){
               })
         }
 
-        if( formData.clave.length < 6){
+        if( formData.clave.length < 8){
           return Swal.fire({
               icon: 'error',
               title: '¡Ups!',
-              text: 'La clave debe tener 5 caracteres como mínimo',    
+              text: 'La clave debe tener 8 caracteres como mínimo',    
               confirmButtonColor:"#6495ED"             
             })
       }
 
-      if( formData.clave.length > 30){
+      if( formData.clave.length > 25){
         return Swal.fire({
             icon: 'error',
             title: '¡Ups!',
-            text: 'La clave debe tener 30 caracteres como máximo',    
+            text: 'La clave debe tener 25 caracteres como máximo',    
             confirmButtonColor:"#6495ED"             
           })
     }
 
 
- if( formData.documento_persona.length > 8){
+
+    if( !validarClave(formData.clave)){
+      return Swal.fire({
+          icon: 'error',
+          title: '¡Ups!',
+          text: 'La clave debe contener al menos una mayúscula y un número',    
+          confirmButtonColor:"#6495ED"             
+        })
+  }
+
+
+ if( formData.documento_persona.length < 11){
           return Swal.fire({
               icon: 'error',
               title: '¡Ups!',
-              text: 'El DNI no puede tener mas de 8 dígitos', 
+              text: 'El CUIL no puede tener menos de 11 dígitos', 
               confirmButtonColor:"#6495ED"                
             })
       }
@@ -177,22 +262,22 @@ if( formData.clave !== confirmarContraseña){
     }
 
 
-  if( formData.id_provincia == 0){
-    return Swal.fire({
-        icon: 'error',
-        title: '¡Ups!',
-        text: 'Debe seleccionar una provincia',
-        confirmButtonColor:"#6495ED"                 
-      })
-}
-if( formData.id_pais == 0){
-  return Swal.fire({
-      icon: 'error',
-      title: '¡Ups!',
-      text: 'Debe seleccionar un país',   
-      confirmButtonColor:"#6495ED"              
-    })
-}
+//   if( formData.id_provincia == 0){
+//     return Swal.fire({
+//         icon: 'error',
+//         title: '¡Ups!',
+//         text: 'Debe seleccionar una provincia',
+//         confirmButtonColor:"#6495ED"                 
+//       })
+// }
+// if( formData.id_pais == 0){
+//   return Swal.fire({
+//       icon: 'error',
+//       title: '¡Ups!',
+//       text: 'Debe seleccionar un país',   
+//       confirmButtonColor:"#6495ED"              
+//     })
+// }
 
 if( formData.id_genero == 0){
   return Swal.fire({
@@ -202,12 +287,21 @@ if( formData.id_genero == 0){
       confirmButtonColor:"#6495ED"               
     })
 }
-if( formData.id_tdocumento == 0){
+// if( formData.id_tdocumento == 0){
+//   return Swal.fire({
+//       icon: 'error',
+//       title: '¡Ups!',
+//       text: 'Debe seleccionar un tipo de documento', 
+//       confirmButtonColor:"#6495ED"                
+//     })
+// }
+
+if( edad < 14){
   return Swal.fire({
       icon: 'error',
       title: '¡Ups!',
-      text: 'Debe seleccionar un tipo de documento', 
-      confirmButtonColor:"#6495ED"                
+      text: 'Debe ser mayor de 14 años para registrarse',  
+      confirmButtonColor:"#6495ED"               
     })
 }
 
@@ -221,7 +315,7 @@ try{
   return Swal.fire({
     icon: 'error',
     title: '¡Ups!',
-    text: 'El DNI ingresado ya se encuentra registrado',  
+    text: 'El CUIL ingresado ya se encuentra registrado',  
     confirmButtonColor:"#6495ED"              
   })
 
@@ -242,7 +336,7 @@ catch(error)
 {
 console.log(error);
 }
-console.log(formData);
+
  AgregarCiudadanoDB(formData);
 //  setFormData({
 //   documento_persona: "",
@@ -265,12 +359,19 @@ console.log(formData);
         
     }
 
-    const handleChange = (e, lon) => {
+  const  handlePaste = (e) => {
+      // Cancelar el evento para evitar que se pegue el texto
+      e.preventDefault();
+      // Puedes mostrar un mensaje o tomar otra acción aquí si lo deseas
+    }
+
+ const handleChange = (e, lon) => {
       let value = e.target.value; // Eliminar espacios en blanco alrededor del valor
       
-      if (e.target.name === "id_provincia" || e.target.name === "id_pais" || e.target.name === "documento_persona" ||e.target.name==="id_genero" || e.target.name=="id_tdocumento") {
+      if (e.target.name === "id_provincia" || e.target.name === "id_pais" || e.target.name === "documento_persona" ||e.target.name==="id_genero" ) {
         value = value !== "" ? parseInt(value.slice(0, lon), 10) : ""; // Convertir a número si no está vacío
       } else if (e.target.type === "number") {
+      
         value = value.slice(0, lon); // Limitar la longitud si es necesario
       }
       
@@ -280,31 +381,87 @@ console.log(formData);
       });
     };
 
+ const handleNumberKeyDown = (e) => {
+      if (e.target.type === "number" && e.key === "-") {
+        e.preventDefault();
+      }
+    };
+    
+    const handleKeyDown = (e) => {
+      const input = e.target;
+      const { selectionStart } = input;
+      // Permite la eliminación de los guiones
+      if (e.key === 'Backspace' || e.key === 'Delete') {
+        if (selectionStart === 3 || selectionStart === 6) {
+          e.preventDefault();
+          const newValue = input.value.slice(0, selectionStart - 1) + input.value.slice(selectionStart);
+          input.value = newValue;
+          // Restaura la posición del cursor
+          input.setSelectionRange(selectionStart - 1, selectionStart - 1);
+        }
+      }
+    };
 
-    
-    
-    
 
+
+    const handleChangeRaw = (e) => {
+      const input = e.target.value;
+      const maxLength = 11; // Longitud máxima de la fecha completa "dd-mm-aaaa"
+      
+      // Evita realizar más modificaciones si ya se alcanzó la longitud máxima
+      if (input?.length === maxLength) {
+        e.preventDefault();
+        return;
+      }
+  
+      let formattedDate = input;
+      // Inserta automáticamente un guión después de los primeros dos dígitos
+      if (input?.length === 2 && input.charAt(1) !== '-') {
+        formattedDate += '-';
+      }
+      // Inserta automáticamente un guión después de los siguientes dos dígitos
+      if (input?.length === 5 && input.charAt(4) !== '-') {
+        formattedDate += '-';
+      }
+      // Actualiza el valor del input con el formato deseado
+      e.target.value = formattedDate;
+  };
+  
  const AgregarCiudadanoDB= async (data) =>
        {
        
            try{
-               await cdigitalApi.post("/usuarios/registro",data);
+             const resp=  await  cdigitalApi.post("/usuarios/registro",data);
                
-               Swal.fire({
-                position: "center",
-                icon: "success",
-                title: `Formulario enviado! Pendiente de validación `,
-                showConfirmButton: false,
-                timer: 2500
-              });
-              abrirModal();
+          
+
+              if(resp.data.ok) return abrirModal();
+
+              else {
+                Swal.fire({
+                  position: "center",
+                  icon: "error",
+                  title: `¡Ups! `,
+                  text:"Algo salió mal!",
+                  showConfirmButton: false,
+                  timer: 1500
+                });
+              }
+              
              
            }
        
            catch(error)
            {
            console.log(error);
+           Swal.fire({
+            position: "center",
+            icon: "error",
+            title: `¡Ups! `,
+            text:"Algo salió mal!",
+            showConfirmButton: false,
+            timer: 1500
+          });
            }
     }
 
@@ -323,9 +480,9 @@ return (
 </header>
 
   
-<h1 className=' text-center mt-2 titulo'>Registro del ciudadano</h1>
+<h1 className=' text-center mt-3 titulo'>Registro del ciudadano</h1>
         
-        <Container fluid >
+        <Container fluid className='mt-4 mb-5' >
 
       <Row className='justify-content-center ' >
      <Col xs={12} md={8}  className='mt-2 pt-3 main mb-3 pb-3'>
@@ -338,41 +495,25 @@ return (
 {paises.length==0 ||provincias.length==0 || generos.length==0 || tipoDocumento.length==0   ? ( <Skeleton count={7} height={37} className='esqueleto'/>) : (
 
 <div>
-<Form.Group className="mb-3" controlId="tdocumento">
-  <Form.Label> <strong>Tipo de Documento</strong> </Form.Label>
-  <Form.Select
-     
-     onChange={(e) => handleChange(e, 2)}
-     value={formData.id_tdocumento}
-     name="id_tdocumento"
-     maxLength={2}
-     required
-     className='input'
-     
-   >
-     <option value={0}>SELECCIONE UN TIPO DE DOCUMENTO</option>
-     {tipoDocumento.map((tipo, index) => (
-       <option key={index} value={tipo.id_tdocumento}>
-         {tipo.nombre_tdocumento}
-       </option>
-     ))}
-   </Form.Select>
-</Form.Group>
+
 
 <Form.Group className="mb-3" controlId="dni">
-  <Form.Label ><strong>Nro. Documento</strong></Form.Label>
+  <Form.Label ><strong>CUIL</strong></Form.Label>
   
 
     <Form.Control
      
       type="number"
-      placeholder="Ej: 16234568"
-      onChange={(e) => handleChange(e, 8)}
+      placeholder="Ej: 20162345686"
+      onChange={(e) => handleChange(e, 11)}
+      onKeyDown={handleNumberKeyDown} 
       value={formData.documento_persona}
       name="documento_persona"
       required
       className="custom-input-number input" 
       autoFocus
+      onPaste={handlePaste}
+     
     />
 
   
@@ -411,7 +552,7 @@ return (
   </Form.Group>
 
   <Form.Group className="mb-3" controlId="genero">
-  <Form.Label> <strong>Genero</strong> </Form.Label>
+  <Form.Label> <strong>Género</strong> </Form.Label>
   <Form.Select 
     type="number"    
     onChange={(e) => handleChange(e, 2)}
@@ -442,21 +583,11 @@ return (
       required
       value={formData.email_persona}
       className='input'
+      onPaste={handlePaste}
     />
   </Form.Group>
 
-  <Form.Group className="mb-3" controlId="celular">
-    <Form.Label> <strong>Celular</strong> </Form.Label>
-    <Form.Control
-      type="number"
-      placeholder="Ej: 3813456789"
-      name="telefono_persona"
-      onChange={(e)=>handleChange(e,10)}
-      value={formData.telefono_persona}
-      required
-      className="custom-input-number input" 
-    />
-  </Form.Group>
+ 
 </div>
 
 
@@ -472,7 +603,7 @@ return (
   <Form.Label> <strong>Clave</strong> </Form.Label>
     <Form.Control
      type={showPassword ? 'text' : 'password'}
-      placeholder='Escriba una clave '
+      placeholder='Escriba una clave'
       name="clave"
       onChange={handleChange}
       value={formData.clave}
@@ -480,6 +611,8 @@ return (
       maxLength={30}
       required
       className='input'
+      onPaste={handlePaste}
+      title="* La clave debe tener al menos 8 caracteres y debe contener al menos una mayúscula y un número"
     />
   <div className="d-flex justify-content-end">
   {showPassword ? (
@@ -508,6 +641,7 @@ return (
       maxLength={30}
       required
       className='input'
+      onPaste={handlePaste}
     />
      <div className="d-flex justify-content-end">
   {showPassword2 ? (
@@ -526,7 +660,7 @@ return (
   </div>
   </Form.Group>
 
-  <Form.Group className="mb-3" controlId="domicilio">
+  {/* <Form.Group className="mb-3" controlId="domicilio">
     <Form.Label> <strong> Domicilio</strong></Form.Label>
     <Form.Control
       type="text"
@@ -538,9 +672,9 @@ return (
       required
       className='input'
     />
-  </Form.Group>
+  </Form.Group> */}
 
-  <Form.Group as={Row} className="mb-3" controlId="nacimiento">
+  <Form.Group  as={Row}  controlId="nacimiento">
     <Form.Label> <strong> Fecha de nacimiento</strong></Form.Label>
     <DatePicker
          selected={formData.fecha_nacimiento_persona}    
@@ -550,26 +684,56 @@ return (
       });} 
       
       }
-          
+      onPaste={handlePaste}
+      // onKeyDown={(e) => {
+      //   e.preventDefault(); // Evita que se escriba en el input
+      // }}  
          
-          dateFormat="yyyy-MM-dd"
+          // dateFormat="yyyy-MM-dd"
+          dateFormat="dd-MM-yyyy"
           showYearDropdown
          scrollableYearDropdown
           yearDropdownItemNumber={100}
-          placeholderText="Selecciona una fecha"
+          placeholderText="Ej: 12-05-1990"
           className="form-control input "
           required
           locale={es}
           timeZone="America/Buenos_Aires"
           maxDate={maxDate}
-      
-          
+          onChangeRaw={handleChangeRaw}
+          onKeyDown={handleKeyDown}
+          ref={datePickerRef}
           
           
         />
+        
+    <div className="d-flex justify-content-end">
+  <FaCalendar
+  onClick={() => {
+    // Abre el calendario cuando se hace clic en el icono de calendario
+    datePickerRef.current.setOpen(true);
+  }}
+  className='calendar'/>
+  </div>
+
   </Form.Group>
 
-  <Form.Group className="mb-3" controlId="Provincia">
+  <Form.Group className="mb-3" controlId="celular">
+    <Form.Label> <strong>Celular</strong> </Form.Label>
+    <Form.Control
+      type="number"
+      placeholder="Ej: 3813456789"
+      name="telefono_persona"
+      onChange={(e)=>handleChange(e,10)}
+      onKeyDown={handleNumberKeyDown} 
+      value={formData.telefono_persona}
+      required
+      className="custom-input-number input" 
+      onPaste={handlePaste}
+    />
+  </Form.Group>
+
+  {/* <Form.Group className="mb-3" controlId="Provincia">
   <Form.Label> <strong>Provincia</strong> </Form.Label>
   <Form.Select 
     type="number"    
@@ -587,9 +751,9 @@ return (
         </option>
       ))}
   </Form.Select>
-</Form.Group>
+</Form.Group> */}
 
-<Form.Group className="mb-3" controlId="Pais">
+{/* <Form.Group className="mb-3" controlId="Pais">
     <Form.Label> <strong>Pais</strong> </Form.Label>
     
  <Form.Select 
@@ -611,10 +775,10 @@ return (
       
       
     </Form.Select>
-  </Form.Group>
+  </Form.Group> */}
 
 
-  <Form.Group className="mb-3" controlId="Localidad">
+  {/* <Form.Group className="mb-3" controlId="Localidad">
     <Form.Label> <strong>Localidad</strong> </Form.Label>
     
  <Form.Control
@@ -631,7 +795,7 @@ return (
  />
    
    
-</Form.Group>
+</Form.Group> */}
 </div>
 )
       }
@@ -648,19 +812,19 @@ return (
   </div>
 
 </Col>
-<div className=" mt-4 ">
-        <Form.Check
-          type="checkbox"
-          id="default-checkbox"
-          label="Acepto los términos y condiciones"
-          required
-          
-          bsPrefix="custom-checkbox" 
-         
-          
-        />
-        
-      </div>
+<div className="mt-4">
+  <Form.Check
+    type="checkbox"
+    id="default-checkbox"
+    label={
+      <Form.Check.Label>
+        Acepto los <a className='text-blue' style={{ cursor: 'pointer' }} onClick={abrirModal2}>términos y condiciones</a>
+      </Form.Check.Label>
+    }
+    required
+    bsPrefix="custom-checkbox"
+  />
+</div>
 
    
 </Row>
@@ -674,17 +838,17 @@ return (
       </Row>
 
 
-    </Container>
+    </Container >
    
 
 <footer
- className='footerregistro d-flex flex-row  justify-content-center justify-content-sm-between'
+ className='footerregistro d-flex flex-row  justify-content-center justify-content-sm-between  '
  >
   <div  className='col-xs-12 text-center' >
 
   <img src={logo3} alt="Logo 1"className='logo3 mt-3 ms-2 mx-auto mb-2' />
   </div>
-  <div className='mt-4 me-3 d-none d-sm-block'>
+  <div className='mt-4 me-3 d-none d-md-block'>
     <p className='text-light'>Desarrollado por: Dirección de Innovación Tecnológica</p>
   </div>
 
@@ -692,11 +856,19 @@ return (
 
 {modalAbierto && (
   <Validacion 
-  data={formData}
+  email={formData.email_persona}
   cerrarModal={cerrarModal}
   setModalAbierto={setModalAbierto}
   />
-)}       
+)}    
+
+{modalAbierto2 && (
+  <Terminos
+  
+  cerrarModal={cerrarModal2}
+ 
+  />
+)} 
            
     
     </>
