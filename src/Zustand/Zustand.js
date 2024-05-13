@@ -9,6 +9,10 @@ const useStore = create((set) => ({
 
   user: null,
 
+  permisos: [],
+  
+  opciones: [],
+
   loading: true,
   
   botonState: false,
@@ -31,10 +35,51 @@ const useStore = create((set) => ({
     set({ botonState: false });
   },
 
+  obtenerPermisos: async (idUsuario) => {
+    try {
+      set({ errors: "" });
+      const response = await axios.get(`/usuarios/permisos/${idUsuario}`);
+      const data = response.data.usuario;
+      set({ permisos: data });
+    } catch (error) {
+      let errorMessage = "Algo salió mal :(";
+      if (error.response && error.response.data && error.response.data.errors && error.response.data.errors.length > 0) {
+        errorMessage = error.response.data.errors[0].msg;
+      } else if (error.response && error.response.data && error.response.data.message) {
+        errorMessage = error.response.data.message;
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      set({ errors: errorMessage });
+    }
+  }
+  ,
+  obtenerOpciones: async () => {
+    try {
+      set({ errors: "" });
+      const response = await axios.get("/usuarios/opciones");
+      const data = response.data;
+      console.log(response.data)
+      set({ opciones: data });
+    } catch (error) {
+      let errorMessage = "Algo salió mal :(";
+      if (error.response && error.response.data && error.response.data.errors && error.response.data.errors.length > 0) {
+        errorMessage = error.response.data.errors[0].msg;
+      } else if (error.response && error.response.data && error.response.data.message) {
+        errorMessage = error.response.data.message;
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      set({ errors: errorMessage });
+    }
+  }
+  ,
+
   logout:() => {
     set({authenticated: false });
     localStorage.removeItem("token");
     localStorage.removeItem("saveChanges");
+    // localStorage.removeItem("reparticion");
   },
 
   getAuth: async () => {

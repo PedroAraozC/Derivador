@@ -60,16 +60,21 @@ export const RestablecerClave = (props) => {
       
       catch (error) {
           console.log(error);
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: `¡Ups! `,
+            text:"Algo salió mal!",
+            showConfirmButton: false,
+            timer: 1500
+          });
       }
   }
   
 
 
     const handleChange = (e) => {
-
-     
-
-          setEmail(
+      setEmail(
             e.target.value 
             
         );
@@ -87,7 +92,7 @@ export const RestablecerClave = (props) => {
   keyboard={false}>
 
 
- <Modal.Header  >
+ <Modal.Header  closeButton>
           <Modal.Title>Restablecer clave</Modal.Title>
         </Modal.Header>
 
