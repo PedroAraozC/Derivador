@@ -15,9 +15,10 @@ import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import HomeIcon from "@mui/icons-material/Home";
 import FeedbackIcon from "@mui/icons-material/Feedback";
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
-// import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import "./SideBar.css";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
+import useStore from "../Zustand/Zustand";
 
 export default function ListaPrueba() {
   const [state, setState] = React.useState({
@@ -26,6 +27,7 @@ export default function ListaPrueba() {
   const [openListEstadistica, setOpenListEstadistica] = React.useState(false);
 
   const navigate = useNavigate();
+  const { user } = useStore();
 
   const redirigir = (ruta) => {
     navigate(ruta);
@@ -33,12 +35,12 @@ export default function ListaPrueba() {
     setOpenListEstadistica(false)
   };
 
-// const irAGAF = () => {
-//   const token = localStorage.getItem("token");
-//   const url = new URL(`http://localhost:5173/`);
-//   url.searchParams.append("GAF", token);
-//   window.open(url.toString(), "_blank");
-// };
+const irAGAF = () => {
+  const token = localStorage.getItem("token");
+  const url = new URL(`http://172.16.10.125:85/`);
+  url.searchParams.append("GAF", token);
+  window.open(url.toString(), "_blank");
+};
 
   const handleClickEstadistica = () => {
     setOpenListEstadistica(!openListEstadistica);
@@ -66,7 +68,9 @@ export default function ListaPrueba() {
           <ListItemText primary="Inicio" />
         </ListItemButton>
         {/* GESTION FINANCIERA */}
-          {/* <ListItemButton
+       {
+        (user.documento_persona == 20405335787 || user.documento_persona == 27383488333  || user.documento_persona == 20376576206) &&
+          <ListItemButton
             onClick={() => irAGAF()}
             component="a"
             className="w-100"
@@ -75,7 +79,8 @@ export default function ListaPrueba() {
               <AttachMoneyIcon/>
             </ListItemIcon>
             <ListItemText primary="Gestión Financiera" />
-          </ListItemButton> */}
+          </ListItemButton>
+       }
          {/* GESTION FINANCIERA */}
          {/* ESTADISTICAS */}
         <ListItemButton onClick={handleClickEstadistica} className="w-100">
