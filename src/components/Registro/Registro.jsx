@@ -78,10 +78,7 @@ export const Registro = () => {
   const maxDate = new Date();
 
   function validarCUIL(cuil) {
-    // Verificar que el CUIL tenga 11 dígitos
-    // if (cuil.length !== 11 || !/^\d+$/.test(cuil)) {
-    //     return false;
-    // }
+ 
     var cuilStr = cuil.toString();
     // Extraer los primeros 10 dígitos
     var digitos = cuilStr.substring(0, 10);
@@ -317,11 +314,7 @@ export const Registro = () => {
       });
     }
 
-
-
     setFlagBoton(true);
-
-
 
     AgregarCiudadanoDB(formData);
 
@@ -363,55 +356,7 @@ const validarCuilUsuarioExistente=async(value)=>{
     });
   }
 
-
-
-
-
-
-
-
-
 }
-
-
-const validarEmailUsuarioExistente=async(value)=>{
-
-  try {
-  
-    const resp2 = await cdigitalApi.get(
-      `/usuarios/email/${value} `
-    );
-
-
-    if (resp2.data.ciudadano) {
-      return Swal.fire({
-        icon: "error",
-        title: "¡Ups!",
-        text: "El Email ingresado ya se encuentra registrado",
-        confirmButtonColor: "#6495ED",
-      });
-    }
-  } catch (error) {
-    console.log(error);
-    Swal.fire({
-      icon: "error",
-      title: "¡Ups!",
-      text: "Algo salió mal",
-      confirmButtonColor: "#6495ED",
-    });
-  }
-
-
-
-
-
-
-
-
-
-}
-
-
 
   const handlePaste = (e) => {
     // Cancelar el evento para evitar que se pegue el texto
@@ -444,24 +389,6 @@ const validarEmailUsuarioExistente=async(value)=>{
 
     } 
 
-
-    // else if (
-     
-    //   e.target.name === "email_persona" & value.includes("@") & value.includes(".")
-      
-    // ) 
-    // {
-
-    //   validarEmailUsuarioExistente(value)
-
-    
-
-    // } 
-
-
-
-
-    
     else if (e.target.type === "number") {
       value = value.slice(0, lon); // Limitar la longitud si es necesario
     }
