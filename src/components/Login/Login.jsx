@@ -68,7 +68,7 @@ const Login = () => {
 
   useEffect(() => {
     if (authenticated) {
-      navigate("/turnos");
+      navigate("/home");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authenticated]);
