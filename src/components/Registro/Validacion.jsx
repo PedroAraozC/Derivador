@@ -10,6 +10,8 @@ import { Button, Form, Modal, ModalBody, ModalFooter} from 'react-bootstrap';
 
 
 import cdigitalApi from '../../config/axios';
+import { useNavigate } from 'react-router-dom';
+
 
 
 export const Validacion = (props) => {
@@ -19,7 +21,7 @@ export const Validacion = (props) => {
     // eslint-disable-next-line react/prop-types
     const[datos,setDatos]= useState({email_persona:email,
     codigo_verif:undefined});
-  //  const navigate = useNavigate();
+   const navigate = useNavigate();
     
 
 const validar = async (e)=>{
@@ -43,9 +45,10 @@ const ValidarCiudadanoDB = async () => {
               });
   
               setTimeout(() => {
-                  // navigate("/");
-                  window.location.href = `http://181.105.6.205:90/?rep=${localStorage.getItem("reparticion")}`;
-              }, 2500);
+                  //  navigate("/");
+                   window.location.reload();
+                  // window.location.href = `http://181.105.6.205:90/?rep=${localStorage.getItem("reparticion")}`;
+              }, 1500);
 
 
             //   setTimeout(() => {

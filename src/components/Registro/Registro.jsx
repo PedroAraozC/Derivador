@@ -291,24 +291,14 @@ export const Registro = () => {
         confirmButtonColor: "#6495ED",
       });
     }
-    setFlagBoton(true);
 
     try {
-      const resp = await cdigitalApi.get(
-        `/usuarios/dni/${formData.documento_persona} `
-      );
+  
       const resp2 = await cdigitalApi.get(
         `/usuarios/email/${formData.email_persona} `
       );
-
-      if (resp.data.ciudadano) {
-        return Swal.fire({
-          icon: "error",
-          title: "¡Ups!",
-          text: "El CUIL ingresado ya se encuentra registrado",
-          confirmButtonColor: "#6495ED",
-        });
-      }
+  
+  
       if (resp2.data.ciudadano) {
         return Swal.fire({
           icon: "error",
@@ -327,9 +317,101 @@ export const Registro = () => {
       });
     }
 
+
+
+    setFlagBoton(true);
+
+
+
     AgregarCiudadanoDB(formData);
 
   };
+
+const validarCuilUsuarioExistente=async(value)=>{
+
+  try {
+    const resp = await cdigitalApi.get(
+      `/usuarios/dni/${value} `
+    );
+ 
+
+    if (resp.data.ciudadano) {
+       Swal.fire({
+        icon: "error",
+        title: "¡Ups!",
+        text: "El CUIL ingresado ya se encuentra registrado",
+        showConfirmButton:false
+      });
+
+
+      setTimeout(() => {
+   
+         window.location.reload();
+    
+    }, 1000);
+
+
+    }
+
+  } catch (error) {
+    console.log(error);
+    Swal.fire({
+      icon: "error",
+      title: "¡Ups!",
+      text: "Algo salió mal",
+      confirmButtonColor: "#6495ED",
+    });
+  }
+
+
+
+
+
+
+
+
+
+}
+
+
+const validarEmailUsuarioExistente=async(value)=>{
+
+  try {
+  
+    const resp2 = await cdigitalApi.get(
+      `/usuarios/email/${value} `
+    );
+
+
+    if (resp2.data.ciudadano) {
+      return Swal.fire({
+        icon: "error",
+        title: "¡Ups!",
+        text: "El Email ingresado ya se encuentra registrado",
+        confirmButtonColor: "#6495ED",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    Swal.fire({
+      icon: "error",
+      title: "¡Ups!",
+      text: "Algo salió mal",
+      confirmButtonColor: "#6495ED",
+    });
+  }
+
+
+
+
+
+
+
+
+
+}
+
+
 
   const handlePaste = (e) => {
     // Cancelar el evento para evitar que se pegue el texto
@@ -341,13 +423,46 @@ export const Registro = () => {
     let value = e.target.value; // Eliminar espacios en blanco alrededor del valor
 
     if (
-      e.target.name === "id_provincia" ||
-      e.target.name === "id_pais" ||
-      e.target.name === "documento_persona" ||
+     
+      
       e.target.name === "id_genero"
     ) {
       value = value !== "" ? parseInt(value.slice(0, lon), 10) : ""; // Convertir a número si no está vacío
-    } else if (e.target.type === "number") {
+    } 
+    
+    else if (
+     
+      e.target.name === "documento_persona" & value.length==11
+      
+    ) 
+    {
+
+      validarCuilUsuarioExistente(value)
+
+      value = value !== "" ? parseInt(value.slice(0, lon), 10) : ""; // Convertir a número si no está vacío
+
+
+    } 
+
+
+    // else if (
+     
+    //   e.target.name === "email_persona" & value.includes("@") & value.includes(".")
+      
+    // ) 
+    // {
+
+    //   validarEmailUsuarioExistente(value)
+
+    
+
+    // } 
+
+
+
+
+    
+    else if (e.target.type === "number") {
       value = value.slice(0, lon); // Limitar la longitud si es necesario
     }
 
