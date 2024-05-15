@@ -152,9 +152,9 @@ export const Registro = () => {
     const cuilValidado = validarCUIL(formData.documento_persona);
 
     // ! Verificar Email
-    // const patronEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const patronEmail =
-      /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.(com|net|org|gov|edu|info)$/i;
+     const patronEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // const patronEmail =
+    //   /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.(com|net|org|gov|edu|info)$/i;
 
     if (!cuilValidado) {
       return Swal.fire({
