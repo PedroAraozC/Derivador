@@ -51,10 +51,10 @@ const CardLicitacion = ({ contratacion }) => {
                 <Typography gutterBottom variant="p" component="div" sx={{ textAlign: 'center', marginBottom: 4 }}>
                     {contratacion.nombre_contratacion}
                 </Typography>
-                <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', marginBottom: 1 }}>
+                <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'start', marginBottom: 1 , paddingLeft: 2}}>
                     N° EXPEDIENTE: <b>{contratacion.expte}</b>
                 </Typography>
-                <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', display: 'flex', justifyContent: 'center' }}>
+                <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'start', display: 'flex', justifyContent: 'start', paddingLeft: 2 }}>
                     {Instrumento}: <p className='ms-1'><b>{contratacion.num_instrumento}</b></p>
                 </Typography>
             </CardContent>

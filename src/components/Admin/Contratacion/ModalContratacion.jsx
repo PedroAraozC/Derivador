@@ -8,15 +8,17 @@ import useStore from "../../../Zustand/Zustand";
 
 const ModalContratacion = ({ contratacion, modalAbierto, handleClose, modoEdicion, }) => {
 
-    const [deviceWidth, setDeviceWidth] = useState(window.innerWidth);
     const { obtenerInstrumentos, obtenerTiposContratacion, tiposContratacion, instrumentosC, obtenerContrataciones } = useStore();
     const fileInputRef = useRef(null);
+    const anexoInputRef = useRef(null);
     const [archivo, setArchivo] = useState(null);
+    const [anexo, setAnexo] = useState(null);
     const [errores, setErrores] = useState({});
     const [snackbarMensaje, setSnackbarMensaje] = useState('');
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [datosOld, setDatosOld] = useState('');
     const [formularioValues, setFormularioValues] = useState({});
+    const [buttonDisAnexo, setButtonDisAnexo] = useState(false);
     const handleSnackbarClose = () => { setSnackbarOpen(false); };
 
     useEffect(() => {
@@ -72,28 +74,13 @@ const ModalContratacion = ({ contratacion, modalAbierto, handleClose, modoEdicio
                 expte: contratacion.expte,
                 id_tinstrumento: contratacion.id_tinstrumento,
                 fecha_apertura: fechaAperturaFormatted,
-                hora_apertura: contratacion.fecha_apertura,
+                hora_apertura: contratacion.hora_apertura,
                 habilita: contratacion.habilita,
                 detalle: contratacion.detalle
             });
             setDatosOld(`CONTRATACION_${contratacion.num_instrumento}_EXPTE_${contratacion.expte}.pdf`)
-            console.log(fechaPresentacionFormatted)
         }
     }, [contratacion]);
-
-    useEffect(() => {
-        const handleResize = () => {
-            setDeviceWidth(window.innerWidth);
-        };
-        window.addEventListener("resize", handleResize);
-        return () => {
-            window.removeEventListener("resize", handleResize);
-        };
-    }, []);
-    const isMobile = deviceWidth <= 600;
-    if (!contratacion) {
-        return null;
-    }
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
@@ -117,6 +104,10 @@ const ModalContratacion = ({ contratacion, modalAbierto, handleClose, modoEdicio
         const file = fileInputRef.current.files[0];
         setArchivo(file); // Asignar el archivo al estado
     };
+    const handleFileInputChangeAnexo = () => {
+        const file = anexoInputRef.current.files[0];
+        setAnexo(file); // Asignar el archivo al estado
+    };
 
     const editarContratacion = async (contratacion) => {
         const formularioValido = validarFormulario();
@@ -132,7 +123,6 @@ const ModalContratacion = ({ contratacion, modalAbierto, handleClose, modoEdicio
                         'Content-Type': 'multipart/form-data',
                     },
                 });
-                handleClose()
                 setSnackbarMensaje("Contratación editada.");
                 setSnackbarOpen(true);
                 obtenerContrataciones()
@@ -148,12 +138,32 @@ const ModalContratacion = ({ contratacion, modalAbierto, handleClose, modoEdicio
         }
     };
 
+    const editarAnexo = async (e) => {
+        e.preventDefault()
+        const formData = new FormData();
+        formData.append('anexo', anexo);
+          // Agregar num_instrumento y expte como parámetros de consulta
+        let oldName = `CONTRATACION_${contratacion.num_instrumento}_EXPTE_${contratacion.expte}_ANEXO.pdf`
+        const url = `/admin/editarAnexo?num_instrumento=${formularioValues.num_instrumento}&expte=${formularioValues.expte}&id=${contratacion.id_contratacion}&oldName=${oldName}`;
+        const config = { headers: { 'Content-Type': 'multipart/form-data' } }
+        try {
+            const data = await axios.post(url, formData, config)
+            console.log(data);
+            setSnackbarMensaje("Anexo editado.");
+            setSnackbarOpen(true);
+            setButtonDisAnexo(true);
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
+
     const style = {
         position: "absolute",
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        width: isMobile ? "90%" : "1200px", // Ajusta el ancho según el dispositivo
+        width: "90%", // Ajusta el ancho según el dispositivo
         height: "95%",
         bgcolor: "background.paper",
         border: "2px solid #000",
@@ -166,11 +176,13 @@ const ModalContratacion = ({ contratacion, modalAbierto, handleClose, modoEdicio
             <Box sx={style}>
                 <div className="d-flex justify-content-around align-items-center mb-3">
                     <p style={{ fontSize: "1rem", margin: 0 }}>
-                        Detalle : {contratacion.id_contratacion}
+                        Detalle : {contratacion?.id_contratacion}
                     </p>
                 </div>
                 <Divider />
-                <div className="d-flex flex-column justify-content-center">
+                <div className="d-flex flex-column">
+
+                <div className="d-flex justify-content-center">
                     <form className="d-flex gap-5" onSubmit={(event) => editarContratacion(event, formularioValues)} encType="multipart/form-data">
                         <div className="d-flex flex-column">
                             <TextField
@@ -296,7 +308,15 @@ const ModalContratacion = ({ contratacion, modalAbierto, handleClose, modoEdicio
                             />
                         </div>
                         <div>
-                            <InputLabel sx={{ marginTop: 4 }}>NOMBRE ARCHIVO</InputLabel>
+                            <InputLabel sx={{marginTop: 3}}>Detalle</InputLabel>
+                            <textarea
+                                placeholder="Información Adicional..."
+                                onChange={handleInputChange}
+                                name="detalle"
+                                value={formularioValues.detalle}
+                                style={{ width: 400, borderRadius: 5, padding: 5,  }}
+                            />
+                            <InputLabel sx={{marginTop: 5}}>EDITAR PLIEGO</InputLabel>
                             <input
                                 type="file"
                                 accept=".pdf"
@@ -305,14 +325,21 @@ const ModalContratacion = ({ contratacion, modalAbierto, handleClose, modoEdicio
                                 required={false}
                                 style={{ width: 300, paddingTop: 5, paddingBottom: 30 }}
                             />
-                            <textarea
-                                placeholder="Información Adicional..."
-                                onChange={handleInputChange}
-                                name="detalle"
-                                value={formularioValues.detalle}
-                                style={{ width: 400, marginTop: 5, borderRadius: 5, padding: 5 }}
-                            />
                         </div>
+                    </form>
+                    <div className="ps-4">
+
+                    <InputLabel sx={{ marginTop: 4 }}>EDITAR ANEXO #OPCIONAL</InputLabel>
+                    <form className="d-flex flex-column">
+                    <input
+                        type="file"
+                        accept=".pdf"
+                        ref={anexoInputRef}
+                        onChange={handleFileInputChangeAnexo}
+                        required={false}
+                        style={{ width: 400, paddingTop: 5, paddingBottom: 30 }}
+                        />
+                    <Button variant="contained" onClick={editarAnexo} disabled={buttonDisAnexo}>Editar</Button>
                     </form>
                     {errores ? (
                         <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
@@ -321,12 +348,14 @@ const ModalContratacion = ({ contratacion, modalAbierto, handleClose, modoEdicio
                             </Alert>
                         </Snackbar>
                     ) : <></>}
+                    </div>
+                    </div>
 
                     <Button
                         onClick={() => editarContratacion(formularioValues)}
                         className="mt-3"
                         variant="outlined"
-                    >
+                        >
                         Guardar cambios
                     </Button>
                 </div>

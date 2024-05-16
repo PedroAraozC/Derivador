@@ -36,11 +36,11 @@ const Licitaciones = () => {
       <div className="container mt-5 mb-5">
         <h2>Licitaciones y Compras</h2>
         <div className="d-flex gap-3 mt-5 align-items-center">
-          Filtros:
-          <Button size="large" variant={filtro === 'Todas' ? "contained" : "outlined"} onClick={() => handleFiltroClick('')}>Todas</Button>
-          <Button size="large" variant={filtro === 1 ? "contained" : "outlined"} onClick={() => handleFiltroClick(1)}>Privadas</Button>
-          <Button size="large" variant={filtro === 2 ? "contained" : "outlined"} onClick={() => handleFiltroClick(2)}>Públicas</Button>
-          <Button size="large" variant={filtro === 3 ? "contained" : "outlined"} onClick={() => handleFiltroClick(3)}>Concursos de Precio</Button>
+          Busqueda:
+          <Button size="large" variant={filtro === 'Todas' ? "contained" : "outlined"} onClick={() => handleFiltroClick('')}>Todos</Button>
+          <Button size="large" variant={filtro === 1 ? "contained" : "outlined"} onClick={() => handleFiltroClick(1)}>Licitación Privadas</Button>
+          <Button size="large" variant={filtro === 2 ? "contained" : "outlined"} onClick={() => handleFiltroClick(2)}>Licitación Públicas</Button>
+          <Button size="large" variant={filtro === 3 ? "contained" : "outlined"} onClick={() => handleFiltroClick(3)}>Concurso de Precio</Button>
           <Button size="large" variant={filtro === 4 ? "contained" : "outlined"} onClick={() => handleFiltroClick(4)}>Compra Directa</Button>
         </div>
         <div className="mt-5 d-flex flex-wrap gap-4 justify-content-center">

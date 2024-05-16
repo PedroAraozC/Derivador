@@ -3,18 +3,21 @@ import { useState, useEffect, useRef } from "react";
 import useStore from "../../../Zustand/Zustand";
 import axios from "../../../config/axios";
 import TablaContratacion from "./TablaContratacion";
-// import { formatearFecha } from "../../../helpers/convertirFecha";
 
 const PanelContratacion = () => {
   const [addContratacion, setAddContratacion] = useState(false);
   const [listarContrataciones, setListarContrataciones] = useState(false);
   const { obtenerInstrumentos, obtenerTiposContratacion, tiposContratacion, instrumentosC,} = useStore();
   const [archivo, setArchivo] = useState(null);
+  const [anexo, setAnexo] = useState(null);
   const [formularioValues, setFormularioValues] = useState({});
   const [snackbarMensaje, setSnackbarMensaje] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [buttonDis, setButtonDis] = useState(false);
+  const [buttonDisAnexo, setButtonDisAnexo] = useState(false);
+  const [llevaAnexo, setLlevaAnexo] = useState(false);
   const fileInputRef = useRef(null);
+  const fileInputRefAnexo = useRef(null);
   const [errores, setErrores] = useState({});
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
@@ -64,6 +67,10 @@ const validarFormulario = () => {
     const file = fileInputRef.current.files[0];
     setArchivo(file); // Asignar el archivo al estado
   };
+  const handleFileInputChangeAnexo = () => {
+    const file = fileInputRefAnexo.current.files[0];
+    setAnexo(file); // Asignar el archivo al estado
+  };
 
   const handleAgregar = async (event, contratacion) => {
     event.preventDefault();
@@ -82,6 +89,7 @@ const validarFormulario = () => {
         setSnackbarMensaje("Contratación creada.");
         setSnackbarOpen(true);
         setButtonDis(true)
+        setLlevaAnexo(true)
         return response.data;
       } catch (error) {
         console.error("Error al agregar la contratacion:", error);
@@ -96,6 +104,35 @@ const validarFormulario = () => {
     }
   };
 
+  const subirAnexo = async(e) =>{
+    e.preventDefault()
+    const formData = new FormData();
+    formData.append('anexo', anexo);
+
+    // Agregar num_instrumento y expte como parámetros de consulta
+    const url = `/admin/agregarAnexo?num_instrumento=${formularioValues.num_instrumento}&expte=${formularioValues.expte}`;
+
+    const config = {headers: {'Content-Type': 'multipart/form-data'}}
+
+    try{
+      const data = await axios.post(url, formData, config)
+      setButtonDisAnexo(true);
+      console.log(data);
+      setSnackbarMensaje("Anexo agregado.");
+      setSnackbarOpen(true);
+    } catch(err) {
+      console.log(err);
+    }
+}
+
+  const cancelarContratacion = () =>{
+    setAddContratacion(!addContratacion)
+    setFormularioValues({})
+    setButtonDis(false)
+    setLlevaAnexo(false)
+    setButtonDisAnexo(false);
+  }
+
   useEffect(() => {
     obtenerTiposContratacion();
     obtenerInstrumentos();
@@ -106,16 +143,17 @@ const validarFormulario = () => {
     <>
       <div className="container mt-4 d-flex justify-content-around">
         <h2>Panel de Contrataciones</h2>
-        <Button variant="outlined" color={addContratacion? "error" : "primary"} sx={{width: 250}} onClick={() => setAddContratacion(!addContratacion)}>
+        <Button variant="outlined" color={addContratacion? "error" : "primary"} sx={{width: 250}} onClick={cancelarContratacion}>
           {addContratacion? "Cancelar" : "Agregar Contratación"}
         </Button>
         <Button variant="outlined" sx={{width: 230}} onClick={() => setListarContrataciones(!listarContrataciones)}>
           Listar Contrataciones 
         </Button>
       </div>
-      <div className="container mt-5 mb-5">
+      <div className="container mt-5 mb-5 d-flex justify-content-center">
         {addContratacion ? (
           <>
+          <div className="d-flex">
             <form className="d-flex gap-5" onSubmit={(event) => handleAgregar(event, formularioValues)} encType="multipart/form-data">
               <div className="d-flex flex-column">
                 <TextField
@@ -145,7 +183,18 @@ const validarFormulario = () => {
                       </MenuItem>
                     ))}
                 </Select>
-                <InputLabel>Fecha Presentación</InputLabel>
+                <InputLabel >Valor Pliego</InputLabel>
+                  <TextField
+                    id="standard-basic"
+                    label="Ej: 100000.00"
+                    variant="outlined"
+                    sx={{ width: 300 }}
+                    onChange={handleInputChange}
+                    name="valor_pliego"
+                    value={formularioValues.valor_pliego}
+                    required={true}
+                  />
+                <InputLabel sx={{ marginTop: 2}}>Fecha Presentación</InputLabel>
                 <TextField
                   type="date"
                   onChange={handleInputChange}
@@ -161,27 +210,6 @@ const validarFormulario = () => {
                     name="hora_presentacion"
                     value={formularioValues.hora_presentacion}
                     sx={{ width: 300, marginTop: 2 }}
-                    required={true}
-                  />
-                <TextField
-                  id="standard-basic"
-                  label="Num de Instrumento"
-                  variant="outlined"
-                  sx={{ marginTop: 5, width: 300 }}
-                  onChange={handleInputChange}
-                  name="num_instrumento"
-                  value={formularioValues.num_instrumento}
-                  required={true}
-                />
-                <InputLabel sx={{ marginTop: 2}}>Valor Pliego</InputLabel>
-                  <TextField
-                    id="standard-basic"
-                    label="Ej: 100000.00"
-                    variant="outlined"
-                    sx={{ marginTop: 2, width: 300 }}
-                    onChange={handleInputChange}
-                    name="valor_pliego"
-                    value={formularioValues.valor_pliego}
                     required={true}
                   />
               </div>
@@ -214,7 +242,16 @@ const validarFormulario = () => {
                       </MenuItem>
                     ))}
                 </Select>
-                
+                <TextField
+                  id="standard-basic"
+                  label="Num de Instrumento"
+                  variant="outlined"
+                  sx={{ marginTop: 5, width: 300 }}
+                  onChange={handleInputChange}
+                  name="num_instrumento"
+                  value={formularioValues.num_instrumento}
+                  required={true}
+                />
                   <InputLabel sx={{ marginTop: 2}}>Fecha Apertura</InputLabel>
                   <TextField
                     type="date"
@@ -233,7 +270,6 @@ const validarFormulario = () => {
                     sx={{ width: 300, marginTop: 2 }}
                     required={true}
                   />
-                  
                   <InputLabel sx={{ marginTop: 2 }}>HABILITA</InputLabel>
                   <Switch
                     checked={formularioValues.habilita === 1}
@@ -253,15 +289,6 @@ const validarFormulario = () => {
                   required={false}
                   style={{ width: 400, paddingTop: 5, paddingBottom: 30 }}
                 />
-                {/* <InputLabel sx={{ marginTop: 4 }}>ANEXO</InputLabel>
-                <input
-                  type="file"
-                  accept=".pdf"
-                  ref={fileInputRef}
-                  onChange={handleFileInputChange}
-                  required={false}
-                  style={{ width: 400, paddingTop: 5, paddingBottom: 30 }}
-                /> */}
                 <textarea
                     placeholder="Información Adicional..."
                     onChange={handleInputChange}
@@ -271,6 +298,23 @@ const validarFormulario = () => {
                   />
               </div>
             </form>
+            {llevaAnexo ? <>
+            <div className="ps-4">
+                <InputLabel sx={{ marginTop: 4 }}>INGRESE ANEXO SI ES NECESARIO</InputLabel>
+                <form >
+                  <input
+                    type="file"
+                    accept=".pdf"
+                    ref={fileInputRefAnexo}
+                    onChange={handleFileInputChangeAnexo}
+                    required={false}
+                    style={{ width: 400, paddingTop: 5, paddingBottom: 30 }}
+                  />
+                  <Button variant="contained" onClick={subirAnexo} disabled={buttonDisAnexo}>Subir Anexo</Button>
+                </form>
+              </div>
+                </>: <></>}
+          </div>
             {errores ? (
           <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
             <Alert onClose={handleSnackbarClose} severity="info" elevation={6} variant="filled">

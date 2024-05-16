@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "../../config/axios";
 import { Button } from "@mui/material";
 
 const Licitacion = () => {
   const { id } = useParams();
   const [contratacion, setContratacion] = useState(null);
+  const navigate = useNavigate()
 
   const traerContratacion = async (id) => {
     try {
@@ -17,11 +18,12 @@ const Licitacion = () => {
     }
   };
 
-  const abrirArchivo = () => {
-    //CAMBIAR LA RUTA
-    window.location.href = '../../../public/CONTRATACION_1367-SSP-2024_EXPTE_125046-40086-2024.pdf';
-  }
+    const urlPliego = `https://atencionciudadana.smt.gob.ar/PDF-Convocatorias/${contratacion?.nombre_archivo}`;
+    const urlAnexo = `https://atencionciudadana.smt.gob.ar/PDF-Convocatorias/${contratacion?.nombre_anexo}`;
   
+  const handleVolver = () =>{
+    navigate(-1)
+  }
 
 //--------FORMATEO LAS FECHAS ----------------------
   const fechaTexto = contratacion?.fecha_presentacion;
@@ -42,19 +44,34 @@ const Licitacion = () => {
     traerContratacion(id);
   }, [id]);
 
+  let precio
+  if(contratacion?.valor_pliego == '0.00'){
+    precio = 'SIN COSTO'
+  }else {
+    precio = `$ ${contratacion?.valor_pliego} (PESOS)`;
+  }
+
   return (
     <div className="container d-flex mt-5 mb-5 flex-column gap-2">
+      <div className="mb-3">
+        <Button variant="contained" onClick={handleVolver}>VOLVER</Button>
+      </div>
       {contratacion && (
         <>
           <h2 className="mb-5">{contratacion.nombre_contratacion}</h2>
           <p className="mt-5">{contratacion.detalle}</p>
           <p><b>Expendiente N°: </b>{contratacion.expte}</p>
           <p><b>Resolución N°: </b>{contratacion.num_instrumento}</p>
-          <p><b>Valor del Pliego de Bases y Condiciones: </b>$ {contratacion.valor_pliego} (PESOS)</p>
+          <p><b>Valor del Pliego de Bases y Condiciones: </b> {precio}</p>
           <p><b>Lugar de Apertura: </b>{contratacion.lugar_apertura}</p>
           <p><b>Plazo de Presentación de las Ofertas: </b>{fechaFormateada} - HORAS {contratacion.hora_presentacion}</p>
           <p><b>Fecha de Apertura y Hora: </b>{fechaFormateada2} - HORAS {contratacion.hora_apertura}</p>
-          <Button className="mt-5" variant="outlined" onClick={abrirArchivo}>DESCARGAR PLIEGO</Button>
+          {/* <Button className="mt-5" variant="outlined" onClick={()=>abrirArchivo(contratacion.nombre_archivo)}>DESCARGAR PLIEGO</Button> */}
+          <a href={urlPliego} target="_blank" rel="noreferrer" className="btn">DESCARGAR PLIEGO</a>
+          {contratacion.nombre_anexo == '' &&
+          // <Button className="mt-5" variant="outlined" onClick={()=>abrirArchivo(contratacion.nombre_anexo)}>DESCARGAR ANEXO</Button>
+          <a href={urlAnexo} target="_blank" rel="noreferrer">DESCARGAR ANEXO</a>
+          }
         </>
       )}
       </div>

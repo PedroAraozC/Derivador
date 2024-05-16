@@ -10,12 +10,9 @@ import TableRow from "@mui/material/TableRow";
 import TablePagination from "@mui/material/TablePagination";
 import Paper from "@mui/material/Paper";
 import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
 import ModalContratacion from "./ModalContratacion";
 import Checkbox from "@mui/material/Checkbox";
 import useStore from "../../../Zustand/Zustand";
-import Swal from "sweetalert2";
-import axios from "../../../config/axios";
 
 const TablaContratacion = () => {
     // eslint-disable-next-line no-unused-vars
@@ -75,35 +72,7 @@ const TablaContratacion = () => {
         setPage(0);
     };
 
-    const handleBorrar = async (contratacion) => {
-        let id = contratacion.id_contratacion
-        Swal.fire({
-            title: "¿Estás seguro?",
-            text: "¡No podrás revertir esto!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Sí, bórralo"
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-                try {
-                    const response = await axios.post("/admin/borrarContratacion", { id });
-                    console.log(response.data);
-                    // Si deseas hacer algo después de eliminar el elemento, puedes hacerlo aquí
-                    // Por ejemplo, actualizar la tabla o mostrar una notificación
-                    Swal.fire({
-                        title: "¡Eliminado!",
-                        text: "Tu contratación ha sido deshabilitada.",
-                        icon: "success"
-                    });
-                } catch (error) {
-                    console.error("Error al deshabilitar la contratación:", error);
-                    throw new Error("Error al deshabilitar la contratación");
-                }
-            }
-        });
-    };
+
 
     return (
         <>
@@ -142,7 +111,6 @@ const TablaContratacion = () => {
                                         <TableCell align="center">{contratacion.id_tcontratacion}</TableCell>
                                         <TableCell align="center">{contratacion.habilita === 1 ? "Habilitado" : "Deshabilitado"}</TableCell>
                                         <TableCell align="center">
-                                            <DeleteIcon className="mx-2" onClick={()=> handleBorrar(contratacion.id_contratacion)}/>
                                             <EditIcon onClick={ ()=> abrirModal(contratacion)}/>
                                         </TableCell>
                                     </TableRow>
