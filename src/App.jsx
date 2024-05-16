@@ -8,6 +8,9 @@ import PrivateRoute from "./routes/PrivateRoute";
 import Perfil from "./pages/Perfil/Perfil";
 import { Registro } from "./components/Registro/Registro";
 import PanelAdmin from "./components/Admin/PanelAdmin";
+import PanelContratacion from "./components/Admin/Contratacion/PanelContratacion";
+import Licitaciones from "./components/Licitaciones/Licitaciones";
+import Licitacion from "./components/Licitaciones/Licitacion";
 
 function App() {
   const url = new URL(window.location.href);
@@ -49,7 +52,9 @@ function App() {
             } />
 
             <Route exact path="/panel_admin" element={<PanelAdmin />} />
-
+            <Route exact path="/panel_contratacion" element={<PanelContratacion />} />
+            <Route exact path="/licitaciones_concursos" element={<Licitaciones />} />
+            <Route path="/licitacion/:id" element={<Licitacion />} />
           </Routes>
         </Layout>
       </HashRouter>
