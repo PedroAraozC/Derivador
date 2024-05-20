@@ -12,6 +12,16 @@ const useStore = create((set) => ({
   permisos: [],
   
   opciones: [],
+  
+  //array para BackOffice
+  contrataciones: [],
+
+  //array para servicios
+  contratacionesFront: [],
+
+  instrumentosC: [],
+
+  tiposContratacion: [],
 
   loading: true,
   
@@ -52,8 +62,49 @@ const useStore = create((set) => ({
       }
       set({ errors: errorMessage });
     }
+  },
+//------------------------------PANEL PARA CONTRATACIONES ---------------------------------------
+obtenerContrataciones : async () => {
+  try {
+    const resultado = await axios.get("/admin/listarContratacionBack");
+    const data = resultado.data.contrataciones;
+    set({ contrataciones: data });
+  } catch (error) {
+    console.log(error);
   }
-  ,
+},
+
+obtenerContratacionesFront : async () => {
+  try {
+    const resultado = await axios.get("/admin/listarContratacion");
+    const data = resultado.data.contrataciones;
+    set({ contratacionesFront: data });
+  } catch (error) {
+    console.log(error);
+  }
+},
+
+obtenerInstrumentos : async () => {
+  try {
+    const resultado = await axios.get("/admin/listarTipoIntrumentos");
+    const data = resultado.data.instrumentos;
+    set({ instrumentosC: data });
+  } catch (error) {
+    console.log(error);
+  }
+},
+
+obtenerTiposContratacion : async () => {
+  try {
+    const resultado = await axios.get("/admin/listaTipoContratacion");
+    const data = resultado.data.contrataciones;
+    set({ tiposContratacion: data });
+  } catch (error) {
+    console.log(error);
+  }
+},
+//-----------------------------PANEL PARA CONTRATACIONES ------------------------------------
+
   obtenerOpciones: async () => {
     try {
       set({ errors: "" });
