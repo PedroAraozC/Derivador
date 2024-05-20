@@ -6,12 +6,13 @@ import { useState } from "react";
 import { Button } from "@mui/material";
 import useStore from "../../Zustand/Zustand";
 import cdigitalApi from '../../config/axios';
-import { Validacion } from "../../components/Registro/Validacion";
+
 import SaveIcon from '@mui/icons-material/Save';
 import EditIcon from '@mui/icons-material/Edit';
 import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead';
 import Swal from "sweetalert2";
 import { CambiarContraseña } from "../../pages/Perfil/CambiarContraseña";
+import { ArrowBack } from "@mui/icons-material";
 
 
 
@@ -44,27 +45,32 @@ const Perfil = () => {
 
   const usuario=user;
 
-  const validarEmail=async ()=>{
-
-    if(usuario.validado==1){
-
-return Swal.fire({text:"Su email ya está validado!",
-confirmButtonColor:"#1F89F6"});
-
-    }
-
-try {
-
-  await cdigitalApi.post(`/usuarios/email`,{email_persona:user.email_persona,documento_persona:user.documento_persona});
-abrirModal();
-  
-} 
-catch(error)
-{
-console.log(error);
-}
-
+  function formatDate(dateString) {
+    const parts = dateString.split('-');
+    return `${parts[2]}-${parts[1]}-${parts[0]}`;
   }
+
+//   const validarEmail=async ()=>{
+
+//     if(usuario.validado==1){
+
+// return Swal.fire({text:"Su email ya está validado!",
+// confirmButtonColor:"#1F89F6"});
+
+//     }
+
+// try {
+
+//   await cdigitalApi.post(`/usuarios/email`,{email_persona:user.email_persona,documento_persona:user.documento_persona});
+// abrirModal();
+  
+// } 
+// catch(error)
+// {
+// console.log(error);
+// }
+
+//   }
 
   const actualizarUsuarioConFormData = (objeto1, objeto2) => {
     for (const key in objeto2) {
@@ -82,7 +88,21 @@ console.log(error);
     }
   };
   
+  const volver =()=>{
+
   
+
+    if(localStorage.getItem("origin")=="turnos")
+    {
+      setTimeout(() => {
+        window.location.href = 'http://turnos.smt.gob.ar:90'; 
+      }, 1000);
+
+    }
+
+
+
+  }
  
   const handleChange = (e, lon) => {
     let value = e.target.value; // Eliminar espacios en blanco alrededor del valor
@@ -108,29 +128,65 @@ console.log(error);
   {
   
       try{
-          await cdigitalApi.put(`/usuarios/editarUsuario`,data);
+        const resp=  await cdigitalApi.put(`/usuarios/editarUsuario`,data);
           
-          Swal.fire({
-            position: "center",
-            icon: "success",
-            title: `Cambios realizados con éxito! `,
-            showConfirmButton: false,
-            timer: 2500
-          });
+     if(resp.data.ok) {
 
-          actualizarUsuarioConFormData(user, data);
-          console.log(user)
-          
-          updateUser(user);
-           setIsEditing(!isEditing)
-           setSaveChanges(true);
-           localStorage.setItem("saveChanges", JSON.stringify(true));
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: `Perfil actualizado! `,
+        showConfirmButton: false,
+        timer: 2500
+      });
+
+      actualizarUsuarioConFormData(user, data);
+      console.log(user)
+      
+      updateUser(user);
+       setIsEditing(!isEditing)
+       setSaveChanges(true);
+       localStorage.setItem("saveChanges", JSON.stringify(true));
+
+       if(localStorage.getItem("origin")=="turnos")
+       {
+
+setTimeout(() => {
+  window.location.href = 'http://turnos.smt.gob.ar:90'; 
+}, 2500);
+
+
+     
+   
+       }
+
+     }    
+     else{
+
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: `Ups! `,
+        text:"algo salió mal",
+        showConfirmButton: false,
+        timer: 2500
+      });
+
+     }
         
       }
   
       catch(error)
       {
       console.log(error);
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: `Ups! `,
+        text:"algo salió mal",
+        showConfirmButton: false,
+        timer: 2500
+      });
       }
 }
   
@@ -163,6 +219,19 @@ console.log(error);
 //               text: 'El DNI no puede tener mas de 8 dígitos',                
 //             })
 //       }
+
+if( formData.telefono_persona.length==0 || formData.nombre_persona.length ==0 || formData.apellido_persona.length==0 || formData.documento_persona.length==0 ||formData.email_persona.length==0){
+  return Swal.fire({
+      icon: 'error',
+      title: '¡Ups!',
+      text: 'No puede haber campos vacíos',  
+      confirmButtonColor:"#6495ED"               
+    })
+}
+
+
+
+
 
  if( formData.telefono_persona <0){
         return Swal.fire({
@@ -197,11 +266,11 @@ EditarCiudadanoDB(formData)
   }
 
   return (
-    <div className="d-flex align-items-center justify-content-center">
-      <div className="d-flex flex-column p-2 mt-3 contenedorPerfil">
+    <div className=" d-flex align-items-center justify-content-center flex-column">
+      <div className="d-flex flex-column p-2 mt-5 contenedorPerfil">
         <div className="d-flex py-4 px-2 justify-content-between align-items-center gap-3">
           <img src={fotoDefault} alt="Foto de perfil" className="fotoPerfil" />
-          {usuario.validado==1 ? (
+          {/* {usuario.validado==1 ? (
             <div className="d-flex align-items-center justify-content-center gap-2">
               <p className="m-0">Usuario validado: </p>
               <FontAwesomeIcon icon={faCheck}  />
@@ -211,18 +280,18 @@ EditarCiudadanoDB(formData)
               <p className="m-0">Usuario validado: </p>
               <FontAwesomeIcon icon={faXmark}  />
             </div>
-          )}
+          )} */}
           
         </div>
   
         {isEditing ? (
           <div className="px-2">
             <p className="datoUsuario">Nombre/s:</p> <p>{usuario.nombre_persona}</p>
-            <p className="datoUsuario">Apellidos:</p> <p>{usuario.apellido_persona}</p>
-            <p className="datoUsuario">DNI:</p> <p>{usuario.documento_persona}</p>
-            <p className="datoUsuario">Fecha nacimiento:</p> <p>{usuario.fecha_nacimiento_persona.split('T')[0] }</p>
-            <p className="datoUsuario">Localidad:</p> <p> {usuario.localidad_persona}</p>
-            <p className="datoUsuario">Domicilio:</p> <p> {usuario.domicilio_persona}</p>
+            <p className="datoUsuario">Apellido/s:</p> <p>{usuario.apellido_persona}</p>
+            <p className="datoUsuario">CUIL:</p> <p>{usuario.documento_persona}</p>
+            <p className="datoUsuario">Fecha nacimiento:</p> <p>{formatDate(usuario.fecha_nacimiento_persona.split('T')[0]) }</p>
+            {/* <p className="datoUsuario">Localidad:</p> <p> {usuario.localidad_persona}</p>
+            <p className="datoUsuario">Domicilio:</p> <p> {usuario.domicilio_persona}</p> */}
             <p className="datoUsuario">Telefono:</p> <p> {usuario.telefono_persona}</p>
             <p className="datoUsuario">Email:</p> <p>{usuario.email_persona}</p>
             <p className="datoUsuario">Clave:</p> <p> ***********</p>
@@ -231,7 +300,7 @@ EditarCiudadanoDB(formData)
           <form className="px-2 d-flex flex-column formEdit">
  <p className="datoUsuario">Nombre/s:</p>
             <input type="text" placeholder="Nombre" className="inputEditPerfil" 
-             onChange={handleChange} value={formData.nombre_persona} name="nombre_persona" autoFocus/>
+             onChange={handleChange} value={formData.nombre_persona} name="nombre_persona" autoFocus />
 <p className="datoUsuario">Apellidos:</p>
             <input type="text" placeholder="Apellido" className="inputEditPerfil" 
              onChange={handleChange} value={formData.apellido_persona} name="apellido_persona"/>
@@ -241,9 +310,9 @@ EditarCiudadanoDB(formData)
 {/* <p className="datoUsuario">Localidad:</p>
             <input type="text" placeholder="Localidad" className="inputEditPerfil" 
              onChange={handleChange} value={formData.localidad_persona} name="localidad_persona"/> */}
-  <p className="datoUsuario">Domicilio:</p>
+  {/* <p className="datoUsuario">Domicilio:</p>
             <input type="text" placeholder="Domicilio" className="inputEditPerfil"
-             onChange={handleChange} value={formData.domicilio_persona} name="domicilio_persona"/>
+             onChange={handleChange} value={formData.domicilio_persona} name="domicilio_persona"/> */}
 <p className="datoUsuario">Telefono:</p>
             <input type="number" placeholder="Telefono o Celular" className="inputEditPerfil"
              onChange={(e)=>handleChange(e,10)} value={formData.telefono_persona} name="telefono_persona"/>
@@ -266,20 +335,24 @@ EditarCiudadanoDB(formData)
         
         
         
-        <div className={isEditing? "d-flex justify-content-between" : "d-flex justify-content-center" }>
+        <div className={isEditing? "d-flex justify-content-center" : "d-flex justify-content-center" }>
           {
             isEditing?
           (<> <Button onClick={() => setIsEditing(!isEditing)} variant="outlined">
             <EditIcon className="me-2" color="primary" />  Editar datos
               </Button>
-                  <Button onClick={validarEmail} variant="outlined">
+                  {/* <Button onClick={validarEmail} variant="outlined">
                   <MarkEmailReadIcon className="me-2" color="primary"  /> Validar email
-                   </Button>
+                   </Button> */}
                    </> )
             :
-            <Button onClick={handleEditDatos} variant="outlined" className="text-center" disabled={saveChanges}>
+            <Button onClick={handleEditDatos} variant="outlined" className="text-center" 
+            // disabled={saveChanges}
+            >
 
-             <SaveIcon className="me-2" color={saveChanges?"disabled":"primary"} /> Guardar Cambios
+             <SaveIcon className="me-2" color={
+              // saveChanges?"disabled":
+              "primary"} /> Guardar Cambios
               
               </Button>
               
@@ -288,15 +361,32 @@ EditarCiudadanoDB(formData)
         </div>
    
       
+
+
+
+
       </div>
 
-      {modalAbierto && (
+<div className="d-flex mb-3 ">
+
+<Button onClick={volver} variant="contained" className="text-center" >
+
+<ArrowBack className="me-2" color={"white"} /> Volver
+ 
+ </Button>
+</div>
+
+
+
+
+
+      {/* {modalAbierto && (
   <Validacion 
   data={formData}
   cerrarModal={cerrarModal}
   setModalAbierto={setModalAbierto}
   /> 
-)} 
+)}  */}
 
 {modal2Abierto && (
   <CambiarContraseña
