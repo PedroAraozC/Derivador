@@ -34,7 +34,7 @@
     "react-loading-skeleton": "^3.4.0",
     "react-router-dom": "^6.21.1",
     "styled-components": "^6.1.6",
-    "sweetalert2": "^11.10.5",
+    "sweetalert2": "^11.6.13",
     "zustand": "^4.4.7"
   },
   "devDependencies": {
