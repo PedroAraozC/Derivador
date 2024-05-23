@@ -1,0 +1,15 @@
+
+.MuiTablePagination-toolbar p{
+    margin-bottom: 0;
+}
+/* form{
+    flex-direction: column;
+} */
+@media (max-width: 600px) {
+    .formAgregarCausal{
+        flex-direction: column;
+    }
+  }
+  .MuiInputBase-input{
+    height: 15px !important;
+  }
