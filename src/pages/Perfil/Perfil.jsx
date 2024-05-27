@@ -23,7 +23,7 @@ const Perfil = () => {
   const { user,updateUser } = useStore();
  // const [confirmarContraseña, setConfirmarContraseña] = useState('');
  const [saveChanges, setSaveChanges] = useState(JSON.parse(localStorage.getItem("saveChanges")) || false);
- console.log(user);
+
   const[formData, setFormData]= useState({
       
     documento_persona:user.documento_persona,
@@ -94,8 +94,8 @@ const Perfil = () => {
 
     if(localStorage.getItem("origin")=="turnero")
     {
-     const rep=localStorage.getItem("rep")
-     const token=localStorage.getItem("token")
+    //  const rep=localStorage.getItem("rep")
+    //  const token=localStorage.getItem("token")
   
   
         window.location.href = `https://turnos.smt.gob.ar/`; 
@@ -151,15 +151,14 @@ const Perfil = () => {
        setSaveChanges(true);
        localStorage.setItem("saveChanges", JSON.stringify(true));
 
-       if(localStorage.getItem("origin")=="turnos")
+       if(localStorage.getItem("origin")=="turnero")
        {
 
 setTimeout(() => {
-  window.location.href = 'http://turnos.smt.gob.ar:90'; 
-}, 2500);
+  window.location.href = 'https://turnos.smt.gob.ar/';
+}, 3000);
+   
 
-
-     
    
        }
 

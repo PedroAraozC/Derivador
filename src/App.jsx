@@ -13,8 +13,21 @@ function App() {
   const token = url.searchParams.get("auth");
   const origin = url.searchParams.get("origin");
   // const rep=url.searchParams.get("rep");
-  localStorage.setItem("token", token);
-  localStorage.setItem("origin", origin);
+
+
+
+  if(localStorage.getItem("token")){
+    localStorage.setItem("token", token != null ? token : localStorage.getItem("token"));
+  }else if(token){
+    localStorage.setItem("token", token);
+  }
+
+  if(localStorage.getItem("origin")){
+    localStorage.setItem("origin", origin != null ? origin : localStorage.getItem("origin"));
+  }else if(origin){
+    localStorage.setItem("origin", origin);
+  }
+
   // localStorage.setItem("reparticion", rep);
   url.searchParams.delete("auth");
   url.searchParams.delete("origin");
