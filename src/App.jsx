@@ -12,17 +12,25 @@ function App() {
   // AUTHENTICACION
   const token = url.searchParams.get("auth");
   const origin = url.searchParams.get("origin");
+  // const rep=url.searchParams.get("rep");
+  localStorage.setItem("token", token);
+  localStorage.setItem("origin", origin);
+  // localStorage.setItem("reparticion", rep);
   url.searchParams.delete("auth");
-
+  url.searchParams.delete("origin");
+  url.searchParams.delete("rep");
   history.replaceState(null, '', url.toString());
   // Verificar si el token está presente en la URL y si aún no se ha guardado en el localStorage
-  if (token) {
-    localStorage.setItem("token", token);
-    localStorage.setItem("origin", origin);
-  } 
-  else if (!token && localStorage.getItem("token") == null) {
-    const url = new URL("https://smt.gob.ar/");
+ 
+ 
+  
+   if (!token && localStorage.getItem("token") == null) {
+    if(localStorage.getItem("origin")=="turnero")
+   {
+    const url = new URL( `https://turnos.smt.gob.ar/`);
     window.location.href = url.toString();
+   }
+  
   }
    return (
     <>
@@ -31,7 +39,7 @@ function App() {
           <Routes>
          
 
-            <Route exact path="/perfil" element={
+            <Route exact path="/*" element={
             <PrivateRoute><Perfil /></PrivateRoute>
             } />
 

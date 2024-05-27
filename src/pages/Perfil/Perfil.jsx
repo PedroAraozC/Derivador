@@ -92,11 +92,14 @@ const Perfil = () => {
 
   
 
-    if(localStorage.getItem("origin")=="turnos")
+    if(localStorage.getItem("origin")=="turnero")
     {
-      setTimeout(() => {
-        window.location.href = 'http://turnos.smt.gob.ar:90'; 
-      }, 1000);
+     const rep=localStorage.getItem("rep")
+     const token=localStorage.getItem("token")
+  
+  
+        window.location.href = `https://turnos.smt.gob.ar/`; 
+    
 
     }
 

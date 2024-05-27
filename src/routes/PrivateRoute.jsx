@@ -19,7 +19,7 @@ const PrivateRoute = ({ children }) => {
   ) : authenticated ? (
     children
   ) : (
-    <Navigate to="/perfil" />
+    <></>
   );
 };
 

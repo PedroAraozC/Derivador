@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import axios from '../config/axios';
 
-const useStore = create((set) => ({
+const useStore = create((set,get) => ({
   errors: "",
   setErrors: (newValues) => set(() => ({ errors: newValues })),
 
@@ -129,6 +129,9 @@ obtenerTiposContratacion : async () => {
     set({authenticated: false });
     localStorage.removeItem("token");
     localStorage.removeItem("saveChanges");
+    const url = new URL("https://ciudaddigital.smt.gob.ar/");
+    url.searchParams.append("logout", true);
+    window.open(url.toString(), '_self');
   },
 
   getAuth: async () => {
@@ -146,6 +149,7 @@ obtenerTiposContratacion : async () => {
       });
     } catch (error) {
       set({ authenticated: false});
+get.logout();
       localStorage.removeItem("token");
       console.log("error de auth");
       console.log(error)

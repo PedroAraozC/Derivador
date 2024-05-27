@@ -34,7 +34,8 @@ export default function NavBar() {
 
   const handleLogout = () => {
     logout();
-    navigate("/");
+    // const url = new URL( `https://smt.gob.ar`);
+    // window.location.href = url.toString();
     setAnchorEl(null);
   };
   useEffect(() => {
