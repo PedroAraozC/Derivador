@@ -1,9 +1,12 @@
 import { Button } from "@mui/material";
-// import Establecimiento from "./Establecimientos/Establecimiento";
+// import Establecimiento from "../Educacion/Establecimientos/TablaEstablecimiento";
 // import Caracter from "./Caracter/Caracter";
 // import Causal from "./Causal/Causal";
 // import Convocatorias from "./Convocatorias/Convocatorias";
 import { useState } from "react";
+import Categoria from "./Categoria/Categoria";
+import Tipologia from "./Tipologia/Tipologia";
+import Material from "./Material/Material"
 
 const PanelEducacion = () => {
     const [tablaVisible, setTablaVisible] = useState(null);
@@ -24,9 +27,9 @@ const PanelEducacion = () => {
                 <Button variant="outlined" onClick={verTabla('ubicacion')}>Ubicacion</Button>
             </div>
             <div>
-                {tablaVisible === 'convocatorias' && <Convocatorias />}
-                {tablaVisible === 'establecimientos' && <Establecimiento />}
-                {tablaVisible === 'caracter' && <Caracter />}
+                {tablaVisible === 'categoria' && <Categoria />}
+                {tablaVisible === 'tipologia' && <Tipologia />}
+                {tablaVisible === 'material' && <Material />}
                 {tablaVisible === 'causal' && <Causal />}
             </div>
         </>
