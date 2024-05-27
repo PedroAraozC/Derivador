@@ -31,7 +31,7 @@ function App() {
           <Routes>
          
 
-            <Route exact path="/*" element={
+            <Route exact path="/perfil" element={
             <PrivateRoute><Perfil /></PrivateRoute>
             } />
 
