@@ -7,6 +7,7 @@ import { useState } from "react";
 import Categoria from "./Categoria/Categoria";
 import Tipologia from "./Tipologia/Tipologia";
 import Material from "./Material/Material"
+import Estado from "./Estado/Estado";
 
 const PanelEducacion = () => {
     const [tablaVisible, setTablaVisible] = useState(null);
@@ -30,6 +31,7 @@ const PanelEducacion = () => {
                 {tablaVisible === 'categoria' && <Categoria />}
                 {tablaVisible === 'tipologia' && <Tipologia />}
                 {tablaVisible === 'material' && <Material />}
+                {tablaVisible === 'estado' && <Estado />}
                 {tablaVisible === 'causal' && <Causal />}
             </div>
         </>

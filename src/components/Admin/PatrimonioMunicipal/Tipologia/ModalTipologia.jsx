@@ -35,7 +35,7 @@ const ModalTipologia = ({
   const [datosOld, setDatosOld] = useState("");
   console.log(datosOld);
   const {
-    obtenerCategoria,
+    obtenerTipologia,
   } = useContext(EducaContext);
   useEffect(() => {
     const fetchData = async () => {

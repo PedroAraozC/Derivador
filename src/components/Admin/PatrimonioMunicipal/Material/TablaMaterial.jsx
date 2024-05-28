@@ -10,7 +10,7 @@ import TableRow from "@mui/material/TableRow";
 import TablePagination from "@mui/material/TablePagination";
 import Paper from "@mui/material/Paper";
 import VisibilityIcon from "@mui/icons-material/Visibility";
- import ModalMaterial from "./ModalMaterial";
+import ModalMaterial from "./ModalMaterial";
 import { formatearFechaHora } from "../../../../helpers/convertirFecha";
 import { Button } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
@@ -24,8 +24,7 @@ const TablaMaterial = () => {
   const [modalAbierto, setModalAbierto] = useState(false);
   const [modoEdicion, setModoEdicion] = useState(false);
   const [materialSeleccionado, setMaterialSeleccionado] = useState(null);
-  const { material, obtenerMaterial, refresh } =
-    useContext(EducaContext);
+  const { material, obtenerMaterial, refresh } = useContext(EducaContext);
   const [paginatedArray, setPaginatedArray] = useState([]);
   const navigate = useNavigate();
   //Funcion para listar las convocatorias
@@ -35,15 +34,12 @@ const TablaMaterial = () => {
 
   useEffect(() => {
     setPaginatedArray(
-      material?.slice(
-        page * rowsPerPage,
-        (page + 1) * rowsPerPage
-      )
+      material?.slice(page * rowsPerPage, (page + 1) * rowsPerPage)
     );
   }, [material, page, rowsPerPage]);
 
   const handleCheckboxChange = (materialId) => {
-    const material= material.materiales?.find(
+    const material = material.materiales?.find(
       (mat) => mat.id_material === materialId
     );
 
@@ -59,7 +55,7 @@ const TablaMaterial = () => {
   const handleEditar = () => {
     setModalAbierto(false);
     setModoEdicion(false);
-    setMaterialSeleccionada(null);
+    setMaterialSeleccionado(null);
   };
 
   const abrirModal = (material, editar = false) => {
@@ -77,7 +73,7 @@ const TablaMaterial = () => {
     setRowsPerPage(newRowsPerPage);
     setPage(0);
   };
-  console.log(material)
+  // console.log(material)
 
   return (
     <>
@@ -111,7 +107,7 @@ const TablaMaterial = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-                {console.log(material)}
+              {console.log(material)}
               {Array.isArray(material) &&
                 paginatedArray?.map((material) => (
                   <TableRow key={material.id_material}>
@@ -128,11 +124,11 @@ const TablaMaterial = () => {
                     </TableCell>
                     <TableCell>{material.id_material}</TableCell>
                     <TableCell>{material.nombre_material}</TableCell>
-                    <TableCell>{material.habilita == 1 ? 'SI':('NO')}</TableCell>
+                    <TableCell>
+                      {material.habilita == 1 ? "SI" : "NO"}
+                    </TableCell>
                     <TableCell align="center">
-                      <VisibilityIcon
-                        onClick={() => abrirModal(material)}
-                      />
+                      <VisibilityIcon onClick={() => abrirModal(material)} />
                     </TableCell>
                   </TableRow>
                 ))}

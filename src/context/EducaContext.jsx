@@ -25,6 +25,9 @@ const ProviderEducacion = ({ children }) => {
   const [categoria, setCategoria] = useState([]);
   const [tipologia, setTipologia] = useState([]);
   const [material, setMaterial] = useState([]);
+  const [estado, setEstado] = useState([]);
+  const [autor, setAutor] = useState([]);
+  const [ubicacion, setUbicacion] = useState([]);
   //Funcion para listar las convocatorias
 
   const obtenerConvocatorias = async (idNivel) => {
@@ -184,6 +187,33 @@ const ProviderEducacion = ({ children }) => {
       console.log(error);
     }
   };
+  const obtenerEstado = async () => {
+    try {
+      const resultado = await axios.get("/admin/listarEstados");
+      // console.log(resultado.data.materiales);
+      setEstado(resultado.data.estados);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const obtenerAutor = async () => {
+    try {
+      const resultado = await axios.get("/admin/listarAutores");
+      // console.log(resultado.data.materiales);
+      setAutor(resultado.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }  
+  const obtenerUbicacion = async () => {
+    try {
+      const resultado = await axios.get("/admin/listarUbicaciones");
+      // console.log(resultado.data.materiales);
+      setUbicacion(resultado.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <EducaContext.Provider
       value={{
@@ -224,6 +254,12 @@ const ProviderEducacion = ({ children }) => {
         tipologia,
         obtenerMaterial,
         material,
+        obtenerEstado,
+        estado,
+        obtenerAutor,
+        autor,
+        obtenerUbicacion,
+        ubicacion,
       }}
     >
       {children}
