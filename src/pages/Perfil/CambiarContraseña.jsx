@@ -24,6 +24,7 @@ export const CambiarContraseña = (props) => {
     const [showPassword, setShowPassword] = useState(false);
     const [showPassword2, setShowPassword2] = useState(false);
     const [showPassword3, setShowPassword3] = useState(false);
+    const [saveChanges, setSaveChanges] = useState(false)
    
     function validarClave(clave) {
       // La expresión regular busca al menos un número (\d) y al menos una letra mayúscula ([A-Z])
@@ -95,9 +96,10 @@ if( datos.clave_nueva.length > 25){
       });
     }
 
+    setSaveChanges(true)
       try {
 
-
+        
          const resp = await cdigitalApi.put("/usuarios/editarClave", datos);
   
           if (resp.data.ok) {
@@ -110,8 +112,9 @@ if( datos.clave_nueva.length > 25){
               });
   
               setModalAbierto(false);
+              
               setTimeout(() => {
-                window.location.href = 'https://turnos.smt.gob.ar/';
+                window.location.href = `https://${localStorage.getItem("origin")}.smt.gob.ar/`;
               }, 3000);
 
           } 
@@ -251,7 +254,7 @@ if( datos.clave_nueva.length > 25){
   </Form.Group>
 
 <div className='text-center'>
-  <Button size='md' variant="primary" type="submit" className="w-50">
+  <Button size='md' variant="primary" type="submit" className="w-50"  disabled={saveChanges}>
  Confirmar
 </Button>
   </div>

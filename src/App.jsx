@@ -9,9 +9,14 @@ import Perfil from "./pages/Perfil/Perfil";
 function App() {
   const url = new URL(window.location.href);
 
+//   const origen = url.hostname;
+//   const partesDominio = origen.split('.');
+// const origin = partesDominio[0];
+
+
   // AUTHENTICACION
   const token = url.searchParams.get("auth");
-  const origin = url.searchParams.get("origin");
+   const origin = url.searchParams.get("origin");
   // const rep=url.searchParams.get("rep");
 
 
@@ -30,19 +35,18 @@ function App() {
 
   // localStorage.setItem("reparticion", rep);
   url.searchParams.delete("auth");
-  url.searchParams.delete("origin");
-  url.searchParams.delete("rep");
+   url.searchParams.delete("origin");
+  // url.searchParams.delete("rep");
   history.replaceState(null, '', url.toString());
   // Verificar si el token está presente en la URL y si aún no se ha guardado en el localStorage
  
  
   
    if (!token && localStorage.getItem("token") == null) {
-    if(localStorage.getItem("origin")=="turnero")
-   {
-    const url = new URL( `https://turnos.smt.gob.ar/`);
+ 
+    const url = new URL( `https://${localStorage.getItem("origin")}.smt.gob.ar/`);
     window.location.href = url.toString();
-   }
+   
   
   }
    return (

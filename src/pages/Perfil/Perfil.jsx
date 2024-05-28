@@ -22,7 +22,8 @@ const Perfil = () => {
   // eslint-disable-next-line no-unused-vars
   const { user,updateUser } = useStore();
  // const [confirmarContraseña, setConfirmarContraseña] = useState('');
- const [saveChanges, setSaveChanges] = useState(JSON.parse(localStorage.getItem("saveChanges")) || false);
+ const [saveChanges, setSaveChanges] = useState(false)
+  // JSON.parse(localStorage.getItem("saveChanges")) || false);
 
   const[formData, setFormData]= useState({
       
@@ -92,16 +93,15 @@ const Perfil = () => {
 
   
 
-    if(localStorage.getItem("origin")=="turnero")
-    {
+   
     //  const rep=localStorage.getItem("rep")
     //  const token=localStorage.getItem("token")
   
   
-        window.location.href = `https://turnos.smt.gob.ar/`; 
+        window.location.href = `https://${localStorage.getItem("origin")}.smt.gob.ar/`; 
     
 
-    }
+    
 
 
 
@@ -131,6 +131,7 @@ const Perfil = () => {
   {
   
       try{
+        setSaveChanges(true);
         const resp=  await cdigitalApi.put(`/usuarios/editarUsuario`,data);
           
      if(resp.data.ok) {
@@ -148,19 +149,18 @@ const Perfil = () => {
       
       updateUser(user);
        setIsEditing(!isEditing)
-       setSaveChanges(true);
-       localStorage.setItem("saveChanges", JSON.stringify(true));
+       
+      //  localStorage.setItem("saveChanges", JSON.stringify(true));
 
-       if(localStorage.getItem("origin")=="turnero")
-       {
+   
 
 setTimeout(() => {
-  window.location.href = 'https://turnos.smt.gob.ar/';
+  window.location.href = `https://${localStorage.getItem("origin")}.smt.gob.ar/`;
 }, 3000);
    
 
    
-       }
+       
 
      }    
      else{
@@ -349,11 +349,11 @@ EditarCiudadanoDB(formData)
                    </> )
             :
             <Button onClick={handleEditDatos} variant="outlined" className="text-center" 
-            // disabled={saveChanges}
+             disabled={saveChanges}
             >
 
              <SaveIcon className="me-2" color={
-              // saveChanges?"disabled":
+               saveChanges?"disabled":
               "primary"} /> Guardar Cambios
               
               </Button>
