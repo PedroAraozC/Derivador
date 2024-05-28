@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import axios from '../config/axios';
+import axios from "../config/axios";
 
 export const EducaContext = createContext();
 
@@ -18,23 +18,27 @@ const ProviderEducacion = ({ children }) => {
   const [arrayCausal, setArrayCausal] = useState([]);
   const [arrayCausalTabla, setArrayCausalTabla] = useState([]);
   const [arrayCaracterTabla, setArrayCaracterTabla] = useState([]);
-  const [arrayEstablecimientoTabla, setArrayEstablecimientoTabla] = useState([]);
+  const [arrayEstablecimientoTabla, setArrayEstablecimientoTabla] = useState(
+    []
+  );
   const [arrayCaracter, setArrayCaracter] = useState([]);
-  
+  const [categoria, setCategoria] = useState([]);
+  const [tipologia, setTipologia] = useState([]);
+  const [material, setMaterial] = useState([]);
+  //Funcion para listar las convocatorias
 
-//Funcion para listar las convocatorias
-const obtenerConvocatorias = async (idNivel) => {
+  const obtenerConvocatorias = async (idNivel) => {
     try {
       const resultado = await axios.get("/educacion/listarConvocatorias");
       const convocatoriasFiltradas = resultado.data.convocatorias.filter(
         (convocatoria) => convocatoria.id_nivel === idNivel
       );
-  
+
       // Ordena las convocatorias por id de forma descendente
       const arrayFiltradoOrdenado = convocatoriasFiltradas.sort(
         (a, b) => b.id - a.id
       );
-  
+
       // Actualiza los estados con las convocatorias filtradas y ordenadas
       setConvocatorias(resultado.data);
       setArrayFiltrado(arrayFiltradoOrdenado.reverse());
@@ -42,7 +46,7 @@ const obtenerConvocatorias = async (idNivel) => {
       console.log(error);
     }
   };
-const obtenerConvocatoriasTabla = async () => {
+  const obtenerConvocatoriasTabla = async () => {
     try {
       const resultado = await axios.get("/educacion/listarConvocatoriasTabla");
       // Actualiza los estados con las convocatorias filtradas y ordenadas
@@ -53,72 +57,74 @@ const obtenerConvocatoriasTabla = async () => {
   };
 
   //Funciona para obtener niveles
-    const obtenerNiveles = async () => {
-      try {
-        const resultado = await axios.get("/educacion/listarNiveles");
+  const obtenerNiveles = async () => {
+    try {
+      const resultado = await axios.get("/educacion/listarNiveles");
       // Actualiza los estados con las convocatorias filtradas y ordenadas
       setArrayNiveles(resultado.data.niveles);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    const obtenerEstablecimientos = async () => {
-      try {
-        const resultado = await axios.get("/educacion/listarEstablecimientos");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const obtenerEstablecimientos = async () => {
+    try {
+      const resultado = await axios.get("/educacion/listarEstablecimientos");
       // Actualiza los estados con las convocatorias filtradas y ordenadas
       setArrayEstablecimientos(resultado.data.establecimientos);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    const obtenerCausal = async () => {
-      try {
-        const resultado = await axios.get("/educacion/listarCausal");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const obtenerCausal = async () => {
+    try {
+      const resultado = await axios.get("/educacion/listarCausal");
       // Actualiza los estados con las convocatorias filtradas y ordenadas
       setArrayCausal(resultado.data.causal);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    const obtenerCausalTabla = async () => {
-      try {
-        const resultado = await axios.get("/educacion/listarCausalTabla");
-        console.log(resultado.data)
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const obtenerCausalTabla = async () => {
+    try {
+      const resultado = await axios.get("/educacion/listarCausalTabla");
+      console.log(resultado.data);
       // Actualiza los estados con las convocatorias filtradas y ordenadas
       setArrayCausalTabla(resultado.data.causal);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    const obtenerCaracter = async () => {
-      try {
-        const resultado = await axios.get("/educacion/listarCaracter");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const obtenerCaracter = async () => {
+    try {
+      const resultado = await axios.get("/educacion/listarCaracter");
       // Actualiza los estados con las convocatorias filtradas y ordenadas
       setArrayCaracter(resultado.data.caracter);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    const obtenerCaracterTabla = async () => {
-      try {
-        const resultado = await axios.get("/educacion/listarCaracterTabla");
-        console.log(resultado.data)
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const obtenerCaracterTabla = async () => {
+    try {
+      const resultado = await axios.get("/educacion/listarCaracterTabla");
+      console.log(resultado.data);
       // Actualiza los estados con las convocatorias filtradas y ordenadas
       setArrayCaracterTabla(resultado.data.caracter);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    const obtenerEstablecimientoTabla = async () => {
-      try {
-        const resultado = await axios.get("/educacion/listarEstablecimientosTabla");
-        console.log(resultado.data)
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const obtenerEstablecimientoTabla = async () => {
+    try {
+      const resultado = await axios.get(
+        "/educacion/listarEstablecimientosTabla"
+      );
+      console.log(resultado.data);
       // Actualiza los estados con las convocatorias filtradas y ordenadas
       setArrayEstablecimientoTabla(resultado.data.establecimientos);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const getAuth = async () => {
     try {
@@ -144,13 +150,40 @@ const obtenerConvocatoriasTabla = async () => {
     localStorage.removeItem("tokenSet");
     const url = new URL(`http://localhost:5174/`);
     url.searchParams.append("logout", true);
-    window.open(url.toString(), '_self');
+    window.open(url.toString(), "_self");
   };
 
-  const actualizador = () =>{
-    setRefresh(!refresh)
-  }
+  const actualizador = () => {
+    setRefresh(!refresh);
+  };
 
+  const obtenerCategoria = async () => {
+    try {
+      const resultado = await axios.get("/admin/listarCategorias");
+      // Actualiza los estados con las convocatorias filtradas y ordenadas
+      setCategoria(resultado.data.categorias);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const obtenerTipologia = async () => {
+    try {
+      const resultado = await axios.get("/admin/listarTipologias");
+      // console.log(resultado.data.tipologias)
+      setTipologia(resultado.data.tipologias);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const obtenerMaterial = async () => {
+    try {
+      const resultado = await axios.get("/admin/listarMateriales");
+      // console.log(resultado.data.materiales);
+      setMaterial(resultado.data.materiales);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <EducaContext.Provider
       value={{
@@ -184,7 +217,13 @@ const obtenerConvocatoriasTabla = async () => {
         arrayCaracterTabla,
         obtenerCaracterTabla,
         actualizador,
-        refresh
+        refresh,
+        obtenerCategoria,
+        categoria,
+        obtenerTipologia,
+        tipologia,
+        obtenerMaterial,
+        material,
       }}
     >
       {children}

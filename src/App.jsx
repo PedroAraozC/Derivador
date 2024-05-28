@@ -18,6 +18,7 @@ import AgregarCaracter from "./components/Admin/Educacion/Caracter/AgregarCaract
 import AgregarCausal from "./components/Admin/Educacion/Causal/AgregarCausal";
 import AgregarConvocatoria from "./components/Admin/Educacion/Convocatorias/AgregarConvocatoria";
 import ProviderEducacion from "./context/EducaContext";
+import PanelPatrimonioMunicipal from "./components/Admin/PatrimonioMunicipal/PanelPatrimonioMunicipal"
 
 function App() {
   const url = new URL(window.location.href);
@@ -64,6 +65,11 @@ function App() {
               {/* LICITACION */}
               <Route exact path="/panel_contratacion" element={<PanelContratacion />} />
               {/* LICITACION */}
+
+                {/*PATRIMONIO*/ }
+              <Route exact path="/panel_patrimonio" element={<PanelPatrimonioMunicipal />} />
+                {/*PATRIMONIO*/ }
+
 
               {/* EDUCACION */}
               <Route exact path="/panel_educacion" element={<PanelEducacion />} />
