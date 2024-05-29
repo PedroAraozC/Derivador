@@ -1,14 +1,14 @@
-import TablaAutor from "./TablaAutor"
+import TablaUbicacion from "./TablaUbicacion"
 
-const Autor = () => {
+const Ubicacion = () => {
   return (
     <div className="container d-flex flex-column justify-content-center align-items-center mb-3">
             <h4 className="mt-3 mb-1">
-              Registro de Autores
+              Registro de Ubicaciones
             </h4>
-            <TablaAutor/>
+            <TablaUbicacion/>
           </div>
   )
 }
 
-export default Autor
+export default Ubicacion

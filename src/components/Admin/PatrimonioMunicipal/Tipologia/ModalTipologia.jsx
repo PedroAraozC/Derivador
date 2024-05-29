@@ -1,79 +1,43 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { useState, useEffect, useContext, useRef } from "react";
-import {
-  Modal,
-  Box,
-  Button,
-  Divider,
-  InputLabel,
-  MenuItem,
-  Select,
-  Switch,
-  TextField,
-} from "@mui/material";
-import LaunchIcon from "@mui/icons-material/Launch";
-import { formatearFechaHora } from "../../../../helpers/convertirFecha";
-import "../../Educacion/Convocatorias/Convocatorias.css";
+import { useState, useEffect, useContext } from "react";
+import { Modal, Box, Button, Divider, InputLabel, Switch, TextField, Snackbar, Alert } from "@mui/material";
 import { EducaContext } from "../../../../context/EducaContext";
 import axios from "../../../../config/axios";
 
-const ModalTipologia = ({
-  tipologia,
-  modalAbierto,
-  handleClose,
-  modoEdicion,
-}) => {
+const ModalTipologia = ({tipologias, modalAbierto, handleClose}) => {
+  
   const [deviceWidth, setDeviceWidth] = useState(window.innerWidth);
-  const fileInputRef = useRef(null);
-  const [archivo, setArchivo] = useState(null);
+  const { actualizador } = useContext(EducaContext);
+  const [errores, setErrores] = useState({});
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMensaje, setSnackbarMensaje] = useState('');
   const [formularioValues, setFormularioValues] = useState({
-    id: "",
-    nombre: "",
-    habilita: 0,
-  });
-  const [datosOld, setDatosOld] = useState("");
-  console.log(datosOld);
-  const {
-    obtenerTipologia,
-  } = useContext(EducaContext);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
+    nombre_tipologia: "", 
+    habilita: 0, 
+ });
+ const handleSnackbarClose = () => {
+  setSnackbarOpen(false);
+};
+  // Función para validar el formulario antes de enviarlo
+  const validarFormulario = () => {
+    const nuevosErrores = {};
 
-        await obtenerTipologia();
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [modoEdicion]);
-
-  useEffect(() => {
-    if (tipologia) {
-      // Si hay una convocatoria y el modal está abierto, establece los valores del formulario
-      setFormularioValues({
-        id: tipologia.id_tipologia,
-        nombre: tipologia.nombre_tipologia,
-        habilita: tipologia.habilita,
-        });
+    if (!formularioValues.nombre_tipologia || formularioValues.nombre_tipologia.length > 20) {
+      nuevosErrores.nombre_tipologia = "Ingrese un nombre de máximo 20 caracteres";
+      setSnackbarMensaje("Ingrese un nombre de la tipologia de máximo 20 caracteres");
     }
-  }, [tipologia]);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setDeviceWidth(window.innerWidth);
-    };
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-  const isMobile = deviceWidth <= 600;
-  if (!tipologia) {
-    return null;
-  }
+    setErrores(nuevosErrores);
+
+    // Si hay errores, muestra el Snackbar
+    if (Object.keys(nuevosErrores).length > 0) {
+      setSnackbarOpen(true);
+    }
+
+    return Object.keys(nuevosErrores).length === 0; // Retorna true si no hay errores
+  };
+
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -85,34 +49,60 @@ const ModalTipologia = ({
     });
     console.log(formularioValues);
   };
-
   const handleHabilitarChange = (event) => {
     setFormularioValues({
       ...formularioValues,
       habilita: event.target.checked ? 1 : 0,
     });
   };
-  const editarTipologia = async (tipologia) => {
-    try {
-      tipologia.oldName = datosOld;
-      console.log(tipologia);
-      const response = await axios.put(
-        "/educacion/editarConvocatoria",
-        tipologia,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      obtenerTipologia();
-      handleClose();
-      return response.data;
-    } catch (error) {
-      console.error("Error al editar la convocatoria:", error);
-      throw new Error("Error al editar la convocatoria");
+
+  useEffect(() => {
+    if (tipologias) {
+      // Si hay un estado y el modal está abierto, establece los valores del formulario
+      setFormularioValues({
+        id: tipologias.id_tipologia,
+        nombre_tipologia: tipologias.nombre_tipologia,
+        habilita: tipologias.habilita,
+      });
     }
-  };
+  }, [tipologias]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setDeviceWidth(window.innerWidth);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+  const isMobile = deviceWidth <= 600;
+  if (!tipologias) {
+    return null;
+  }
+
+
+  const editarTipologia = async (event, estado) => {
+    event.preventDefault()
+    const formularioValido = validarFormulario();
+    if (formularioValido) {
+      try {
+        const response = await axios.post(
+          "/admin/editarTipologia",
+          estado
+        );
+        handleClose()
+        actualizador()
+        return response.data;
+      } catch (error) {
+        console.error("Error al editar la tipologia:", error);
+        throw new Error("Error al editar la tipologia");
+      }
+    } else {
+      console.log('Algo salio mal :(')
+      setSnackbarMensaje("Por favor, corrige los errores en el formulario.");
+      setSnackbarOpen(true);
+    }};
 
   const style = {
     position: "absolute",
@@ -120,44 +110,34 @@ const ModalTipologia = ({
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: isMobile ? "90%" : "1200px", // Ajusta el ancho según el dispositivo
-    height: "95%",
+    height: "50%",
     bgcolor: "background.paper",
     border: "2px solid #000",
     boxShadow: 24,
     p: 4,
   };
+
   return (
     <Modal open={modalAbierto} onClose={handleClose}>
       <Box sx={style}>
         <div className="d-flex justify-content-around align-items-center mb-3">
           <p style={{ fontSize: "1rem", margin: 0 }}>
-            Detalle de la Tipologia: {tipologia.id_tipologia}
+            Detalle de la Tipología: {tipologias.id_estado}
           </p>
         </div>
         <Divider />
         <div className="d-flex flex-column justify-content-center">
-          {!modoEdicion ? (
-            <>
-              <p style={{ fontSize: "1.2rem", margin: "5px 0" }}>
-                <b>Tipologia:</b> {tipologia.nombre_tipologia}
-              </p>
-             
-              <Button onClick={handleClose} className="mt-3" variant="outlined">
-                Cerrar
-              </Button>
-            </>
-          ) : (
-            <>
-              <form className="d-flex justify-content-around">
+              <form className="d-flex justify-content-around flex-column">
                 <div className="w-50 d-flex flex-column gap-3 p-2">
-                
-                  <InputLabel>TIPOLOGIA</InputLabel>
+                  <InputLabel>TIPOLOGÍA</InputLabel>
                   <TextField
-                    placeholder={`${tipologia.nombre_tipologia}`}
+                    placeholder={`${tipologias.nombre_tipologia}`}
                     onChange={handleInputChange}
-                    name="nombre"
-                    value={formularioValues.nombre}
+                    name="nombre_tipologia"
+                    value={formularioValues.nombre_tipologia}
                   />
+                </div>
+                <div className="d-flex flex-column gap-3 w-50 p-2">
                   <div className="d-flex align-items-center">
                     <p className="m-0">Habilita:</p>
                     <Switch
@@ -168,17 +148,21 @@ const ModalTipologia = ({
                   </div>
                 </div>
               </form>
-
-              <Button
-                onClick={() => editarTipologia(formularioValues)}
-                className="mt-3"
-                variant="outlined"
-              >
-                Guardar cambios
-              </Button>
-            </>
-          )}
+                <Button
+                  onClick={() => editarTipologia(formularioValues)}
+                  className="mt-3"
+                  variant="outlined"
+                >
+                  Guardar cambios
+                </Button>
         </div>
+        {errores? (
+            <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
+                <Alert onClose={handleSnackbarClose} severity="info" elevation={6} variant="filled">
+                    {snackbarMensaje}
+                </Alert>
+            </Snackbar>
+            ):<></>}
       </Box>
     </Modal>
   );

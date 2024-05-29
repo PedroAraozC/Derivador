@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "../../../../config/axios";
 import { EducaContext } from "../../../../context/EducaContext";
 
-const AgregarEstado = () => {
+const AgregarUbicacion = () => {
 
   const [errores, setErrores] = useState({});
   const navigate = useNavigate()
@@ -18,7 +18,7 @@ const AgregarEstado = () => {
       setSnackbarOpen(false);
     };
   const [formularioValues, setFormularioValues] = useState({
-      nombre_estado: "", 
+      nombre_ubicacion: "", 
       habilita: 0, 
    });
 
@@ -26,9 +26,9 @@ const AgregarEstado = () => {
     const validarFormulario = () => {
       const nuevosErrores = {};
 
-      if (!formularioValues.nombre_estado || formularioValues.nombre_estado.length > 30) {
-        nuevosErrores.nombre_estado = "Ingrese un nombre de máximo 20 caracteres";
-        setSnackbarMensaje("Ingrese un nombre del autor/a de máximo 20 caracteres");
+      if (!formularioValues.nombre_ubicacion || formularioValues.nombre_ubicacion.length > 40) {
+        nuevosErrores.nombre_ubicacion = "Ingrese un nombre de máximo 40 caracteres";
+        setSnackbarMensaje("Ingrese un nombre del autor/a de máximo 40 caracteres");
       }
   
       setErrores(nuevosErrores);
@@ -59,13 +59,13 @@ const AgregarEstado = () => {
       });
     };
 
-    const handleAgregar = async(event, estado) => {
+    const handleAgregar = async(event, ubi) => {
       event.preventDefault()
       const formularioValido = validarFormulario();
       if (formularioValido) {
           try {
-              const response = await axios.post( "/admin/agregarEstado", estado );
-              setSnackbarMensaje("Estado creado.");
+              const response = await axios.post( "/admin/agregarUbicacion", ubi );
+              setSnackbarMensaje("Ubicación creada.");
               setSnackbarOpen(true);
               setTimeout(() => {
                   navigate('/panel_patrimonio');
@@ -73,8 +73,8 @@ const AgregarEstado = () => {
                 actualizador()
               return response.data;
             } catch (error) {
-              console.error("Error al agregar el estado:", error);
-              throw new Error("Error al agregar el estado");
+              console.error("Error al agregar la Ubicación:", error);
+              throw new Error("Error al agregar la Ubicación");
             }
       } else {
         console.log('Algo salio mal :(')
@@ -86,17 +86,17 @@ const AgregarEstado = () => {
   return (
     <>
         <div className="container mt-3">
-            <h3>Agregar Estado</h3>
+            <h3>Agregar Ubicación</h3>
         </div>
         <div className="container mt-3 mb-3">
             <form className="d-flex flex-column justify-content-center align-items-center formAgregarcausal" onSubmit={(event) => handleAgregar(event, formularioValues)}>
                 <div>
-                    <InputLabel  className="mb-2">ESTADO</InputLabel>
+                    <InputLabel  className="mb-2">UBICACIÓN</InputLabel>
                     <TextField
-                        placeholder="Nombre del Estado"
+                        placeholder="Nombre del Ubicación"
                         onChange={handleInputChange}
-                        name="nombre_estado"
-                        value={formularioValues.nombre_estado}
+                        name="nombre_ubicacion"
+                        value={formularioValues.nombre_ubicacion}
                         sx={{width: 300, marginBottom: 2}}
                         required={true}
                         />
@@ -126,4 +126,4 @@ const AgregarEstado = () => {
   )
 }
 
-export default AgregarEstado
+export default AgregarUbicacion

@@ -9,9 +9,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TablePagination from "@mui/material/TablePagination";
 import Paper from "@mui/material/Paper";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import ModalEstado from "./ModalEstado";
-import { formatearFechaHora } from "../../../../helpers/convertirFecha";
 import { Button } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import { useNavigate } from "react-router-dom";
@@ -22,12 +20,10 @@ const TablaEstado = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [modalAbierto, setModalAbierto] = useState(false);
-  const [modoEdicion, setModoEdicion] = useState(false);
   const [estadoSeleccionada, setEstadoSeleccionada] = useState(null);
   const { estado, obtenerEstado, refresh } = useContext(EducaContext);
   const [paginatedArray, setPaginatedArray] = useState([]);
   const navigate = useNavigate();
-  //Funcion para listar las convocatorias
   useEffect(() => {
     obtenerEstado();
   }, [refresh]);
@@ -38,30 +34,23 @@ const TablaEstado = () => {
     );
   }, [estado, page, rowsPerPage]);
 
-  const handleCheckboxChange = (categoriaId) => {
-    const estado = estado.estados?.find(
-      (cat) => cat.id_estado === estadoId
+  const handleCheckboxChange = (Id) => {
+    const estados = estado?.find(
+      (cat) => cat.id_estado === Id
     );
 
     setEstadoSeleccionada((prevEstado) => {
-      if (!prevEstado || prevEstado.id_estado !== estadoId) {
-        return estado;
+      if (!prevEstado || prevEstado.id_estado !== Id) {
+        return estados;
       } else {
         return null;
       }
     });
   };
 
-  const handleEditar = () => {
-    setModalAbierto(false);
-    setModoEdicion(false);
-    setEstadoSeleccionada(null);
-  };
-
-  const abrirModal = (estado, editar = false) => {
+  const abrirModal = (estado) => {
     setEstadoSeleccionada(estado);
     setModalAbierto(true);
-    setModoEdicion(editar);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -73,7 +62,6 @@ const TablaEstado = () => {
     setRowsPerPage(newRowsPerPage);
     setPage(0);
   };
-  console.log(estado);
 
   return (
     <>
@@ -81,7 +69,7 @@ const TablaEstado = () => {
         <Button
           variant="contained"
           disabled={estadoSeleccionada !== null}
-          onClick={() => navigate("/agregar-convoca")}
+          onClick={() => navigate("/agregar-estado")}
         >
           NUEVO
         </Button>
@@ -103,11 +91,9 @@ const TablaEstado = () => {
                 <TableCell>ID</TableCell>
                 <TableCell>Nombre de Estado</TableCell>
                 <TableCell>Habilitado</TableCell>
-                <TableCell>Ver Más</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {console.log(estado)}
               {Array.isArray(estado) &&
                 paginatedArray?.map((estado) => (
                   <TableRow key={estado.id_estado}>
@@ -127,9 +113,6 @@ const TablaEstado = () => {
                     <TableCell>
                       {estado.habilita == 1 ? "SI" : "NO"}
                     </TableCell>
-                    <TableCell align="center">
-                      <VisibilityIcon onClick={() => abrirModal(estado)} />
-                    </TableCell>
                   </TableRow>
                 ))}
             </TableBody>
@@ -146,12 +129,9 @@ const TablaEstado = () => {
           />
         </TableContainer>
         <ModalEstado
-          categoria={estadoSeleccionada}
+          estados={estadoSeleccionada}
           modalAbierto={modalAbierto}
           handleClose={() => setModalAbierto(false)}
-          modoEdicion={modoEdicion}
-          handleEditar={handleEditar}
-          idNivel={estadoSeleccionada}
         />
       </div>
     </>

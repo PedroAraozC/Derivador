@@ -1,13 +1,12 @@
 import { Button } from "@mui/material";
-// import Establecimiento from "../Educacion/Establecimientos/TablaEstablecimiento";
-// import Caracter from "./Caracter/Caracter";
-// import Causal from "./Causal/Causal";
-// import Convocatorias from "./Convocatorias/Convocatorias";
 import { useState } from "react";
 import Categoria from "./Categoria/Categoria";
 import Tipologia from "./Tipologia/Tipologia";
 import Material from "./Material/Material"
 import Estado from "./Estado/Estado";
+import Autor from "./Autor/Autor";
+import Ubicacion from "./Ubicacion/Ubicacion";
+import Patrimonio from "./Patrimonio";
 
 const PanelEducacion = () => {
     const [tablaVisible, setTablaVisible] = useState(null);
@@ -18,8 +17,9 @@ const PanelEducacion = () => {
 
     return (
         <>
-            <div className="container mt-5 d-flex justify-content-between mb-5">
+            <div className="px-5 mt-5 d-flex justify-content-center flex-wrap gap-3 mb-5">
                 <h2>Panel Patrimonio Municipal</h2>
+                <Button variant="outlined" onClick={verTabla('patrimonios')}>Patrimonios</Button>
                 <Button variant="outlined" onClick={verTabla('categoria')}>Categoria</Button>
                 <Button variant="outlined" onClick={verTabla('tipologia')}>Tipologia</Button>
                 <Button variant="outlined" onClick={verTabla('material')}>Material</Button>
@@ -28,11 +28,13 @@ const PanelEducacion = () => {
                 <Button variant="outlined" onClick={verTabla('ubicacion')}>Ubicacion</Button>
             </div>
             <div>
+                {tablaVisible === 'patrimonios' && <Patrimonio />}
                 {tablaVisible === 'categoria' && <Categoria />}
                 {tablaVisible === 'tipologia' && <Tipologia />}
                 {tablaVisible === 'material' && <Material />}
                 {tablaVisible === 'estado' && <Estado />}
-                {tablaVisible === 'causal' && <Causal />}
+                {tablaVisible === 'autor' && <Autor />}
+                {tablaVisible === 'ubicacion' && <Ubicacion />}
             </div>
         </>
     );

@@ -8,7 +8,7 @@ import PrivateRoute from "./routes/PrivateRoute";
 import Perfil from "./pages/Perfil/Perfil";
 import { Registro } from "./components/Registro/Registro";
 import PanelAdmin from "./components/Admin/PanelAdmin";
-import Turnos from "./pages/Turnos/Turnos";
+// import Turnos from "./pages/Turnos/Turnos";
 import PanelContratacion from "./components/Admin/Contratacion/PanelContratacion";
 import Licitaciones from "./components/Licitaciones/Licitaciones";
 import Licitacion from "./components/Licitaciones/Licitacion";
@@ -19,6 +19,13 @@ import AgregarCausal from "./components/Admin/Educacion/Causal/AgregarCausal";
 import AgregarConvocatoria from "./components/Admin/Educacion/Convocatorias/AgregarConvocatoria";
 import ProviderEducacion from "./context/EducaContext";
 import PanelPatrimonioMunicipal from "./components/Admin/PatrimonioMunicipal/PanelPatrimonioMunicipal"
+import AgregarAutor from "./components/Admin/PatrimonioMunicipal/Autor/AgregarAutor"
+import AgregarPatrimonio from "./components/Admin/PatrimonioMunicipal/AgregarPatrimonio";
+import AgregarEstado from "./components/Admin/PatrimonioMunicipal/Estado/AgregarEstado";
+import AgregarMaterial from "./components/Admin/PatrimonioMunicipal/Material/AgregarMaterial";
+import AgregarTipologia from "./components/Admin/PatrimonioMunicipal/Tipologia/AgregarTipologia";
+import AgregarCategoria from "./components/Admin/PatrimonioMunicipal/Categoria/AgregarCategoria";
+import AgregarUbicacion from "./components/Admin/PatrimonioMunicipal/Ubicacion/AgregarUbicacion";
 
 function App() {
   const url = new URL(window.location.href);
@@ -60,23 +67,30 @@ function App() {
                 <PrivateRoute><Perfil /></PrivateRoute>
               } />
 
-              <Route exact path="/panel_admin" element={<PanelAdmin />} />
+              <Route exact path="/panel_admin" element={<PrivateRoute><PanelAdmin /></PrivateRoute>} />
               
               {/* LICITACION */}
-              <Route exact path="/panel_contratacion" element={<PanelContratacion />} />
+              <Route exact path="/panel_contratacion" element={<PrivateRoute><PanelContratacion /></PrivateRoute>} />
               {/* LICITACION */}
 
                 {/*PATRIMONIO*/ }
-              <Route exact path="/panel_patrimonio" element={<PanelPatrimonioMunicipal />} />
+              <Route exact path="/panel_patrimonio" element={<PrivateRoute><PanelPatrimonioMunicipal /></PrivateRoute>} />
+              <Route exact path="/agregar-patrimonio" element={<PrivateRoute><AgregarPatrimonio /></PrivateRoute>} />
+              <Route exact path="/agregar-autor" element={<PrivateRoute><AgregarAutor /></PrivateRoute>} />
+              <Route exact path="/agregar-estado" element={<PrivateRoute><AgregarEstado /></PrivateRoute>} />
+              <Route exact path="/agregar-material" element={<PrivateRoute><AgregarMaterial /></PrivateRoute>} />
+              <Route exact path="/agregar-tipologia" element={<PrivateRoute><AgregarTipologia /></PrivateRoute>} />
+              <Route exact path="/agregar-categoria" element={<PrivateRoute><AgregarCategoria /></PrivateRoute>} />
+              <Route exact path="/agregar-ubicacion" element={<PrivateRoute><AgregarUbicacion /></PrivateRoute>} />
                 {/*PATRIMONIO*/ }
 
 
               {/* EDUCACION */}
-              <Route exact path="/panel_educacion" element={<PanelEducacion />} />
-              <Route exact path="/agregar-establecimiento" element={<AgregarEstablecimiento />} />
-              <Route exact path="/agregar-caracter" element={<AgregarCaracter />} />
-              <Route exact path="/agregar-causal" element={<AgregarCausal />} />
-              <Route exact path="/agregar-convoca" element={<AgregarConvocatoria />} />
+              <Route exact path="/panel_educacion" element={<PrivateRoute><PanelEducacion /></PrivateRoute>} />
+              <Route exact path="/agregar-establecimiento" element={<PrivateRoute><AgregarEstablecimiento /></PrivateRoute>} />
+              <Route exact path="/agregar-caracter" element={<PrivateRoute><AgregarCaracter /></PrivateRoute>} />
+              <Route exact path="/agregar-causal" element={<PrivateRoute><AgregarCausal /></PrivateRoute>} />
+              <Route exact path="/agregar-convoca" element={<PrivateRoute><AgregarConvocatoria /></PrivateRoute>} />
               {/* EDUCACION */}
 
               <Route exact path="/licitaciones_concursos" element={<Licitaciones />} />

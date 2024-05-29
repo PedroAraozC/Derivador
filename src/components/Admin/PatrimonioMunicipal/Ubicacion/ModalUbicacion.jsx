@@ -5,7 +5,7 @@ import { Modal, Box, Button, Divider, InputLabel, Switch, TextField, Snackbar, A
 import { EducaContext } from "../../../../context/EducaContext";
 import axios from "../../../../config/axios";
 
-const ModalAutor = ({autor, modalAbierto, handleClose}) => {
+const ModalUbicacion = ({ubicaciones, modalAbierto, handleClose}) => {
 
   const [deviceWidth, setDeviceWidth] = useState(window.innerWidth);
   const { actualizador } = useContext(EducaContext);
@@ -13,63 +13,31 @@ const ModalAutor = ({autor, modalAbierto, handleClose}) => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMensaje, setSnackbarMensaje] = useState('');
   const [formularioValues, setFormularioValues] = useState({
-    id: "",
-    nombre_autor: "",
-    descripcion_autor: "",
-    habilita: 0,
-  });
-  const handleSnackbarClose = () => {
-    setSnackbarOpen(false);
-  };
-// Función para validar el formulario antes de enviarlo
-const validarFormulario = () => {
-  const nuevosErrores = {};
-
-  if (!formularioValues.nombre_autor || formularioValues.nombre_autor.length > 30) {
-    nuevosErrores.nombre_autor = "Ingrese un nombre del autor/a de máximo 30 caracteres";
-    setSnackbarMensaje("Ingrese un nombre del autor/a de máximo 30 caracteres");
-  }
-  if (!formularioValues.descripcion_autor || formularioValues.descripcion_autor.length > 140) {
-    nuevosErrores.descripcion_autor = "Ingrese una descripción de máximo 140 caracteres";
-    setSnackbarMensaje("Ingrese una descripción de máximo 140 caracteres");
-  }
-
-  setErrores(nuevosErrores);
-
-  // Si hay errores, muestra el Snackbar
-  if (Object.keys(nuevosErrores).length > 0) {
-    setSnackbarOpen(true);
-  }
-
-  return Object.keys(nuevosErrores).length === 0; // Retorna true si no hay errores
+    nombre_estado: "", 
+    habilita: 0, 
+ });
+ const handleSnackbarClose = () => {
+  setSnackbarOpen(false);
 };
+  // Función para validar el formulario antes de enviarlo
+  const validarFormulario = () => {
+    const nuevosErrores = {};
 
-
-  useEffect(() => {
-    if (autor) {
-      // Si hay un autor y el modal está abierto, establece los valores del formulario
-      setFormularioValues({
-        id: autor.id_autor,
-        nombre_autor: autor.nombre_autor,
-        descripcion_autor: autor.descripcion_autor,
-        habilita: autor.habilita,
-      });
+    if (!formularioValues.nombre_estado || formularioValues.nombre_estado.length > 30) {
+      nuevosErrores.nombre_estado = "Ingrese un nombre de máximo 20 caracteres";
+      setSnackbarMensaje("Ingrese un nombre del autor/a de máximo 20 caracteres");
     }
-  }, [autor]);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setDeviceWidth(window.innerWidth);
-    };
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-  const isMobile = deviceWidth <= 600;
-  if (!autor) {
-    return null;
-  }
+    setErrores(nuevosErrores);
+
+    // Si hay errores, muestra el Snackbar
+    if (Object.keys(nuevosErrores).length > 0) {
+      setSnackbarOpen(true);
+    }
+
+    return Object.keys(nuevosErrores).length === 0; // Retorna true si no hay errores
+  };
+
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -88,21 +56,47 @@ const validarFormulario = () => {
     });
   };
 
-  const editarAutor = async (event, autor) => {
+  useEffect(() => {
+    if (ubicaciones) {
+      // Si hay un estado y el modal está abierto, establece los valores del formulario
+      setFormularioValues({
+        id: ubicaciones.id_estado,
+        nombre_ubicacion: ubicaciones.nombre_ubicacion,
+        habilita: ubicaciones.habilita,
+      });
+    }
+  }, [ubicaciones]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setDeviceWidth(window.innerWidth);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+  const isMobile = deviceWidth <= 600;
+  if (!ubicaciones) {
+    return null;
+  }
+
+
+  const editarUbicacion = async (event, ubi) => {
     event.preventDefault()
     const formularioValido = validarFormulario();
     if (formularioValido) {
       try {
         const response = await axios.post(
-          "/admin/editarAutor",
-          autor
+          "/admin/editarUbicacion",
+          ubi
         );
         handleClose()
         actualizador()
         return response.data;
       } catch (error) {
-        console.error("Error al editar el autor:", error);
-        throw new Error("Error al editar el autor");
+        console.error("Error al editar la ubicacion:", error);
+        throw new Error("Error al editar la ubicacion");
       }
     } else {
       console.log('Algo salio mal :(')
@@ -129,31 +123,20 @@ const validarFormulario = () => {
       <Box sx={style}>
         <div className="d-flex justify-content-around align-items-center mb-3">
           <p style={{ fontSize: "1rem", margin: 0 }}>
-            Detalle del Autor: {autor.id_autor}
+            Detalle de la Ubicación: {ubicaciones.id_ubicacion}
           </p>
         </div>
         <Divider />
         <div className="d-flex flex-column justify-content-center">
               <form className="d-flex justify-content-around flex-column">
                 <div className="w-50 d-flex flex-column gap-3 p-2">
-                  <InputLabel>AUTOR</InputLabel>
+                  <InputLabel>ESTADO</InputLabel>
                   <TextField
-                    placeholder={`${autor.nombre_autor}`}
+                    placeholder={`${ubicaciones.nombre_ubicacion}`}
                     onChange={handleInputChange}
-                    name="nombre_autor"
-                    value={formularioValues.nombre_autor}
+                    name="nombre_ubicacion"
+                    value={formularioValues.nombre_ubicacion}
                   />
-                </div>
-                <div className="w-50 d-flex flex-column gap-3 p-2">
-                    <InputLabel> DESCRIPCIÓN</InputLabel>
-                    <textarea
-                        placeholder="Descripción del Autor/a"
-                        onChange={handleInputChange}
-                        name="descripcion_autor"
-                        value={formularioValues.descripcion_autor}
-                        style={{width: 300, marginBottom: 2, border: '1px solid #ccc', borderRadius: 4, minHeight: '100px', minWidth: '100%'}}
-                        required={true}
-                    />
                 </div>
                 <div className="d-flex flex-column gap-3 w-50 p-2">
                   <div className="d-flex align-items-center">
@@ -167,7 +150,7 @@ const validarFormulario = () => {
                 </div>
               </form>
                 <Button
-                  onClick={() => editarAutor(formularioValues)}
+                  onClick={() => editarUbicacion(formularioValues)}
                   className="mt-3"
                   variant="outlined"
                 >
@@ -186,4 +169,4 @@ const validarFormulario = () => {
   )
 }
 
-export default ModalAutor
+export default ModalUbicacion

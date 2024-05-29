@@ -9,52 +9,51 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TablePagination from "@mui/material/TablePagination";
 import Paper from "@mui/material/Paper";
-// import VisibilityIcon from "@mui/icons-material/Visibility";
 import { Button } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import { useNavigate } from "react-router-dom";
 import { EducaContext } from "../../../../context/EducaContext";
-import ModalAutor from "./ModalAutor";
+import ModalUbicacion from "./ModalUbicacion";
 
-const TablaAutor = () => {
+const TablaUbicacion = () => {
   // eslint-disable-next-line no-unused-vars
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [modalAbierto, setModalAbierto] = useState(false);
-  const [autorSeleccionado, setAutorSeleccionado] = useState(null);
-  const { autor, obtenerAutor, refresh } = useContext(EducaContext);
+  const [ubicacionSeleccionada, setUbicacionSeleccionada] = useState(null);
+  const { ubicacion, obtenerUbicacion, refresh } = useContext(EducaContext);
   const [paginatedArray, setPaginatedArray] = useState([]);
   const navigate = useNavigate();
   //Funcion para listar las convocatorias
   useEffect(() => {
-    obtenerAutor();
+    obtenerUbicacion();
   }, [refresh]);
 
   useEffect(() => {
     setPaginatedArray(
-      autor?.slice(
+      ubicacion?.slice(
         page * rowsPerPage,
         (page + 1) * rowsPerPage
       )
     );
-  }, [autor, page, rowsPerPage]);
+  }, [ubicacion, page, rowsPerPage]);
 
   const handleCheckboxChange = (Id) => {
-    const categoria = autor?.find(
-      (cat) => cat.id_autor === Id
+    const ubi = ubicacion?.find(
+      (cat) => cat.id_ubicacion === Id
     );
 
-    setAutorSeleccionado((prevCategoria) => {
-      if (!prevCategoria || prevCategoria.id_autor !== Id) {
-        return categoria;
+    setUbicacionSeleccionada((prevUbicacion) => {
+      if (!prevUbicacion || prevUbicacion.id_ubicacion !== Id) {
+        return ubi;
       } else {
         return null;
       }
     });
   };
 
-  const abrirModal = (autor) => {
-    setAutorSeleccionado(autor);
+  const abrirModal = (ubicacion) => {
+    setUbicacionSeleccionada(ubicacion);
     setModalAbierto(true);
   };
 
@@ -73,16 +72,16 @@ const TablaAutor = () => {
       <div className="container d-flex justify-content-end mt-5">
         <Button
           variant="contained"
-          disabled={autorSeleccionado !== null}
-          onClick={() => navigate("/agregar-autor")}
+          disabled={ubicacionSeleccionada !== null}
+          onClick={() => navigate("/agregar-ubicacion")}
         >
           NUEVO
         </Button>
         <Button
           variant="contained"
           className="mx-3"
-          disabled={autorSeleccionado === null}
-          onClick={() => abrirModal(autorSeleccionado, true)}
+          disabled={ubicacionSeleccionada === null}
+          onClick={() => abrirModal(ubicacionSeleccionada, true)}
         >
           EDITAR
         </Button>
@@ -94,32 +93,28 @@ const TablaAutor = () => {
               <TableRow>
                 <TableCell></TableCell>
                 <TableCell>ID</TableCell>
-                <TableCell>Nombre</TableCell>
-                <TableCell>Descripción</TableCell>
+                <TableCell>Nombre de la Ubicación</TableCell>
                 <TableCell>Habilitado</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {Array.isArray(autor) &&
-                paginatedArray?.map((autor) => (
-                  <TableRow key={autor.id_autor}>
+              {Array.isArray(ubicacion) &&
+                paginatedArray?.map((ubicacion) => (
+                  <TableRow key={ubicacion.id_ubicacion}>
                     <TableCell>
                       <Checkbox
                         checked={
-                          autorSeleccionado?.id_autor ===
-                          autor.id_autor
+                          ubicacionSeleccionada?.id_ubicacion ===
+                          ubicacion.id_ubicacion
                         }
                         onChange={() =>
-                          handleCheckboxChange(autor.id_autor)
+                          handleCheckboxChange(ubicacion.id_ubicacion)
                         }
-                        // onClick={()=>abrirModal(autor)}
                       />
                     </TableCell>
-                    <TableCell>{autor.id_autor}</TableCell>
-                    <TableCell>{autor.nombre_autor}</TableCell>
-                    <TableCell>{autor.descripcion_autor}</TableCell>
-                    <TableCell>{autor.habilita == 1 ? 'SI':('NO')}</TableCell>
-                    
+                    <TableCell>{ubicacion.id_ubicacion}</TableCell>
+                    <TableCell>{ubicacion.nombre_ubicacion}</TableCell>
+                    <TableCell>{ubicacion.habilita == 1 ? 'SI':('NO')}</TableCell>
                   </TableRow>
                 ))}
             </TableBody>
@@ -127,7 +122,7 @@ const TablaAutor = () => {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25, { label: "Todas", value: -1 }]}
             component="div"
-            count={autor?.length}
+            count={ubicacion?.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
@@ -135,8 +130,8 @@ const TablaAutor = () => {
             labelRowsPerPage="Columnas por pagina"
           />
         </TableContainer>
-        <ModalAutor
-          autor={autorSeleccionado}
+        <ModalUbicacion
+          ubicaciones={ubicacionSeleccionada}
           modalAbierto={modalAbierto}
           handleClose={() => setModalAbierto(false)}
         />
@@ -145,4 +140,4 @@ const TablaAutor = () => {
   );
 };
 
-export default TablaAutor;
+export default TablaUbicacion;
