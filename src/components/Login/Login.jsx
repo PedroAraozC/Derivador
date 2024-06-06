@@ -18,9 +18,9 @@ const Login = () => {
   const navigate = useNavigate();
   const [modalAbierto, setModalAbierto] = useState(false);
   const [modalAbierto2, setModalAbierto2] = useState(false);
-  const abrirModal = () => setModalAbierto(true);
+  // const abrirModal = () => setModalAbierto(true);
   const cerrarModal = () => setModalAbierto(false);
-  const abrirModal2 = () => setModalAbierto2(true);
+  // const abrirModal2 = () => setModalAbierto2(true);
   const cerrarModal2 = () => setModalAbierto2(false);
 
   const handleShowPassword = () => {
@@ -86,7 +86,6 @@ const Login = () => {
   return (
     <div className="d-flex justify-content-center align-items-center layoutHeight">
       <div className="box">
-        <span className="borderLine"></span>
         <form onSubmit={handleLogin}>
           <img src={logoMuni} alt="logo Municipalidad" className="logoMuni" />
           <div className="inputBox w-100">
@@ -143,26 +142,26 @@ const Login = () => {
           >
             Ingresar
           </Button>
-          <Button
+          {/* <Button
             onClick={() => navigate("/registro")}
 
           >
             Registrarse
 
-          </Button>
+          </Button> */}
 
-          <p className="datoPie mt-2 text-center ">¿Olvidó su clave? Haga click <a
+          {/* <p className="datoPie mt-2 text-center ">¿Olvidó su clave? Haga click <a
             onClick={abrirModal}
           ><strong>aquí</strong></a> </p>
 
-<p className="datoPie mb-3 text-center "> <a
+          <p className="datoPie mb-3 text-center "> <a
             onClick={abrirModal2}
-          >Reenviar email de validación</a> </p>
+          >Reenviar email de validación</a> </p> */}
 
-          <div className="d-flex flex-column justify-content-center align-items-center">
+          <div className="d-flex flex-column justify-content-center align-items-center mt-4">
             <p className="footer p-1 m-0" style={{ fontSize: "0.7em" }}>
               Dir. de Innovación Tecnologica{" "}
-              <span style={{ fontSize: "1.4em", verticalAlign: "-0.1em" }}>
+              <span style={{ fontSize: "1.8em", verticalAlign: "-0.1em" }}>
                 ©
               </span>{" "}
               2024
@@ -204,12 +203,12 @@ const Login = () => {
       )}
 
 
-{modalAbierto2 && (
+      {modalAbierto2 && (
         <ReenviarValidacion
 
           cerrarModal={cerrarModal2}
-         
-        
+
+
         />
       )}
 

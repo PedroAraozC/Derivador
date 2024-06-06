@@ -19,11 +19,11 @@ const TablaPatrimonioMunicipal = () => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [modalAbierto, setModalAbierto] = useState(false);
-    const [patrimonioSeleccionado, setPatrimonioSeleccionado] =
-      useState(null);
+    const [patrimonioSeleccionado, setPatrimonioSeleccionado] = useState(null);
     const { patrimonios, obtenerPatrimonios, refresh } = useContext(EducaContext);
     const [paginatedArray, setPaginatedArray] = useState([]);
     const navigate = useNavigate()
+    
     //Funcion para listar las convocatorias
     useEffect(() => {
       obtenerPatrimonios();
@@ -93,10 +93,9 @@ const TablaPatrimonioMunicipal = () => {
                   <TableCell></TableCell>
                   <TableCell>ID</TableCell>
                   <TableCell>Nombre Patrimonio</TableCell>
-                  <TableCell>Año</TableCell>
+                  <TableCell>Tipología</TableCell>
                   <TableCell>Ubicación</TableCell>
-                  <TableCell>Origen</TableCell>
-                  <TableCell>Habilitado</TableCell>
+                  <TableCell sx={{textAlign: 'center'}}>Habilitado</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -118,10 +117,9 @@ const TablaPatrimonioMunicipal = () => {
                       <TableCell>
                         {patrimonio.nombre_patrimonio}
                       </TableCell>
-                      <TableCell>{patrimonio.anio_emplazamiento}</TableCell>
-                      <TableCell>{patrimonio.id_ubicacion}</TableCell>
-                      <TableCell>{patrimonio.origen}</TableCell>
-                      <TableCell>{patrimonio.habilita}</TableCell>
+                      <TableCell>{patrimonio.nombre_tipologia}</TableCell>
+                      <TableCell>{patrimonio.nombre_ubicacion}</TableCell>
+                      <TableCell sx={{textAlign: 'center'}}>{patrimonio.habilita == 1 ? 'SI':('NO')}</TableCell>
                     </TableRow>
                   ))}
               </TableBody>

@@ -9,7 +9,7 @@ import Ubicacion from "./Ubicacion/Ubicacion";
 import Patrimonio from "./Patrimonio";
 
 const PanelEducacion = () => {
-    const [tablaVisible, setTablaVisible] = useState(null);
+    const [tablaVisible, setTablaVisible] = useState('patrimonios');
 
     const verTabla = (tabla) => () => {
         setTablaVisible(tabla);

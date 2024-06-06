@@ -47,6 +47,10 @@ const ModalContratacion = ({ contratacion, modalAbierto, handleClose, modoEdicio
             nuevosErrores.hora_designa = "Ingrese una hora válida (formato: HH:MM:SS)";
             setSnackbarMensaje("Ingrese una hora válida (formato: HH:MM:SS)");
         }
+        if(!formularioValues.archivo){
+            nuevosErrores.archivo = "Ingrese un archivo";
+            setSnackbarMensaje("Ingrese un archivo");
+        }
         setErrores(nuevosErrores);
         // Si hay errores, muestra el Snackbar
         if (Object.keys(nuevosErrores).length > 0) {
@@ -110,6 +114,7 @@ const ModalContratacion = ({ contratacion, modalAbierto, handleClose, modoEdicio
     };
 
     const editarContratacion = async (contratacion) => {
+
         const formularioValido = validarFormulario();
         if (formularioValido) {
             try {
@@ -133,7 +138,6 @@ const ModalContratacion = ({ contratacion, modalAbierto, handleClose, modoEdicio
             }
         } else {
             console.log('Algo salió mal :(');
-            setSnackbarMensaje("Por favor, corrige los errores en el formulario.");
             setSnackbarOpen(true);
         }
     };
@@ -316,13 +320,13 @@ const ModalContratacion = ({ contratacion, modalAbierto, handleClose, modoEdicio
                                 value={formularioValues.detalle}
                                 style={{ width: 400, borderRadius: 5, padding: 5,  }}
                             />
-                            <InputLabel sx={{marginTop: 5}}>EDITAR PLIEGO</InputLabel>
+                            <InputLabel sx={{marginTop: 5}}>EDITAR PLIEGO (OBLIGATORIO)</InputLabel>
                             <input
                                 type="file"
                                 accept=".pdf"
                                 ref={fileInputRef}
                                 onChange={handleFileInputChange}
-                                required={false}
+                                required={true}
                                 style={{ width: 300, paddingTop: 5, paddingBottom: 30 }}
                             />
                         </div>

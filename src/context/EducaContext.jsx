@@ -220,7 +220,6 @@ const ProviderEducacion = ({ children }) => {
       const resultado = await axios.get("/admin/listarPatrimonio");
       // console.log(resultado.data.materiales);
       setPatrimonios(resultado.data.patrimonios);
-      console.log(patrimonios)
     } catch (error) {
       console.log(error);
     }

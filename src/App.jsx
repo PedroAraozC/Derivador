@@ -5,8 +5,8 @@ import Layout from "./common/Layout";
 import CapitalHumano from "./pages/CapitalHumano/CapitalHumano";
 import Reclamos from "./pages/EstadisticasReclamos/Reclamos";
 import PrivateRoute from "./routes/PrivateRoute";
-import Perfil from "./pages/Perfil/Perfil";
-import { Registro } from "./components/Registro/Registro";
+// import Perfil from "./pages/Perfil/Perfil";
+// import { Registro } from "./components/Registro/Registro";
 import PanelAdmin from "./components/Admin/PanelAdmin";
 // import Turnos from "./pages/Turnos/Turnos";
 import PanelContratacion from "./components/Admin/Contratacion/PanelContratacion";
@@ -45,7 +45,7 @@ function App() {
             <Routes>
               <Route exact path="/*" element={<Login />} />
               <Route exact path="/home" element={<PrivateRoute key="home"><Home /></PrivateRoute>} />
-              <Route exact path="/registro" element={<Registro />} />
+              {/* <Route exact path="/registro" element={<Registro />} /> */}
               <Route exact
                 path="/estadistica_rrhh"
                 element={
@@ -63,14 +63,16 @@ function App() {
                 }
               />
 
-              <Route exact path="/perfil" element={
+              {/* <Route exact path="/perfil" element={
                 <PrivateRoute><Perfil /></PrivateRoute>
-              } />
+              } /> */}
 
               <Route exact path="/panel_admin" element={<PrivateRoute><PanelAdmin /></PrivateRoute>} />
               
               {/* LICITACION */}
               <Route exact path="/panel_contratacion" element={<PrivateRoute><PanelContratacion /></PrivateRoute>} />
+              <Route exact path="/licitaciones_concursos" element={<Licitaciones />} />
+              <Route path="/licitacion/:id" element={<Licitacion />} />
               {/* LICITACION */}
 
                 {/*PATRIMONIO*/ }
@@ -93,8 +95,6 @@ function App() {
               <Route exact path="/agregar-convoca" element={<PrivateRoute><AgregarConvocatoria /></PrivateRoute>} />
               {/* EDUCACION */}
 
-              <Route exact path="/licitaciones_concursos" element={<Licitaciones />} />
-              <Route path="/licitacion/:id" element={<Licitacion />} />
             </Routes>
           </ProviderEducacion>
         </Layout>

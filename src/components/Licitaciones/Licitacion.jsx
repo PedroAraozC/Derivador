@@ -18,8 +18,8 @@ const Licitacion = () => {
     }
   };
 
-    const urlPliego = `https://atencionciudadana.smt.gob.ar/PDF-Convocatorias/${contratacion?.nombre_archivo}`;
-    const urlAnexo = `https://atencionciudadana.smt.gob.ar/PDF-Convocatorias/${contratacion?.nombre_anexo}`;
+  const urlPliego = `https://licitaciones.smt.gob.ar/PDF-Convocatorias/${contratacion?.nombre_archivo}`;
+  const urlAnexo = `https://licitaciones.smt.gob.ar/PDF-Convocatorias/${contratacion?.nombre_anexo}`;
   
   const handleVolver = () =>{
     navigate(-1)
