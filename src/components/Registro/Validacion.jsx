@@ -44,7 +44,7 @@ const ValidarCiudadanoDB = async () => {
   
               setTimeout(() => {
                   // navigate("/");
-                  window.location.href = `http://181.105.6.205:90/?rep=${localStorage.getItem("reparticion")}`;
+                  window.location.href = `http://estadisticas.smt.gob.ar:86}`;
               }, 2500);
 
 
