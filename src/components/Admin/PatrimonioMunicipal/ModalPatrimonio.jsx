@@ -45,10 +45,10 @@ const ModalPatrimonio = ({patrimonio, modalAbierto, handleClose}) => {
         nuevosErrores.nombre_patrimonio = "Ingrese un nombre de máximo 40 caracteres";
         setSnackbarMensaje("Ingrese un nombre del autor/a de máximo 40 caracteres");
       }
-      if (!formularioValues.descripcion || formularioValues.descripcion.length > 140) {
-        nuevosErrores.descripcion = "Ingrese un descripcion de máximo 140 caracteres";
-        setSnackbarMensaje("Ingrese una descripcion de máximo 140 caracteres");
-      }
+      // if (!formularioValues.descripcion || formularioValues.descripcion.length > 140) {
+      //   nuevosErrores.descripcion = "Ingrese un descripcion de máximo 140 caracteres";
+      //   setSnackbarMensaje("Ingrese una descripcion de máximo 140 caracteres");
+      // }
       if (!formularioValues.origen || formularioValues.origen.length > 80) {
         nuevosErrores.descripcion = "Ingrese un origen de máximo 80 caracteres";
         setSnackbarMensaje("Describa el origen en un máximo de 80 caracteres");
@@ -154,6 +154,9 @@ const ModalPatrimonio = ({patrimonio, modalAbierto, handleClose}) => {
           id_autor: patrimonio.id_autor,
           id_ubicacion: patrimonio.id_ubicacion,
           habilita: patrimonio.habilita,
+          imagen_carrousel_1: patrimonio.imagen_carrousel_1,
+          imagen_carrousel_2: patrimonio.imagen_carrousel_2,
+          imagen_carrousel_3: patrimonio.imagen_carrousel_3
         });
       }
     }, [patrimonio]);
@@ -376,6 +379,33 @@ const ModalPatrimonio = ({patrimonio, modalAbierto, handleClose}) => {
                   required={false}
                   style={{ width: 400, paddingTop: 5, paddingBottom: 30, border: '4px dotted #ccc', padding: '20px' }}
                 />
+                <TextField
+                      placeholder="Ingrese la URL de la imagen para el carrousel"
+                      onChange={handleInputChange}
+                      name="imagen_carrousel_1"
+                      value={formularioValues.imagen_carrousel_1}
+                      sx={{ width: 400,  minHeight: '56px' }}
+                      required={true}
+                      className="mt-5"
+                    />
+                <TextField
+                      placeholder="Ingrese la URL de la imagen para el carrousel"
+                      onChange={handleInputChange}
+                      name="imagen_carrousel_2"
+                      value={formularioValues.imagen_carrousel_2}
+                      sx={{ width: 400,  minHeight: '56px' }}
+                      required={true}
+                      className="mt-5"
+                    />
+                <TextField
+                      placeholder="Ingrese la URL de la imagen para el carrousel"
+                      onChange={handleInputChange}
+                      name="imagen_carrousel_3"
+                      value={formularioValues.imagen_carrousel_3}
+                      sx={{ width: 400,  minHeight: '56px' }}
+                      required={true}
+                      className="mt-5"
+                    />
               </div>
             </form>
                 <Button

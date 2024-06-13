@@ -42,10 +42,10 @@ const AgregarPatrimonio = () => {
         nuevosErrores.nombre_patrimonio = "Ingrese un nombre de máximo 40 caracteres";
         setSnackbarMensaje("Ingrese un nombre del autor/a de máximo 40 caracteres");
       }
-      if (!formularioValues.descripcion || formularioValues.descripcion.length > 140) {
-        nuevosErrores.descripcion = "Ingrese un descripcion de máximo 140 caracteres";
-        setSnackbarMensaje("Ingrese una descripcion de máximo 140 caracteres");
-      }
+      // if (!formularioValues.descripcion || formularioValues.descripcion.length > 340) {
+      //   nuevosErrores.descripcion = "Ingrese un descripcion de máximo 340 caracteres";
+      //   setSnackbarMensaje("Ingrese una descripcion de máximo 340 caracteres");
+      // }
       if (!formularioValues.origen || formularioValues.origen.length > 80) {
         nuevosErrores.descripcion = "Ingrese un origen de máximo 80 caracteres";
         setSnackbarMensaje("Describa el origen en un máximo de 80 caracteres");
@@ -109,6 +109,7 @@ const AgregarPatrimonio = () => {
       } else {
         console.log('Algo salió mal :(');
         setSnackbarOpen(true);
+        setButtonDis(false)
       }
     };
 
@@ -194,7 +195,6 @@ const AgregarPatrimonio = () => {
                       onChange={handleHabilitarChange}
                       name="habilita"
                     />
-                    <Button variant="contained" color="success" type="submit" disabled={buttonDis}>AGREGAR</Button>
                 </div>
                     
                 </div>
@@ -309,7 +309,7 @@ const AgregarPatrimonio = () => {
                     </Select>
                 </div>
                 <div className="d-flex flex-column">
-                <InputLabel sx={{ marginBottom: 4, textAlign: 'center' }}>INGRESE UNA IMAGEN (900x600 px)</InputLabel>
+                <InputLabel sx={{ marginBottom: 4, textAlign: 'center' }}>INGRESE UNA IMAGEN PARA LA CARD (900x600 px)</InputLabel>
                 <input
                   type="file"
                   accept=".png, .webp, .jpg"
@@ -318,6 +318,35 @@ const AgregarPatrimonio = () => {
                   required={false}
                   style={{ width: 400, paddingTop: 5, paddingBottom: 30, border: '4px dotted #ccc', padding: '20px' }}
                 />
+                <TextField
+                      placeholder="Ingrese la URL de la imagen para el carrousel #1"
+                      onChange={handleInputChange}
+                      name="imagen_carrousel_1"
+                      value={formularioValues.imagen_carrousel_1}
+                      sx={{ width: 400,  minHeight: '56px' }}
+                      required={true}
+                      className="mt-5"
+                    />
+                <TextField
+                      placeholder="Ingrese la URL de la imagen para el carrousel #2"
+                      onChange={handleInputChange}
+                      name="imagen_carrousel_2"
+                      value={formularioValues.imagen_carrousel_2}
+                      sx={{ width: 400,  minHeight: '56px' }}
+                      required={true}
+                      className="mt-5"
+                    />
+                <TextField
+                      placeholder="Ingrese la URL de la imagen para el carrousel #3"
+                      onChange={handleInputChange}
+                      name="imagen_carrousel_3"
+                      value={formularioValues.imagen_carrousel_3}
+                      sx={{ width: 400,  minHeight: '56px' }}
+                      required={true}
+                      className="mt-5"
+                    />
+                <Button variant="contained" color="success" type="submit" disabled={buttonDis} className="mt-5">AGREGAR</Button>
+
               </div>
             </form>
             {errores? (

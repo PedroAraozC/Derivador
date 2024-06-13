@@ -9,11 +9,12 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TablePagination from "@mui/material/TablePagination";
 import Paper from "@mui/material/Paper";
-import { Button } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import { useNavigate } from "react-router-dom";
 import { EducaContext } from "../../../context/EducaContext";
 import ModalPatrimonio from "./ModalPatrimonio";
+
 
 const TablaPatrimonioMunicipal = () => {
     const [page, setPage] = useState(0);
@@ -23,6 +24,7 @@ const TablaPatrimonioMunicipal = () => {
     const { patrimonios, obtenerPatrimonios, refresh } = useContext(EducaContext);
     const [paginatedArray, setPaginatedArray] = useState([]);
     const navigate = useNavigate()
+    const [searchTerm, setSearchTerm] = useState("");
     
     //Funcion para listar las convocatorias
     useEffect(() => {
@@ -30,8 +32,11 @@ const TablaPatrimonioMunicipal = () => {
     }, [refresh]);
   
     useEffect(() => {
-      setPaginatedArray(patrimonios?.slice(page * rowsPerPage, (page + 1) * rowsPerPage));
-    }, [patrimonios, page, rowsPerPage]);
+      const filteredPatrimonios = patrimonios?.filter(patrimonio =>
+        patrimonio.nombre_patrimonio.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setPaginatedArray(filteredPatrimonios?.slice(page * rowsPerPage, (page + 1) * rowsPerPage));
+    }, [patrimonios, page, rowsPerPage, searchTerm]);
   
     const handleCheckboxChange = (patrimonioId) => {
       const patrimonio = patrimonios?.find(
@@ -65,10 +70,22 @@ const TablaPatrimonioMunicipal = () => {
       setPage(0);
     };
 
+    const handleSearchChange = (event) => {
+      setSearchTerm(event.target.value);
+      setPage(0); // Reset to first page on search
+    };
+
   
     return (
       <>
-        <div className="container d-flex justify-content-end mt-5">
+        <div className="container d-flex justify-content-end mt-3">
+          <TextField
+            label="Buscar por nombre"
+            variant="outlined"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            className="mx-5"
+          />
           <Button
             variant="contained"
             disabled={patrimonioSeleccionado !== null}
