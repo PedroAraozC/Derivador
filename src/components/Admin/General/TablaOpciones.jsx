@@ -15,12 +15,12 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import useStore from '../../Zustand/Zustand';
 import { Modal } from '@mui/base';
 import { Button, TextField } from '@mui/material';
-import axios from '../../config/axios';
 import Swal from 'sweetalert2';
 import AgregarProceso from './AgregarProceso';
+import useStore from '../../../Zustand/Zustand';
+import axios from '../../../config/axios';
 
 // eslint-disable-next-line react/prop-types
 export default function TablaOpciones() {

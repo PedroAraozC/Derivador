@@ -5,13 +5,9 @@ import Layout from "./common/Layout";
 import CapitalHumano from "./pages/CapitalHumano/CapitalHumano";
 import Reclamos from "./pages/EstadisticasReclamos/Reclamos";
 import PrivateRoute from "./routes/PrivateRoute";
-// import Perfil from "./pages/Perfil/Perfil";
 // import { Registro } from "./components/Registro/Registro";
-import PanelAdmin from "./components/Admin/PanelAdmin";
-// import Turnos from "./pages/Turnos/Turnos";
+import PanelAdmin from "./components/Admin/General/PanelAdmin";
 import PanelContratacion from "./components/Admin/Contratacion/PanelContratacion";
-import Licitaciones from "./components/Licitaciones/Licitaciones";
-import Licitacion from "./components/Licitaciones/Licitacion";
 import PanelEducacion from "./components/Admin/Educacion/PanelEducacion";
 import AgregarEstablecimiento from "./components/Admin/Educacion/Establecimientos/AgregarEstablecimiento";
 import AgregarCaracter from "./components/Admin/Educacion/Caracter/AgregarCaracter";
@@ -26,6 +22,10 @@ import AgregarMaterial from "./components/Admin/PatrimonioMunicipal/Material/Agr
 import AgregarTipologia from "./components/Admin/PatrimonioMunicipal/Tipologia/AgregarTipologia";
 import AgregarCategoria from "./components/Admin/PatrimonioMunicipal/Categoria/AgregarCategoria";
 import AgregarUbicacion from "./components/Admin/PatrimonioMunicipal/Ubicacion/AgregarUbicacion";
+import PanelGenero from "./components/Admin/Genero/PanelGenero";
+import PanelTUsuarios from "./components/Admin/TiposUsuarios/PanelTUsuarios";
+import PanelTDocumento from "./components/Admin/TipoDocumento/PanelTDocumento";
+import PanelReparticiones from "./components/Admin/Reparticiones/PanelReparticiones";
 
 function App() {
   const url = new URL(window.location.href);
@@ -46,33 +46,21 @@ function App() {
               <Route exact path="/*" element={<Login />} />
               <Route exact path="/home" element={<PrivateRoute key="home"><Home /></PrivateRoute>} />
               {/* <Route exact path="/registro" element={<Registro />} /> */}
-              <Route exact
-                path="/estadistica_rrhh"
-                element={
-                  <PrivateRoute key="cap-humano">
-                    <CapitalHumano />
-                  </PrivateRoute>
-                }
-              />
-              <Route exact
-                path="/estadistica_ac"
-                element={
-                  <PrivateRoute key="reclamos">
-                    <Reclamos />
-                  </PrivateRoute>
-                }
-              />
+              <Route exact path="/estadistica_rrhh" element={<PrivateRoute key="cap-humano"><CapitalHumano /></PrivateRoute>}/>
+              <Route exact path="/estadistica_ac" element={<PrivateRoute key="reclamos"><Reclamos /></PrivateRoute>}/>
 
-              {/* <Route exact path="/perfil" element={
-                <PrivateRoute><Perfil /></PrivateRoute>
-              } /> */}
 
-              <Route exact path="/panel_admin" element={<PrivateRoute><PanelAdmin /></PrivateRoute>} />
+              {/* ADMINISTRADOR GENERAL */}
+              <Route exact path="/opcion" element={<PrivateRoute><PanelAdmin /></PrivateRoute>} />
+              <Route exact path="/genero" element={<PrivateRoute><PanelGenero /></PrivateRoute>} />
+              <Route exact path="/tipo-usuario" element={<PrivateRoute><PanelTUsuarios /></PrivateRoute>} />
+              <Route exact path="/tipo_documento" element={<PrivateRoute><PanelTDocumento /></PrivateRoute>} />
+              <Route exact path="/reparticion" element={<PrivateRoute><PanelReparticiones /></PrivateRoute>} />
+
+              {/* ADMINISTRADOR GENERAL */}
               
               {/* LICITACION */}
               <Route exact path="/panel_contratacion" element={<PrivateRoute><PanelContratacion /></PrivateRoute>} />
-              <Route exact path="/licitaciones_concursos" element={<Licitaciones />} />
-              <Route path="/licitacion/:id" element={<Licitacion />} />
               {/* LICITACION */}
 
                 {/*PATRIMONIO*/ }
