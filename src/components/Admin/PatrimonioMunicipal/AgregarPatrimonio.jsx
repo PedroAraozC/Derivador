@@ -42,12 +42,12 @@ const AgregarPatrimonio = () => {
         nuevosErrores.nombre_patrimonio = "Ingrese un nombre de máximo 40 caracteres";
         setSnackbarMensaje("Ingrese un nombre del autor/a de máximo 40 caracteres");
       }
-      // if (!formularioValues.descripcion || formularioValues.descripcion.length > 340) {
-      //   nuevosErrores.descripcion = "Ingrese un descripcion de máximo 340 caracteres";
-      //   setSnackbarMensaje("Ingrese una descripcion de máximo 340 caracteres");
-      // }
+      if (!formularioValues.anio_emplazamiento || formularioValues.anio_emplazamiento.length > 4) {
+        nuevosErrores.anio_emplazamiento = "Ingrese un año de máximo 4 caracteres";
+        setSnackbarMensaje("Ingrese un año de máximo 4 caracteres");
+      }
       if (!formularioValues.origen || formularioValues.origen.length > 80) {
-        nuevosErrores.descripcion = "Ingrese un origen de máximo 80 caracteres";
+        nuevosErrores.origen = "Ingrese un origen de máximo 80 caracteres";
         setSnackbarMensaje("Describa el origen en un máximo de 80 caracteres");
       }
       if (!formularioValues.latylon || !regex.test(formularioValues.latylon)) {
@@ -76,6 +76,7 @@ const AgregarPatrimonio = () => {
       });
       console.log(formularioValues);
     };
+    
     const handleHabilitarChange = (event) => {
       setFormularioValues({
         ...formularioValues,
@@ -151,10 +152,10 @@ const AgregarPatrimonio = () => {
                     />
                     <InputLabel sx={{ marginTop: 2}}>AÑO EMPLAZAMIENTO</InputLabel>
                     <TextField
-                      type="date"
+                      placeholder="Ingrese el año de emplazamiento"
                       onChange={handleInputChange}
                       name="anio_emplazamiento"
-                      value={formularioValues.fecha_apertura}
+                      value={formularioValues.anio_emplazamiento}
                       sx={{ width: 400,  minHeight: '56px' }}
                       required={true}
                     />

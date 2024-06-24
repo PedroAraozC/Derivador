@@ -5,7 +5,6 @@ import { Modal, Box, Button, Divider, InputLabel, Switch, TextField, Snackbar, A
 import axios from "../../../config/axios";
 import { EducaContext } from "../../../context/EducaContext";
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
-import { formatearFechaHora } from "../../../helpers/convertirFecha";
 
 const ModalPatrimonio = ({patrimonio, modalAbierto, handleClose}) => {
   
@@ -45,10 +44,10 @@ const ModalPatrimonio = ({patrimonio, modalAbierto, handleClose}) => {
         nuevosErrores.nombre_patrimonio = "Ingrese un nombre de máximo 40 caracteres";
         setSnackbarMensaje("Ingrese un nombre del autor/a de máximo 40 caracteres");
       }
-      // if (!formularioValues.descripcion || formularioValues.descripcion.length > 140) {
-      //   nuevosErrores.descripcion = "Ingrese un descripcion de máximo 140 caracteres";
-      //   setSnackbarMensaje("Ingrese una descripcion de máximo 140 caracteres");
-      // }
+      if (!formularioValues.anio_emplazamiento || formularioValues.anio_emplazamiento.length > 4) {
+        nuevosErrores.anio_emplazamiento = "Ingrese un año de máximo 4 caracteres";
+        setSnackbarMensaje("Ingrese un año de máximo 4 caracteres");
+      }
       if (!formularioValues.origen || formularioValues.origen.length > 80) {
         nuevosErrores.descripcion = "Ingrese un origen de máximo 80 caracteres";
         setSnackbarMensaje("Describa el origen en un máximo de 80 caracteres");
@@ -138,12 +137,11 @@ const ModalPatrimonio = ({patrimonio, modalAbierto, handleClose}) => {
     }
     useEffect(() => {
       if (patrimonio) {
-        const fechaHora = formatearFechaHora(patrimonio.anio_emplazamiento);
         // Si hay un estado y el modal está abierto, establece los valores del formulario
         setFormularioValues({
           id: patrimonio.id_patrimonio,
           nombre_patrimonio: patrimonio.nombre_patrimonio,
-          anio_emplazamiento: fechaHora,
+          anio_emplazamiento: patrimonio.anio_emplazamiento,
           descripcion: patrimonio.descripcion,
           origen: patrimonio.origen,
           latylon: patrimonio.latylon,
@@ -183,7 +181,7 @@ const ModalPatrimonio = ({patrimonio, modalAbierto, handleClose}) => {
     width: isMobile ? "90%" : "80%", // Ajusta el ancho según el dispositivo
     height: "90%",
     bgcolor: "background.paper",
-    border: "2px solid #000",
+    borderRadius: "10px",
     boxShadow: 24,
     p: 4,
   };
@@ -212,7 +210,7 @@ const ModalPatrimonio = ({patrimonio, modalAbierto, handleClose}) => {
                     />
                     <InputLabel sx={{ marginTop: 2}}>AÑO EMPLAZAMIENTO</InputLabel>
                     <TextField
-                      type="date"
+                      placeholder="Ingrese el año de emplazamiento"
                       onChange={handleInputChange}
                       name="anio_emplazamiento"
                       value={formularioValues.anio_emplazamiento}

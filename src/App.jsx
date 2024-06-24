@@ -26,6 +26,7 @@ import PanelGenero from "./components/Admin/Genero/PanelGenero";
 import PanelTUsuarios from "./components/Admin/TiposUsuarios/PanelTUsuarios";
 import PanelTDocumento from "./components/Admin/TipoDocumento/PanelTDocumento";
 import PanelReparticiones from "./components/Admin/Reparticiones/PanelReparticiones";
+import PermisosTUsuario from "./components/Admin/TiposUsuarios/PermisosTUsuario";
 
 function App() {
   const url = new URL(window.location.href);
@@ -56,6 +57,7 @@ function App() {
               <Route exact path="/tipo-usuario" element={<PrivateRoute><PanelTUsuarios /></PrivateRoute>} />
               <Route exact path="/tipo_documento" element={<PrivateRoute><PanelTDocumento /></PrivateRoute>} />
               <Route exact path="/reparticion" element={<PrivateRoute><PanelReparticiones /></PrivateRoute>} />
+              <Route exact path="/permisos-usuario" element={<PrivateRoute><PermisosTUsuario /></PrivateRoute>} />
 
               {/* ADMINISTRADOR GENERAL */}
               

@@ -30,11 +30,6 @@ const AgregarAutor = () => {
           nuevosErrores.nombre_autor = "Ingrese un nombre del autor/a de máximo 30 caracteres";
           setSnackbarMensaje("Ingrese un nombre del autor/a de máximo 30 caracteres");
         }
-        if (!formularioValues.descripcion_autor || formularioValues.descripcion_autor.length > 140) {
-          nuevosErrores.descripcion_autor = "Ingrese una descripción de máximo 140 caracteres";
-          setSnackbarMensaje("Ingrese una descripción de máximo 140 caracteres");
-        }
-    
         setErrores(nuevosErrores);
     
         // Si hay errores, muestra el Snackbar
@@ -84,7 +79,6 @@ const AgregarAutor = () => {
               }
         } else {
           console.log('Algo salio mal :(')
-          setSnackbarMensaje("Por favor, corrige los errores en el formulario.");
           setSnackbarOpen(true);
         }
       };
@@ -115,7 +109,6 @@ const AgregarAutor = () => {
                         name="descripcion_autor"
                         value={formularioValues.descripcion_autor}
                         style={{width: 300, marginBottom: 2, border: '1px solid #ccc', borderRadius: 4, minHeight: '100px'}}
-                        required={true}
                     />
                 </div>
                 <div>

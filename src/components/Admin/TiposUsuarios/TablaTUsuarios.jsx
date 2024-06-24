@@ -14,13 +14,16 @@ import Checkbox from "@mui/material/Checkbox";
 import { EducaContext } from "../../../context/EducaContext";
 import ModalTUsuarios from "./ModalTUsuarios";
 import ModalAgregar from "./ModalAgregar";
-
+import PermisosTUsuario from "./PermisosTUsuario";
+import KeyOutlinedIcon from '@mui/icons-material/KeyOutlined';
+import KeyOffOutlinedIcon from '@mui/icons-material/KeyOffOutlined';
 
 const TablaTUsuarios = () => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [modalAbierto, setModalAbierto] = useState(false);
     const [modalAgregarAbierto, setModalAgregarAbierto] = useState(false);
+    const [modalPermisosAbierto, setModalPermisosAbierto] = useState(false);
     const [tusuarioSeleccionado, setTusuarioSeleccionado] = useState(null);
     const { tusuarios, obtenerTiposDeUsuarios, refresh } = useContext(EducaContext);
     const [paginatedArray, setPaginatedArray] = useState([]);
@@ -55,6 +58,12 @@ const TablaTUsuarios = () => {
         setTusuarioSeleccionado(tusuario);
         setModalAbierto(true);
     };
+
+    const abrirModalPermisos = (tusuario) => {
+        setTusuarioSeleccionado(tusuario);
+        setModalPermisosAbierto(true);
+    };
+
     const abrirModalAgregar = () => {
         setModalAgregarAbierto(true);
     };
@@ -76,12 +85,12 @@ const TablaTUsuarios = () => {
                     variant="contained"
                     disabled={tusuarioSeleccionado !== null}
                     onClick={() => abrirModalAgregar(true)}
+                    className="mx-3"
                 >
                     NUEVO
                 </Button>
                 <Button
                     variant="contained"
-                    className="mx-3"
                     disabled={tusuarioSeleccionado === null}
                     onClick={() => abrirModal(tusuarioSeleccionado, true)}
                 >
@@ -120,6 +129,17 @@ const TablaTUsuarios = () => {
                                             {tusuario.nombre_tusuario}
                                         </TableCell>
                                         <TableCell sx={{ textAlign: 'center' }}>{tusuario.habilita == 1 ? 'SI' : ('NO')}</TableCell>
+                                        <TableCell sx={{ textAlign: 'center' }}>
+                                        {tusuarioSeleccionado?.id_tusuario === tusuario.id_tusuario ? (
+                                            <KeyOutlinedIcon
+                                                onClick={() => abrirModalPermisos(tusuario, true)}
+                                                style={{ cursor: 'pointer' }}
+                                                
+                                                />
+                                                ) : (
+                                            <KeyOffOutlinedIcon style={{ cursor: 'pointer' }} />
+                                                )}  
+                                        </TableCell>
                                     </TableRow>
                                 ))}
                         </TableBody>
@@ -139,10 +159,15 @@ const TablaTUsuarios = () => {
                     tusuarios={tusuarioSeleccionado}
                     modalAbierto={modalAbierto}
                     handleClose={() => setModalAbierto(false)}
-                />
+                    />
                 <ModalAgregar
                     modalAgregarAbierto={modalAgregarAbierto}
                     handleClose={() => setModalAgregarAbierto(false)}
+                    />
+                <PermisosTUsuario
+                    tusuario={tusuarioSeleccionado}
+                    modalPermisosAbierto={modalPermisosAbierto}
+                    handleClose={() => setModalPermisosAbierto(false)}
                 />
             </div>
         </>

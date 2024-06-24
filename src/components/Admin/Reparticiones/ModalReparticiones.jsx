@@ -13,22 +13,27 @@ const ModalReparticiones = ({ reparticiones, modalAbierto, handleClose }) => {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMensaje, setSnackbarMensaje] = useState('');
     const [formularioValues, setFormularioValues] = useState({});
-    const handleSnackbarClose = () => {
-        setSnackbarOpen(false);
-    };
+    const handleSnackbarClose = () => {setSnackbarOpen(false)};
+
     // Función para validar el formulario antes de enviarlo
-    // Faltan las validaciones
-    // Faltan las validaciones
-    // Faltan las validaciones
-    // Faltan las validaciones
-    // Faltan las validaciones
-    // y poner buscador
     const validarFormulario = () => {
         const nuevosErrores = {};
 
-        if (!formularioValues.nombre_tdocumento || formularioValues.nombre_tdocumento.length > 30) {
-            nuevosErrores.nombre_tdocumento = "Ingrese un nombre de máximo 30 caracteres";
-            setSnackbarMensaje("Ingrese un nombre del autor/a de máximo 30 caracteres");
+        if (!formularioValues.nombre_reparticion || formularioValues.nombre_reparticion.length > 100) {
+            nuevosErrores.nombre_reparticion = "Ingrese un nombre de máximo 100 caracteres";
+            setSnackbarMensaje("Ingrese un nombre de item de máximo 100 caracteres");
+        }
+        if (!formularioValues.item || formularioValues.item.length > 4) {
+            nuevosErrores.item = "Ingrese un item de máximo 4 caracteres";
+            setSnackbarMensaje("Ingrese un nombre de item de máximo 4 caracteres");
+        }
+        if (!formularioValues.depende || formularioValues.depende.length > 4) {
+            nuevosErrores.depende = "Ingrese un de máximo 4 caracteres";
+            setSnackbarMensaje("Ingrese un de máximo 4 caracteres");
+        }
+        if (!formularioValues.secretaria || formularioValues.secretaria.length > 4) {
+            nuevosErrores.secretaria = "Ingrese un máximo de 4 caracteres";
+            setSnackbarMensaje("Ingrese un máximo de 4 caracteres");
         }
 
         setErrores(nuevosErrores);

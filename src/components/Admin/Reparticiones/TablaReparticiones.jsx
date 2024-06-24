@@ -9,7 +9,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TablePagination from "@mui/material/TablePagination";
 import Paper from "@mui/material/Paper";
-import { Button } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import { EducaContext } from "../../../context/EducaContext";
 import ModalReparticiones from "./ModalReparticiones";
@@ -24,6 +24,7 @@ const TablaReparticiones = () => {
     const [reparticionSeleccionado, setReparticionSeleccionado] = useState(null);
     const { reparticiones, obtenerReparticiones, refresh } = useContext(EducaContext);
     const [paginatedArray, setPaginatedArray] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
 
     //Funcion para listar las convocatorias
     useEffect(() => {
@@ -31,8 +32,11 @@ const TablaReparticiones = () => {
     }, [refresh]);
 
     useEffect(() => {
-        setPaginatedArray(reparticiones?.slice(page * rowsPerPage, (page + 1) * rowsPerPage));
-    }, [reparticiones, page, rowsPerPage]);
+        const filteredPatrimonios = reparticiones?.filter(patrimonio =>
+            patrimonio.nombre_reparticion.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setPaginatedArray(filteredPatrimonios?.slice(page * rowsPerPage, (page + 1) * rowsPerPage));
+        }, [reparticiones, page, rowsPerPage, searchTerm]);
 
     const handleCheckboxChange = (reparticionesId) => {
         const reparticion = reparticiones?.find(
@@ -68,10 +72,21 @@ const TablaReparticiones = () => {
         setRowsPerPage(newRowsPerPage);
         setPage(0);
     };
+    const handleSearchChange = (event) => {
+        setSearchTerm(event.target.value);
+        setPage(0); // Reset to first page on search
+    };
 
     return (
         <>
             <div className="container d-flex justify-content-end mt-3">
+            <TextField
+                label="Buscar por nombre"
+                variant="outlined"
+                value={searchTerm}
+                onChange={handleSearchChange}
+                className="mx-5"
+            />
                 <Button
                     variant="contained"
                     disabled={reparticionSeleccionado !== null}

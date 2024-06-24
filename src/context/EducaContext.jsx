@@ -29,6 +29,7 @@ const ProviderEducacion = ({ children }) => {
   const [patrimonios, setPatrimonios] = useState([]);
   const [generos, setGeneros] = useState([]);
   const [tusuarios, setTUsuarios] = useState([]);
+  const [procesos, setProcesos] = useState([]);
   const [tdocumentos, setTDocumentos] = useState([]);
   const [reparticiones, setReparticiones] = useState([]);
   //Funcion para listar las convocatorias
@@ -245,6 +246,15 @@ const ProviderEducacion = ({ children }) => {
       console.log(error);
     }
   }
+  const obtenerProcesos = async (id) =>{
+    try {
+      const resultado = await axios.post("/admin/listarProcesos", {id});
+      // console.log(resultado.data.materiales);
+      setProcesos(resultado.data.procesos);
+    } catch (error) {
+      console.log(error);
+    }
+  }
   const obtenerTiposDeDocumento = async () =>{
     try {
       const resultado = await axios.get("/admin/listarTDocumentos");
@@ -319,7 +329,9 @@ const ProviderEducacion = ({ children }) => {
         obtenerTiposDeDocumento,
         tdocumentos,
         obtenerReparticiones,
-        reparticiones
+        reparticiones,
+        obtenerProcesos,
+        procesos
       }}
     >
       {children}

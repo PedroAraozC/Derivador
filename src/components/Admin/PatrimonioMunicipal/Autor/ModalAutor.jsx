@@ -29,10 +29,6 @@ const validarFormulario = () => {
     nuevosErrores.nombre_autor = "Ingrese un nombre del autor/a de máximo 30 caracteres";
     setSnackbarMensaje("Ingrese un nombre del autor/a de máximo 30 caracteres");
   }
-  if (!formularioValues.descripcion_autor || formularioValues.descripcion_autor.length > 140) {
-    nuevosErrores.descripcion_autor = "Ingrese una descripción de máximo 140 caracteres";
-    setSnackbarMensaje("Ingrese una descripción de máximo 140 caracteres");
-  }
 
   setErrores(nuevosErrores);
 
@@ -152,7 +148,6 @@ const validarFormulario = () => {
                         name="descripcion_autor"
                         value={formularioValues.descripcion_autor}
                         style={{width: 300, marginBottom: 2, border: '1px solid #ccc', borderRadius: 4, minHeight: '100px', minWidth: '100%'}}
-                        required={true}
                     />
                 </div>
                 <div className="d-flex flex-column gap-3 w-50 p-2">
