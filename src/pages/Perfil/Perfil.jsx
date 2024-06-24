@@ -12,7 +12,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead';
 import Swal from "sweetalert2";
 import { CambiarContraseña } from "../../pages/Perfil/CambiarContraseña";
-import { ArrowBack } from "@mui/icons-material";
+import { ArrowBack, AssignmentInd, Badge } from "@mui/icons-material";
+import { FaIdCard } from "react-icons/fa";
 
 
 
@@ -267,6 +268,13 @@ EditarCiudadanoDB(formData)
     
   }
 
+
+const goToCredencial =()=>
+{
+  const url = new URL(`https://ciudaddigital.smt.gob.ar/#/credencialesCiudadano/${user.documento_persona}`);
+  window.open(url.toString());
+}
+
   return (
     <div className=" d-flex align-items-center justify-content-center flex-column">
       <div className="d-flex flex-column p-2 mt-5 contenedorPerfil">
@@ -346,7 +354,18 @@ EditarCiudadanoDB(formData)
                   {/* <Button onClick={validarEmail} variant="outlined">
                   <MarkEmailReadIcon className="me-2" color="primary"  /> Validar email
                    </Button> */}
-                   </> )
+
+<Button color="success" onClick={goToCredencial} variant="contained" className="text-center ms-2" 
+             
+            > <AssignmentInd className="me-2"/>    Ver credencial </Button>
+
+
+                   </> 
+                   
+                  
+                  
+                  
+                  )
             :
             <Button onClick={handleEditDatos} variant="outlined" className="text-center" 
              disabled={saveChanges}
@@ -359,6 +378,8 @@ EditarCiudadanoDB(formData)
               </Button>
               
           }
+
+
       
         </div>
    

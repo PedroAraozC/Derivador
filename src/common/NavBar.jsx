@@ -27,9 +27,11 @@ export default function NavBar() {
     setAnchorEl(null);
   };
   
-  const goToPerfil = () => {
+  const goToCredencial = () => {
     setAnchorEl(null);
-    navigate("/perfil");
+  
+    const url = new URL(`https://ciudaddigital.smt.gob.ar/#/credencialesCiudadano/${user.documento_persona}`);
+    window.open(url.toString());
   };
 
   const handleLogout = () => {
@@ -81,7 +83,7 @@ export default function NavBar() {
                       open={Boolean(anchorEl)}
                       onClose={handleClose}
                     >
-                        {/* <MenuItem onClick={goToPerfil}>Mi perfil</MenuItem> */}
+                        <MenuItem onClick={goToCredencial}>Ver credencial</MenuItem>
                       <MenuItem onClick={handleLogout}>Cerrar Sesión</MenuItem>
                     </Menu>
                   </div>
