@@ -15,17 +15,21 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import useStore from '../../Zustand/Zustand';
 import { Modal } from '@mui/base';
 import { Button, TextField } from '@mui/material';
-import axios from '../../config/axios';
 import Swal from 'sweetalert2';
 import AgregarProceso from './AgregarProceso';
+import useStore from '../../../Zustand/Zustand';
+import axios from '../../../config/axios';
+import KeyOutlinedIcon from '@mui/icons-material/KeyOutlined';
+import PermisosProcesoModal from './PermisosProcesoModal';
 
 // eslint-disable-next-line react/prop-types
 export default function TablaOpciones() {
   const [openRows, setOpenRows] = useState({});
   const { opciones, obtenerOpciones } = useStore();
+  const [modalAbiertoPPro, setModalAbiertoPPro] = useState(false);
+  const [procesoSeleccionado, setProcesoSeleccionado] = useState(null);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -82,9 +86,9 @@ export default function TablaOpciones() {
     width: 900,
     height: '50%',
     bgcolor: 'background.paper',
-    border: '2px solid #000',
+    borderRadius: '10px',
     boxShadow: 24,
-    p: 4,
+    p: 5,
   };
 
   const handleAgregar = async(event, opcion) => {
@@ -105,12 +109,11 @@ export default function TablaOpciones() {
     let id = option.subItems[0].id_opcion
     Swal.fire({
       title: "¿Estás seguro?",
-      text: "¡No podrás revertir esto!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Sí, bórralo"
+      confirmButtonText: "Sí, deshabilitar"
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
@@ -130,6 +133,11 @@ export default function TablaOpciones() {
       }
     });
   };
+
+  const abrirModalPPro = (proceso) => {
+    setProcesoSeleccionado(proceso)
+    setModalAbiertoPPro(true);
+};
 
   return (
     <>
@@ -192,6 +200,9 @@ export default function TablaOpciones() {
                                   <button className='btn'>
                                     <EditIcon/>
                                   </button>
+                                  <button className='btn' onClick={() => abrirModalPPro(subItem, true)}>
+                                    <KeyOutlinedIcon/>
+                                  </button>
                                 </TableCell>
                               </TableRow>
                             ))}
@@ -207,6 +218,7 @@ export default function TablaOpciones() {
         </Table>
       </TableContainer>
       <div>
+        {/* Modal para agregar opciones al menu */}
       <Modal
         open={open}
         onClose={handleClose}
@@ -215,7 +227,7 @@ export default function TablaOpciones() {
       >
         <Box sx={styleModal}>
           <div>
-            <div className='d-flex justify-content-between mb-4'>
+            <div className='d-flex justify-content-center align-items-center mb-4'>
               <h2>
                 Agregar Opcion 
               </h2>
@@ -223,7 +235,7 @@ export default function TablaOpciones() {
                 <CancelIcon/>
               </button>
             </div>
-            <form className='container d-flex flex-column' onSubmit={(event) => handleAgregar(event, opcionValues)}>
+            <form className='container d-flex flex-column justify-content-center align-items-center' onSubmit={(event) => handleAgregar(event, opcionValues)}>
               <TextField 
                 placeholder='Ingrese el nombre de la opcion'
                 onChange={handleInputChange}
@@ -237,6 +249,8 @@ export default function TablaOpciones() {
           </div>
         </Box>
       </Modal>
+        {/* Modal para permisos de procesos  */}
+        <PermisosProcesoModal modalAbiertoPPro={modalAbiertoPPro} proceso={procesoSeleccionado} handleClose={() => setModalAbiertoPPro(false)}/>
     </div>
     </>
   );

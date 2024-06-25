@@ -17,7 +17,7 @@ import useStore from "../../../Zustand/Zustand";
 const TablaContratacion = () => {
     // eslint-disable-next-line no-unused-vars
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
     const [modalAbierto, setModalAbierto] = useState(false);
     const [modoEdicion, setModoEdicion] = useState(false);
     const [contratacionSeleccionada, setContratacionSeleccionada] = useState(null);

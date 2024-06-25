@@ -55,7 +55,7 @@ confirmButtonColor:"#1F89F6"});
 
 try {
 
-  await cdigitalApi.post(`/usuarios/email`,{email_persona:user.email_persona,documento_persona:user.documento_persona});
+  await cdigitalApi.post(`/usuarios/email`,{email_persona:user.email_persona});
 abrirModal();
   
 } 
@@ -292,7 +292,7 @@ EditarCiudadanoDB(formData)
 
       {modalAbierto && (
   <Validacion 
-  data={formData}
+  email={formData.email_persona}
   cerrarModal={cerrarModal}
   setModalAbierto={setModalAbierto}
   /> 

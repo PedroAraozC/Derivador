@@ -66,10 +66,7 @@ export const RestablecerClave = (props) => {
 
 
     const handleChange = (e) => {
-
-     
-
-          setEmail(
+      setEmail(
             e.target.value 
             
         );
@@ -87,7 +84,7 @@ export const RestablecerClave = (props) => {
   keyboard={false}>
 
 
- <Modal.Header  >
+ <Modal.Header  closeButton>
           <Modal.Title>Restablecer clave</Modal.Title>
         </Modal.Header>
 

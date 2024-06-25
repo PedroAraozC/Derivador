@@ -10,37 +10,26 @@ import { Button, Form, Modal, ModalBody, ModalFooter} from 'react-bootstrap';
 
 
 import cdigitalApi from '../../config/axios';
-import { useNavigate } from 'react-router-dom/dist';
 
 
 export const Validacion = (props) => {
    
-  
   // eslint-disable-next-line react/prop-types
-  const { data, cerrarModal, setModalAbierto } = props;
+  const { email, cerrarModal, setModalAbierto } = props;
     // eslint-disable-next-line react/prop-types
-    const[datos,setDatos]= useState({email_persona:data.email_persona,
+    const[datos,setDatos]= useState({email_persona:email,
     codigo_verif:undefined});
-   const navigate = useNavigate();
+  //  const navigate = useNavigate();
     
 
-    const validar = async (e)=>{
+const validar = async (e)=>{
       e.preventDefault();
      
-
-
   ValidarCiudadanoDB();
-  
-
-
-
-  
-        
+         
     }
 
-
-
-    const ValidarCiudadanoDB = async () => {
+const ValidarCiudadanoDB = async () => {
       try {
           const resp = await cdigitalApi.put("/usuarios/validar", datos);
   
@@ -54,7 +43,8 @@ export const Validacion = (props) => {
               });
   
               setTimeout(() => {
-                  navigate("/");
+                  // navigate("/");
+                  window.location.href = "http://localhost:5173/";
               }, 2500);
 
 
@@ -68,7 +58,7 @@ export const Validacion = (props) => {
               Swal.fire({
                 icon: 'error',
                 title: '¡Ups!',
-                text: 'El código ingresado es incorrecto.',
+                text: resp.data.message,
                 showCancelButton: true,
                 confirmButtonText: 'Intentar de nuevo',
                 cancelButtonText: 'Cancelar',
@@ -88,12 +78,7 @@ export const Validacion = (props) => {
       }
   }
   
-
-
-    const handleChange = (e) => {
-
-     
-
+ const handleChange = (e) => {
           setDatos({
             ...datos,
             [e.target.name]:parseInt(e.target.value.slice(0, 4)) ,
@@ -102,8 +87,6 @@ export const Validacion = (props) => {
 
      }
 
-
-
   return (
     <>
 
@@ -111,7 +94,7 @@ export const Validacion = (props) => {
  <Modal  show={true} onHide={cerrarModal} backdrop="static" keyboard={false}>
 
 
- <Modal.Header  >
+ <Modal.Header    >
           <Modal.Title>Le enviamos un email de validación a <strong>{datos.email_persona}</strong>  con un código de 4 dígitos</Modal.Title>
         </Modal.Header>
 
@@ -151,17 +134,6 @@ export const Validacion = (props) => {
     
  </Modal>
 
-
-
-
-
-           
-           
-       
-       
- 
-
-   
     
     </>
   )

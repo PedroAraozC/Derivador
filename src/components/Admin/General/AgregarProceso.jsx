@@ -3,8 +3,8 @@ import { useState } from "react";
 import { Form, InputGroup, Modal } from "react-bootstrap"
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import { Switch } from "@mui/material";
-import axios from "../../config/axios";
 import Swal from "sweetalert2";
+import axios from "../../../config/axios";
 
 const AgregarProceso = ({ option }) => {
     //HAY QUE OBTENER DE ALGUNA FORMA EL ID DE LA OPCION A CARGAR EL PROCESO
