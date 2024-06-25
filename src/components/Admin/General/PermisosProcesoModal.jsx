@@ -5,28 +5,28 @@ import { Modal, Box, Button, Divider, Switch, Snackbar, Alert } from "@mui/mater
 import axios from "../../../config/axios";
 import { EducaContext } from "../../../context/EducaContext";
 
-const PermisosTUsuario = ({ tusuario, modalPermisosAbierto, handleClose }) => {
+const PermisosProcesoModal = ({ modalAbiertoPPro, handleClose, proceso }) => {
     const [deviceWidth, setDeviceWidth] = useState(window.innerWidth);
     const [buttonDis, setButtonDis] = useState(false);
-    const { actualizador, obtenerProcesos, procesos } = useContext(EducaContext);
+    const { actualizador, obtenerTiposDeUsuarios, tusuarios } = useContext(EducaContext);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMensaje, setSnackbarMensaje] = useState('');
     const [processStates, setProcessStates] = useState({});
     const [permisosModificados, setPermisosModificados] = useState([]);
 
     useEffect(() => {
-        obtenerProcesos(tusuario?.id_tusuario);
-    }, [tusuario]);
+        obtenerTiposDeUsuarios();
+    }, []);
 
     useEffect(() => {
         setProcessStates(getInitialProcessStates());
         setPermisosModificados([]);
-    }, [procesos]);
+    }, [tusuarios]);
 
     const getInitialProcessStates = () => {
-        if (!Array.isArray(procesos)) return {};
+        if (!Array.isArray(tusuarios)) return {};
         const initialStates = {};
-        procesos.forEach(proceso => {
+        tusuarios.forEach(proceso => {
             initialStates[proceso.id_permiso_tusuario] = proceso.ver === 1 ? 1 : 0;
         });
         return initialStates;
@@ -57,7 +57,7 @@ const PermisosTUsuario = ({ tusuario, modalPermisosAbierto, handleClose }) => {
     const editarPermisos = async () => {
         setButtonDis(true);
         let datos = {
-            id: tusuario.id_tusuario,
+            // id: tusuario.id_tusuario,
             permisos: permisosModificados
         }
         console.log(datos)
@@ -92,7 +92,7 @@ const PermisosTUsuario = ({ tusuario, modalPermisosAbierto, handleClose }) => {
 
     const isMobile = deviceWidth <= 600;
 
-    if (!tusuario) {
+    if (!proceso) {
         return null;
     }
 
@@ -102,7 +102,7 @@ const PermisosTUsuario = ({ tusuario, modalPermisosAbierto, handleClose }) => {
         left: "50%",
         transform: "translate(-50%, -50%)",
         width: isMobile ? "90%" : "80%",
-        height: "90%",
+        height: "60%",
         bgcolor: "background.paper",
         borderRadius: "10px",
         boxShadow: 24,
@@ -111,26 +111,26 @@ const PermisosTUsuario = ({ tusuario, modalPermisosAbierto, handleClose }) => {
     };
 
     return (
-        <Modal open={modalPermisosAbierto} onClose={handleClose}>
+        <Modal open={modalAbiertoPPro} onClose={handleClose}>
             <Box sx={style}>
                 <div className="d-flex justify-content-around align-items-center mb-3">
                     <h2 style={{ fontSize: "1.3rem", margin: 0 }}>
-                        Permisos para {tusuario.nombre_tusuario}
+                        Permisos para {proceso.descripcion}
                     </h2>
                 </div>
                 <Divider />
                 <div className="d-flex flex-column justify-content-center">
-                    <form className="d-flex flex-column gap-3 justify-content-center align-items-center formAgregarcausal">
+                    <form className="d-flex flex-column gap-3 justify-content-center align-items-center formAgregarcausal mt-5">
                         <div className="row w-100">
-                            {Array.isArray(procesos) &&
-                                procesos.map((pro) => (
-                                    <div key={pro.id_permiso_tusuario} className="col-md-6 col-sm-12 d-flex align-items-center justify-content-between mb-2">
-                                        <p className="mb-0">{pro.descripcion}</p>
+                            {Array.isArray(tusuarios) &&
+                                tusuarios.map((tu) => (
+                                    <div key={tu.id_tusuario} className="col-md-6 col-sm-12 d-flex align-items-center justify-content-between mb-2">
+                                        <p className="mb-0">{tu.nombre_tusuario}</p>
                                         <div className="form-check form-switch">
-                                            <Switch
+                                            {/* <Switch
                                                 checked={processStates[pro.id_permiso_tusuario] === 1}
                                                 onChange={() => handleSwitchChange(pro.id_permiso_tusuario)}
-                                            />
+                                            /> */}
                                         </div>
                                     </div>
                                 ))}
@@ -155,4 +155,4 @@ const PermisosTUsuario = ({ tusuario, modalPermisosAbierto, handleClose }) => {
     );
 };
 
-export default PermisosTUsuario;
+export default PermisosProcesoModal;
