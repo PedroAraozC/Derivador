@@ -41,7 +41,7 @@ export default function ListaPrueba() {
   const irABOLETIN = () => {
     const token = localStorage.getItem("token");
     // const url = new URL(`http://localhost:5173/#/adminBoletin`);
-    const url = new URL(`http://181.105.6.205:88/#/adminBoletin`);
+    const url = new URL(`https://boletinoficial.smt.gob.ar/#/`);
     url.searchParams.append("boletin", token);
     window.open(url.toString(), "_blank");
   };
