@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import axios from "../config/axios";
 
-const useStore = create((set) => ({
+const useStore = create((set,get) => ({
   errors: "",
   setErrors: (newValues) => set(() => ({ errors: newValues })),
 
@@ -175,6 +175,7 @@ const useStore = create((set) => ({
     } catch (error) {
       set({ authenticated: false });
       localStorage.removeItem("token");
+      get().logout();
       console.log("error de auth");
       console.log(error);
     }
