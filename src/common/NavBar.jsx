@@ -29,7 +29,12 @@ export default function NavBar() {
   
   const goToPerfil = () => {
     setAnchorEl(null);
-    navigate("/perfil");
+    
+    const url = new URL(`https://perfil.smt.gob.ar/`);
+    url.searchParams.append("auth", localStorage.getItem("token"));
+     url.searchParams.append("origin", "cidituc");
+    window.location.href = url.toString();
+
   };
 
   const handleLogout = () => {

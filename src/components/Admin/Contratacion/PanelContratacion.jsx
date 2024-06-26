@@ -6,7 +6,6 @@ import TablaContratacion from "./TablaContratacion";
 
 const PanelContratacion = () => {
   const [addContratacion, setAddContratacion] = useState(false);
-  const [listarContrataciones, setListarContrataciones] = useState(false);
   const { obtenerInstrumentos, obtenerTiposContratacion, tiposContratacion, instrumentosC,} = useStore();
   const [archivo, setArchivo] = useState(null);
   const [anexo, setAnexo] = useState(null);
@@ -75,6 +74,7 @@ const validarFormulario = () => {
   const handleAgregar = async (event, contratacion) => {
     event.preventDefault();
     const formularioValido = validarFormulario();
+    setButtonDis(true)
     if (formularioValido) {
       try {
         contratacion.archivo = archivo;
@@ -88,7 +88,6 @@ const validarFormulario = () => {
       );
         setSnackbarMensaje("Contratación creada.");
         setSnackbarOpen(true);
-        setButtonDis(true)
         setLlevaAnexo(true)
         return response.data;
       } catch (error) {
@@ -113,10 +112,10 @@ const validarFormulario = () => {
     const url = `/admin/agregarAnexo?num_instrumento=${formularioValues.num_instrumento}&expte=${formularioValues.expte}`;
 
     const config = {headers: {'Content-Type': 'multipart/form-data'}}
+    setButtonDisAnexo(true);
 
     try{
       const data = await axios.post(url, formData, config)
-      setButtonDisAnexo(true);
       console.log(data);
       setSnackbarMensaje("Anexo agregado.");
       setSnackbarOpen(true);
@@ -146,7 +145,7 @@ const validarFormulario = () => {
         <Button variant="outlined" color={addContratacion? "error" : "primary"} sx={{width: 250}} onClick={cancelarContratacion}>
           {addContratacion? "Cancelar" : "Agregar Contratación"}
         </Button>
-        <Button variant="outlined" sx={{width: 230}} onClick={() => setListarContrataciones(!listarContrataciones)}>
+        <Button variant="outlined" sx={{width: 230}} onClick={() => setAddContratacion(false)}>
           Listar Contrataciones 
         </Button>
       </div>
@@ -328,9 +327,9 @@ const validarFormulario = () => {
         )}
       </div>
       <div className="mb-5">
-        {listarContrataciones? <>
+        {!addContratacion &&  <>
           <TablaContratacion/>
-        </> : <></>}
+        </> }
       </div>
     </>
   );
