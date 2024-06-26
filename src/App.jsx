@@ -31,8 +31,22 @@ import PermisosTUsuario from "./components/Admin/TiposUsuarios/PermisosTUsuario"
 function App() {
   const url = new URL(window.location.href);
   const logout = url.searchParams.get("logout");
+  const token = url.searchParams.get("auth");
+
+
+  if(localStorage.getItem("token")){
+    localStorage.setItem("token", token != null ? token : localStorage.getItem("token"));
+  }else if(token){
+    localStorage.setItem("token", token);
+  }
+
+
+
+
+
 
   url.searchParams.delete("logout");
+  url.searchParams.delete("auth");
   history.replaceState(null, "", url.toString());
 
   if (logout) {
@@ -44,7 +58,7 @@ function App() {
         <Layout>
           <ProviderEducacion>
             <Routes>
-              <Route exact path="/*" element={<Login />} />
+              <Route exact path="/*" element={<Home/>} />
               <Route exact path="/home" element={<PrivateRoute key="home"><Home /></PrivateRoute>} />
               {/* <Route exact path="/registro" element={<Registro />} /> */}
               <Route exact path="/estadistica_rrhh" element={<PrivateRoute key="cap-humano"><CapitalHumano /></PrivateRoute>}/>
