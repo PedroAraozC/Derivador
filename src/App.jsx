@@ -58,8 +58,8 @@ function App() {
         <Layout>
           <ProviderEducacion>
             <Routes>
-              <Route exact path="/*" element={<Home/>} />
-              <Route exact path="/home" element={<PrivateRoute key="home"><Home /></PrivateRoute>} />
+              {/* <Route exact path="/*" element={<Home/>} /> */}
+              <Route exact path="/*" element={<PrivateRoute key="home"><Home /></PrivateRoute>} />
               {/* <Route exact path="/registro" element={<Registro />} /> */}
               <Route exact path="/estadistica_rrhh" element={<PrivateRoute key="cap-humano"><CapitalHumano /></PrivateRoute>}/>
               <Route exact path="/estadistica_ac" element={<PrivateRoute key="reclamos"><Reclamos /></PrivateRoute>}/>

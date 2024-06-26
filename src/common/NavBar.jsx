@@ -39,7 +39,7 @@ export default function NavBar() {
 
   const handleLogout = () => {
     logout();
-    navigate("/");
+    // navigate("https://ciudaddigital.smt.gob.ar/");
     setAnchorEl(null);
   };
   useEffect(() => {
