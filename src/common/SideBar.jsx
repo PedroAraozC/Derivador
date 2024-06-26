@@ -34,8 +34,8 @@ export default function ListaPrueba() {
 
   const irAGAF = () => {
     const token = localStorage.getItem("token");
-    const url = new URL(`http://localhost:5173/`);
-    url.searchParams.append("GAF", token);
+    const url = new URL(`http://181.105.6.205:9005/`);
+    url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
   };
   const irABOLETIN = () => {
