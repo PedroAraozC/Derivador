@@ -1,0 +1,41 @@
+.contenedorPerfil {
+    height: 100%;
+    width: 400px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 5px 5px 5px 2px #888888;
+    margin: 40px 10px;
+}
+
+.fotoPerfil {
+    height: 50px;
+}
+
+.datoUsuario {
+    font-weight: 600;
+    margin: 0;
+}
+
+.datoPie {
+    font-size: 50 !important;
+    margin-top: 10 !important;
+    color: #6495ED
+}
+
+.inputEditPerfil {
+    border: 1px solid #ccc;
+    height: 50px;
+    margin-top: 5px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.formEdit {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    width: 100%;
+}
+
+.datoPie:hover {
+    cursor: pointer;
+}

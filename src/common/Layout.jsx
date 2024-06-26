@@ -1,17 +1,15 @@
-import SideBar from "./SideBar/Sidebar"
-import useStore from "../components/Zustand/Zustand";
+import NavBar from "./NavBar";
 
-const Layout = ({children}) => {
-  const { authenticated } = useStore();
+// eslint-disable-next-line react/prop-types
+const Layout = ({ children }) => {
 
   return (
     <>
-    {authenticated? 
-    <SideBar/> : <></>
-  }
-    {children}
+      <NavBar />
+      {children}
     </>
-  )
-}
 
-export default Layout
+  );
+};
+
+export default Layout;
