@@ -1,5 +1,5 @@
-import { create } from 'zustand';
-import axios from '../config/axios';
+import { create } from "zustand";
+import axios from "../config/axios";
 
 const useStore = create((set) => ({
   errors: "",
@@ -10,9 +10,9 @@ const useStore = create((set) => ({
   user: null,
 
   permisos: [],
-  
+
   opciones: [],
-  
+
   //array para BackOffice
   contrataciones: [],
 
@@ -24,23 +24,30 @@ const useStore = create((set) => ({
   tiposContratacion: [],
 
   loading: true,
-  
+
   botonState: false,
 
   login: async (values) => {
     set({ botonState: true });
     try {
-      set({errors : ""})
+      set({ errors: "" });
       const { data } = await axios.post("/usuarios/login", values);
-    
+
       set({
-        authenticated: !!data.user.usuarioSinContraseña
+        authenticated: !!data.user.usuarioSinContraseña,
       });
-      set({user:data.user.usuarioSinContraseña});
+      set({ user: data.user.usuarioSinContraseña });
       axios.defaults.headers.common["Authorization"] = data.token;
       localStorage.setItem("token", data.token);
     } catch (error) {
-        set({errors : error.response.data?.errors?.length > 0 ?  error.response.data.errors[0].msg : error.response?.data?.message? error.response?.data.message: error.message});
+      set({
+        errors:
+          error.response.data?.errors?.length > 0
+            ? error.response.data.errors[0].msg
+            : error.response?.data?.message
+            ? error.response?.data.message
+            : error.message,
+      });
     }
     set({ botonState: false });
   },
@@ -54,9 +61,18 @@ const useStore = create((set) => ({
       set({ permisos: data });
     } catch (error) {
       let errorMessage = "Algo salió mal :(";
-      if (error.response && error.response.data && error.response.data.errors && error.response.data.errors.length > 0) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.errors &&
+        error.response.data.errors.length > 0
+      ) {
         errorMessage = error.response.data.errors[0].msg;
-      } else if (error.response && error.response.data && error.response.data.message) {
+      } else if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
         errorMessage = error.response.data.message;
       } else if (error.message) {
         errorMessage = error.message;
@@ -64,47 +80,47 @@ const useStore = create((set) => ({
       set({ errors: errorMessage });
     }
   },
-//------------------------------PANEL PARA CONTRATACIONES ---------------------------------------
-obtenerContrataciones : async () => {
-  try {
-    const resultado = await axios.get("/admin/listarContratacionBack");
-    const data = resultado.data.contrataciones;
-    set({ contrataciones: data });
-  } catch (error) {
-    console.log(error);
-  }
-},
+  //------------------------------PANEL PARA CONTRATACIONES ---------------------------------------
+  obtenerContrataciones: async () => {
+    try {
+      const resultado = await axios.get("/admin/listarContratacionBack");
+      const data = resultado.data.contrataciones;
+      set({ contrataciones: data });
+    } catch (error) {
+      console.log(error);
+    }
+  },
 
-obtenerContratacionesFront : async () => {
-  try {
-    const resultado = await axios.get("/admin/listarContratacion");
-    const data = resultado.data.contrataciones;
-    set({ contratacionesFront: data });
-  } catch (error) {
-    console.log(error);
-  }
-},
+  obtenerContratacionesFront: async () => {
+    try {
+      const resultado = await axios.get("/admin/listarContratacion");
+      const data = resultado.data.contrataciones;
+      set({ contratacionesFront: data });
+    } catch (error) {
+      console.log(error);
+    }
+  },
 
-obtenerInstrumentos : async () => {
-  try {
-    const resultado = await axios.get("/admin/listarTipoIntrumentos");
-    const data = resultado.data.instrumentos;
-    set({ instrumentosC: data });
-  } catch (error) {
-    console.log(error);
-  }
-},
+  obtenerInstrumentos: async () => {
+    try {
+      const resultado = await axios.get("/admin/listarTipoIntrumentos");
+      const data = resultado.data.instrumentos;
+      set({ instrumentosC: data });
+    } catch (error) {
+      console.log(error);
+    }
+  },
 
-obtenerTiposContratacion : async () => {
-  try {
-    const resultado = await axios.get("/admin/listaTipoContratacion");
-    const data = resultado.data.contrataciones;
-    set({ tiposContratacion: data });
-  } catch (error) {
-    console.log(error);
-  }
-},
-//-----------------------------PANEL PARA CONTRATACIONES ------------------------------------
+  obtenerTiposContratacion: async () => {
+    try {
+      const resultado = await axios.get("/admin/listaTipoContratacion");
+      const data = resultado.data.contrataciones;
+      set({ tiposContratacion: data });
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  //-----------------------------PANEL PARA CONTRATACIONES ------------------------------------
 
   obtenerOpciones: async () => {
     try {
@@ -114,44 +130,54 @@ obtenerTiposContratacion : async () => {
       set({ opciones: data });
     } catch (error) {
       let errorMessage = "Algo salió mal :(";
-      if (error.response && error.response.data && error.response.data.errors && error.response.data.errors.length > 0) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.errors &&
+        error.response.data.errors.length > 0
+      ) {
         errorMessage = error.response.data.errors[0].msg;
-      } else if (error.response && error.response.data && error.response.data.message) {
+      } else if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
         errorMessage = error.response.data.message;
       } else if (error.message) {
         errorMessage = error.message;
       }
       set({ errors: errorMessage });
     }
-  }
-  ,
-
-  logout:() => {
-    set({authenticated: false });
+  },
+  logout: () => {
+    set({ authenticated: false });
     localStorage.removeItem("token");
     localStorage.removeItem("saveChanges");
+    const url = new URL(`https://ciudaddigital.smt.gob.ar/`);
+    url.searchParams.append("logout", true);
+    window.open(url.toString(),"_self")
   },
 
   getAuth: async () => {
     try {
       const token = localStorage.getItem("token");
       if (!token) {
-        set({ loading: false});
-        return set({authenticated:false})
+        set({ loading: false });
+        return set({ authenticated: false });
       }
       axios.defaults.headers.common["Authorization"] = token;
       const { data } = await axios.get("/usuarios/authStatus");
-      set({user:data.usuarioSinContraseña});
+      set({ user: data.usuarioSinContraseña });
       set({
-        authenticated: true
+        authenticated: true,
       });
     } catch (error) {
-      set({ authenticated: false});
+      set({ authenticated: false });
       localStorage.removeItem("token");
       console.log("error de auth");
-      console.log(error)
+      console.log(error);
     }
-    set({ loading: false});
+    set({ loading: false });
   },
 
   resultSearch: [],
@@ -162,22 +188,31 @@ obtenerTiposContratacion : async () => {
     desde: "",
     hasta: "",
   },
-  setValuesGraficos: (newValues) => set((state) => ({ ...state, valuesGraficos: { ...state.valuesGraficos, ...newValues } })),
-
+  setValuesGraficos: (newValues) =>
+    set((state) => ({
+      ...state,
+      valuesGraficos: { ...state.valuesGraficos, ...newValues },
+    })),
 
   valuesCapHumano: "",
   // eslint-disable-next-line no-unused-vars
-  setValuesCapHumano: (newValues) => set((state) => ({ valuesCapHumano: newValues })),
+  setValuesCapHumano: (newValues) =>
+    set((state) => ({ valuesCapHumano: newValues })),
 
   formFlagReclamos: true,
-  setFormFlagReclamos: () => set((state) => ({ ...state, formFlagReclamos: !state.formFlagReclamos })),
+  setFormFlagReclamos: () =>
+    set((state) => ({ ...state, formFlagReclamos: !state.formFlagReclamos })),
 
   flagCategoriasFuncionarios: false,
-  setFlagCategoriasFuncionarios: () => set((state) => ({ ...state, flagCategoriasFuncionarios: !state.flagCategoriasFuncionarios })),
+  setFlagCategoriasFuncionarios: () =>
+    set((state) => ({
+      ...state,
+      flagCategoriasFuncionarios: !state.flagCategoriasFuncionarios,
+    })),
 
   updateUser: (newUserData) => {
     set({ user: newUserData });
   },
-}))
+}));
 
 export default useStore;

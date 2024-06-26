@@ -38,7 +38,6 @@ export default function ListaPrueba() {
     url.searchParams.append("GAF", token);
     window.open(url.toString(), "_blank");
   };
-<<<<<<< HEAD
   const irABOLETIN = () => {
     const token = localStorage.getItem("token");
     // const url = new URL(`http://localhost:5173/#/adminBoletin`);
@@ -46,15 +45,6 @@ export default function ListaPrueba() {
     url.searchParams.append("boletin", token);
     window.open(url.toString(), "_blank");
   };
-=======
-  // const irABOLETIN = () => {
-  //   const token = localStorage.getItem("token");
-  //   // const url = new URL(`http://localhost:5173/#/adminBoletin`);
-  //   const url = new URL(`http://181.105.6.205:88/#/adminBoletin`);
-  //   url.searchParams.append("boletin", token);
-  //   window.open(url.toString(), "_blank");
-  // };
->>>>>>> 18433f4c409f1777c854e1d5208227dbede1e517
 
   const { user, obtenerPermisos, permisos } = useStore();
   const [state, setState] = React.useState({
