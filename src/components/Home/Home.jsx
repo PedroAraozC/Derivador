@@ -20,7 +20,7 @@ const Home = () => {
   const irABOLETIN = () => {
     const token = localStorage.getItem("token");
     const url = new URL(
-      `https://boletinoficial.smt.gob.ar/#/?destino=boletin`
+      `https://boletinoficial.smt.gob.ar/#/?auth=${token}&destino=boletin`
       // `https://ciudaddigital.smt.gob.ar/?destino=boletin`
     );
     url.searchParams.append("auth", token);
