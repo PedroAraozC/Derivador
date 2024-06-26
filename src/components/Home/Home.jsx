@@ -50,8 +50,8 @@ const Home = () => {
   };
 
   return (
-    <div className="contPadre">
-      <div className="cardsCont">
+    <div className="contPadreHome">
+      <div className="cardsContHome">
         <Card
           onClick={() => irABOLETIN()}
           titulo={"Boletin Oficial"}

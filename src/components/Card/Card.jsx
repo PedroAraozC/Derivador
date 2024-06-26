@@ -3,17 +3,17 @@ import "./Card.css";
 
 const Card = ({onClick, titulo, descripcion, Icono }) => {
   return (
-    <div className="card" onClick={onClick}>
-      <div className="card-body">
-        <div className="card-icon-cont">
+    <div className="cardHome" onClick={onClick}>
+      <div className="card-bodyHome">
+        <div className="card-icon-contHome">
           {typeof Icono === "string" ? (
-            <img src={Icono} alt="icono" className="card-icon" />
+            <img src={Icono} alt="icono" className="card-iconHome" />
           ) : (
-            <div className="card-icon">{Icono}</div>
+            <div className="card-iconHome">{Icono}</div>
           )}
         </div>
-        <p className="card-text">{titulo}</p>
-        <p className="card-descripcion">{descripcion}</p>
+        <p className="card-textHome">{titulo}</p>
+        <p className="card-descripcionHome">{descripcion}</p>
       </div>
     </div>
   );

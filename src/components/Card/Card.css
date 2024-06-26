@@ -1,4 +1,4 @@
-.card {
+.cardHome {
     flex: 1 1 calc(25% - 20px);
     max-width: calc(25% - 20px);
     min-width: 200px;
@@ -14,7 +14,7 @@
     cursor: pointer;
 }
 
-.card-body {
+.card-bodyHome {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -22,7 +22,7 @@
     padding: 12px 8px;
 }
 
-.card-text {
+.card-textHome {
     display: flex;
     font-weight: 600;
     justify-content: center;
@@ -31,13 +31,13 @@
     margin-bottom: 0;
 }
 
-.card-descripcion {
+.card-descripcionHome {
     color: #767676 !important;
     margin-top: 5px;
     font-size: 14px;
 }
 
-.card-icon-cont {
+.card-icon-contHome {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -48,30 +48,30 @@
     transition: background-color 0.3s ease-in-out;
 }
 
-.card-icon {
+.card-iconHome {
     color: #0d6efd !important;
 }
 
-.card-icon svg {
+.card-iconHome svg {
     width: 50%;
     height: 50%;
 }
 
-.card:hover {
+.cardHome:hover {
     transform: translateY(-10px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.139);
 }
 
 
-.card:hover {
+.cardHome:hover {
     transform: translateY(-10px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.139);
 
-    .card-icon svg {
+    .card-iconHome svg {
         color: #ffff !important;
     }
 
-    .card-icon-cont {
+    .card-icon-contHome {
         background-color: #f4dc00
     }
 }
