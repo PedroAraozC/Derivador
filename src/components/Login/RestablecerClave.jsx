@@ -60,6 +60,14 @@ export const RestablecerClave = (props) => {
       
       catch (error) {
           console.log(error);
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: `¡Ups! `,
+            text:"Algo salió mal!",
+            showConfirmButton: false,
+            timer: 1500
+          });
       }
   }
   

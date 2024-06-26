@@ -16,7 +16,7 @@ export const ReenviarValidacion = (props) => {
   const { cerrarModal } = props;
     // eslint-disable-next-line react/prop-types
     const[email,setEmail]= useState("");
-   
+    const[cuil,setCuil]= useState("");
 
     const [modalAbiertoValidar, setModalAbiertoValidar] = useState(false);
    
@@ -31,7 +31,7 @@ export const ReenviarValidacion = (props) => {
       try {
 
        
-         const resp =  await cdigitalApi.post(`/usuarios/email`,{email_persona:email});
+         const resp =  await cdigitalApi.put(`/usuarios/email`,{email_persona:email,documento_persona:cuil});
         
 
           if (resp.data.ok) {
@@ -54,14 +54,20 @@ export const ReenviarValidacion = (props) => {
       
       catch (error) {
           console.log(error);
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: `¡Ups! `,
+            text:"Algo salió mal!",
+            showConfirmButton: false,
+            timer: 1500
+          });
       }
   }
   
 
 
     const handleChange = (e) => {
-
-     
 
           setEmail(
             e.target.value 
@@ -89,7 +95,24 @@ export const ReenviarValidacion = (props) => {
 
 <Form  onSubmit={validar} className='m-1 p-3 '>
   
+<Form.Group className="mb-3" controlId="email">
+    <Form.Label> Ingrese su cuil</Form.Label>
+    <Form.Control
+      type="number"
+      name="cuil"
+      onChange={(e) => {
 
+        setCuil(
+          e.target.value 
+          
+      );
+
+   }}
+       value={cuil}
+      required  
+      autoFocus
+    />
+  </Form.Group>
   <Form.Group className="mb-3" controlId="email">
     <Form.Label> Ingrese su email </Form.Label>
     <Form.Control

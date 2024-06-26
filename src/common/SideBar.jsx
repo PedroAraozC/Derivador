@@ -23,7 +23,7 @@ import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import "./SideBar.css";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import useStore from "../Zustand/Zustand";
-import ArticleIconOutlined from "@mui/icons-material/ArticleOutlined";
+// import ArticleIconOutlined from "@mui/icons-material/ArticleOutlined";
 
 export default function ListaPrueba() {
   const navigate = useNavigate();
@@ -38,6 +38,7 @@ export default function ListaPrueba() {
     url.searchParams.append("GAF", token);
     window.open(url.toString(), "_blank");
   };
+<<<<<<< HEAD
   const irABOLETIN = () => {
     const token = localStorage.getItem("token");
     // const url = new URL(`http://localhost:5173/#/adminBoletin`);
@@ -45,6 +46,15 @@ export default function ListaPrueba() {
     url.searchParams.append("boletin", token);
     window.open(url.toString(), "_blank");
   };
+=======
+  // const irABOLETIN = () => {
+  //   const token = localStorage.getItem("token");
+  //   // const url = new URL(`http://localhost:5173/#/adminBoletin`);
+  //   const url = new URL(`http://181.105.6.205:88/#/adminBoletin`);
+  //   url.searchParams.append("boletin", token);
+  //   window.open(url.toString(), "_blank");
+  // };
+>>>>>>> 18433f4c409f1777c854e1d5208227dbede1e517
 
   const { user, obtenerPermisos, permisos } = useStore();
   const [state, setState] = React.useState({
@@ -81,10 +91,10 @@ export default function ListaPrueba() {
   };
 
   React.useEffect(() => {
-    obtenerPermisos(user.id_persona);
+    obtenerPermisos(user.id_tusuario);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  
   //Filtra para tener permisos habilitados segun la persona
   const permisosHabilitados = permisos.filter((permiso) => permiso.ver === 1);
 
@@ -140,14 +150,14 @@ export default function ListaPrueba() {
           </ListItemIcon>
           <ListItemText primary="INICIO" />
         </ListItemButton>
-        <ListItemButton
+        {/* <ListItemButton
           onClick={() => irABOLETIN()}
           component="a"
           className="w-100"
         >
           <ArticleIconOutlined sx={{ color: "rgba(0, 0, 0, 0.54)" }} />
           <ListItemText primary="BOLETIN" className="ms-3"/>
-        </ListItemButton>
+        </ListItemButton> */}
         {/* Construye cada elemento del menú */}
         {menuItemsFiltered.map((item, index) => (
           <div

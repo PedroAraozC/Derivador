@@ -9,9 +9,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TablePagination from "@mui/material/TablePagination";
 import Paper from "@mui/material/Paper";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import ModalMaterial from "./ModalMaterial";
-import { formatearFechaHora } from "../../../../helpers/convertirFecha";
 import { Button } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import { useNavigate } from "react-router-dom";
@@ -22,12 +20,10 @@ const TablaMaterial = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [modalAbierto, setModalAbierto] = useState(false);
-  const [modoEdicion, setModoEdicion] = useState(false);
   const [materialSeleccionado, setMaterialSeleccionado] = useState(null);
   const { material, obtenerMaterial, refresh } = useContext(EducaContext);
   const [paginatedArray, setPaginatedArray] = useState([]);
   const navigate = useNavigate();
-  //Funcion para listar las convocatorias
   useEffect(() => {
     obtenerMaterial();
   }, [refresh]);
@@ -39,29 +35,22 @@ const TablaMaterial = () => {
   }, [material, page, rowsPerPage]);
 
   const handleCheckboxChange = (materialId) => {
-    const material = material.materiales?.find(
+    const materiales = material?.find(
       (mat) => mat.id_material === materialId
     );
 
     setMaterialSeleccionado((prevMaterial) => {
       if (!prevMaterial || prevMaterial.id_material !== materialId) {
-        return material;
+        return materiales;
       } else {
         return null;
       }
     });
   };
 
-  const handleEditar = () => {
-    setModalAbierto(false);
-    setModoEdicion(false);
-    setMaterialSeleccionado(null);
-  };
-
-  const abrirModal = (material, editar = false) => {
+  const abrirModal = (material) => {
     setMaterialSeleccionado(material);
     setModalAbierto(true);
-    setModoEdicion(editar);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -73,7 +62,6 @@ const TablaMaterial = () => {
     setRowsPerPage(newRowsPerPage);
     setPage(0);
   };
-  // console.log(material)
 
   return (
     <>
@@ -81,7 +69,7 @@ const TablaMaterial = () => {
         <Button
           variant="contained"
           disabled={materialSeleccionado !== null}
-          onClick={() => navigate("/agregar-convoca")}
+          onClick={() => navigate("/agregar-material")}
         >
           NUEVO
         </Button>
@@ -103,11 +91,9 @@ const TablaMaterial = () => {
                 <TableCell>ID</TableCell>
                 <TableCell>Nombre de Material</TableCell>
                 <TableCell>Habilitado</TableCell>
-                <TableCell>Ver Más</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {console.log(material)}
               {Array.isArray(material) &&
                 paginatedArray?.map((material) => (
                   <TableRow key={material.id_material}>
@@ -127,9 +113,6 @@ const TablaMaterial = () => {
                     <TableCell>
                       {material.habilita == 1 ? "SI" : "NO"}
                     </TableCell>
-                    <TableCell align="center">
-                      <VisibilityIcon onClick={() => abrirModal(material)} />
-                    </TableCell>
                   </TableRow>
                 ))}
             </TableBody>
@@ -146,12 +129,9 @@ const TablaMaterial = () => {
           />
         </TableContainer>
         <ModalMaterial
-          categoria={materialSeleccionado}
+          materiales={materialSeleccionado}
           modalAbierto={modalAbierto}
           handleClose={() => setModalAbierto(false)}
-          modoEdicion={modoEdicion}
-          handleEditar={handleEditar}
-          idNivel={materialSeleccionado}
         />
       </div>
     </>

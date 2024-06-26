@@ -18,9 +18,7 @@ const ProviderEducacion = ({ children }) => {
   const [arrayCausal, setArrayCausal] = useState([]);
   const [arrayCausalTabla, setArrayCausalTabla] = useState([]);
   const [arrayCaracterTabla, setArrayCaracterTabla] = useState([]);
-  const [arrayEstablecimientoTabla, setArrayEstablecimientoTabla] = useState(
-    []
-  );
+  const [arrayEstablecimientoTabla, setArrayEstablecimientoTabla] = useState([]);
   const [arrayCaracter, setArrayCaracter] = useState([]);
   const [categoria, setCategoria] = useState([]);
   const [tipologia, setTipologia] = useState([]);
@@ -28,6 +26,12 @@ const ProviderEducacion = ({ children }) => {
   const [estado, setEstado] = useState([]);
   const [autor, setAutor] = useState([]);
   const [ubicacion, setUbicacion] = useState([]);
+  const [patrimonios, setPatrimonios] = useState([]);
+  const [generos, setGeneros] = useState([]);
+  const [tusuarios, setTUsuarios] = useState([]);
+  const [procesos, setProcesos] = useState([]);
+  const [tdocumentos, setTDocumentos] = useState([]);
+  const [reparticiones, setReparticiones] = useState([]);
   //Funcion para listar las convocatorias
 
   const obtenerConvocatorias = async (idNivel) => {
@@ -200,7 +204,7 @@ const ProviderEducacion = ({ children }) => {
     try {
       const resultado = await axios.get("/admin/listarAutores");
       // console.log(resultado.data.materiales);
-      setAutor(resultado.data);
+      setAutor(resultado.data.autores);
     } catch (error) {
       console.log(error);
     }
@@ -209,11 +213,67 @@ const ProviderEducacion = ({ children }) => {
     try {
       const resultado = await axios.get("/admin/listarUbicaciones");
       // console.log(resultado.data.materiales);
-      setUbicacion(resultado.data);
+      setUbicacion(resultado.data.ubicaciones);
     } catch (error) {
       console.log(error);
     }
   }
+  const obtenerPatrimonios = async () => {
+    try {
+      const resultado = await axios.get("/admin/listarPatrimonio");
+      // console.log(resultado.data.materiales);
+      setPatrimonios(resultado.data.patrimonios);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const obtenerGeneros = async () =>{
+    try {
+      const resultado = await axios.get("/admin/listarGenero");
+      // console.log(resultado.data.materiales);
+      setGeneros(resultado.data.generos);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  const obtenerTiposDeUsuarios = async () =>{
+    try {
+      const resultado = await axios.get("/admin/listarTUsuarios");
+      // console.log(resultado.data.materiales);
+      setTUsuarios(resultado.data.tusuarios);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  const obtenerProcesos = async (id) =>{
+    try {
+      const resultado = await axios.post("/admin/listarProcesos", {id});
+      // console.log(resultado.data.materiales);
+      setProcesos(resultado.data.procesos);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  const obtenerTiposDeDocumento = async () =>{
+    try {
+      const resultado = await axios.get("/admin/listarTDocumentos");
+      // console.log(resultado.data.materiales);
+      setTDocumentos(resultado.data.tdocumentos);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  const obtenerReparticiones = async () =>{
+    try {
+      const resultado = await axios.get("/admin/listarReparticiones");
+      // console.log(resultado.data.materiales);
+      setReparticiones(resultado.data.reparticiones);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <EducaContext.Provider
       value={{
@@ -260,6 +320,18 @@ const ProviderEducacion = ({ children }) => {
         autor,
         obtenerUbicacion,
         ubicacion,
+        obtenerPatrimonios,
+        patrimonios,
+        obtenerGeneros,
+        generos,
+        obtenerTiposDeUsuarios,
+        tusuarios,
+        obtenerTiposDeDocumento,
+        tdocumentos,
+        obtenerReparticiones,
+        reparticiones,
+        obtenerProcesos,
+        procesos
       }}
     >
       {children}

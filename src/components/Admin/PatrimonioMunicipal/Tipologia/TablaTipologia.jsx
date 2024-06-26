@@ -9,9 +9,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TablePagination from "@mui/material/TablePagination";
 import Paper from "@mui/material/Paper";
-import VisibilityIcon from "@mui/icons-material/Visibility";
  import ModalTipologia from "./ModalTipologia";
-import { formatearFechaHora } from "../../../../helpers/convertirFecha";
 import { Button } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import { useNavigate } from "react-router-dom";
@@ -22,10 +20,8 @@ const TablaTipologia = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [modalAbierto, setModalAbierto] = useState(false);
-  const [modoEdicion, setModoEdicion] = useState(false);
   const [tipologiaSeleccionada, setTipologiaSeleccionada] = useState(null);
-  const { tipologia, obtenerTipologia, refresh } =
-    useContext(EducaContext);
+  const { tipologia, obtenerTipologia, refresh } = useContext(EducaContext);
   const [paginatedArray, setPaginatedArray] = useState([]);
   const navigate = useNavigate();
   //Funcion para listar las convocatorias
@@ -43,29 +39,22 @@ const TablaTipologia = () => {
   }, [tipologia, page, rowsPerPage]);
 
   const handleCheckboxChange = (tipologiaId) => {
-    const tipologia = tipologia.tipologias?.find(
+    const tipologias = tipologia?.find(
       (tip) => tip.id_tipologia === tipologiaId
     );
 
     setTipologiaSeleccionada((prevTipologia) => {
       if (!prevTipologia || prevTipologia.id_tipologia !== tipologiaId) {
-        return tipologia;
+        return tipologias;
       } else {
         return null;
       }
     });
   };
 
-  const handleEditar = () => {
-    setModalAbierto(false);
-    setModoEdicion(false);
-    setTipologiaSeleccionada(null);
-  };
-
-  const abrirModal = (tipologia, editar = false) => {
+  const abrirModal = (tipologia) => {
     setTipologiaSeleccionada(tipologia);
     setModalAbierto(true);
-    setModoEdicion(editar);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -77,7 +66,6 @@ const TablaTipologia = () => {
     setRowsPerPage(newRowsPerPage);
     setPage(0);
   };
-  console.log(tipologia)
 
   return (
     <>
@@ -85,7 +73,7 @@ const TablaTipologia = () => {
         <Button
           variant="contained"
           disabled={tipologiaSeleccionada !== null}
-          onClick={() => navigate("/agregar-convoca")}
+          onClick={() => navigate("/agregar-tipologia")}
         >
           NUEVO
         </Button>
@@ -107,11 +95,9 @@ const TablaTipologia = () => {
                 <TableCell>ID</TableCell>
                 <TableCell>Nombre de Tipologia</TableCell>
                 <TableCell>Habilitado</TableCell>
-                <TableCell>Ver Más</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-                {console.log(tipologia)}
               {Array.isArray(tipologia) &&
                 paginatedArray?.map((tipologia) => (
                   <TableRow key={tipologia.id_tipologia}>
@@ -129,11 +115,6 @@ const TablaTipologia = () => {
                     <TableCell>{tipologia.id_tipologia}</TableCell>
                     <TableCell>{tipologia.nombre_tipologia}</TableCell>
                     <TableCell>{tipologia.habilita == 1 ? 'SI':('NO')}</TableCell>
-                    <TableCell align="center">
-                      <VisibilityIcon
-                        onClick={() => abrirModal(tipologia)}
-                      />
-                    </TableCell>
                   </TableRow>
                 ))}
             </TableBody>
@@ -150,12 +131,9 @@ const TablaTipologia = () => {
           />
         </TableContainer>
         <ModalTipologia
-          tipologia={tipologiaSeleccionada}
+          tipologias={tipologiaSeleccionada}
           modalAbierto={modalAbierto}
           handleClose={() => setModalAbierto(false)}
-          modoEdicion={modoEdicion}
-          handleEditar={handleEditar}
-          idNivel={tipologiaSeleccionada}
         />
       </div>
     </>

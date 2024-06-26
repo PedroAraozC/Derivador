@@ -9,9 +9,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TablePagination from "@mui/material/TablePagination";
 import Paper from "@mui/material/Paper";
-import VisibilityIcon from "@mui/icons-material/Visibility";
  import ModalCategoria from "./ModalCategoria";
-import { formatearFechaHora } from "../../../../helpers/convertirFecha";
 import { Button } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import { useNavigate } from "react-router-dom";
@@ -22,13 +20,12 @@ const TablaCategoriaBack = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [modalAbierto, setModalAbierto] = useState(false);
-  const [modoEdicion, setModoEdicion] = useState(false);
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null);
   const { categoria, obtenerCategoria, refresh } =
     useContext(EducaContext);
   const [paginatedArray, setPaginatedArray] = useState([]);
   const navigate = useNavigate();
-  //Funcion para listar las convocatorias
+
   useEffect(() => {
     obtenerCategoria();
   }, [refresh]);
@@ -43,29 +40,24 @@ const TablaCategoriaBack = () => {
   }, [categoria, page, rowsPerPage]);
 
   const handleCheckboxChange = (categoriaId) => {
-    const categoria = categoria.categorias?.find(
+    const categorias = categoria?.find(
       (cat) => cat.id_categoria === categoriaId
     );
 
     setCategoriaSeleccionada((prevCategoria) => {
       if (!prevCategoria || prevCategoria.id_categoria !== categoriaId) {
-        return categoria;
+        return categorias;
       } else {
         return null;
       }
     });
   };
 
-  const handleEditar = () => {
-    setModalAbierto(false);
-    setModoEdicion(false);
-    setCategoriaSeleccionada(null);
-  };
+ 
 
-  const abrirModal = (categoria, editar = false) => {
+  const abrirModal = (categoria) => {
     setCategoriaSeleccionada(categoria);
     setModalAbierto(true);
-    setModoEdicion(editar);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -77,7 +69,6 @@ const TablaCategoriaBack = () => {
     setRowsPerPage(newRowsPerPage);
     setPage(0);
   };
-  console.log(categoria)
 
   return (
     <>
@@ -85,7 +76,7 @@ const TablaCategoriaBack = () => {
         <Button
           variant="contained"
           disabled={categoriaSeleccionada !== null}
-          onClick={() => navigate("/agregar-convoca")}
+          onClick={() => navigate("/agregar-categoria")}
         >
           NUEVO
         </Button>
@@ -107,11 +98,9 @@ const TablaCategoriaBack = () => {
                 <TableCell>ID</TableCell>
                 <TableCell>Nombre de Categoria</TableCell>
                 <TableCell>Habilitado</TableCell>
-                <TableCell>Ver Más</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-                {console.log(categoria)}
               {Array.isArray(categoria) &&
                 paginatedArray?.map((categoria) => (
                   <TableRow key={categoria.id_categoria}>
@@ -129,11 +118,6 @@ const TablaCategoriaBack = () => {
                     <TableCell>{categoria.id_categoria}</TableCell>
                     <TableCell>{categoria.nombre_categoria}</TableCell>
                     <TableCell>{categoria.habilita == 1 ? 'SI':('NO')}</TableCell>
-                    <TableCell align="center">
-                      <VisibilityIcon
-                        onClick={() => abrirModal(categoria)}
-                      />
-                    </TableCell>
                   </TableRow>
                 ))}
             </TableBody>
@@ -150,12 +134,9 @@ const TablaCategoriaBack = () => {
           />
         </TableContainer>
         <ModalCategoria
-          categoria={categoriaSeleccionada}
+          categorias={categoriaSeleccionada}
           modalAbierto={modalAbierto}
           handleClose={() => setModalAbierto(false)}
-          modoEdicion={modoEdicion}
-          handleEditar={handleEditar}
-          idNivel={categoriaSeleccionada}
         />
       </div>
     </>
