@@ -40,9 +40,11 @@ export default function ListaPrueba() {
   };
   const irABOLETIN = () => {
     const token = localStorage.getItem("token");
-    // const url = new URL(`http://localhost:5173/#/adminBoletin`);
-    const url = new URL(`https://boletinoficial.smt.gob.ar/#/`);
-    url.searchParams.append("boletin", token);
+    const url = new URL(
+      `https://boletinoficial.smt.gob.ar/#/?auth=${token}&destino=boletin`
+      // `https://ciudaddigital.smt.gob.ar/?destino=boletin`
+    );
+    url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
   };
 
@@ -84,7 +86,7 @@ export default function ListaPrueba() {
     obtenerPermisos(user.id_tusuario);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  
+
   //Filtra para tener permisos habilitados segun la persona
   const permisosHabilitados = permisos.filter((permiso) => permiso.ver === 1);
 
@@ -119,7 +121,7 @@ export default function ListaPrueba() {
   }, []);
 
   //FILTRADO PARA SACAR LA OPCION DE EDITAR PERFIL DEL SIDEBAR
-  const menuItemsFiltered = menuItems.slice(1);
+  const menuItemsFiltered = menuItems.slice(2);
   // console.log(menuItemsFiltered)
 
   const list = () => (
@@ -177,6 +179,8 @@ export default function ListaPrueba() {
                         onClick={
                           subItem.descripcion == "Gestión Financiera"
                             ? () => irAGAF()
+                            : subItem.descripcion == "Boletín Municipal"
+                            ? () => irABOLETIN()
                             : () => redirigir(`/${subItem.label}`)
                         }
                       />

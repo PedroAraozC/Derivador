@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import axios from "../config/axios";
 
-const useStore = create((set,get) => ({
+const useStore = create((set, get) => ({
   errors: "",
   setErrors: (newValues) => set(() => ({ errors: newValues })),
 
@@ -156,7 +156,7 @@ const useStore = create((set,get) => ({
     // const url = new URL(`https://ciudaddigital.smt.gob.ar/`);
     const url = new URL(`http://localhost:5174`);
     url.searchParams.append("logout", true);
-    window.open(url.toString(),"_self")
+    window.open(url.toString(), "_self");
   },
 
   getAuth: async () => {

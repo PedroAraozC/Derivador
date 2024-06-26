@@ -8,17 +8,15 @@ import useStore from "../Zustand/Zustand";
 import "./Navbar.css";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import logoMuni from "../assets/Logo_SMT_neg_4.png";
 
 export default function NavBar() {
-  const { getAuth, authenticated, logout, user } =
-    useStore();
+  const { getAuth, authenticated, logout, user } = useStore();
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -26,15 +24,14 @@ export default function NavBar() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  
+
   const goToPerfil = () => {
     setAnchorEl(null);
-    
+
     const url = new URL(`https://perfil.smt.gob.ar/`);
     url.searchParams.append("auth", localStorage.getItem("token"));
-     url.searchParams.append("origin", "cidituc");
+    url.searchParams.append("origin", "cidituc");
     window.location.href = url.toString();
-
   };
 
   const handleLogout = () => {
@@ -58,7 +55,9 @@ export default function NavBar() {
                 <img src={logoMuni} className="logoMuni2" />
                 {authenticated && (
                   <div className="d-flex align-items-center">
-                    <p className="m-0 d-none d-md-block">{user.nombre_persona}</p>
+                    <p className="m-0 d-none d-md-block">
+                      {user.nombre_persona}
+                    </p>
                     <IconButton
                       size="large"
                       aria-label="account of current user"
@@ -85,7 +84,7 @@ export default function NavBar() {
                       open={Boolean(anchorEl)}
                       onClose={handleClose}
                     >
-                        <MenuItem onClick={goToPerfil}>Mi perfil</MenuItem>
+                      <MenuItem onClick={goToPerfil}>Mi perfil</MenuItem>
                       <MenuItem onClick={handleLogout}>Cerrar Sesión</MenuItem>
                     </Menu>
                   </div>
