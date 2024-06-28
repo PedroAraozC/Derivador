@@ -34,17 +34,17 @@ export default function ListaPrueba() {
 
   const irAGAF = () => {
     const token = localStorage.getItem("token");
-    const url = new URL(`http://localhost:5173/`);
-    url.searchParams.append("GAF", token);
+    const url = new URL(`http://181.105.6.205:9005/`);
+    url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
   };
-  // const irABOLETIN = () => {
-  //   const token = localStorage.getItem("token");
-  //   // const url = new URL(`http://localhost:5173/#/adminBoletin`);
-  //   const url = new URL(`http://181.105.6.205:88/#/adminBoletin`);
-  //   url.searchParams.append("boletin", token);
-  //   window.open(url.toString(), "_blank");
-  // };
+  const irABOLETIN = () => {
+    const token = localStorage.getItem("token");
+    // const url = new URL(`http://localhost:5173/#/adminBoletin`);
+    const url = new URL(`https://boletinoficial.smt.gob.ar/#/`);
+    url.searchParams.append("boletin", token);
+    window.open(url.toString(), "_blank");
+  };
 
   const { user, obtenerPermisos, permisos } = useStore();
   const [state, setState] = React.useState({

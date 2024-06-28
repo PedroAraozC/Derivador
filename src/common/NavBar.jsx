@@ -27,14 +27,19 @@ export default function NavBar() {
     setAnchorEl(null);
   };
   
-  // const goToPerfil = () => {
-  //   setAnchorEl(null);
-  //   navigate("/perfil");
-  // };
+  const goToPerfil = () => {
+    setAnchorEl(null);
+    
+    const url = new URL(`https://perfil.smt.gob.ar/`);
+    url.searchParams.append("auth", localStorage.getItem("token"));
+     url.searchParams.append("origin", "cidituc");
+    window.location.href = url.toString();
+
+  };
 
   const handleLogout = () => {
     logout();
-    navigate("/");
+    // navigate("https://ciudaddigital.smt.gob.ar/");
     setAnchorEl(null);
   };
   useEffect(() => {
@@ -53,7 +58,7 @@ export default function NavBar() {
                 <img src={logoMuni} className="logoMuni2" />
                 {authenticated && (
                   <div className="d-flex align-items-center">
-                    <p className="m-0">{user.nombre_persona}</p>
+                    <p className="m-0 d-none d-md-block">{user.nombre_persona}</p>
                     <IconButton
                       size="large"
                       aria-label="account of current user"
@@ -80,7 +85,7 @@ export default function NavBar() {
                       open={Boolean(anchorEl)}
                       onClose={handleClose}
                     >
-                        {/* <MenuItem onClick={goToPerfil}>Mi perfil</MenuItem> */}
+                        <MenuItem onClick={goToPerfil}>Mi perfil</MenuItem>
                       <MenuItem onClick={handleLogout}>Cerrar Sesión</MenuItem>
                     </Menu>
                   </div>

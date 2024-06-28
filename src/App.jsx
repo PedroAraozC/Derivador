@@ -37,8 +37,22 @@ import PrivateRouteEducacion from "./routes/PrivateRouteEducacion";
 function App() {
   const url = new URL(window.location.href);
   const logout = url.searchParams.get("logout");
+  const token = url.searchParams.get("auth");
+
+
+  if(localStorage.getItem("token")){
+    localStorage.setItem("token", token != null ? token : localStorage.getItem("token"));
+  }else if(token){
+    localStorage.setItem("token", token);
+  }
+
+
+
+
+
 
   url.searchParams.delete("logout");
+  url.searchParams.delete("auth");
   history.replaceState(null, "", url.toString());
 
   if (logout) {
@@ -50,8 +64,8 @@ function App() {
         <Layout>
           <ProviderEducacion>
             <Routes>
-              <Route exact path="/*" element={<Login />} />
-              <Route exact path="/home" element={<PrivateRoute key="home"><Home /></PrivateRoute>} />
+              {/* <Route exact path="/*" element={<Home/>} /> */}
+              <Route exact path="/*" element={<PrivateRoute key="home"><Home /></PrivateRoute>} />
               {/* <Route exact path="/registro" element={<Registro />} /> */}
               <Route exact path="/estadistica_rrhh" element={<PrivateRouteEmpleadoJerarquico key="cap-humano"><CapitalHumano /></PrivateRouteEmpleadoJerarquico>}/>
               <Route exact path="/estadistica_ac" element={<PrivateRouteEmpleadoJerarquico key="reclamos"><Reclamos /></PrivateRouteEmpleadoJerarquico>}/>
