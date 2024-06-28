@@ -130,6 +130,20 @@ export default function ListaPrueba() {
     url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
   };
+  
+  const irATURNOS = () => {
+    const token = localStorage.getItem("token");
+    const url = new URL(
+      `https://turnos.smt.gob.ar/?auth=${token}&destino=turnero&rep=1711`
+    );
+    url.searchParams.append("auth", token);
+    window.open(url.toString(), "_blank");
+  };
+  const irALICITACIONES = () => {
+    const url = new URL(`https://licitaciones.smt.gob.ar`);
+    window.open(url.toString(), "_blank");
+  };
+
 
   const list = () => (
     <Box
@@ -191,6 +205,9 @@ export default function ListaPrueba() {
                             ? () => irAGAF()
                             : subItem.descripcion == "Boletín Municipal"
                             ? () => irABOLETIN()
+                            :subItem.descripcion == "Carnet de Manejo"
+                            ? () => irATURNOS():subItem.descripcion == "Licitaciones y Concursos"
+                            ? () => irALICITACIONES()
                             : () => redirigir(`/${subItem.label}`)
                         }
                       />
