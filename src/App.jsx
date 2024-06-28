@@ -1,5 +1,5 @@
 import Home from "./components/Home/Home";
-import Login from "./components/Login/Login";
+// import Login from "./components/Login/Login";
 import { Routes, Route, HashRouter } from "react-router-dom";
 import Layout from "./common/Layout";
 import CapitalHumano from "./pages/CapitalHumano/CapitalHumano";

@@ -1,11 +1,10 @@
-import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faIdCard,
   faNewspaper,
   faFolderOpen,
 } from "@fortawesome/free-regular-svg-icons";
-import { faQrcode } from "@fortawesome/free-solid-svg-icons";
+import { faBuildingCircleCheck, faQrcode } from "@fortawesome/free-solid-svg-icons";
 import Card from "../Card/Card";
 import "./Home.css";
 import useStore from "../../Zustand/Zustand";
@@ -49,6 +48,12 @@ const Home = () => {
     url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
   };
+  const irACATASTRO = () => {
+    const token = localStorage.getItem("token");
+    const url = new URL(`https://catastro.smt.gob.ar/#/?auth=${token}&destino=catastro`);
+    url.searchParams.append("auth", token);
+    window.open(url.toString(), "_blank");
+  };
 
   return (
     <div className="contPadreHome">
@@ -78,6 +83,12 @@ const Home = () => {
           titulo={"Licencia de Conducir"}
           descripcion={"Requsitos para Licencia de conducir"}
           Icono={<FontAwesomeIcon icon={faIdCard} />}
+        />
+        <Card
+          onClick={() => irACATASTRO()}
+          titulo={"Catastro"}
+          descripcion={"Catastro y Edificaciones"}
+          Icono={<FontAwesomeIcon icon={faBuildingCircleCheck} />}
         />
       </div>
     </div>
