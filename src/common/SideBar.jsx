@@ -121,7 +121,7 @@ export default function ListaPrueba() {
   }, []);
 
   //FILTRADO PARA SACAR LA OPCION DE EDITAR PERFIL DEL SIDEBAR
-  const menuItemsFiltered = menuItems.slice(2);
+  const menuItemsFiltered = menuItems.slice(1);
   // console.log(menuItemsFiltered)
 
   const irACATASTRO = () => {
