@@ -11,7 +11,7 @@ import useStore from "../../Zustand/Zustand";
 
 const Home = () => {
   const { user } = useStore();
-  console.log(user);
+  // console.log(user);
   // const handleRedirect = (url) => {
   //   window.location.href = url;
   // };
