@@ -32,6 +32,8 @@ const ProviderEducacion = ({ children }) => {
   const [procesos, setProcesos] = useState([]);
   const [tdocumentos, setTDocumentos] = useState([]);
   const [reparticiones, setReparticiones] = useState([]);
+  const [permisosTUsuarios, setPermisosTUsuarios] = useState([]);
+  const [empleados, setEmpleados] = useState([]);
   //Funcion para listar las convocatorias
 
   const obtenerConvocatorias = async (idNivel) => {
@@ -255,6 +257,15 @@ const ProviderEducacion = ({ children }) => {
       console.log(error);
     }
   }
+  const obtenerPermisosPorTUsuarios = async (id) =>{
+    try {
+      const resultado = await axios.post("/admin/listarPermisosPorTUsuarios", {id});
+      // console.log(resultado.data.materiales);
+      setPermisosTUsuarios(resultado.data.permisos);
+    } catch (error) {
+      console.log(error);
+    }
+  }
   const obtenerTiposDeDocumento = async () =>{
     try {
       const resultado = await axios.get("/admin/listarTDocumentos");
@@ -273,10 +284,23 @@ const ProviderEducacion = ({ children }) => {
       console.log(error);
     }
   }
+  const obtenerEmpleados = async () =>{
+    try {
+      const resultado = await axios.get("/admin/listarEmpleados");
+      // console.log(resultado.data.materiales);
+      setEmpleados(resultado.data.empleados);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <EducaContext.Provider
       value={{
+        empleados,
+        obtenerEmpleados,
+        obtenerPermisosPorTUsuarios,
+        permisosTUsuarios,
         user,
         authenticated,
         setAuthenticated,

@@ -5,28 +5,30 @@ import { Modal, Box, Button, Divider, Switch, Snackbar, Alert } from "@mui/mater
 import axios from "../../../config/axios";
 import { EducaContext } from "../../../context/EducaContext";
 
-const PermisosProcesoModal = ({ modalAbiertoPPro, handleClose, proceso }) => {
+const PermisosUsuario = ({ empleado, modalPermisosAbierto, handleClose }) => {
     const [deviceWidth, setDeviceWidth] = useState(window.innerWidth);
     const [buttonDis, setButtonDis] = useState(false);
-    const { actualizador, obtenerPermisosPorTUsuarios, permisosTUsuarios } = useContext(EducaContext);
+    const { actualizador, obtenerProcesos, procesos } = useContext(EducaContext);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMensaje, setSnackbarMensaje] = useState('');
     const [processStates, setProcessStates] = useState({});
     const [permisosModificados, setPermisosModificados] = useState([]);
 
     useEffect(() => {
-        obtenerPermisosPorTUsuarios(proceso?.id_proceso);
-    }, [proceso]);
+        // cambiar esto para que traiga los procesos pero segun el id_persona
+        // ahora esta trayendo los procesos pero por id_tusuario
+        obtenerProcesos(empleado?.id_persona);
+    }, [empleado]);
 
     useEffect(() => {
         setProcessStates(getInitialProcessStates());
         setPermisosModificados([]);
-    }, [permisosTUsuarios]);
+    }, [procesos]);
 
     const getInitialProcessStates = () => {
-        if (!Array.isArray(permisosTUsuarios)) return {};
+        if (!Array.isArray(procesos)) return {};
         const initialStates = {};
-        permisosTUsuarios.forEach(proceso => {
+        procesos.forEach(proceso => {
             initialStates[proceso.id_permiso_tusuario] = proceso.ver === 1 ? 1 : 0;
         });
         return initialStates;
@@ -57,11 +59,12 @@ const PermisosProcesoModal = ({ modalAbiertoPPro, handleClose, proceso }) => {
     const editarPermisos = async () => {
         setButtonDis(true);
         let datos = {
+            id: empleado.id_permiso,
             permisos: permisosModificados
         }
         console.log(datos)
         try {
-            const response = await axios.post("/admin/editarPermisosPorTUsuarios", datos);
+            const response = await axios.post("/admin/editarPermisosTUsuarios", datos);
             console.log(response)
             setSnackbarMensaje("Permisos editados.");
             setSnackbarOpen(true);
@@ -91,7 +94,7 @@ const PermisosProcesoModal = ({ modalAbiertoPPro, handleClose, proceso }) => {
 
     const isMobile = deviceWidth <= 600;
 
-    if (!proceso) {
+    if (!empleado) {
         return null;
     }
 
@@ -101,7 +104,7 @@ const PermisosProcesoModal = ({ modalAbiertoPPro, handleClose, proceso }) => {
         left: "50%",
         transform: "translate(-50%, -50%)",
         width: isMobile ? "90%" : "80%",
-        height: "60%",
+        height: "90%",
         bgcolor: "background.paper",
         borderRadius: "10px",
         boxShadow: 24,
@@ -109,27 +112,26 @@ const PermisosProcesoModal = ({ modalAbiertoPPro, handleClose, proceso }) => {
         overflowY: 'auto',
     };
 
-
     return (
-        <Modal open={modalAbiertoPPro} onClose={handleClose}>
+        <Modal open={modalPermisosAbierto} onClose={handleClose}>
             <Box sx={style}>
                 <div className="d-flex justify-content-around align-items-center mb-3">
                     <h2 style={{ fontSize: "1.3rem", margin: 0 }}>
-                        Permisos para {proceso.descripcion}
+                        Permisos para {empleado.nombre_persona}
                     </h2>
                 </div>
                 <Divider />
                 <div className="d-flex flex-column justify-content-center">
-                    <form className="d-flex flex-column gap-3 justify-content-center align-items-center formAgregarcausal mt-5">
+                    <form className="d-flex flex-column gap-3 justify-content-center align-items-center formAgregarcausal">
                         <div className="row w-100">
-                            {Array.isArray(permisosTUsuarios) &&
-                                permisosTUsuarios.map((tu) => (
-                                    <div key={tu.id_permiso_tusuario} className="col-md-6 col-sm-12 d-flex align-items-center justify-content-between mb-2">
-                                        <p className="mb-0">{tu.nombre_tusuario}</p>
+                            {Array.isArray(procesos) &&
+                                procesos.map((pro) => (
+                                    <div key={pro.id_permiso_tusuario} className="col-md-6 col-sm-12 d-flex align-items-center justify-content-between mb-2">
+                                        <p className="mb-0">{pro.descripcion}</p>
                                         <div className="form-check form-switch">
                                             <Switch
-                                                checked={processStates[tu.id_permiso_tusuario] === 1}
-                                                onChange={() => handleSwitchChange(tu.id_permiso_tusuario)}
+                                                checked={processStates[pro.id_permiso_tusuario] === 1}
+                                                onChange={() => handleSwitchChange(pro.id_permiso_tusuario)}
                                             />
                                         </div>
                                     </div>
@@ -155,4 +157,4 @@ const PermisosProcesoModal = ({ modalAbiertoPPro, handleClose, proceso }) => {
     );
 };
 
-export default PermisosProcesoModal;
+export default PermisosUsuario;
