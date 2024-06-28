@@ -11,7 +11,7 @@ import {
   ListItemText,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import DvrIcon from "@mui/icons-material/Dvr";
+// import DvrIcon from "@mui/icons-material/Dvr";
 import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import PersonIcon from "@mui/icons-material/Person";
 import ReportGmailerrorredIcon from "@mui/icons-material/ReportGmailerrorred";
@@ -23,7 +23,7 @@ import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import "./SideBar.css";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import useStore from "../Zustand/Zustand";
-// import ArticleIconOutlined from "@mui/icons-material/ArticleOutlined";
+import ArticleIconOutlined from "@mui/icons-material/ArticleOutlined";
 
 export default function ListaPrueba() {
   const navigate = useNavigate();
@@ -124,6 +124,13 @@ export default function ListaPrueba() {
   const menuItemsFiltered = menuItems.slice(2);
   // console.log(menuItemsFiltered)
 
+  const irACATASTRO = () => {
+    const token = localStorage.getItem("token");
+    const url = new URL(`https://catastro.smt.gob.ar/#/?auth=${token}&destino=catastro`);
+    url.searchParams.append("auth", token);
+    window.open(url.toString(), "_blank");
+  };
+
   const list = () => (
     <Box
       sx={{ width: 250 }}
@@ -142,14 +149,17 @@ export default function ListaPrueba() {
           </ListItemIcon>
           <ListItemText primary="INICIO" />
         </ListItemButton>
-        {/* <ListItemButton
-          onClick={() => irABOLETIN()}
+        {user.id_tusuario == 1? <>
+        <ListItemButton
+          onClick={() => irACATASTRO()}
           component="a"
           className="w-100"
         >
           <ArticleIconOutlined sx={{ color: "rgba(0, 0, 0, 0.54)" }} />
-          <ListItemText primary="BOLETIN" className="ms-3"/>
-        </ListItemButton> */}
+          <ListItemText primary="CATASTRO" className="ms-3"/>
+        </ListItemButton>
+        
+        </> : <></>}
         {/* Construye cada elemento del menú */}
         {menuItemsFiltered.map((item, index) => (
           <div

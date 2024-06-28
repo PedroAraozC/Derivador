@@ -1,11 +1,10 @@
-import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faIdCard,
   faNewspaper,
   faFolderOpen,
 } from "@fortawesome/free-regular-svg-icons";
-import { faQrcode } from "@fortawesome/free-solid-svg-icons";
+import { faBuildingCircleCheck, faCommentsDollar, faQrcode } from "@fortawesome/free-solid-svg-icons";
 import Card from "../Card/Card";
 import "./Home.css";
 import useStore from "../../Zustand/Zustand";
@@ -43,10 +42,20 @@ const Home = () => {
     url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
   };
-  const irAEXPEDIENTES = () => {
-    const token = localStorage.getItem("token");
-    const url = new URL(``);
-    url.searchParams.append("auth", token);
+  // const irAEXPEDIENTES = () => {
+  //   const token = localStorage.getItem("token");
+  //   const url = new URL(``);
+  //   url.searchParams.append("auth", token);
+  //   window.open(url.toString(), "_blank");
+  // };
+  // const irACATASTRO = () => {
+  //   const token = localStorage.getItem("token");
+  //   const url = new URL(`https://catastro.smt.gob.ar/#/?auth=${token}&destino=catastro`);
+  //   url.searchParams.append("auth", token);
+  //   window.open(url.toString(), "_blank");
+  // };
+  const irALICITACIONES = () => {
+    const url = new URL(`https://licitaciones.smt.gob.ar`);
     window.open(url.toString(), "_blank");
   };
 
@@ -64,20 +73,32 @@ const Home = () => {
         <Card
           onClick={() => irACREDENCIAL()}
           titulo={"Credencial"}
-          descripcion={"Ingreso a credencial propia"}
+          descripcion={"Ver credencial digital"}
           Icono={<FontAwesomeIcon icon={faQrcode} />}
         />
-        <Card
+        {/* <Card
           onClick={() => irAEXPEDIENTES()}
           titulo={"Expedientes"}
           descripcion={"Ingreso a sistema de expedientes"}
           Icono={<FontAwesomeIcon icon={faFolderOpen} />}
-        />
+        /> */}
         <Card
           onClick={() => irATURNOS()}
           titulo={"Licencia de Conducir"}
           descripcion={"Requsitos para Licencia de conducir"}
           Icono={<FontAwesomeIcon icon={faIdCard} />}
+        />
+        {/* <Card
+          onClick={() => irACATASTRO()}
+          titulo={"Catastro"}
+          descripcion={"Catastro y Edificaciones"}
+          Icono={<FontAwesomeIcon icon={faBuildingCircleCheck} />}
+        /> */}
+        <Card
+          onClick={() => irALICITACIONES()}
+          titulo={"Licitaciones"}
+          descripcion={"Convocatoria para la contratación de bienes, obras y servicios."}
+          Icono={<FontAwesomeIcon icon={faCommentsDollar} />}
         />
       </div>
     </div>
