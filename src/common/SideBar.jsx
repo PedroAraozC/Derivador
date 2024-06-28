@@ -63,8 +63,8 @@ export default function ListaPrueba() {
   };
   const mapearIcono = (nombreOpcion) => {
     switch (nombreOpcion) {
-      case "SERVICIOS":
-        return <DvrIcon />;
+      // case "SERVICIOS":
+      //   return <DvrIcon />;
       case "REPORTES":
         return <ReportGmailerrorredIcon />;
       case "ESTADISTICAS":
