@@ -1,7 +1,7 @@
 import { Alert, Button, InputLabel, MenuItem, Select, Snackbar, Switch, TextField } from "@mui/material";
 import { useState, useEffect, useRef } from "react";
 import useStore from "../../../Zustand/Zustand";
-import axios from "../../../config/axios";
+import axios from "../../../config/axiosLicitaciones";
 import TablaContratacion from "./TablaContratacion";
 
 const PanelContratacion = () => {
