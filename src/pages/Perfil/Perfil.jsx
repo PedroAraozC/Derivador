@@ -2,18 +2,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import fotoDefault from "../../assets/person.svg";
 import "./Perfil.css";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@mui/material";
 import useStore from "../../Zustand/Zustand";
 import cdigitalApi from '../../config/axios';
-
+import DatePicker from "react-datepicker";
 import SaveIcon from '@mui/icons-material/Save';
 import EditIcon from '@mui/icons-material/Edit';
 import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead';
 import Swal from "sweetalert2";
 import { CambiarContraseña } from "../../pages/Perfil/CambiarContraseña";
 import { ArrowBack, AssignmentInd, Badge } from "@mui/icons-material";
-import { FaIdCard } from "react-icons/fa";
+import { FaCalendar, FaIdCard } from "react-icons/fa";
+import moment from "moment-timezone";
+import "react-datepicker/dist/react-datepicker.css";
 
 
 
@@ -35,6 +37,7 @@ const Perfil = () => {
     telefono_persona:user.telefono_persona,
     domicilio_persona:user.domicilio_persona,
     localidad_persona:user.localidad_persona,
+    fecha_nacimiento_persona:user.fecha_nacimiento_persona
  })
 
  const [modalAbierto, setModalAbierto] = useState(false);
@@ -43,15 +46,62 @@ const Perfil = () => {
  const abrirModal2 = () => setModal2Abierto(true);
  const cerrarModal=() => setModalAbierto(false);
  const cerrarModal2=() => setModal2Abierto(false);
+ const datePickerRef = useRef(null);
 
-
+ moment.tz.setDefault("America/Buenos_Aires");
+ const maxDate = new Date();
   const usuario=user;
+
+  const handleKeyDown = (e) => {
+    const input = e.target;
+    const { selectionStart } = input;
+    // Permite la eliminación de los guiones
+    if (e.key === "Backspace" || e.key === "Delete") {
+      if (selectionStart === 3 || selectionStart === 6) {
+        e.preventDefault();
+        const newValue =
+          input.value.slice(0, selectionStart - 1) +
+          input.value.slice(selectionStart);
+        input.value = newValue;
+        // Restaura la posición del cursor
+        input.setSelectionRange(selectionStart - 1, selectionStart - 1);
+      }
+    }
+  };
+
+  const handleChangeRaw = (e) => {
+    const input = e.target.value;
+    const maxLength = 11; // Longitud máxima de la fecha completa "dd-mm-aaaa"
+
+    // Evita realizar más modificaciones si ya se alcanzó la longitud máxima
+    if (input?.length === maxLength) {
+      e.preventDefault();
+      return;
+    }
+
+    let formattedDate = input;
+    // Inserta automáticamente un guión después de los primeros dos dígitos
+    if (input?.length === 2 && input.charAt(1) !== "-") {
+      formattedDate += "-";
+    }
+    // Inserta automáticamente un guión después de los siguientes dos dígitos
+    if (input?.length === 5 && input.charAt(4) !== "-") {
+      formattedDate += "-";
+    }
+    // Actualiza el valor del input con el formato deseado
+    e.target.value = formattedDate;
+  };
 
   function formatDate(dateString) {
     const parts = dateString.split('-');
     return `${parts[2]}-${parts[1]}-${parts[0]}`;
   }
 
+  const handlePaste = (e) => {
+    // Cancelar el evento para evitar que se pegue el texto
+    e.preventDefault();
+    // Puedes mostrar un mensaje o tomar otra acción aquí si lo deseas
+  };
 //   const validarEmail=async ()=>{
 
 //     if(usuario.validado==1){
@@ -329,7 +379,50 @@ const goToCredencial =()=>
  <p className="datoUsuario">Email:</p>
             <input type="email" placeholder="Correo electronico" className="inputEditPerfil"
              onChange={handleChange} value={formData.email_persona} name="email_persona" />
+
+<p className="datoUsuario">Fecha de Nacimiento</p>    
+
+  
+<DatePicker
+                          selected={formData.fecha_nacimiento_persona}
+                          onChange={(date) => {
+                            setFormData({
+                              ...formData,
+                              fecha_nacimiento_persona: date,
+                            });
+                          }}
+                          onPaste={handlePaste}
+                          // onKeyDown={(e) => {
+                          //   e.preventDefault(); // Evita que se escriba en el input
+                          // }}
+
+                          // dateFormat="yyyy-MM-dd"
+                          dateFormat="dd-MM-yyyy"
+                          // showYearDropdown
+                          // scrollableYearDropdown
+                          yearDropdownItemNumber={100}
+                          
+                           className="inputEditPerfil w-100"
+                          required
+                          // locale={es}
+                          timeZone="America/Buenos_Aires"
+                          maxDate={maxDate}
+                          onChangeRaw={handleChangeRaw}
+                          onKeyDown={handleKeyDown}
+                          ref={datePickerRef}
+                        />
+                      
+
+
+
+
+
           <p className="datoPie mt-2 text-center ">¿Desea cambiar su clave? Haga click <a onClick={abrirModal2}><strong>aquí</strong></a> </p> 
+
+
+       
+
+
              
 {/* <p className="datoUsuario">Contraseña:</p>
             <input type="password" placeholder="Contraseña nueva" className="inputEditPerfil"
