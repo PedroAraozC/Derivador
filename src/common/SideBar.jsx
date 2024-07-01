@@ -41,7 +41,7 @@ export default function ListaPrueba() {
   const irABOLETIN = () => {
     const token = localStorage.getItem("token");
     const url = new URL(
-      `https://boletinoficial.smt.gob.ar/#/?auth=${token}&destino=boletin`
+      `https://boletinoficial.smt.gob.ar/?auth=${token}&destino=boletin`
       // `https://ciudaddigital.smt.gob.ar/?destino=boletin`
     );
     url.searchParams.append("auth", token);
@@ -126,7 +126,7 @@ export default function ListaPrueba() {
 
   const irACATASTRO = () => {
     const token = localStorage.getItem("token");
-    const url = new URL(`https://catastro.smt.gob.ar/#/?auth=${token}&destino=catastro`);
+    const url = new URL(`https://catastro.smt.gob.ar/?auth=${token}&destino=catastro`);
     url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
   };

@@ -2,9 +2,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faIdCard,
   faNewspaper,
-  faFolderOpen,
+  // faFolderOpen,
 } from "@fortawesome/free-regular-svg-icons";
-import { faBuildingCircleCheck, faCommentsDollar, faQrcode } from "@fortawesome/free-solid-svg-icons";
+import { 
+  // faBuildingCircleCheck,
+   faCommentsDollar, faQrcode } from "@fortawesome/free-solid-svg-icons";
 import Card from "../Card/Card";
 import "./Home.css";
 import useStore from "../../Zustand/Zustand";
