@@ -39,17 +39,11 @@ function App() {
   const logout = url.searchParams.get("logout");
   const token = url.searchParams.get("auth");
 
-
   if(localStorage.getItem("token")){
     localStorage.setItem("token", token != null ? token : localStorage.getItem("token"));
   }else if(token){
     localStorage.setItem("token", token);
   }
-
-
-
-
-
 
   url.searchParams.delete("logout");
   url.searchParams.delete("auth");
