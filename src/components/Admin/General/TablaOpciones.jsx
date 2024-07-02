@@ -190,13 +190,9 @@ export default function TablaOpciones() {
                             {option.subItems.map((subItem, subIndex) => (
                               <TableRow key={subIndex}>
                                 {/* Agrega celdas vacías */}
-                                <TableCell>Proceso:</TableCell>
                                 <TableCell></TableCell>
                                 <TableCell>{subItem.nombre_proceso}</TableCell>
                                 <TableCell>
-                                  <button className='btn'>
-                                    <DeleteIcon/>
-                                  </button>
                                   <button className='btn'>
                                     <EditIcon/>
                                   </button>
