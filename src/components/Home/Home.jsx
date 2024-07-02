@@ -6,10 +6,11 @@ import {
 } from "@fortawesome/free-regular-svg-icons";
 import { 
   // faBuildingCircleCheck,
-   faCommentsDollar, faQrcode } from "@fortawesome/free-solid-svg-icons";
+   faCommentsDollar, faNotesMedical, faQrcode } from "@fortawesome/free-solid-svg-icons";
 import Card from "../Card/Card";
 import "./Home.css";
 import useStore from "../../Zustand/Zustand";
+import { cuilToDni } from "../../helpers/extraerDNI";
 
 const Home = () => {
   const { user } = useStore();
@@ -21,7 +22,7 @@ const Home = () => {
   const irABOLETIN = () => {
     const token = localStorage.getItem("token");
     const url = new URL(
-      `https://boletinoficial.smt.gob.ar/#/?auth=${token}&destino=boletin`
+      `https://boletinoficial.smt.gob.ar/?auth=${token}&destino=boletin`
       // `https://ciudaddigital.smt.gob.ar/?destino=boletin`
     );
     url.searchParams.append("auth", token);
@@ -39,7 +40,7 @@ const Home = () => {
   const irACREDENCIAL = () => {
     const token = localStorage.getItem("token");
     const url = new URL(
-      `https://ciudaddigital.smt.gob.ar/#/CredencialesCiudadano/${user.documento_persona}`
+      `https://ciudaddigital.smt.gob.ar/#/credencialesCiudadano/${user.documento_persona}`
     );
     url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
@@ -60,6 +61,15 @@ const Home = () => {
     const url = new URL(`https://licitaciones.smt.gob.ar`);
     window.open(url.toString(), "_blank");
   };
+
+  const irACARNETSANIDAD = () => {
+
+    const url = new URL(
+      `http://181.105.6.205:82/cs/index_cd.php?dni=${cuilToDni(user.documento_persona.toString())}`
+    );
+    
+    window.open(url.toString(), "_blank");
+  }
 
   return (
     <div className="contPadreHome">
@@ -101,6 +111,12 @@ const Home = () => {
           titulo={"Licitaciones"}
           descripcion={"Convocatoria para la contratación de bienes, obras y servicios."}
           Icono={<FontAwesomeIcon icon={faCommentsDollar} />}
+        />
+        <Card
+          onClick={() => irACARNETSANIDAD()}
+          titulo={"Carnet de Sanidad"}
+          descripcion={"Consulta del Carnet Digital"}
+          Icono={<FontAwesomeIcon icon={faNotesMedical}/>}
         />
       </div>
     </div>
