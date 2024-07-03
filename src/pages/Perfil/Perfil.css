@@ -1,4 +1,4 @@
-.contenedorPerfil{
+.contenedorPerfil {
     height: 100%;
     width: 400px;
     border: 1px solid #ccc;
@@ -6,42 +6,56 @@
     box-shadow: 5px 5px 5px 2px #888888;
     margin: 40px 10px;
 }
-.fotoPerfil{
+
+.fotoPerfil {
     height: 50px;
 }
-.datoUsuario{
+
+.datoUsuario {
     font-weight: 600;
     margin: 0;
 }
-.datoPie{
+
+.datoPie {
     font-size: 50 !important;
     margin-top: 10 !important;
-    color:#6495ED
+    color: #6495ED
 }
-.inputEditPerfil{
+
+.inputEditPerfil {
     border: 1px solid #ccc;
     height: 50px;
     margin-top: 5px;
     padding: 5px;
     border-radius: 5px;
 }
-.formEdit{
+
+.formEdit {
     padding-top: 20px;
     padding-bottom: 20px;
     width: 100%;
 }
 
-.ojo{
-    position:relative;
+.ojo {
+    position: relative;
     color: #6d6d6d;
     bottom: 25px;
     right: 5px;
     cursor: pointer;
-    }
+}
 
-@media(width<450px)
-{
-    .contenedorPerfil{
+.eliminarCuenta {
+    font-weight: 500;
+    color: rgba(212, 20, 20, 0.799);
+}
+
+.eliminarCuenta:hover {
+    color: rgb(255, 0, 0);
+    cursor: pointer;
+}
+
+@media(width<450px) {
+    .contenedorPerfil {
         width: 300px;
     }
 }
