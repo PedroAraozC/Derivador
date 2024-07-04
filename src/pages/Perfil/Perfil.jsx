@@ -158,6 +158,11 @@ const Perfil = () => {
       value = value !== "" ? parseInt(value.slice(0, lon), 10) : ""; // Convertir a número si no está vacío
     } else if (e.target.type === "number") {
       value = value.slice(0, lon); // Limitar la longitud si es necesario
+    }else if (e.target.name == "nombre_persona"){
+      value = value.replace(/[^A-Za-z\s]/g, '') 
+    }
+    else if (e.target.name == "apellido_persona"){
+      value = value.replace(/[^A-Za-z\s]/g, '') 
     }
 
     setFormData({
@@ -219,6 +224,7 @@ const Perfil = () => {
         timer: 2500,
       });
     }
+    setSaveChanges(false);
   };
 
   const handleEditDatos = async (e) => {
@@ -257,35 +263,57 @@ const Perfil = () => {
         text: "No puede haber campos vacíos",
         confirmButtonColor: "#6495ED",
       });
-    }
-
-    if (formData.telefono_persona < 0) {
+    } else if (formData.nombre_persona.length > 50) {
       return Swal.fire({
-        icon: "error",
+        icon: "warning",
+        title: "¡Ups!",
+        text: "El Nombre no puede tener mas de 50 caracteres",
+        confirmButtonColor: "#6495ED",
+      });
+    } else if (formData.apellido_persona.length > 30) {
+      return Swal.fire({
+        icon: "warning",
+        title: "¡Ups!",
+        text: "El Apellido no puede tener mas de 30 caracteres",
+        confirmButtonColor: "#6495ED",
+      });
+    } else if (formData.telefono_persona < 0) {
+      return Swal.fire({
+        icon: "warning",
         title: "¡Ups!",
         text: "El nro de celular no puede ser negativo",
         confirmButtonColor: "#6495ED",
       });
-    }
-
-    if (formData.documento_persona < 0) {
+    } else if (formData.telefono_persona.length != 10) {
       return Swal.fire({
-        icon: "error",
-        title: "¡Ups!",
-        text: "El DNI no puede ser negativo",
-        confirmButtonColor: "#6495ED",
-      });
-    }
-
-    if (formData.telefono_persona.length != 10) {
-      return Swal.fire({
-        icon: "error",
+        icon: "warning",
         title: "¡Ups!",
         text: "El nro de celular debe tener 10 dígitos sin guiones ejemplo: 3814123456",
         confirmButtonColor: "#6495ED",
       });
+    } else if (formData.email_persona.length > 60) {
+      return Swal.fire({
+        icon: "warning",
+        title: "¡Ups!",
+        text: "El email no debe tener más de 60 dígitos",
+        confirmButtonColor: "#6495ED",
+      });
+    } else if (formData.documento_persona < 0) {
+      return Swal.fire({
+        icon: "warning",
+        title: "¡Ups!",
+        text: "El CUIL no puede ser negativo",
+        confirmButtonColor: "#6495ED",
+      });
     }
-
+    //  else if (formData.documento_persona.length !== 10) {
+    //   return Swal.fire({
+    //     icon: "warning",
+    //     title: "¡Ups!",
+    //     text: "El CUIL debe tener 10 digitos sin guiones ejemplo: 30655342946",
+    //     confirmButtonColor: "#6495ED",
+    //   });
+    // }
     EditarCiudadanoDB(formData);
   };
 
@@ -299,7 +327,7 @@ const Perfil = () => {
     try {
       const resp = await cdigitalApi.patch(`/usuarios/desactivar`, {
         data: { documento_persona: formData.documento_persona },
-      });  
+      });
       if (resp.data.ok) {
         Swal.fire({
           position: "center",
