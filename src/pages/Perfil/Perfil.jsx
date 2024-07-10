@@ -51,7 +51,10 @@ const Perfil = () => {
   const datePickerRef = useRef(null);
 
   moment.tz.setDefault("America/Buenos_Aires");
+
+  const currentDate = new Date();
   const maxDate = new Date();
+maxDate.setFullYear(currentDate.getFullYear() - 16);
   const usuario = user;
 
   const handleKeyDown = (e) => {
@@ -90,6 +93,36 @@ const Perfil = () => {
     if (input?.length === 5 && input.charAt(4) !== "-") {
       formattedDate += "-";
     }
+
+    if(input?.length >= 10 ){
+      
+      if(new Date().getFullYear() - input.slice(-4) >= 100){
+        e.target.value = "";
+        Swal.fire({
+          icon: "error",
+          title: "Fecha Incorrecta",
+          text: "No se puede registrar personas mayores a 100 años",
+          confirmButtonColor: "#6495ED",
+        });
+          return;
+      }else if(new Date().getFullYear() - input.slice(-4) <=16){
+        e.target.value = "";
+        Swal.fire({
+          icon: "error",
+          title: "Fecha Incorrecta",
+          text: "Debe ser mayor de 16 años",
+          confirmButtonColor: "#6495ED",
+        });
+          return;
+      }
+    }
+
+
+
+
+
+
+
     // Actualiza el valor del input con el formato deseado
     e.target.value = formattedDate;
   };
@@ -232,6 +265,9 @@ const Perfil = () => {
 
     // ! Verificar Email
     const patronEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    let diferenciaTiempo =
+    maxDate.getTime() - formData.fecha_nacimiento_persona.getTime();
+  let edad = Math.floor(diferenciaTiempo / (1000 * 60 * 60 * 24 * 365));
 
     if (!patronEmail.test(formData.email_persona)) {
       return Swal.fire({
@@ -468,9 +504,9 @@ const Perfil = () => {
 
               // dateFormat="yyyy-MM-dd"
               dateFormat="dd-MM-yyyy"
-              // showYearDropdown
-              // scrollableYearDropdown
-              yearDropdownItemNumber={100}
+              showYearDropdown
+               scrollableYearDropdown
+              yearDropdownItemNumber={70}
               className="inputEditPerfil w-100"
               required
               // locale={es}
@@ -479,6 +515,7 @@ const Perfil = () => {
               onChangeRaw={handleChangeRaw}
               onKeyDown={handleKeyDown}
               ref={datePickerRef}
+              
             />
 
             <p className="datoPie mt-2 text-center ">
