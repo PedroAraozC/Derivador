@@ -33,33 +33,41 @@ import PrivateRouteAdminLicitaciones from "./routes/PrivateRouteAdminLicitacione
 import PrivateRouteAdminPatrimonio from "./routes/PrivateRouteAdminPatrimonio";
 import PrivateRouteEmpleadoJerarquico from "./routes/PrivateRouteEmpleadoJerarquico";
 import PrivateRouteEducacion from "./routes/PrivateRouteEducacion";
+import { Registro } from "./components/Registro/Registro";
+import Login1 from "./components/Login/Login1";
+import PrivateRouteTotem from "./routes/PrivateRouteTotem";
+
+
 
 function App() {
-  const url = new URL(window.location.href);
-  const logout = url.searchParams.get("logout");
-  const token = url.searchParams.get("auth");
+  // const url = new URL(window.location.href);
+  // const logout = url.searchParams.get("logout");
+  // const token = url.searchParams.get("auth");
 
-  if(localStorage.getItem("token")){
-    localStorage.setItem("token", token != null ? token : localStorage.getItem("token"));
-  }else if(token){
-    localStorage.setItem("token", token);
-  }
+  // if(localStorage.getItem("token")){
+  //   localStorage.setItem("token", token != null ? token : localStorage.getItem("token"));
+  // }else if(token){
+  //   localStorage.setItem("token", token);
+  // }
 
-  url.searchParams.delete("logout");
-  url.searchParams.delete("auth");
-  history.replaceState(null, "", url.toString());
+  // url.searchParams.delete("logout");
+  // url.searchParams.delete("auth");
+  // history.replaceState(null, "", url.toString());
 
-  if (logout) {
-    localStorage.removeItem("token");
-  }
+  // if (logout) {
+  //   localStorage.removeItem("token");
+  // }
+
   return (
     <>
       <HashRouter>
         <Layout>
-          <ProviderEducacion>
+          {/* <ProviderEducacion> */}
             <Routes>
               {/* <Route exact path="/*" element={<Home/>} /> */}
-              <Route exact path="/*" element={<PrivateRoute key="home"><Home /></PrivateRoute>} />
+              <Route exact path="/*" element={ <Home />} />
+              <Route exact path="/registro" element={ <Registro />} />
+              <Route exact path="/login" element={  <PrivateRouteTotem><Login1/></PrivateRouteTotem> } />
               {/* <Route exact path="/registro" element={<Registro />} /> */}
               <Route exact path="/estadistica_rrhh" element={<PrivateRouteEmpleadoJerarquico key="cap-humano"><CapitalHumano /></PrivateRouteEmpleadoJerarquico>}/>
               <Route exact path="/estadistica_ac" element={<PrivateRouteEmpleadoJerarquico key="reclamos"><Reclamos /></PrivateRouteEmpleadoJerarquico>}/>
@@ -101,7 +109,7 @@ function App() {
               {/* EDUCACION */}
 
             </Routes>
-          </ProviderEducacion>
+          {/* </ProviderEducacion> */}
         </Layout>
       </HashRouter>
     </>

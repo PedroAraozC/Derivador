@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { RestablecerClave } from "./RestablecerClave";
 import { ReenviarValidacion } from "./ReenviarValidacion";
 
-const Login = () => {
+const Login1 = () => {
   const { authenticated, botonState, login, errors, setErrors } = useStore();
   const [showPassword, setShowPassword] = useState(false);
   const [values, setValues] = useState(LOGIN_VALUES);
@@ -18,9 +18,11 @@ const Login = () => {
   const navigate = useNavigate();
   const [modalAbierto, setModalAbierto] = useState(false);
   const [modalAbierto2, setModalAbierto2] = useState(false);
-  // const abrirModal = () => setModalAbierto(true);
+  const [modalAbierto3, setModalAbierto3] = useState(false);
+  const abrirModal = () => setModalAbierto(true);
   const cerrarModal = () => setModalAbierto(false);
-  // const abrirModal2 = () => setModalAbierto2(true);
+  const abrirModal2 = () => setModalAbierto2(true);
+  const abrirModal3 = () => setModalAbierto3(true);
   const cerrarModal2 = () => setModalAbierto2(false);
 
   const handleShowPassword = () => {
@@ -66,12 +68,18 @@ const Login = () => {
     }
   };
 
-  useEffect(() => {
-    if (authenticated) {
-      navigate("/home");
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authenticated]);
+  // useEffect(() => {
+  //   if (authenticated) {
+  //       const token = localStorage.getItem("token");
+
+  //       const url = new URL(`https://cidituc.smt.gob.ar/`);
+
+  //       url.searchParams.append("auth", token);
+  //       url.searchParams.append("destino", "derivador");
+
+  //       window.location.href = url.toString();
+  //   }
+  // }, [authenticated]);
 
   useEffect(() => {
     if (errors !== "") {
@@ -84,9 +92,10 @@ const Login = () => {
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center layoutHeight">
+    <div className="d-flex justify-content-center align-items-center layoutHeight fondoSMT">
       <div className="box">
-        <form onSubmit={handleLogin}>
+        <span className="borderLine"></span>
+        <form onSubmit={handleLogin} className="formLogin">
           <img src={logoMuni} alt="logo Municipalidad" className="logoMuni" />
           <div className="inputBox w-100">
             <input
@@ -128,12 +137,7 @@ const Login = () => {
             <span>Contraseña</span>
             <i></i>
           </div>
-          <div className="d-flex justify-content-center align-items-center mt-4">
-
-
-
-
-          </div>
+          <div className="d-flex justify-content-center align-items-center mt-2"></div>
           <Button
             variant="contained"
             className="btn-light mt-4 buttonLoginColor"
@@ -142,26 +146,33 @@ const Login = () => {
           >
             Ingresar
           </Button>
-          {/* <Button
-            onClick={() => navigate("/registro")}
+          <Button onClick={() => navigate("/registro")}>Registrarse</Button>
 
-          >
-            Registrarse
+          <p className="datoPie mt-2 text-center ">
+            ¿Olvidó su clave? Haga click{" "}
+            <a onClick={abrirModal} style={{ cursor: "pointer" }}>
+              <strong>aquí</strong>
+            </a>{" "}
+          </p>
+          <div className="d-flex flex-row">
+            <p className="datoPie2 mb-3 text-center ">
+              {" "}
+              <a onClick={abrirModal2} style={{ cursor: "pointer" }}>
+                Reenviar email de validación
+              </a>{" "}
+            </p>
+            <p className="datoPie2 mb-3 text-center ">
+              {" "}
+              <a onClick={abrirModal3} style={{ cursor: "pointer" }}>
+                ¿Desea reactivar su cuenta?
+              </a>{" "}
+            </p>
+          </div>
 
-          </Button> */}
-
-          {/* <p className="datoPie mt-2 text-center ">¿Olvidó su clave? Haga click <a
-            onClick={abrirModal}
-          ><strong>aquí</strong></a> </p>
-
-          <p className="datoPie mb-3 text-center "> <a
-            onClick={abrirModal2}
-          >Reenviar email de validación</a> </p> */}
-
-          <div className="d-flex flex-column justify-content-center align-items-center mt-4">
+          <div className="d-flex flex-column justify-content-center align-items-center">
             <p className="footer p-1 m-0" style={{ fontSize: "0.7em" }}>
               Dir. de Innovación Tecnologica{" "}
-              <span style={{ fontSize: "1.8em", verticalAlign: "-0.1em" }}>
+              <span style={{ fontSize: "1.4em", verticalAlign: "-0.1em" }}>
                 ©
               </span>{" "}
               2024
@@ -169,6 +180,29 @@ const Login = () => {
           </div>
         </form>
       </div>
+      {/* <div className="info col-4 position-absolute">
+          <h5 className="mb-5">Ciudad Digital
+            es una plataforma tecnológica que posibilita a los ciudadanos acceder de forma simple, en un único lugar y con una misma cuenta de usuario a los trámites y servicios digitales que brinda la ciudad de San Miguel de Tucumán</h5>
+          <p>
+            ¿Cómo me registro como Ciudadano Digital?
+            Es muy sencillo, solo debes completar este formulario con los siguientes datos: <br />
+            •	CUIL <br />
+            •	Nombres <br />
+            •	Apellidos <br />
+            •	Género <br />
+            •	Fecha de Nacimiento <br />
+            •	Correo Electrónico válido <br />
+            •	Teléfono Celular <br />
+            •	Clave de acceso <br />
+            •	Leer y Aceptar los Términos y Condiciones <br />
+          </p>
+          <p>
+            <b>
+              
+            Registrate y descubrí todos los servicios y beneficios de Ciudad Digital.
+            </b>
+          </p>
+        </div> */}
       {typeof errors == "string" ? (
         <Snackbar
           open={openSnackbar}
@@ -193,34 +227,27 @@ const Login = () => {
         ))
       )}
 
-
       {modalAbierto && (
         <RestablecerClave
-
           cerrarModal={cerrarModal}
           setModalAbierto={setModalAbierto}
         />
       )}
 
-
       {modalAbierto2 && (
         <ReenviarValidacion
-
           cerrarModal={cerrarModal2}
-
-
+          titulo={"Reenviar email de validación"}
         />
       )}
-
-
+      {modalAbierto3 && (
+        <ReenviarValidacion
+          cerrarModal={cerrarModal2}
+          titulo={"Enviar email de reactivación de cuenta"}
+        />
+      )}
     </div>
-
-
-
-
-
-
   );
 };
 
-export default Login;
+export default Login1;

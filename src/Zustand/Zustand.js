@@ -165,9 +165,9 @@ const useStore = create((set, get) => ({
       if (!token) {
         set({ loading: false });
         // return set({ authenticated: false });
-        set({ authenticated: false });
-        localStorage.removeItem("token");
-        return get().logout();
+        return set({ authenticated: false });
+        // localStorage.removeItem("token");
+        // return get().logout();
       }
       axios.defaults.headers.common["Authorization"] = token;
       const { data } = await axios.get("/usuarios/authStatus");
@@ -178,7 +178,7 @@ const useStore = create((set, get) => ({
     } catch (error) {
       set({ authenticated: false });
       localStorage.removeItem("token");
-      get().logout();
+      // get().logout();
       console.log("error de auth");
       console.log(error);
     }

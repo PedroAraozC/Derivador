@@ -6,6 +6,7 @@
     width: 100%;
     padding: 25px;
     box-sizing: border-box;
+    background-image: "/src/assets/fondosmt.png";
 
 }
 
@@ -16,4 +17,6 @@
     width: 100%;
     align-content: center;
     /* max-width: 1200px; */
+    margin-top: 250px;
+   
 }

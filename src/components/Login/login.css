@@ -1,8 +1,8 @@
 * {
-    font-family: 'Poppins', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+   font-family: 'Poppins', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
-.logoMuni{
+.logoMuni {
    height: 150px;
    object-fit: contain;
 }
@@ -10,7 +10,7 @@
 .box {
    position: sticky;
    width: 350px;
-   height: 550px;
+   height: 600px;
    border-radius: 8px;
    overflow: hidden;
    z-index: 1;
@@ -18,15 +18,15 @@
 
 }
 
-.buttonLoginColor{
-background-color: #0066ff !important;
+.buttonLoginColor {
+   background-color: #0066ff !important;
 }
 
 
 .box form {
    position: absolute;
    inset: 4px;
-   background:#ffffff;
+   background: #ffffff;
    padding: 40px 30px;
    border-radius: 8px;
    z-index: 2;
@@ -100,10 +100,11 @@ background-color: #0066ff !important;
    height: 44px;
 }
 
-.box form .inputBox input:valid~ .icono-password-login,
-.box form .inputBox input:focus~ .icono-password-login {
+.box form .inputBox input:valid~.icono-password-login,
+.box form .inputBox input:focus~.icono-password-login {
    color: gray;
 }
+
 .box form .links {
    display: flex;
    justify-content: space-between;
@@ -151,40 +152,41 @@ background-color: #0066ff !important;
 @media (max-height: 768px) {
 
    .box form .inputBox span {
-       position: absolute;
-       left: 0;
-       padding: 10px 0px 10px;
-       pointer-events: none;
-       color: #000;
-       font-size: 1em;
-       letter-spacing: 0.05em;
-       transition: 0.5s;
-       top: -2px;
+      position: absolute;
+      left: 0;
+      padding: 10px 0px 10px;
+      pointer-events: none;
+      color: #000;
+      font-size: 1em;
+      letter-spacing: 0.05em;
+      transition: 0.5s;
+      top: -2px;
    }
 
    .box form .inputBox input:valid~span,
    .box form .inputBox input:focus~span {
-       color: #000;
-       font-size: 0.75em;
-       transform: translateY(-32px);
-       z-index: 0;
+      color: #000;
+      font-size: 0.75em;
+      transform: translateY(-32px);
+      z-index: 0;
    }
 
    .box form input[type="submit"] {
-       border: none;
-       outline: none;
-       padding: 9px 25px;
-       background: #000;
-       cursor: pointer;
-       font-size: 0.9em;
-       border-radius: 4px;
-       font-weight: 600;
-       width: 100px !important;
-       margin-top: 25px;
-       z-index: 0;
+      border: none;
+      outline: none;
+      padding: 9px 25px;
+      background: #000;
+      cursor: pointer;
+      font-size: 0.9em;
+      border-radius: 4px;
+      font-weight: 600;
+      width: 100px !important;
+      margin-top: 25px;
+      z-index: 0;
    }
 
 }
+
 .icono-password-login {
    left: 250px;
    bottom: 14px;
@@ -194,8 +196,34 @@ background-color: #0066ff !important;
    z-index: 30;
 }
 
-.datoPie{
-   font-size: 50 !important;
-   margin-top: 10 !important;
-   color:#6495ED
+.datoPie {
+   font-size: 14px !important;
+   padding: 0 !important;
+   /* margin-top: 10 !important; */
+   color: #6495ED
 }
+.datoPie2 {
+   font-size: 12px !important;
+   padding: 0 !important;
+   /* margin-top: 10 !important; */
+   color: #6495ED
+}
+.fondoSMT {
+   background-image: url(../../assets/fondosmt.png) !important;
+   background-position: -500px -360px;
+}
+
+.info {
+   left: 100px;
+}
+
+/* @media screen and (max-width: 1280px) {
+   .info {
+     display: none !important;
+   }
+ }
+@media screen and (min-width: 1280px) {
+   .box {
+     left: 700px  !important;
+   }
+ } */

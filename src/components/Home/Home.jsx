@@ -1,16 +1,20 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faFileLines,
   faIdCard,
   faNewspaper,
   // faFolderOpen,
 } from "@fortawesome/free-regular-svg-icons";
 import { 
   // faBuildingCircleCheck,
-   faCommentsDollar, faNotesMedical, faQrcode } from "@fortawesome/free-solid-svg-icons";
+   faCommentsDollar, faNotesMedical, faQrcode, 
+   faUserPlus} from "@fortawesome/free-solid-svg-icons";
 import Card from "../Card/Card";
 import "./Home.css";
 import useStore from "../../Zustand/Zustand";
 import { cuilToDni } from "../../helpers/extraerDNI";
+import fondoSMT from  "/src/assets/fondosmt.png"; 
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const { user } = useStore();
@@ -18,6 +22,8 @@ const Home = () => {
   // const handleRedirect = (url) => {
   //   window.location.href = url;
   // };
+
+  const navigate=useNavigate()
 
   const irABOLETIN = () => {
     const token = localStorage.getItem("token");
@@ -30,20 +36,33 @@ const Home = () => {
   };
 
   const irATURNOS = () => {
-    const token = localStorage.getItem("token");
-    const url = new URL(
-      `https://turnos.smt.gob.ar/?auth=${token}&destino=turnero&rep=1711`
-    );
-    url.searchParams.append("auth", token);
-    window.open(url.toString(), "_blank");
+    localStorage.setItem("destino","turnero")
+
+    navigate("/login")
   };
   const irACREDENCIAL = () => {
-    const token = localStorage.getItem("token");
+localStorage.setItem("destino","credencial")
+
+navigate("/login")
+
+
+
+  };
+
+  const irABOLETASUELDO = () => {
+    
     const url = new URL(
-      `https://ciudaddigital.smt.gob.ar/#/credencialesCiudadano/${user.documento_persona}`
+      `localhost/genarchi/autoconsulta.php`
     );
-    url.searchParams.append("auth", token);
-    window.open(url.toString(), "_blank");
+  
+    window.location.href = url;
+    
+    
+      };
+
+  const irAREGISTRO = () => {
+    
+ navigate("/registro")
   };
   // const irAEXPEDIENTES = () => {
   //   const token = localStorage.getItem("token");
@@ -72,15 +91,23 @@ const Home = () => {
   }
 
   return (
-    <div className="contPadreHome">
+    <div style={{backgroundImage:`url(${fondoSMT})`, backgroundSize: '125%',   height: '100vh', backgroundPosition: 'center',}}>
+    <div className="contPadreHome" >
       <div className="cardsContHome">
-        <Card
+        {/* <Card
           onClick={() => irABOLETIN()}
           titulo={"Boletin Oficial"}
           descripcion={
             "Publicación Digital que contiene la normativa municipal y actos de gobierno"
           }
           Icono={<FontAwesomeIcon icon={faNewspaper} />}
+        /> */}
+
+<Card
+          onClick={() => irAREGISTRO()}
+          titulo={"Registro"}
+          descripcion={"Registrarse como ciudadano digital"}
+          Icono={<FontAwesomeIcon icon={faUserPlus} />}
         />
         <Card
           onClick={() => irACREDENCIAL()}
@@ -97,8 +124,15 @@ const Home = () => {
         <Card
           onClick={() => irATURNOS()}
           titulo={"Licencia de Conducir"}
-          descripcion={"Requsitos para Licencia de conducir"}
+          descripcion={"Solicitar turno para Licencia de conducir"}
           Icono={<FontAwesomeIcon icon={faIdCard} />}
+        />
+
+<Card
+          onClick={() => irABOLETASUELDO()}
+          titulo={"Recibo de sueldo"}
+          descripcion={"Imprimir recibo de sueldo"}
+          Icono={<FontAwesomeIcon icon={faFileLines} />}
         />
         {/* <Card
           onClick={() => irACATASTRO()}
@@ -106,7 +140,7 @@ const Home = () => {
           descripcion={"Catastro y Edificaciones"}
           Icono={<FontAwesomeIcon icon={faBuildingCircleCheck} />}
         /> */}
-        <Card
+        {/* <Card
           onClick={() => irALICITACIONES()}
           titulo={"Licitaciones"}
           descripcion={"Convocatoria para la contratación de bienes, obras y servicios."}
@@ -117,9 +151,11 @@ const Home = () => {
           titulo={"Carnet de Sanidad"}
           descripcion={"Consulta del Carnet Digital"}
           Icono={<FontAwesomeIcon icon={faNotesMedical}/>}
-        />
+        /> */}
       </div>
     </div>
+    </div>
+
   );
 };
 

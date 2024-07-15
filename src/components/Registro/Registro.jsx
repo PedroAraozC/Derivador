@@ -21,6 +21,7 @@ import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import useStore from "../../Zustand/Zustand";
 import { Terminos } from "./Terminos";
+import { ArrowBack } from "@mui/icons-material";
 
 export const Registro = () => {
   const [confirmarContraseña, setConfirmarContraseña] = useState("");
@@ -29,12 +30,18 @@ export const Registro = () => {
   const { authenticated } = useStore();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (authenticated) {
-      navigate("/home");
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authenticated]);
+  // useEffect(() => {
+  //   if (authenticated) {
+  //       const token = localStorage.getItem("token");
+
+  //       const url = new URL(`https://cidituc.smt.gob.ar/`);
+
+  //       url.searchParams.append("auth", token);
+  //       url.searchParams.append("destino", "derivador");
+
+  //       window.location.href = url.toString();
+  //   }
+  // }, [authenticated]);  
 
   const [modalAbierto2, setModalAbierto2] = useState(false);
 
@@ -54,9 +61,9 @@ export const Registro = () => {
     clave: "",
     telefono_persona: "",
     domicilio_persona: null,
-    id_provincia: null,
+    id_provincia: 1,
     localidad_persona: null,
-    id_pais: null,
+    id_pais: 1,
     fecha_nacimiento_persona: "",
     id_genero: "",
     validado: false,
@@ -76,12 +83,12 @@ export const Registro = () => {
 
   moment.tz.setDefault("America/Buenos_Aires");
   const maxDate = new Date();
+  maxDate.setFullYear(maxDate.getFullYear() - 16)
+  const minDate = new Date();
+  minDate.setFullYear(minDate.getFullYear() - 100);
 
   function validarCUIL(cuil) {
-    // Verificar que el CUIL tenga 11 dígitos
-    // if (cuil.length !== 11 || !/^\d+$/.test(cuil)) {
-    //     return false;
-    // }
+ 
     var cuilStr = cuil.toString();
     // Extraer los primeros 10 dígitos
     var digitos = cuilStr.substring(0, 10);
@@ -123,17 +130,17 @@ export const Registro = () => {
 
   const obtenerDatosDB = async () => {
     try {
-      const paisesDB = await cdigitalApi.get("/ciudadanoDigital/paises");
-      const provinciasDB = await cdigitalApi.get(
-        "/ciudadanoDigital/provincias"
-      );
+      // const paisesDB = await cdigitalApi.get("/ciudadanoDigital/paises");
+      // const provinciasDB = await cdigitalApi.get(
+      //   "/ciudadanoDigital/provincias"
+      // );
       const generosDB = await cdigitalApi.get("/ciudadanoDigital/genero");
-      const documentoDB = await cdigitalApi.get("/ciudadanoDigital/documento");
+      // const documentoDB = await cdigitalApi.get("/ciudadanoDigital/documento");
 
-      setPaises(paisesDB.data.ciudadanos);
-      setProvincias(provinciasDB.data.ciudadanos);
+      // setPaises(paisesDB.data.ciudadanos);
+      // setProvincias(provinciasDB.data.ciudadanos);
       setGeneros(generosDB.data.ciudadanos);
-      setTipoDocumento(documentoDB.data.ciudadanos);
+      // setTipoDocumento(documentoDB.data.ciudadanos);
     } catch (error) {
       console.log(error);
     }
@@ -148,18 +155,19 @@ export const Registro = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-   
+    setFlagBoton(true);
     let diferenciaTiempo =
       maxDate.getTime() - formData.fecha_nacimiento_persona.getTime();
     let edad = Math.floor(diferenciaTiempo / (1000 * 60 * 60 * 24 * 365));
     const cuilValidado = validarCUIL(formData.documento_persona);
 
     // ! Verificar Email
-    // const patronEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const patronEmail =
-      /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.(com|net|org|gov|edu|info)$/i;
+     const patronEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // const patronEmail =
+    //   /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.(com|net|org|gov|edu|info)$/i;
 
     if (!cuilValidado) {
+      setFlagBoton(false);
       return Swal.fire({
         icon: "error",
         title: "¡Ups!",
@@ -169,6 +177,7 @@ export const Registro = () => {
     }
 
     if (!patronEmail.test(formData.email_persona)) {
+      setFlagBoton(false);
       return Swal.fire({
         icon: "error",
         title: "¡Ups!",
@@ -178,6 +187,7 @@ export const Registro = () => {
     }
     // ! Verificar que las contraseñas sean iguales
     if (formData.clave !== confirmarContraseña) {
+      setFlagBoton(false);
       return Swal.fire({
         icon: "error",
         title: "¡Ups!",
@@ -187,6 +197,7 @@ export const Registro = () => {
     }
 
     if (formData.clave.length < 8) {
+      setFlagBoton(false);
       return Swal.fire({
         icon: "error",
         title: "¡Ups!",
@@ -196,6 +207,7 @@ export const Registro = () => {
     }
 
     if (formData.clave.length > 25) {
+      setFlagBoton(false);
       return Swal.fire({
         icon: "error",
         title: "¡Ups!",
@@ -205,6 +217,7 @@ export const Registro = () => {
     }
 
     if (!validarClave(formData.clave)) {
+      setFlagBoton(false);
       return Swal.fire({
         icon: "error",
         title: "¡Ups!",
@@ -214,6 +227,7 @@ export const Registro = () => {
     }
 
     if (formData.documento_persona.length < 11) {
+      setFlagBoton(false);
       return Swal.fire({
         icon: "error",
         title: "¡Ups!",
@@ -223,6 +237,7 @@ export const Registro = () => {
     }
 
     if (formData.telefono_persona < 0) {
+      setFlagBoton(false);
       return Swal.fire({
         icon: "error",
         title: "¡Ups!",
@@ -232,6 +247,7 @@ export const Registro = () => {
     }
 
     if (formData.documento_persona < 0) {
+      setFlagBoton(false);
       return Swal.fire({
         icon: "error",
         title: "¡Ups!",
@@ -241,6 +257,7 @@ export const Registro = () => {
     }
 
     if (formData.telefono_persona.length != 10) {
+      setFlagBoton(false);
       return Swal.fire({
         icon: "error",
         title: "¡Ups!",
@@ -267,6 +284,7 @@ export const Registro = () => {
     // }
 
     if (formData.id_genero == 0) {
+      setFlagBoton(false);
       return Swal.fire({
         icon: "error",
         title: "¡Ups!",
@@ -284,6 +302,7 @@ export const Registro = () => {
     // }
 
     if (edad < 14) {
+      setFlagBoton(false);
       return Swal.fire({
         icon: "error",
         title: "¡Ups!",
@@ -291,25 +310,16 @@ export const Registro = () => {
         confirmButtonColor: "#6495ED",
       });
     }
-    setFlagBoton(true);
 
     try {
-      const resp = await cdigitalApi.get(
-        `/usuarios/dni/${formData.documento_persona} `
-      );
+  
       const resp2 = await cdigitalApi.get(
         `/usuarios/email/${formData.email_persona} `
       );
-
-      if (resp.data.ciudadano) {
-        return Swal.fire({
-          icon: "error",
-          title: "¡Ups!",
-          text: "El CUIL ingresado ya se encuentra registrado",
-          confirmButtonColor: "#6495ED",
-        });
-      }
+  
+  
       if (resp2.data.ciudadano) {
+        setFlagBoton(false);
         return Swal.fire({
           icon: "error",
           title: "¡Ups!",
@@ -327,9 +337,49 @@ export const Registro = () => {
       });
     }
 
+    // setFlagBoton(true);
+
     AgregarCiudadanoDB(formData);
 
   };
+
+const validarCuilUsuarioExistente=async(value)=>{
+
+  try {
+    const resp = await cdigitalApi.get(
+      `/usuarios/dni/${value} `
+    );
+ 
+
+    if (resp.data.ciudadano) {
+       Swal.fire({
+        icon: "error",
+        title: "¡Ups!",
+        text: "El CUIL ingresado ya se encuentra registrado",
+        showConfirmButton:false
+      });
+
+
+      setTimeout(() => {
+   
+         window.location.reload();
+    
+    }, 1000);
+
+
+    }
+
+  } catch (error) {
+    console.log(error);
+    Swal.fire({
+      icon: "error",
+      title: "¡Ups!",
+      text: "Algo salió mal",
+      confirmButtonColor: "#6495ED",
+    });
+  }
+
+}
 
   const handlePaste = (e) => {
     // Cancelar el evento para evitar que se pegue el texto
@@ -341,13 +391,28 @@ export const Registro = () => {
     let value = e.target.value; // Eliminar espacios en blanco alrededor del valor
 
     if (
-      e.target.name === "id_provincia" ||
-      e.target.name === "id_pais" ||
-      e.target.name === "documento_persona" ||
+     
+      
       e.target.name === "id_genero"
     ) {
       value = value !== "" ? parseInt(value.slice(0, lon), 10) : ""; // Convertir a número si no está vacío
-    } else if (e.target.type === "number") {
+    } 
+    
+    else if (
+     
+      e.target.name === "documento_persona" & value.length==11
+      
+    ) 
+    {
+
+      validarCuilUsuarioExistente(value)
+
+      value = value !== "" ? parseInt(value.slice(0, lon), 10) : ""; // Convertir a número si no está vacío
+
+
+    } 
+
+    else if (e.target.type === "number") {
       value = value.slice(0, lon); // Limitar la longitud si es necesario
     }
 
@@ -400,6 +465,29 @@ export const Registro = () => {
       formattedDate += "-";
     }
     // Actualiza el valor del input con el formato deseado
+
+    if(input.length >= 10 ){
+      
+      if(new Date().getFullYear() - input.slice(-4) >= 100){
+        e.target.value = "";
+        Swal.fire({
+          icon: "error",
+          title: "Fecha Incorrecta",
+          text: "No se puede registrar personas mayores a 100 años",
+          confirmButtonColor: "#6495ED",
+        });
+          return;
+      }else if(new Date().getFullYear() - input.slice(-4) <=16){
+        e.target.value = "";
+        Swal.fire({
+          icon: "error",
+          title: "Fecha Incorrecta",
+          text: "Debe ser mayor de 16 años",
+          confirmButtonColor: "#6495ED",
+        });
+          return;
+      }
+    }
     e.target.value = formattedDate;
   };
 
@@ -457,10 +545,7 @@ export const Registro = () => {
             <Form onSubmit={handleRegister} className="m-1 p-3 ">
               <Row>
                 <Col xs={12} md={6}>
-                  {paises.length == 0 ||
-                  provincias.length == 0 ||
-                  generos.length == 0 ||
-                  tipoDocumento.length == 0 ? (
+                  {generos.length == 0 ? (
                     <Skeleton count={5} height={40} className="esqueleto" />
                   ) : (
                     <div>
@@ -564,10 +649,8 @@ export const Registro = () => {
                 </Col>
 
                 <Col xs={12} md={6}>
-                  {paises.length == 0 ||
-                  provincias.length == 0 ||
-                  generos.length == 0 ||
-                  tipoDocumento.length == 0 ? (
+                  {
+                  generos.length == 0 ? (
                     <Skeleton count={5} height={40} className="esqueleto" />
                   ) : (
                     <div>
@@ -685,6 +768,7 @@ export const Registro = () => {
                           locale={es}
                           timeZone="America/Buenos_Aires"
                           maxDate={maxDate}
+                          minDate={minDate}
                           onChangeRaw={handleChangeRaw}
                           onKeyDown={handleKeyDown}
                           ref={datePickerRef}
@@ -824,10 +908,16 @@ export const Registro = () => {
               </Row>
             </Form>
           </Col>
+        
         </Row>
+        <div className="text-center mt-5">
+        <Button onClick={()=>navigate("/*")} color="success" variant="contained" className=" boton mt-5"><ArrowBack />   VOLVER</Button>
+        </div>
+      
+       
       </Container>
 
-      <footer className="footerregistro d-flex flex-row  justify-content-center justify-content-sm-between  ">
+      {/* <footer className="footerregistro d-flex flex-row  justify-content-center justify-content-sm-between  ">
         <div className="col-xs-12 text-center">
           <img
             src={logo3}
@@ -840,7 +930,7 @@ export const Registro = () => {
             Desarrollado por: Dirección de Innovación Tecnológica
           </p>
         </div>
-      </footer>
+      </footer> */}
 
       {modalAbierto && (
         <Validacion

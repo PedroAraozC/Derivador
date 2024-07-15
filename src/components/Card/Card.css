@@ -3,6 +3,7 @@
     max-width: calc(25% - 20px);
     min-width: 200px;
     margin: 10px;
+    
     box-sizing: border-box;
     align-items: center;
     justify-content: center;
@@ -12,6 +13,7 @@
     border-color: transparent;
     font-weight: 300;
     cursor: pointer;
+   background-color: #c4c1c118;
 }
 
 .card-bodyHome {
@@ -20,6 +22,7 @@
     align-items: center;
     text-align: center;
     padding: 12px 8px;
+   
 }
 
 .card-textHome {
