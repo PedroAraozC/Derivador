@@ -40,8 +40,8 @@ import PrivateRouteTotem from "./routes/PrivateRouteTotem";
 
 
 function App() {
-  // const url = new URL(window.location.href);
-  // const logout = url.searchParams.get("logout");
+   const url = new URL(window.location.href);
+   const logout = url.searchParams.get("logout");
   // const token = url.searchParams.get("auth");
 
   // if(localStorage.getItem("token")){
@@ -54,9 +54,9 @@ function App() {
   // url.searchParams.delete("auth");
   // history.replaceState(null, "", url.toString());
 
-  // if (logout) {
-  //   localStorage.removeItem("token");
-  // }
+  if (logout) {
+    localStorage.removeItem("token");
+   }
 
   return (
     <>

@@ -51,11 +51,11 @@ navigate("/login")
 
   const irABOLETASUELDO = () => {
     
-    const url = new URL(
-      `localhost/genarchi/autoconsulta.php`
-    );
+    // const url = new URL(
+    //   `http://localhost/genarchi/autoconsulta.php`
+    // );
   
-    window.location.href = url;
+    window.location.href = `http://localhost/genarchi/autoconsulta.php`;
     
     
       };
@@ -92,7 +92,11 @@ navigate("/login")
 
   return (
     <div style={{backgroundImage:`url(${fondoSMT})`, backgroundSize: '125%',   height: '100vh', backgroundPosition: 'center',}}>
+        <div className="text-center d-flex  justify-content-center">
+      <h1 className="text-center pt-5 position-absolute">TERMINAL DE AUTOGESTION</h1>
+      </div> 
     <div className="contPadreHome" >
+   
       <div className="cardsContHome">
         {/* <Card
           onClick={() => irABOLETIN()}

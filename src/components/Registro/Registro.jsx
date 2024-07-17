@@ -301,15 +301,15 @@ export const Registro = () => {
     //     })
     // }
 
-    if (edad < 14) {
-      setFlagBoton(false);
-      return Swal.fire({
-        icon: "error",
-        title: "¡Ups!",
-        text: "Debe ser mayor de 14 años para registrarse",
-        confirmButtonColor: "#6495ED",
-      });
-    }
+    // if (edad < 14) {
+    //   setFlagBoton(false);
+    //   return Swal.fire({
+    //     icon: "error",
+    //     title: "¡Ups!",
+    //     text: "Debe ser mayor de 14 años para registrarse",
+    //     confirmButtonColor: "#6495ED",
+    //   });
+    // }
 
     try {
   
@@ -538,8 +538,10 @@ const validarCuilUsuarioExistente=async(value)=>{
       </header>
 
       <h1 className=" text-center mt-4 titulo">Registro del Ciudadano Digital</h1>
+ 
+      
 
-      <Container fluid className="mt-4 mb-4 pb-5">
+      <Container fluid className="mt-4  pb-2">
         <Row className="justify-content-center ">
           <Col xs={12} md={8} className="mt-2 pt-3 main mb-3 pb-3">
             <Form onSubmit={handleRegister} className="m-1 p-3 ">
@@ -904,18 +906,20 @@ const validarCuilUsuarioExistente=async(value)=>{
                       Enviar
                     </Button>
                   </div>
+                  
                 </Col>
+                
               </Row>
             </Form>
           </Col>
         
         </Row>
-        <div className="text-center mt-5">
-        <Button onClick={()=>navigate("/*")} color="success" variant="contained" className=" boton mt-5"><ArrowBack />   VOLVER</Button>
-        </div>
-      
+
        
       </Container>
+      <div className="text-center">
+        <Button onClick={()=>navigate("/*")} color="error" variant="contained" className=" boton "><ArrowBack />   salir</Button>
+        </div>
 
       {/* <footer className="footerregistro d-flex flex-row  justify-content-center justify-content-sm-between  ">
         <div className="col-xs-12 text-center">

@@ -36,15 +36,15 @@ const PrivateRouteTotem = ({ children }) => {
       if(localStorage.getItem("destino") == "turnero"){
 
         const token = localStorage.getItem("token");
-        const reparticion = localStorage.getItem("reparticion")
+        //const reparticion = localStorage.getItem("reparticion")
         const destino = localStorage.getItem("destino");
 
         const url = new URL(`https://turnos.smt.gob.ar/`);
         // const url = new URL(`http://181.105.6.205:91/`);
         url.searchParams.append("auth", token);
         url.searchParams.append("totem", true);
-        // url.searchParams.append("rep", reparticion);
-        // url.searchParams.append("destino", destino);
+         url.searchParams.append("rep", 1711);
+         url.searchParams.append("destino", destino);
 
         console.log(url.toString()); 
         console.log(destino);

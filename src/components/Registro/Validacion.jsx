@@ -47,9 +47,9 @@ export const Validacion = (props) => {
           //  navigate("/");
           //  window.location.reload();
           // window.location.href = `https://ciudaddigital.smt.gob.ar/#/login`;
-          window.location.reload()
+         // window.location.reload()
           // = `http://localhost:5173/#/login`;
-          // navigate("/login");
+           navigate("/*");
         }, 1500);
         cerrarModal(true);
         setBotonState(true);

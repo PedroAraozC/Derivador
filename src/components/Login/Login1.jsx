@@ -9,6 +9,7 @@ import { LOGIN_VALUES } from "../../helpers/constantes";
 import { useNavigate } from "react-router-dom";
 import { RestablecerClave } from "./RestablecerClave";
 import { ReenviarValidacion } from "./ReenviarValidacion";
+import { ArrowBack } from "@mui/icons-material";
 
 const Login1 = () => {
   const { authenticated, botonState, login, errors, setErrors } = useStore();
@@ -92,7 +93,7 @@ const Login1 = () => {
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center layoutHeight fondoSMT">
+    <div className="d-flex flex-column justify-content-center align-items-center layoutHeight fondoSMT">
       <div className="box">
         <span className="borderLine"></span>
         <form onSubmit={handleLogin} className="formLogin">
@@ -177,9 +178,17 @@ const Login1 = () => {
               </span>{" "}
               2024
             </p>
+   
           </div>
+    
+    
         </form>
+    
+  
       </div>
+      <div className="mt-3">
+        <Button onClick={()=>navigate("/*")} color="error" variant="contained" className=" boton "><ArrowBack />   salir</Button>
+        </div>
       {/* <div className="info col-4 position-absolute">
           <h5 className="mb-5">Ciudad Digital
             es una plataforma tecnológica que posibilita a los ciudadanos acceder de forma simple, en un único lugar y con una misma cuenta de usuario a los trámites y servicios digitales que brinda la ciudad de San Miguel de Tucumán</h5>
