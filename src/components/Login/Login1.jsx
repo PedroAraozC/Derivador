@@ -100,6 +100,7 @@ const Login1 = () => {
           <img src={logoMuni} alt="logo Municipalidad" className="logoMuni" />
           <div className="inputBox w-100">
             <input
+              autoFocus
               name="dni"
               type="text"
               required="required"
