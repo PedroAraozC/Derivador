@@ -46,7 +46,7 @@ const Home = () => {
     window.open(url.toString(), "_blank");
   };
   const irAEXPEDIENTES = () => {
-    window.location.href = `http://181.105.6.205:8890/?totem=true`;
+    window.location.href = `http://181.105.6.205:8890`;
   };
   // const irACATASTRO = () => {
   //   const token = localStorage.getItem("token");
