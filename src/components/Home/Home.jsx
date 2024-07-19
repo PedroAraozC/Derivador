@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faIdCard,
   faNewspaper,
-  // faFolderOpen,
+  faFolderOpen,
 } from "@fortawesome/free-regular-svg-icons";
 import { 
   // faBuildingCircleCheck,
@@ -45,12 +45,9 @@ const Home = () => {
     url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
   };
-  // const irAEXPEDIENTES = () => {
-  //   const token = localStorage.getItem("token");
-  //   const url = new URL(``);
-  //   url.searchParams.append("auth", token);
-  //   window.open(url.toString(), "_blank");
-  // };
+  const irAEXPEDIENTES = () => {
+    window.location.href = `http://181.105.6.205:8890/?totem=true`;
+  };
   // const irACATASTRO = () => {
   //   const token = localStorage.getItem("token");
   //   const url = new URL(`https://catastro.smt.gob.ar/#/?auth=${token}&destino=catastro`);
@@ -88,12 +85,12 @@ const Home = () => {
           descripcion={"Ver credencial digital"}
           Icono={<FontAwesomeIcon icon={faQrcode} />}
         />
-        {/* <Card
+        <Card
           onClick={() => irAEXPEDIENTES()}
           titulo={"Expedientes"}
           descripcion={"Ingreso a sistema de expedientes"}
           Icono={<FontAwesomeIcon icon={faFolderOpen} />}
-        /> */}
+        />
         <Card
           onClick={() => irATURNOS()}
           titulo={"Licencia de Conducir"}
