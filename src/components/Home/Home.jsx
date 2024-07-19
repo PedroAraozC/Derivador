@@ -40,7 +40,7 @@ const Home = () => {
   };
 
   const irAEXPEDIENTES = () => {
-    window.location.href = `http://172.16.10.137:8888/?totem=true`;
+    window.location.href = `http://172.16.10.137:8889/?totem=true`;
   };
 
 
