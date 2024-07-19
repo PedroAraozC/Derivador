@@ -46,7 +46,12 @@ const Home = () => {
     window.open(url.toString(), "_blank");
   };
   const irAEXPEDIENTES = () => {
-    window.location.href = `http://181.105.6.205:8890`;
+
+    const url = new URL(
+      `http://181.105.6.205:8890`
+    );
+
+    window.open(url.toString(), "_blank");
   };
   // const irACATASTRO = () => {
   //   const token = localStorage.getItem("token");
