@@ -6,7 +6,7 @@ import {
 } from "@fortawesome/free-regular-svg-icons";
 import { 
   // faBuildingCircleCheck,
-   faCommentsDollar, faNotesMedical, faQrcode } from "@fortawesome/free-solid-svg-icons";
+   faCommentsDollar, faNotesMedical, faQrcode, faCat } from "@fortawesome/free-solid-svg-icons";
 import Card from "../Card/Card";
 import "./Home.css";
 import useStore from "../../Zustand/Zustand";
@@ -37,6 +37,16 @@ const Home = () => {
     url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
   };
+
+  const irACEMA = () => {
+    const token = localStorage.getItem("token");
+    const url = new URL(
+      `https://turnos.smt.gob.ar/?auth=${token}&destino=turnero&rep=1800`
+    );
+    url.searchParams.append("auth", token);
+    window.open(url.toString(), "_blank");
+  };
+
   const irACREDENCIAL = () => {
     const token = localStorage.getItem("token");
     const url = new URL(
@@ -99,7 +109,7 @@ const Home = () => {
         <Card
           onClick={() => irATURNOS()}
           titulo={"Licencia de Conducir"}
-          descripcion={"Requsitos para Licencia de conducir"}
+          descripcion={"Turnos y Requsitos"}
           Icono={<FontAwesomeIcon icon={faIdCard} />}
         />
         {/* <Card
@@ -113,6 +123,12 @@ const Home = () => {
           titulo={"Licitaciones"}
           descripcion={"Convocatoria para la contratación de bienes, obras y servicios."}
           Icono={<FontAwesomeIcon icon={faCommentsDollar} />}
+        />
+         <Card
+          onClick={() => irACEMA()}
+          titulo={"Servicios de Población Animal"}
+          descripcion={"Turnos y Requsitos"}
+          Icono={<FontAwesomeIcon icon={faCat} />}
         />
         <Card
           onClick={() => irACARNETSANIDAD()}
