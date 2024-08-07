@@ -2,14 +2,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faIdCard,
   faNewspaper,
-  // faFolderOpen,
+  faFolderOpen,
 } from "@fortawesome/free-regular-svg-icons";
 import { 
   // faBuildingCircleCheck,
-   faCommentsDollar, faQrcode } from "@fortawesome/free-solid-svg-icons";
+   faCommentsDollar, faNotesMedical, faQrcode, faCat } from "@fortawesome/free-solid-svg-icons";
 import Card from "../Card/Card";
 import "./Home.css";
 import useStore from "../../Zustand/Zustand";
+import { cuilToDni } from "../../helpers/extraerDNI";
 
 const Home = () => {
   const { user } = useStore();
@@ -21,7 +22,7 @@ const Home = () => {
   const irABOLETIN = () => {
     const token = localStorage.getItem("token");
     const url = new URL(
-      `https://boletinoficial.smt.gob.ar/#/?auth=${token}&destino=boletin`
+      `https://boletinoficial.smt.gob.ar/?auth=${token}&destino=boletin`
       // `https://ciudaddigital.smt.gob.ar/?destino=boletin`
     );
     url.searchParams.append("auth", token);
@@ -36,20 +37,32 @@ const Home = () => {
     url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
   };
-  const irACREDENCIAL = () => {
+
+  const irACEMA = () => {
     const token = localStorage.getItem("token");
     const url = new URL(
-      `https://ciudaddigital.smt.gob.ar/#/CredencialesCiudadano/${user.documento_persona}`
+      `https://turnos.smt.gob.ar/?auth=${token}&destino=turnero&rep=1800`
     );
     url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
   };
-  // const irAEXPEDIENTES = () => {
-  //   const token = localStorage.getItem("token");
-  //   const url = new URL(``);
-  //   url.searchParams.append("auth", token);
-  //   window.open(url.toString(), "_blank");
-  // };
+
+  const irACREDENCIAL = () => {
+    const token = localStorage.getItem("token");
+    const url = new URL(
+      `https://ciudaddigital.smt.gob.ar/#/credencialesCiudadano/${user.documento_persona}`
+    );
+    url.searchParams.append("auth", token);
+    window.open(url.toString(), "_blank");
+  };
+  const irAEXPEDIENTES = () => {
+
+    const url = new URL(
+      `http://181.105.6.205:8890`
+    );
+
+    window.open(url.toString(), "_blank");
+  };
   // const irACATASTRO = () => {
   //   const token = localStorage.getItem("token");
   //   const url = new URL(`https://catastro.smt.gob.ar/#/?auth=${token}&destino=catastro`);
@@ -60,6 +73,15 @@ const Home = () => {
     const url = new URL(`https://licitaciones.smt.gob.ar`);
     window.open(url.toString(), "_blank");
   };
+
+  const irACARNETSANIDAD = () => {
+
+    const url = new URL(
+      `http://181.105.6.205:82/cs/index_cd.php?dni=${cuilToDni(user.documento_persona.toString())}`
+    );
+    
+    window.open(url.toString(), "_blank");
+  }
 
   return (
     <div className="contPadreHome">
@@ -78,16 +100,16 @@ const Home = () => {
           descripcion={"Ver credencial digital"}
           Icono={<FontAwesomeIcon icon={faQrcode} />}
         />
-        {/* <Card
+        <Card
           onClick={() => irAEXPEDIENTES()}
           titulo={"Expedientes"}
           descripcion={"Ingreso a sistema de expedientes"}
           Icono={<FontAwesomeIcon icon={faFolderOpen} />}
-        /> */}
+        />
         <Card
           onClick={() => irATURNOS()}
           titulo={"Licencia de Conducir"}
-          descripcion={"Requsitos para Licencia de conducir"}
+          descripcion={"Turnos y Requsitos"}
           Icono={<FontAwesomeIcon icon={faIdCard} />}
         />
         {/* <Card
@@ -101,6 +123,18 @@ const Home = () => {
           titulo={"Licitaciones"}
           descripcion={"Convocatoria para la contratación de bienes, obras y servicios."}
           Icono={<FontAwesomeIcon icon={faCommentsDollar} />}
+        />
+         <Card
+          onClick={() => irACEMA()}
+          titulo={"Servicios de Población Animal"}
+          descripcion={"Turnos y Requsitos"}
+          Icono={<FontAwesomeIcon icon={faCat} />}
+        />
+        <Card
+          onClick={() => irACARNETSANIDAD()}
+          titulo={"Carnet de Sanidad"}
+          descripcion={"Consulta del Carnet Digital"}
+          Icono={<FontAwesomeIcon icon={faNotesMedical}/>}
         />
       </div>
     </div>
