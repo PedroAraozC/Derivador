@@ -34,6 +34,9 @@ const ProviderEducacion = ({ children }) => {
   const [reparticiones, setReparticiones] = useState([]);
   const [permisosTUsuarios, setPermisosTUsuarios] = useState([]);
   const [empleados, setEmpleados] = useState([]);
+  const [ProcesosSinId, setProcesosSinId] = useState([]);
+  const [existeEnPP, setExisteEnPP] = useState(null);
+  const [permisosPorPersona, setPermisosPorPersona] = useState(null);
   //Funcion para listar las convocatorias
 
   const obtenerConvocatorias = async (idNivel) => {
@@ -251,8 +254,15 @@ const ProviderEducacion = ({ children }) => {
   const obtenerProcesos = async (id) =>{
     try {
       const resultado = await axios.post("/admin/listarProcesos", {id});
-      // console.log(resultado.data.materiales);
       setProcesos(resultado.data.procesos);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  const obtenerProcesosSinId = async () =>{
+    try {
+      const resultado = await axios.get("/admin/listarProcesosSinId");
+      setProcesosSinId(resultado.data.procesos);
     } catch (error) {
       console.log(error);
     }
@@ -287,16 +297,35 @@ const ProviderEducacion = ({ children }) => {
   const obtenerEmpleados = async () =>{
     try {
       const resultado = await axios.get("/admin/listarEmpleados");
-      // console.log(resultado.data.materiales);
       setEmpleados(resultado.data.empleados);
     } catch (error) {
       console.log(error);
     }
   }
+  const existeEnPermisoPersona = async (id) => {
+    try {
+      const response = await axios.post("/admin/existeEnPermisosPersona", { id });
+      if (response.status === 200) {
+        setExisteEnPP(true);
+        setPermisosPorPersona(response.data)
+      } else {
+        setExisteEnPP(false);
+      }
+    } catch (error) {
+      console.log(error);
+      setExisteEnPP(false);
+    }
+  };
+  
 
   return (
     <EducaContext.Provider
       value={{
+        existeEnPermisoPersona,
+        permisosPorPersona,
+        existeEnPP,
+        obtenerProcesosSinId,
+        ProcesosSinId,
         empleados,
         obtenerEmpleados,
         obtenerPermisosPorTUsuarios,

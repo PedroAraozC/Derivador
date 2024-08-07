@@ -72,12 +72,11 @@ export default function TablaOpciones() {
     return acc;
   }, []) : [];
 
-  const groupedOptionsWithId = groupedOptions.map((option, index) => ({
-    id: index + 1, // El índice comienza desde 0, por lo que sumamos 1 para obtener un ID que comience desde 1
+  const groupedOptionsWithId = groupedOptions.map((option) => ({
     nombre_opcion: option.nombre_opcion,
     subItems: option.subItems
   }));
-
+  
   const styleModal = {
     position: 'absolute',
     top: '50%',

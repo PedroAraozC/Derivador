@@ -1,29 +1,32 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { useState, useEffect, useContext } from "react";
-import { Modal, Box, Button, Divider, Switch, Snackbar, Alert } from "@mui/material";
+import { Modal, Box, Button, Divider, Switch, Snackbar, Alert, Select, MenuItem } from "@mui/material";
 import axios from "../../../config/axios";
 import { EducaContext } from "../../../context/EducaContext";
 
-const PermisosUsuario = ({ empleado, modalPermisosAbierto, handleClose }) => {
+const CambioTusuario = ({ empleado, modalCambioTUsuario, handleClose }) => {
     const [deviceWidth, setDeviceWidth] = useState(window.innerWidth);
     const [buttonDis, setButtonDis] = useState(false);
-    const { actualizador, obtenerProcesos, procesos } = useContext(EducaContext);
+    const { actualizador, obtenerProcesos, procesos, obtenerTiposDeUsuarios, tusuarios } = useContext(EducaContext);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMensaje, setSnackbarMensaje] = useState('');
     const [processStates, setProcessStates] = useState({});
-    const [permisosModificados, setPermisosModificados] = useState([]);
+    const [tipoDeUsuario, setTipoDeUsuario] = useState();
 
     useEffect(() => {
-        // cambiar esto para que traiga los procesos pero segun el id_persona
-        // ahora esta trayendo los procesos pero por id_tusuario
-        obtenerProcesos(empleado?.id_persona);
+        setTipoDeUsuario(empleado?.id_tusuario);
+        obtenerTiposDeUsuarios();
     }, [empleado]);
 
     useEffect(() => {
         setProcessStates(getInitialProcessStates());
-        setPermisosModificados([]);
     }, [procesos]);
+
+    useEffect(() => {
+        obtenerProcesos(tipoDeUsuario)
+    }, [tipoDeUsuario])
+    
 
     const getInitialProcessStates = () => {
         if (!Array.isArray(procesos)) return {};
@@ -43,35 +46,31 @@ const PermisosUsuario = ({ empleado, modalPermisosAbierto, handleClose }) => {
             ...prevStates,
             [id]: prevStates[id] === 1 ? 0 : 1, // Cambiamos el estado contrario al actual
         }));
-
-        setPermisosModificados(prevPermisos => {
-            const existingIndex = prevPermisos.findIndex(permiso => permiso.id === id);
-            if (existingIndex !== -1) {
-                const updatedPermisos = [...prevPermisos];
-                updatedPermisos[existingIndex] = { ...updatedPermisos[existingIndex], ver: processStates[id] === 1 ? 0 : 1 }; // Actualizamos el estado contrario al actual
-                return updatedPermisos;
-            } else {
-                return [...prevPermisos, { id, ver: processStates[id] === 1 ? 0 : 1 }]; // Agregamos el nuevo permiso con el estado contrario al actual
-            }
-        });
     };
 
-    const editarPermisos = async () => {
+    const handleInputChange = (event) => {
+        const { value } = event.target;
+        let newValue = value;
+    
+        setTipoDeUsuario(newValue);
+    };
+
+    const cambiarTipoDeUsuario = async () => {
         setButtonDis(true);
         let datos = {
-            id: empleado.id_permiso,
-            permisos: permisosModificados
+            id_persona : empleado.id_persona,
+            id : tipoDeUsuario
         }
         console.log(datos)
         try {
-            const response = await axios.post("/admin/editarPermisosTUsuarios", datos);
+            const response = await axios.post("/admin/cambiarTipoDeUsuario", datos);
             console.log(response)
-            setSnackbarMensaje("Permisos editados.");
+            setSnackbarMensaje("Usuario modificado.");
             setSnackbarOpen(true);
             actualizador();
         } catch (error) {
-            console.error("Error al editar los permisos:", error);
-            setSnackbarMensaje("Error al editar los permisos");
+            console.error("Error al cambiar el Tipo de Usuario:", error);
+            setSnackbarMensaje("Error al cambiar el Tipo de Usuario");
             setSnackbarOpen(true);
         } finally {
             setButtonDis(false);
@@ -79,7 +78,7 @@ const PermisosUsuario = ({ empleado, modalPermisosAbierto, handleClose }) => {
     };
 
     const handleSubmit = () => {
-        editarPermisos();
+        cambiarTipoDeUsuario();
     };
 
     useEffect(() => {
@@ -113,12 +112,30 @@ const PermisosUsuario = ({ empleado, modalPermisosAbierto, handleClose }) => {
     };
 
     return (
-        <Modal open={modalPermisosAbierto} onClose={handleClose}>
+        <Modal open={modalCambioTUsuario} onClose={handleClose}>
             <Box sx={style}>
                 <div className="d-flex justify-content-around align-items-center mb-3">
                     <h2 style={{ fontSize: "1.3rem", margin: 0 }}>
                         Permisos para {empleado.nombre_persona}
                     </h2>
+                    <p>Tipo de usuario :</p>
+                    <Select
+                        value={tipoDeUsuario}
+                        onChange={handleInputChange}
+                        name="id_tusuario"
+                        sx={{ width: 400 }}
+                        required={true}
+                    >
+                        {Array.isArray(tusuarios) &&
+                            tusuarios.map((t) => (
+                                <MenuItem
+                                    key={t.id_tusuario}
+                                    value={t.id_tusuario}
+                                >
+                                    {t.nombre_tusuario}
+                                </MenuItem>
+                            ))}
+                    </Select>
                 </div>
                 <Divider />
                 <div className="d-flex flex-column justify-content-center">
@@ -132,6 +149,7 @@ const PermisosUsuario = ({ empleado, modalPermisosAbierto, handleClose }) => {
                                             <Switch
                                                 checked={processStates[pro.id_permiso_tusuario] === 1}
                                                 onChange={() => handleSwitchChange(pro.id_permiso_tusuario)}
+                                                disabled
                                             />
                                         </div>
                                     </div>
@@ -157,4 +175,4 @@ const PermisosUsuario = ({ empleado, modalPermisosAbierto, handleClose }) => {
     );
 };
 
-export default PermisosUsuario;
+export default CambioTusuario;

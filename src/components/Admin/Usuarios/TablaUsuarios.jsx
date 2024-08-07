@@ -9,16 +9,19 @@ import TablePagination from "@mui/material/TablePagination";
 import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
 import { EducaContext } from "../../../context/EducaContext";
-import PermisosUsuario from "./PermisosUsuario";
+import CambioTusuario from "./CambioTusuario";
 import KeyOutlinedIcon from '@mui/icons-material/KeyOutlined';
 import KeyOffOutlinedIcon from '@mui/icons-material/KeyOffOutlined';
+import AccessibilityNewOutlinedIcon from '@mui/icons-material/AccessibilityNewOutlined';
 import { TextField } from "@mui/material";
+import PermisosEspecificos from "./PermisosEspecificos";
 
 const TablaUsuarios = () => {
     const { empleados, obtenerEmpleados, refresh } = useContext(EducaContext);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [modalPermisosAbierto, setModalPermisosAbierto] = useState(false);
+    const [modalCambioTUsuario, setModalModalCambioTUsuario] = useState(false);
     const [empleadoSeleccionado, setEmpleadoSeleccionado] = useState(null);
     const [paginatedArray, setPaginatedArray] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
@@ -34,8 +37,6 @@ const TablaUsuarios = () => {
             ((e.afiliado && e.afiliado.toString().toLowerCase().includes(searchTerm.toLowerCase()))) ||
             (e.email_persona?.toLowerCase().includes(searchTerm.toLowerCase()))
         );
-        
-        
         setPaginatedArray(filteredEmpleados?.slice(page * rowsPerPage, (page + 1) * rowsPerPage));
     }, [empleados, page, rowsPerPage, searchTerm]);
 
@@ -49,9 +50,14 @@ const TablaUsuarios = () => {
         ));
     };
 
-    const abrirModalPermisos = (empleado) => {
+    const abrirModalCambioTUsuario = (empleado) => {
         setEmpleadoSeleccionado(empleado);
         setModalPermisosAbierto(true);
+    };
+
+    const abrirModalPermisos = (empleado) => {
+        setEmpleadoSeleccionado(empleado);
+        setModalModalCambioTUsuario(true);
     };
 
     const handleChangePage = (event, newPage) => {
@@ -107,12 +113,18 @@ const TablaUsuarios = () => {
                                     <TableCell align="center">
                                         {empleadoSeleccionado?.id_persona === e.id_persona ? (
                                             <KeyOutlinedIcon
-                                                onClick={() => abrirModalPermisos(e)}
+                                                onClick={() => abrirModalCambioTUsuario(e)}
                                                 style={{ cursor: 'pointer' }}
                                             />
                                         ) : (
                                             <KeyOffOutlinedIcon style={{ cursor: 'pointer' }} />
                                         )}
+                                        {empleadoSeleccionado?.id_persona === e.id_persona ? (
+                                            <AccessibilityNewOutlinedIcon
+                                                onClick={() => abrirModalPermisos(e)}
+                                                style={{ cursor: 'pointer' }}
+                                            />
+                                        ) : (<></>)}
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -129,7 +141,12 @@ const TablaUsuarios = () => {
                         labelRowsPerPage="Filas por página"
                     />
                 </TableContainer>
-                <PermisosUsuario
+                <CambioTusuario
+                    empleado={empleadoSeleccionado}
+                    modalCambioTUsuario={modalCambioTUsuario}
+                    handleClose={() => setModalModalCambioTUsuario(false)}
+                    />
+                <PermisosEspecificos
                     empleado={empleadoSeleccionado}
                     modalPermisosAbierto={modalPermisosAbierto}
                     handleClose={() => setModalPermisosAbierto(false)}
