@@ -163,7 +163,7 @@ export default function ListaPrueba() {
           </ListItemIcon>
           <ListItemText primary="INICIO" />
         </ListItemButton>
-        {user.id_tusuario == 1? <>
+        {user.id_tusuario == 1 || user.documento_persona == "27220303026" || user.documento_persona == "23213275739"? <>
         <ListItemButton
           onClick={() => irACATASTRO()}
           component="a"
