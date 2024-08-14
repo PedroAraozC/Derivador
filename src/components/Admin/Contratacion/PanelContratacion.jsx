@@ -2,7 +2,6 @@ import { Alert, Button, InputLabel, MenuItem, Select, Snackbar, Switch, TextFiel
 import { useState, useEffect, useRef } from "react";
 import useStore from "../../../Zustand/Zustand";
 import axios from "../../../config/axiosLicitaciones";
-import axiosCidi from "../../../config/axios";
 import TablaContratacion from "./TablaContratacion";
 
 const PanelContratacion = () => {
@@ -81,7 +80,7 @@ const validarFormulario = () => {
         contratacion.archivo = archivo;
         console.log(contratacion)
         // Realiza la solicitud con formData
-        const response = await axiosCidi.post("/admin/agregarContratacion", contratacion, {
+        const response = await axios.post("/admin/agregarContratacion", contratacion, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -98,9 +97,9 @@ const validarFormulario = () => {
         throw new Error("Error al agregar la contratacion");
       }
     } else {
-      console.log('Algo salió mal :(');
       setSnackbarMensaje("Por favor, corrige los errores en el formulario.");
       setSnackbarOpen(true);
+      setButtonDis(false)
     }
   };
 
@@ -131,6 +130,8 @@ const validarFormulario = () => {
     setButtonDis(false)
     setLlevaAnexo(false)
     setButtonDisAnexo(false);
+    setArchivo(null);
+    setAnexo(null);
   }
 
   useEffect(() => {

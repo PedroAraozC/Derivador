@@ -8,7 +8,7 @@ import { EducaContext } from "../../../context/EducaContext";
 const PermisosEspecificos = ({ empleado, modalPermisosAbierto, handleClose }) => {
     const [deviceWidth, setDeviceWidth] = useState(window.innerWidth);
     const [buttonDis, setButtonDis] = useState(false);
-    const { actualizador, obtenerProcesosSinId, ProcesosSinId, existeEnPermisoPersona, existeEnPP } = useContext(EducaContext);
+    const { actualizador, obtenerProcesosSinId, ProcesosSinId, existeEnPermisoPersona } = useContext(EducaContext);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMensaje, setSnackbarMensaje] = useState('');
     const [processStates, setProcessStates] = useState({});
@@ -25,8 +25,6 @@ const PermisosEspecificos = ({ empleado, modalPermisosAbierto, handleClose }) =>
     useEffect(() => {
         obtenerProcesosSinId()
     }, [tipoDeUsuario])
-
-    console.log(existeEnPP)
 
     const handleSwitchChange = (id) => {
         setProcessStates(prevStates => ({
