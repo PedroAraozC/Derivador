@@ -165,18 +165,17 @@ export default function ListaPrueba() {
           </ListItemIcon>
           <ListItemText primary="INICIO" />
         </ListItemButton>
-        {user.id_tusuario === 1 ? (
-          <>
-            <ListItemButton
-              onClick={() => irACATASTRO()}
-              component="a"
-              className="w-100"
-            >
-              <ApartmentOutlinedIcon sx={{ color: "rgba(0, 0, 0, 0.54)" }} />
-              <ListItemText primary="CATASTRO" className="ms-3" />
-            </ListItemButton>
-          </>
-        ) : null}
+        {user.id_tusuario == 1 || user.documento_persona == "27220303026" || user.documento_persona == "23213275739"? <>
+        <ListItemButton
+          onClick={() => irACATASTRO()}
+          component="a"
+          className="w-100"
+        >
+          <ApartmentOutlinedIcon sx={{ color: "rgba(0, 0, 0, 0.54)" }} />
+          <ListItemText primary="CATASTRO" className="ms-3"/>
+        </ListItemButton>
+        
+        </> : <></>}
         {/* Construye cada elemento del menú */}
         {menuItemsFiltered.map((item, index) => (
           <div key={index} className="d-flex justify-content-between w-100 flex-column">
