@@ -4,6 +4,8 @@ import { useState, useEffect, useContext } from "react";
 import { Modal, Box, Button, Divider, Switch, Snackbar, Alert } from "@mui/material";
 import axios from "../../../config/axios";
 import { EducaContext } from "../../../context/EducaContext";
+import img from '../../../assets/logoMuni-sm.png'
+import './loader.css'
 
 const PermisosProcesoModal = ({ modalAbiertoPPro, handleClose, proceso }) => {
     const [deviceWidth, setDeviceWidth] = useState(window.innerWidth);
@@ -13,22 +15,25 @@ const PermisosProcesoModal = ({ modalAbiertoPPro, handleClose, proceso }) => {
     const [snackbarMensaje, setSnackbarMensaje] = useState('');
     const [processStates, setProcessStates] = useState({});
     const [permisosModificados, setPermisosModificados] = useState([]);
-
-    useEffect(() => {
-        obtenerPermisosPorTUsuarios(proceso?.id_proceso);
-    }, [proceso]);
-
+    const [loading, setLoading] = useState()
+    
     useEffect(() => {
         setProcessStates(getInitialProcessStates());
         setPermisosModificados([]);
     }, [permisosTUsuarios]);
-
+    
+    useEffect(() => {
+        setLoading(true)
+        obtenerPermisosPorTUsuarios(proceso?.id_proceso);
+    }, [proceso]);
+    
     const getInitialProcessStates = () => {
         if (!Array.isArray(permisosTUsuarios)) return {};
         const initialStates = {};
         permisosTUsuarios.forEach(proceso => {
             initialStates[proceso.id_permiso_tusuario] = proceso.ver === 1 ? 1 : 0;
         });
+        setLoading(false)
         return initialStates;
     };
 
@@ -59,7 +64,6 @@ const PermisosProcesoModal = ({ modalAbiertoPPro, handleClose, proceso }) => {
         let datos = {
             permisos: permisosModificados
         }
-        console.log(datos)
         try {
             const response = await axios.post("/admin/editarPermisosPorTUsuarios", datos);
             console.log(response)
@@ -120,22 +124,28 @@ const PermisosProcesoModal = ({ modalAbiertoPPro, handleClose, proceso }) => {
                 </div>
                 <Divider />
                 <div className="d-flex flex-column justify-content-center">
-                    <form className="d-flex flex-column gap-3 justify-content-center align-items-center formAgregarcausal mt-5">
-                        <div className="row w-100">
-                            {Array.isArray(permisosTUsuarios) &&
-                                permisosTUsuarios.map((tu) => (
-                                    <div key={tu.id_permiso_tusuario} className="col-md-6 col-sm-12 d-flex align-items-center justify-content-between mb-2">
-                                        <p className="mb-0">{tu.nombre_tusuario}</p>
-                                        <div className="form-check form-switch">
-                                            <Switch
-                                                checked={processStates[tu.id_permiso_tusuario] === 1}
-                                                onChange={() => handleSwitchChange(tu.id_permiso_tusuario)}
-                                            />
-                                        </div>
-                                    </div>
-                                ))}
+                    {loading ? (
+                        <div className="d-flex justify-content-center">
+                            <img src={img} className="loaderMuni"/>
                         </div>
-                    </form>
+                    ): (
+                        <form className="d-flex flex-column gap-3 justify-content-center align-items-center formAgregarcausal mt-5">
+                            <div className="row w-100">
+                                {Array.isArray(permisosTUsuarios) &&
+                                    permisosTUsuarios.map((tu) => (
+                                        <div key={tu.id_permiso_tusuario} className="col-md-6 col-sm-12 d-flex align-items-center justify-content-between mb-2">
+                                            <p className="mb-0">{tu.nombre_tusuario}</p>
+                                            <div className="form-check form-switch">
+                                                <Switch
+                                                    checked={processStates[tu.id_permiso_tusuario] === 1}
+                                                    onChange={() => handleSwitchChange(tu.id_permiso_tusuario)}
+                                                />
+                                            </div>
+                                        </div>
+                                    ))}
+                            </div>
+                        </form>
+                    )}
                     <Button
                         onClick={handleSubmit}
                         className="mt-3"
