@@ -72,12 +72,11 @@ export default function TablaOpciones() {
     return acc;
   }, []) : [];
 
-  const groupedOptionsWithId = groupedOptions.map((option, index) => ({
-    id: index + 1, // El índice comienza desde 0, por lo que sumamos 1 para obtener un ID que comience desde 1
+  const groupedOptionsWithId = groupedOptions.map((option) => ({
     nombre_opcion: option.nombre_opcion,
     subItems: option.subItems
   }));
-
+  
   const styleModal = {
     position: 'absolute',
     top: '50%',
@@ -190,13 +189,9 @@ export default function TablaOpciones() {
                             {option.subItems.map((subItem, subIndex) => (
                               <TableRow key={subIndex}>
                                 {/* Agrega celdas vacías */}
-                                <TableCell>Proceso:</TableCell>
                                 <TableCell></TableCell>
                                 <TableCell>{subItem.nombre_proceso}</TableCell>
                                 <TableCell>
-                                  <button className='btn'>
-                                    <DeleteIcon/>
-                                  </button>
                                   <button className='btn'>
                                     <EditIcon/>
                                   </button>

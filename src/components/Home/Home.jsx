@@ -2,14 +2,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faIdCard,
   faNewspaper,
-  // faFolderOpen,
+  faFolderOpen,
 } from "@fortawesome/free-regular-svg-icons";
 import {
   // faBuildingCircleCheck,
+<<<<<<< HEAD
   faCommentsDollar,
   faNotesMedical,
   faQrcode,
 } from "@fortawesome/free-solid-svg-icons";
+=======
+   faCommentsDollar, faNotesMedical, faQrcode, faCat } from "@fortawesome/free-solid-svg-icons";
+>>>>>>> a503a194400df5347b9f1216480b3484f1ac81cb
 import Card from "../Card/Card";
 import "./Home.css";
 import useStore from "../../Zustand/Zustand";
@@ -40,6 +44,16 @@ const Home = () => {
     url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
   };
+
+  const irACEMA = () => {
+    const token = localStorage.getItem("token");
+    const url = new URL(
+      `https://turnos.smt.gob.ar/?auth=${token}&destino=turnero&rep=1800`
+    );
+    url.searchParams.append("auth", token);
+    window.open(url.toString(), "_blank");
+  };
+
   const irACREDENCIAL = () => {
     const token = localStorage.getItem("token");
     const url = new URL(
@@ -48,12 +62,14 @@ const Home = () => {
     url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
   };
-  // const irAEXPEDIENTES = () => {
-  //   const token = localStorage.getItem("token");
-  //   const url = new URL(``);
-  //   url.searchParams.append("auth", token);
-  //   window.open(url.toString(), "_blank");
-  // };
+  const irAEXPEDIENTES = () => {
+
+    const url = new URL(
+      `http://181.105.6.205:8890`
+    );
+
+    window.open(url.toString(), "_blank");
+  };
   // const irACATASTRO = () => {
   //   const token = localStorage.getItem("token");
   //   const url = new URL(`https://catastro.smt.gob.ar/#/?auth=${token}&destino=catastro`);
@@ -77,6 +93,7 @@ const Home = () => {
 
   return (
     <div className="contPadreHome">
+<<<<<<< HEAD
         <div className="cardsContHome">
           <Card
             onClick={() => irABOLETIN()}
@@ -93,10 +110,29 @@ const Home = () => {
             Icono={<FontAwesomeIcon icon={faQrcode} />}
           />
           {/* <Card
+=======
+      <div className="cardsContHome">
+        <Card
+          onClick={() => irABOLETIN()}
+          titulo={"Boletin Oficial"}
+          descripcion={
+            "Publicación Digital que contiene la normativa municipal y actos de gobierno"
+          }
+          Icono={<FontAwesomeIcon icon={faNewspaper} />}
+        />
+        <Card
+          onClick={() => irACREDENCIAL()}
+          titulo={"Credencial"}
+          descripcion={"Ver credencial digital"}
+          Icono={<FontAwesomeIcon icon={faQrcode} />}
+        />
+        <Card
+>>>>>>> a503a194400df5347b9f1216480b3484f1ac81cb
           onClick={() => irAEXPEDIENTES()}
           titulo={"Expedientes"}
           descripcion={"Ingreso a sistema de expedientes"}
           Icono={<FontAwesomeIcon icon={faFolderOpen} />}
+<<<<<<< HEAD
         /> */}
           <Card
             onClick={() => irATURNOS()}
@@ -105,11 +141,22 @@ const Home = () => {
             Icono={<FontAwesomeIcon icon={faIdCard} />}
           />
           {/* <Card
+=======
+        />
+        <Card
+          onClick={() => irATURNOS()}
+          titulo={"Licencia de Conducir"}
+          descripcion={"Turnos y Requsitos"}
+          Icono={<FontAwesomeIcon icon={faIdCard} />}
+        />
+        {/* <Card
+>>>>>>> a503a194400df5347b9f1216480b3484f1ac81cb
           onClick={() => irACATASTRO()}
           titulo={"Catastro"}
           descripcion={"Catastro y Edificaciones"}
           Icono={<FontAwesomeIcon icon={faBuildingCircleCheck} />}
         /> */}
+<<<<<<< HEAD
           <Card
             onClick={() => irALICITACIONES()}
             titulo={"Licitaciones"}
@@ -124,6 +171,26 @@ const Home = () => {
             descripcion={"Consulta del Carnet Digital"}
             Icono={<FontAwesomeIcon icon={faNotesMedical} />}
           />
+=======
+        <Card
+          onClick={() => irALICITACIONES()}
+          titulo={"Licitaciones"}
+          descripcion={"Convocatoria para la contratación de bienes, obras y servicios."}
+          Icono={<FontAwesomeIcon icon={faCommentsDollar} />}
+        />
+         <Card
+          onClick={() => irACEMA()}
+          titulo={"Servicios de Población Animal"}
+          descripcion={"Turnos y Requsitos"}
+          Icono={<FontAwesomeIcon icon={faCat} />}
+        />
+        <Card
+          onClick={() => irACARNETSANIDAD()}
+          titulo={"Carnet de Sanidad"}
+          descripcion={"Consulta del Carnet Digital"}
+          Icono={<FontAwesomeIcon icon={faNotesMedical}/>}
+        />
+>>>>>>> a503a194400df5347b9f1216480b3484f1ac81cb
       </div>
     </div>
   );
