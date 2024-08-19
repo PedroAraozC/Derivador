@@ -17,7 +17,7 @@ import { EducaContext } from "../../../context/EducaContext";
 import ModalPatrimonio from "./ModalPatrimonio";
 import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "../../../config/axios";
-import "./TablaPatrimonioMunicipal.css"
+import "./TablaPatrimonioMunicipal.css";
 
 const TablaPatrimonioMunicipal = () => {
   const [page, setPage] = useState(0);
@@ -88,15 +88,14 @@ const TablaPatrimonioMunicipal = () => {
 
   const handleDelete = async (patri) => {
     console.log(patri);
-    const id_patri = patri.id_patrimonio;
-    console.log(id_patri, "id_patri");
+    // const id_patri = patri.id_patrimonio;
+    console.log(patri, "id_patri");
     try {
       setButtonDis(true);
-      const response = await axios.post("/admin/deshabilitarPatrimonio", id_patri, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const response = await axios.post(
+        "/admin/deshabilitarPatrimonio",
+        patri
+      );
       setSnackbarMensaje("Patrimonio deshabilitado.");
       setSnackbarOpen(true);
       actualizador();
@@ -173,8 +172,14 @@ const TablaPatrimonioMunicipal = () => {
                       {patrimonio.habilita == 1 ? "SI" : "NO"}
                     </TableCell>
                     <TableCell sx={{ textAlign: "center" }}>
-                      <button className="btn" disabled={!buttonDis && patrimonio.habilita != 1} onClick={() => handleDelete(patrimonio)}><DeleteIcon className= "iconDelete" /></button>
-                      </TableCell>
+                      <button
+                        className="btn"
+                        disabled={!buttonDis && patrimonio.habilita != 1}
+                        onClick={() => handleDelete(patrimonio)}
+                      >
+                        <DeleteIcon className="iconDelete" />
+                      </button>
+                    </TableCell>
                   </TableRow>
                 ))}
             </TableBody>
