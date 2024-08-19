@@ -88,9 +88,11 @@ const TablaPatrimonioMunicipal = () => {
 
   const handleDelete = async (patri) => {
     console.log(patri);
+    const id_patri = patri.id_patrimonio;
+    console.log(id_patri, "id_patri");
     try {
       setButtonDis(true);
-      const response = await axios.post("/admin/deshabilitarPatrimonio", patri, {
+      const response = await axios.post("/admin/deshabilitarPatrimonio", id_patri, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
