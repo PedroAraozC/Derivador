@@ -90,7 +90,11 @@ const TablaPatrimonioMunicipal = () => {
     console.log(patri);
     try {
       setButtonDis(true);
-      const response = await axios.post("/admin/deshabilitarPatrimonio", patri);
+      const response = await axios.post("/admin/deshabilitarPatrimonio", patri, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       setSnackbarMensaje("Patrimonio deshabilitado.");
       setSnackbarOpen(true);
       actualizador();
