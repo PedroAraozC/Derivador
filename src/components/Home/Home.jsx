@@ -6,14 +6,7 @@ import {
 } from "@fortawesome/free-regular-svg-icons";
 import {
   // faBuildingCircleCheck,
-<<<<<<< HEAD
-  faCommentsDollar,
-  faNotesMedical,
-  faQrcode,
-} from "@fortawesome/free-solid-svg-icons";
-=======
    faCommentsDollar, faNotesMedical, faQrcode, faCat } from "@fortawesome/free-solid-svg-icons";
->>>>>>> a503a194400df5347b9f1216480b3484f1ac81cb
 import Card from "../Card/Card";
 import "./Home.css";
 import useStore from "../../Zustand/Zustand";
@@ -93,7 +86,6 @@ const Home = () => {
 
   return (
     <div className="contPadreHome">
-<<<<<<< HEAD
         <div className="cardsContHome">
           <Card
             onClick={() => irABOLETIN()}
@@ -109,31 +101,12 @@ const Home = () => {
             descripcion={"Ver credencial digital"}
             Icono={<FontAwesomeIcon icon={faQrcode} />}
           />
-          {/* <Card
-=======
-      <div className="cardsContHome">
-        <Card
-          onClick={() => irABOLETIN()}
-          titulo={"Boletin Oficial"}
-          descripcion={
-            "Publicación Digital que contiene la normativa municipal y actos de gobierno"
-          }
-          Icono={<FontAwesomeIcon icon={faNewspaper} />}
-        />
-        <Card
-          onClick={() => irACREDENCIAL()}
-          titulo={"Credencial"}
-          descripcion={"Ver credencial digital"}
-          Icono={<FontAwesomeIcon icon={faQrcode} />}
-        />
-        <Card
->>>>>>> a503a194400df5347b9f1216480b3484f1ac81cb
+           <Card
           onClick={() => irAEXPEDIENTES()}
           titulo={"Expedientes"}
           descripcion={"Ingreso a sistema de expedientes"}
           Icono={<FontAwesomeIcon icon={faFolderOpen} />}
-<<<<<<< HEAD
-        /> */}
+        /> 
           <Card
             onClick={() => irATURNOS()}
             titulo={"Licencia de Conducir"}
@@ -141,37 +114,11 @@ const Home = () => {
             Icono={<FontAwesomeIcon icon={faIdCard} />}
           />
           {/* <Card
-=======
-        />
-        <Card
-          onClick={() => irATURNOS()}
-          titulo={"Licencia de Conducir"}
-          descripcion={"Turnos y Requsitos"}
-          Icono={<FontAwesomeIcon icon={faIdCard} />}
-        />
-        {/* <Card
->>>>>>> a503a194400df5347b9f1216480b3484f1ac81cb
           onClick={() => irACATASTRO()}
           titulo={"Catastro"}
           descripcion={"Catastro y Edificaciones"}
           Icono={<FontAwesomeIcon icon={faBuildingCircleCheck} />}
         /> */}
-<<<<<<< HEAD
-          <Card
-            onClick={() => irALICITACIONES()}
-            titulo={"Licitaciones"}
-            descripcion={
-              "Convocatoria para la contratación de bienes, obras y servicios."
-            }
-            Icono={<FontAwesomeIcon icon={faCommentsDollar} />}
-          />
-          <Card
-            onClick={() => irACARNETSANIDAD()}
-            titulo={"Carnet de Sanidad"}
-            descripcion={"Consulta del Carnet Digital"}
-            Icono={<FontAwesomeIcon icon={faNotesMedical} />}
-          />
-=======
         <Card
           onClick={() => irALICITACIONES()}
           titulo={"Licitaciones"}
@@ -190,7 +137,6 @@ const Home = () => {
           descripcion={"Consulta del Carnet Digital"}
           Icono={<FontAwesomeIcon icon={faNotesMedical}/>}
         />
->>>>>>> a503a194400df5347b9f1216480b3484f1ac81cb
       </div>
     </div>
   );
