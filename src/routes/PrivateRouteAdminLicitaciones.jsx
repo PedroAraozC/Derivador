@@ -16,7 +16,7 @@ const PrivateRouteAdminLicitaciones = ({ children }) => {
         <Box sx={{ display: "flex" }}>
             <CircularProgress />
         </Box>
-    ) : authenticated && user.id_tusuario == 6 || user.id_tusuario == 1 ? (
+    ) : authenticated && user.id_tusuario == 6 || user.id_tusuario == 14 || user.id_tusuario == 1 ? (
         children
     ) : (
         <Navigate to="/login" />
