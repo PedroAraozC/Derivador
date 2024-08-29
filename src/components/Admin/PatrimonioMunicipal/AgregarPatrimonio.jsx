@@ -1,3 +1,4 @@
+/* AgregarPattrimonio.jsx */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Button, InputLabel, MenuItem, Select, Switch, TextField } from "@mui/material"
 import { useContext, useEffect, useRef, useState } from "react";
@@ -31,7 +32,32 @@ const AgregarPatrimonio = () => {
       id_ubicacion: "",
       latylon: "",
       habilita: 0, 
-  });
+      });
+  
+      const resetFormulario = () => {
+        setFormularioValues({
+          nombre_patrimonio: "",
+          anio_emplazamiento: "",
+          descripcion: "",
+          origen: "",
+          id_categoria: "",
+          id_tipologia: "",
+          id_material: "",
+          id_estado: "",
+          id_autor: "",
+          id_ubicacion: "",
+          latylon: "",
+          habilita: 0,
+          imagen_carrousel_1: "",
+          imagen_carrousel_2: "",
+          imagen_carrousel_3: ""
+        });
+        setArchivo(null);
+        if (fileInputRef.current) {
+          fileInputRef.current.value = null;
+        }
+      };
+  
 
     // Función para validar el formulario antes de enviarlo
     const validarFormulario = () => {
@@ -87,30 +113,33 @@ const AgregarPatrimonio = () => {
     const handleAgregar = async (event, patri) => {
       event.preventDefault();
       const formularioValido = validarFormulario();
-      setButtonDis(true)
+      setButtonDis(true);
+      
       if (formularioValido) {
         try {
           patri.archivo = archivo;
-          // Realiza la solicitud con formData
           const response = await axios.post("/admin/agregarPatrimonio", patri, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
-          }
-        );
+          });
+          
           setSnackbarMensaje("Patrimonio creado.");
           setSnackbarOpen(true);
+          resetFormulario();  // Resetea el formulario
+          setButtonDis(false); // Vuelve a habilitar el botón
           return response.data;
         } catch (error) {
           console.error("Error al agregar el patrimonio:", error);
           setSnackbarMensaje("Error al agregar el patrimonio.");
           setSnackbarOpen(true);
+          setButtonDis(false);
           throw new Error("Error al agregar el patrimonio");
         }
       } else {
         console.log('Algo salió mal :(');
         setSnackbarOpen(true);
-        setButtonDis(false)
+        setButtonDis(false);
       }
     };
 

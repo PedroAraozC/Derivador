@@ -5,7 +5,7 @@ import {
   faFolderOpen,
 } from "@fortawesome/free-regular-svg-icons";
 import {
-  // faBuildingCircleCheck,
+  faBuildingCircleCheck,
    faCommentsDollar, faNotesMedical, faQrcode, faCat } from "@fortawesome/free-solid-svg-icons";
 import Card from "../Card/Card";
 import "./Home.css";
@@ -63,12 +63,12 @@ const Home = () => {
 
     window.open(url.toString(), "_blank");
   };
-  // const irACATASTRO = () => {
-  //   const token = localStorage.getItem("token");
-  //   const url = new URL(`https://catastro.smt.gob.ar/#/?auth=${token}&destino=catastro`);
-  //   url.searchParams.append("auth", token);
-  //   window.open(url.toString(), "_blank");
-  // };
+  const irACATASTRO = () => {
+    const token = localStorage.getItem("token");
+    const url = new URL(`https://catastro.smt.gob.ar/?auth=${token}&destino=catastro`);
+    url.searchParams.append("auth", token);
+    window.open(url.toString(), "_blank");
+  };
   const irALICITACIONES = () => {
     const url = new URL(`https://licitaciones.smt.gob.ar`);
     window.open(url.toString(), "_blank");
@@ -113,12 +113,12 @@ const Home = () => {
             descripcion={"Requsitos para Licencia de conducir"}
             Icono={<FontAwesomeIcon icon={faIdCard} />}
           />
-          {/* <Card
+          <Card
           onClick={() => irACATASTRO()}
           titulo={"Catastro"}
           descripcion={"Catastro y Edificaciones"}
           Icono={<FontAwesomeIcon icon={faBuildingCircleCheck} />}
-        /> */}
+        />
         <Card
           onClick={() => irALICITACIONES()}
           titulo={"Licitaciones"}

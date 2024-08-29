@@ -1,0 +1,13 @@
+/* TablaPatrimonioMunicipal.css */
+.iconDelete {
+    color: red;
+}
+
+.iconDelete :hover {
+    cursor: pointer;
+}
+
+.btn {
+    border: 0px !important;
+}
+
