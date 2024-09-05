@@ -12,6 +12,12 @@ import TablaPlantaMunicipal from "../../components/Tablas/CapitalHumano/TablaPla
 import TablaPorReparticion from "../../components/Tablas/CapitalHumano/TablaPorReparticion";
 import GraficosCapHumanoFuncionarios from "../../components/Graficos/GraficosCapHumano/GraficosCapHumanoFuncionarios";
 import TablaPorFuncionarios from "../../components/Tablas/CapitalHumano/TablaPorFuncionarios";
+import TablaPorSecretaria from "../../components/Tablas/CapitalHumano/TablaPorSecretaria";
+import TablaPorCategoriaYSec from "../../components/Tablas/CapitalHumano/TablaPorCategoriaYSec";
+import GraficosCapHumanoPlantaPorCategoYSec from "../../components/Graficos/GraficosCapHumano/GraficosCapHumanoPlantaPorCategoYSec";
+import TablaPorFuncionariosYSec from "../../components/Tablas/CapitalHumano/TablaPorFuncionariosYSec";
+import GraficosCapHumanoFuncionariosYSec from "../../components/Graficos/GraficosCapHumano/GraficosCapHumanoFuncionariosYSec";
+import GraficosCapHumanoPlantaPorSecretaria from "../../components/Graficos/GraficosCapHumano/GraficosCapHumanoPlantaPorSecretaria";
 
 const CapitalHumano = () => {
   const { resultSearch, valuesCapHumano, setResultSearch, setValuesCapHumano, flagCategoriasFuncionarios } = useStore();
@@ -20,19 +26,34 @@ const CapitalHumano = () => {
     setResultSearch([]);
     setValuesCapHumano("");
   }, []);
+console.log(valuesCapHumano);
 
   return (
     <>
       <div className="d-flex flex-column justify-content-center align-items-center container mt-5">
         <FormCapitalHumano />
-        {valuesCapHumano.includes("catego") &&
+        {    valuesCapHumano.includes("porsecretaria")&&
+        resultSearch[0]?.length !== 0 ?
+        <TablaPorSecretaria/>
+        : valuesCapHumano.includes("categosec") &&
+        resultSearch[0]?.length !== 0 &&
+        flagCategoriasFuncionarios ? (
+          <TablaPorFuncionariosYSec />)
+        :
+        valuesCapHumano.includes("catego") &&
         resultSearch[0]?.length !== 0 &&
         flagCategoriasFuncionarios ? (
           <TablaPorFuncionarios />
-        ) : valuesCapHumano.includes("catego") &&
+        ) 
+        
+        : valuesCapHumano.includes("categosec") &&
+        resultSearch[0]?.length !== 0 ?
+          <TablaPorCategoriaYSec/>
+        : valuesCapHumano.includes("catego") &&
           resultSearch[0]?.length !== 0 ? (
           <TablaPorCategoria />
-        ) : valuesCapHumano.includes("municipal") &&
+        ) 
+        : valuesCapHumano.includes("municipal") &&
           resultSearch[0]?.length !== 0 ? (
           <TablaPlantaMunicipal />
         ) : valuesCapHumano.includes("reparticion") &&
@@ -50,11 +71,22 @@ const CapitalHumano = () => {
           ) : resultSearch[0]?.length > 0 &&
             valuesCapHumano.includes("reparticion") ? (
             <GraficosCapHumanoPlantaPorReparticion />
-          ) : resultSearch[0]?.length > 0 &&
+          ): resultSearch[0]?.length > 0 && valuesCapHumano.includes("plantaporsecretaria") ?
+            <GraficosCapHumanoPlantaPorSecretaria/>
+            : resultSearch[0]?.length > 0 &&
+            valuesCapHumano.includes("categosec") &&
+            !flagCategoriasFuncionarios ?
+            <GraficosCapHumanoPlantaPorCategoYSec/>
+          : resultSearch[0]?.length > 0 &&
             valuesCapHumano.includes("catego") &&
             !flagCategoriasFuncionarios ? (
             <GraficosCapHumanoPlantaPorCatego />
-          ) : resultSearch[0]?.length > 0 &&
+          ) 
+          : resultSearch[0]?.length > 0 &&
+          valuesCapHumano.includes("categosec") &&
+          !flagCategoriasFuncionarios ?
+          <GraficosCapHumanoFuncionariosYSec/>
+          : resultSearch[0]?.length > 0 &&
             valuesCapHumano.includes("catego") &&
             flagCategoriasFuncionarios ? (
             <GraficosCapHumanoFuncionarios />

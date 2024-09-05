@@ -66,7 +66,7 @@ function descendingComparator(a, b, orderBy) {
               // eslint-disable-next-line react/prop-types
               ...new Set(copiaResultSearch[0].filter(o=>o.CODI_10 >24).map((objeto) => objeto.CODI_10)),
             ];
-            const primeraColumnaReparticion = "Repartición";
+            const primeraColumnaReparticion = "SECRETARIA";
             const valoresUnicosOrdenados = [
                 primeraColumnaReparticion,
                 ...valoresUnicos.sort((a, b) => a - b),
@@ -186,7 +186,7 @@ function descendingComparator(a, b, orderBy) {
     numSelected: PropTypes.number.isRequired,
   };
 
-const TablaPorFuncionarios = () => {
+const TablaPorFuncionariosYSec = () => {
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('calories');
     const [selected, setSelected] = React.useState([]);
@@ -211,7 +211,7 @@ const TablaPorFuncionarios = () => {
   
     const handleClick = (event, row) => {
      
-     setResultSearch(copiaResultSearch[0].filter(rs=>rs.deta_07.includes(row.Repartición)))
+     setResultSearch(copiaResultSearch[0].filter(rs=>rs.DETA_07.includes(row.SECRETARIA)))
       const selectedIndex = selected.indexOf(row);
       let newSelected = [];
     
@@ -249,7 +249,7 @@ const TablaPorFuncionarios = () => {
           ...new Set(copiaResultSearch[0].filter(o=>o.CODI_10 >24).map((objeto) => objeto.CODI_10)),
         ];
   
-        const primeraColumnaReparticion = "Repartición";
+        const primeraColumnaReparticion = "SECRETARIA";
         const valoresUnicosOrdenados = [
           primeraColumnaReparticion,
           ...valoresUnicos.sort((a, b) => a - b),
@@ -258,15 +258,15 @@ const TablaPorFuncionarios = () => {
         const datosOrganizados = {};
   
         copiaResultSearch[0].forEach((dato) => {
-          const reparticion = dato.deta_07;
+          const reparticion = dato.DETA_07;
           if (!datosOrganizados[reparticion]) {
-            datosOrganizados[reparticion] = { Repartición: reparticion };
+            datosOrganizados[reparticion] = { SECRETARIA: reparticion };
           }
           datosOrganizados[reparticion][dato.CODI_10] = dato["cantidad"];
         });
   
       const filasTabla = Object.keys(datosOrganizados).map((reparticion) => {
-        const fila = { Repartición: reparticion };
+        const fila = { SECRETARIA: reparticion };
     
         valoresUnicosOrdenados.forEach((columna) => {
                 fila[columna] = datosOrganizados[reparticion][columna] || 0;
@@ -371,7 +371,7 @@ const TablaPorFuncionarios = () => {
                         />
                       </TableCell>
                      
-                      <TableCell >{row.Repartición}</TableCell>
+                      <TableCell >{row.SECRETARIA}</TableCell>
                       <TableCell >{row[50]}</TableCell>
                       <TableCell >{row[52]}</TableCell>
                       <TableCell >{row[53]}</TableCell>
@@ -409,4 +409,4 @@ const TablaPorFuncionarios = () => {
     );
 }
 
-export default TablaPorFuncionarios
+export default TablaPorFuncionariosYSec

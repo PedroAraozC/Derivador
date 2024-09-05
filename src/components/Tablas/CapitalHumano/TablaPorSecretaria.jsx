@@ -45,6 +45,7 @@ function EnhancedTableHead(props) {
     const { resultSearch } = useStore();
     const { onSelectAllClick, orderBy, numSelected, rowCount, onRequestSort, copiaResultSearch } =
       props;
+console.log(copiaResultSearch);
 
       React.useEffect(() => {
         if( resultSearch.length > 0){
@@ -79,7 +80,7 @@ function EnhancedTableHead(props) {
               active={orderBy === headCell.id}
               onClick={createSortHandler(headCell.id)}
             >
-              {headCell=="codi_07"? "ITEM" : headCell == "DETA_07"? "REPARTICION" : headCell.toUpperCase()}
+              {headCell=="SEc_12"? "ITEM" : headCell == "DETA_07"? "SECRETARIA" : headCell.toUpperCase()}
               
             </TableSortLabel>
           </TableCell>
@@ -153,7 +154,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function TablaPorReparticion() {
+export default function TablaPorSecretaria() {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
@@ -163,6 +164,7 @@ export default function TablaPorReparticion() {
   
   const { resultSearch,setResultSearch } = useStore();
   const [copiaResultSearch] = React.useState(resultSearch)
+console.log(resultSearch);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -278,7 +280,7 @@ export default function TablaPorReparticion() {
                         }}
                       />
                     </TableCell>
-                    <TableCell >{row.codi_07}</TableCell>
+                    <TableCell >{row.SEc_12}</TableCell>
                     <TableCell >{row.DETA_07}</TableCell>
                     <TableCell >{row.MUJERES == null? 0 : row.MUJERES}</TableCell>
                     <TableCell >{row.MUJERES_PROM_EDAD == null? 0 : Math.trunc(row.MUJERES_PROM_EDAD / row.MUJERES) }</TableCell>
