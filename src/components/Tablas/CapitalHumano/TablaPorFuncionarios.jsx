@@ -66,7 +66,7 @@ function descendingComparator(a, b, orderBy) {
               // eslint-disable-next-line react/prop-types
               ...new Set(copiaResultSearch[0].filter(o=>o.CODI_10 >24).map((objeto) => objeto.CODI_10)),
             ];
-            const primeraColumnaReparticion = "Repartición";
+            const primeraColumnaReparticion = "REPARTICION";
             const valoresUnicosOrdenados = [
                 primeraColumnaReparticion,
                 ...valoresUnicos.sort((a, b) => a - b),
