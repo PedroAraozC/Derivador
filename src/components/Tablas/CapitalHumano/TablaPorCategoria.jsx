@@ -23,6 +23,7 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import useStore from '../../../Zustand/Zustand';
 import { Button } from '@mui/material';
+import axios from '../../../config/axios';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -66,7 +67,7 @@ function EnhancedTableHead(props) {
             ...new Set(copiaResultSearch[0].filter(o=>o.CODI_10 >=18 && o.CODI_10<=24).map((objeto) => objeto.CODI_10)),
           ];
     
-          const primeraColumnaReparticion = "Repartición";
+          const primeraColumnaReparticion = "REPARTICION";
           const valoresUnicosOrdenados = [
             primeraColumnaReparticion,
             ...valoresUnicos.sort((a, b) => a - b),
@@ -194,7 +195,7 @@ export default function TablaPorCategoria() {
   const [dense, setDense] = React.useState(true);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   
-  const { resultSearch,setResultSearch, setFlagCategoriasFuncionarios} = useStore();
+  const { resultSearch,setResultSearch, setFlagCategoriasFuncionarios, flagCategoriasFuncionarios, valuesCapHumano} = useStore();
   const [copiaResultSearch] = React.useState(resultSearch)
   const [filas,setFilas] = React.useState([])
 
@@ -209,11 +210,11 @@ export default function TablaPorCategoria() {
     setSelected([]);
   };
 
+  let newSelected = [];
   const handleClick = (event, row) => {
    
    setResultSearch(copiaResultSearch[0].filter(rs=>rs.deta_07.includes(row.Repartición)))
     const selectedIndex = selected.indexOf(row);
-    let newSelected = [];
   
     if (selectedIndex === -1) {
       // Si no está seleccionado, selecciona el nuevo
@@ -226,6 +227,25 @@ export default function TablaPorCategoria() {
   
     setSelected(newSelected);
   };
+
+  const getData = async (SP) => {
+    try {
+      const obj = { procedimiento: SP };
+      const resultado = await axios.post("/listar/ejecutarProcedimiento", obj);
+      setResultSearch(resultado.data);
+    } catch (error) {
+      console.log(error);
+      // setError(error.response.data?.message || error.message)
+    }
+  };
+
+  const haceMagia = () =>{
+    console.log("ffffff");
+    setResultSearch([]);
+    getData(valuesCapHumano);
+    setFlagCategoriasFuncionarios(!flagCategoriasFuncionarios)
+  }
+  
   
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -262,7 +282,7 @@ export default function TablaPorCategoria() {
         if (!datosOrganizados[reparticion]) {
           datosOrganizados[reparticion] = { Repartición: reparticion };
         }
-        datosOrganizados[reparticion][dato.CODI_10] = dato[""];
+        datosOrganizados[reparticion][dato.CODI_10] = dato["cantidad"];
       });
 
     const filasTabla = Object.keys(datosOrganizados).map((reparticion) => {
@@ -318,11 +338,12 @@ filasTabla.forEach((objeto) => {
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage,
       )
-  
+
+    
   return (
     <Box sx={{ width: '100%' }}>
-      <Button onClick={()=>setFlagCategoriasFuncionarios(true)}>Funcionarios</Button>
-      <Switch onClick={()=>setFlagCategoriasFuncionarios(true)}/>
+      <Button onClick={haceMagia}>Funcionarios</Button>
+      <Switch onClick={haceMagia}/>
       <Paper sx={{ width: '100%', mb: 2 }}>
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
