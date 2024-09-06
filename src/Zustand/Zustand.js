@@ -176,7 +176,8 @@ const useStore = create((set, get) => ({
       axios.defaults.headers.common["Authorization"] = token;
       axiosLici.defaults.headers.common["Authorization"] = token;
       axiosMuni.defaults.headers.common["Authorization"] = token;
-      const { data } = await axios.get("/usuarios/authStatus");
+      // const { data } = await axios.get("/usuarios/authStatus");
+      const { data } = await axiosLici.get("/usuarios/authStatus");
       set({ user: data.usuarioSinContraseña });
       set({
         authenticated: true,
