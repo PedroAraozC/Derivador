@@ -31,7 +31,7 @@ const FormCapitalHumano = () => {
   const obtenerProcedimientosAlmacenados = async () => {
     try {
       // const resultado = await axios.get("/listar/listarProcedimientos");
-      const resultado = await axiosMuni.get("/listar/listarProcedimientos");
+      const resultado = await axiosLici.get("/listar/listarProcedimientos");
       setProcedimientos(resultado.data);
     } catch (error) {
       console.log(error);
@@ -47,7 +47,7 @@ const FormCapitalHumano = () => {
     try {
       const obj = { procedimiento: SP };
       // const resultado = await axios.post("/listar/ejecutarProcedimiento", obj);
-      const resultado = await axiosMuni.post("/listar/ejecutarProcedimiento", obj);
+      const resultado = await axiosLici.post("/listar/ejecutarProcedimiento", obj);
       setResultSearch(resultado.data);
     } catch (error) {
       console.log(error);

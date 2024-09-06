@@ -39,7 +39,7 @@ const FormReclamos = () => {
     try {
       setFlagButton(true);
       // const resultado = await axios.post("/reclamos/listar", values);
-      const resultado = await axiosMuni.post("/reclamos/listar", values);
+      const resultado = await axiosLici.post("/reclamos/listar", values);
       setResultSearch(resultado.data.resultado[0]);
       setValuesGraficos(values);
       // setFormFlagReclamos(false)
@@ -94,7 +94,7 @@ const FormReclamos = () => {
   const obtenerProcedimientosAlmacenados = async () => {
     try {
       // const resultado = await axios.get("/reclamos/listarProcedimientos");
-      const resultado = await axiosMuni.get("/reclamos/listarProcedimientos");
+      const resultado = await axiosLici.get("/reclamos/listarProcedimientos");
       setStoreProcedures(resultado.data.results);
     } catch (error) {
       console.log(error);
