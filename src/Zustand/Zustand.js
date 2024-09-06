@@ -60,7 +60,7 @@ const useStore = create((set, get) => ({
     try {
       set({ errors: "" });
       // const response = await axios.get(`/usuarios/permisos/${idUsuario}`);
-      const response = await axios.get(`/usuarios/permisos/${idTusuario}`);
+      const response = await axiosLici.get(`/usuarios/permisos/${idTusuario}`);
       const data = response.data.usuario;
       set({ permisos: data });
     } catch (error) {
@@ -87,7 +87,7 @@ const useStore = create((set, get) => ({
   //------------------------------PANEL PARA CONTRATACIONES ---------------------------------------
   obtenerContrataciones: async () => {
     try {
-      const resultado = await axios.get("/admin/listarContratacionBack");
+      const resultado = await axiosLici.get("/admin/listarContratacionBack");
       const data = resultado.data.contrataciones;
       set({ contrataciones: data });
     } catch (error) {
@@ -97,7 +97,7 @@ const useStore = create((set, get) => ({
 
   obtenerContratacionesFront: async () => {
     try {
-      const resultado = await axios.get("/admin/listarContratacion");
+      const resultado = await axiosLici.get("/admin/listarContratacion");
       const data = resultado.data.contrataciones;
       set({ contratacionesFront: data });
     } catch (error) {
@@ -107,7 +107,7 @@ const useStore = create((set, get) => ({
 
   obtenerInstrumentos: async () => {
     try {
-      const resultado = await axios.get("/admin/listarTipoIntrumentos");
+      const resultado = await axiosLici.get("/admin/listarTipoIntrumentos");
       const data = resultado.data.instrumentos;
       set({ instrumentosC: data });
     } catch (error) {
@@ -117,7 +117,7 @@ const useStore = create((set, get) => ({
 
   obtenerTiposContratacion: async () => {
     try {
-      const resultado = await axios.get("/admin/listaTipoContratacion");
+      const resultado = await axiosLici.get("/admin/listaTipoContratacion");
       const data = resultado.data.contrataciones;
       set({ tiposContratacion: data });
     } catch (error) {
@@ -129,7 +129,7 @@ const useStore = create((set, get) => ({
   obtenerOpciones: async () => {
     try {
       set({ errors: "" });
-      const response = await axios.get("/usuarios/opciones");
+      const response = await axiosLici.get("/usuarios/opciones");
       const data = response.data;
       set({ opciones: data });
     } catch (error) {
