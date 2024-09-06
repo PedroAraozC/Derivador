@@ -3,9 +3,11 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import axios from "../../config/axios";
+// import axios from "../../config/axios";
+import axiosLici from "../../config/axiosLicitaciones"
 import useStore from "../../Zustand/Zustand";
 import { Alert, Skeleton, Snackbar, Typography } from "@mui/material";
+import axiosMuni from "../../config/axiosMuni";
 
 const FormCapitalHumano = () => {
   const [procedimientos, setProcedimientos] = React.useState([]);
@@ -28,7 +30,8 @@ const FormCapitalHumano = () => {
   const [error, setError] = React.useState("");
   const obtenerProcedimientosAlmacenados = async () => {
     try {
-      const resultado = await axios.get("/listar/listarProcedimientos");
+      // const resultado = await axios.get("/listar/listarProcedimientos");
+      const resultado = await axiosMuni.get("/listar/listarProcedimientos");
       setProcedimientos(resultado.data);
     } catch (error) {
       console.log(error);
@@ -43,7 +46,8 @@ const FormCapitalHumano = () => {
   const getData = async (SP) => {
     try {
       const obj = { procedimiento: SP };
-      const resultado = await axios.post("/listar/ejecutarProcedimiento", obj);
+      // const resultado = await axios.post("/listar/ejecutarProcedimiento", obj);
+      const resultado = await axiosMuni.post("/listar/ejecutarProcedimiento", obj);
       setResultSearch(resultado.data);
     } catch (error) {
       console.log(error);

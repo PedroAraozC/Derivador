@@ -1,5 +1,7 @@
 import { create } from "zustand";
 import axios from "../config/axios";
+import axiosLici from "../config/axiosLicitaciones";
+import axiosMuni from "../config/axiosMuni";
 
 const useStore = create((set, get) => ({
   errors: "",
@@ -38,6 +40,8 @@ const useStore = create((set, get) => ({
       });
       set({ user: data.user.usuarioSinContraseña });
       axios.defaults.headers.common["Authorization"] = data.token;
+      axiosLici.defaults.headers.common["Authorization"] = token;
+      axiosMuni.defaults.headers.common["Authorization"] = token;
       localStorage.setItem("token", data.token);
     } catch (error) {
       set({
@@ -170,6 +174,8 @@ const useStore = create((set, get) => ({
         return get().logout();
       }
       axios.defaults.headers.common["Authorization"] = token;
+      axiosLici.defaults.headers.common["Authorization"] = token;
+      axiosMuni.defaults.headers.common["Authorization"] = token;
       const { data } = await axios.get("/usuarios/authStatus");
       set({ user: data.usuarioSinContraseña });
       set({
