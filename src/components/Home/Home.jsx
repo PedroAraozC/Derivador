@@ -10,7 +10,7 @@ import {
   faNotesMedical,
   faQrcode,
   faCat,
-  faCar
+  faCar,
 } from "@fortawesome/free-solid-svg-icons";
 import Card from "../Card/Card";
 import "./Home.css";
@@ -107,6 +107,18 @@ const Home = () => {
           Icono={<FontAwesomeIcon icon={faNewspaper} />}
         />
         <Card
+          onClick={() => irACARNETSANIDAD()}
+          titulo={"Carnet de Sanidad"}
+          descripcion={"Consulta del Carnet Digital"}
+          Icono={<FontAwesomeIcon icon={faNotesMedical} />}
+        />
+        <Card
+          onClick={() => irACATASTRO()}
+          titulo={"Catastro"}
+          descripcion={"Catastro y Edificaciones"}
+          Icono={<FontAwesomeIcon icon={faBuildingCircleCheck} />}
+        />
+        <Card
           onClick={() => irACREDENCIAL()}
           titulo={"Credencial"}
           descripcion={"Ver credencial digital"}
@@ -125,12 +137,6 @@ const Home = () => {
           Icono={<FontAwesomeIcon icon={faIdCard} />}
         />
         <Card
-          onClick={() => irACATASTRO()}
-          titulo={"Catastro"}
-          descripcion={"Catastro y Edificaciones"}
-          Icono={<FontAwesomeIcon icon={faBuildingCircleCheck} />}
-        />
-        <Card
           onClick={() => irALICITACIONES()}
           titulo={"Licitaciones"}
           descripcion={
@@ -139,27 +145,24 @@ const Home = () => {
           Icono={<FontAwesomeIcon icon={faCommentsDollar} />}
         />
         <Card
-          onClick={() => irACEMA()}
-          titulo={"Servicios de Población Animal"}
-          descripcion={"Turnos y Requsitos"}
-          Icono={<FontAwesomeIcon icon={faCat} />}
-        />
-        <Card
-          onClick={() => irACARNETSANIDAD()}
-          titulo={"Carnet de Sanidad"}
-          descripcion={"Consulta del Carnet Digital"}
-          Icono={<FontAwesomeIcon icon={faNotesMedical} />}
-        />
-        <Card
           onClick={() => handleOpenModal()}
           titulo={"Multas de Tránsito"}
           descripcion={"Consulta de Multas por Dominio"}
           Icono={<FontAwesomeIcon icon={faCar} />}
         />
-        
+        <Card
+          onClick={() => irACEMA()}
+          titulo={"Servicios de Población Animal"}
+          descripcion={"Turnos y Requsitos"}
+          Icono={<FontAwesomeIcon icon={faCat} />}
+        />
       </div>
 
-      <ModalMultasDominio openDialog={openModal} setOpenModal={setOpenModal} user={user}/>
+      <ModalMultasDominio
+        openDialog={openModal}
+        setOpenModal={setOpenModal}
+        user={user}
+      />
     </div>
   );
 };
