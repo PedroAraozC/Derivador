@@ -174,7 +174,7 @@ const ModalMultasDominio = ({ openDialog, setOpenModal, user }) => {
         autoHideDuration={4000}
         onClose={() => setOpenSnackbar(false)}
         anchorOrigin={{ vertical: "top", horizontal: "center" }} // Ajusta la posición del Snackbar
-        style={{ bottom: -750 }} // Ajusta el espacio entre Snackbars
+        style={{ bottom: "-70%" }} // Ajusta el espacio entre Snackbars
       >
         <Alert
           onClose={handleClose}
