@@ -11,6 +11,7 @@ import {
   TextareaAutosize,
   Snackbar,
   Alert,
+  TextField,
 } from "@mui/material";
 import axios from "../../config/axios";
 
@@ -19,18 +20,20 @@ const ModalMultasDominio = ({ openDialog, setOpenModal, user }) => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [error, setError] = useState("error");
   const [mensaje, setMensaje] = useState("Algo Explotó :/");
+  const [btnState, setBtnState] = useState(true);
 
   const handleSend = async () => {
     if (message.trim() !== "") {
+      setBtnState(false);
       try {
         const emailData = {
           user,
-          message,
+          message: message.toUpperCase(),
           recipient: "tmfconsultas@smt.gob.ar",
           subjet: "Consulta de Multas de Tránsito",
         };
         const reslut = await axios.post(
-          "http://estadisticas.stm.gob.ar:5000/usuarios/consultaMulta",
+          "https://estadisticas.smt.gob.ar:5000/usuarios/consultaMulta",
           emailData
         );
         setOpenSnackbar(true);
@@ -39,7 +42,9 @@ const ModalMultasDominio = ({ openDialog, setOpenModal, user }) => {
 
         console.log(reslut.data);
         console.log("Mensaje enviado:", message, email.value, user);
-        setOpenModal(false);
+        const timer = setTimeout(() => {
+          setOpenModal(false);
+        }, 5000);
       } catch (error) {
         setOpenSnackbar(true);
         setMensaje("Algo explotó! :(");
@@ -52,6 +57,8 @@ const ModalMultasDominio = ({ openDialog, setOpenModal, user }) => {
       setError("warning");
       // Aquí iría la lógica para manejar el envío del formulario
     }
+    setOpenSnackbar(false);
+    setBtnState(true);
     setMessage("");
   };
 
@@ -59,7 +66,7 @@ const ModalMultasDominio = ({ openDialog, setOpenModal, user }) => {
     if (reason === "clickaway") {
       return;
     }
-    setOpen(false);
+    setOpenSnackbar(false);
   };
 
   const handleCancel = () => {
@@ -69,6 +76,7 @@ const ModalMultasDominio = ({ openDialog, setOpenModal, user }) => {
   return (
     <Dialog
       open={openDialog}
+      className="w-100"
       // onClose={() => setOpenModal(false)}
     >
       <DialogContent>
@@ -78,7 +86,7 @@ const ModalMultasDominio = ({ openDialog, setOpenModal, user }) => {
           noValidate
           encType="multipart/form-data"
           autoComplete="on"
-          className="container"
+          className="container w-100"
         >
           {/* Campo para el destinatario (correo electrónico) */}
           <FormControl required fullWidth margin="normal">
@@ -108,7 +116,7 @@ const ModalMultasDominio = ({ openDialog, setOpenModal, user }) => {
           </FormControl>
 
           {/* Campo para el cuerpo del mensaje */}
-          <FormControl required fullWidth>
+          <FormControl required fullWidth className="mt-3">
             <InputLabel
               htmlFor="message"
               style={{
@@ -120,19 +128,22 @@ const ModalMultasDominio = ({ openDialog, setOpenModal, user }) => {
             >
               Dominio/s
             </InputLabel>
-            <textarea
+            <Input
               id="message"
               minRows={4}
               placeholder="Escriba el dominio solicitado aquí..."
               autoFocus
               resize={"none"}
               value={message}
-              onChange={(e) => setMessage(e.target.value)}
+              onChange={(e) => setMessage(e.target.value.toUpperCase())}
               style={{
-                width: "100%",
-                padding: "8px",
-                marginTop: "46px",
+                // width: "100%",
+                // padding: "5px",
+                // marginTop: "46px",
+                resize: "none",
                 fieldSizing: "content",
+                textTransform: "uppercase",
+                fontWeight: 500,
               }}
             />
           </FormControl>
@@ -141,13 +152,19 @@ const ModalMultasDominio = ({ openDialog, setOpenModal, user }) => {
 
       {/* Botones de acción */}
       <DialogActions>
-        <Button color="primary" variant="contained" onClick={handleSend}>
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={handleSend}
+          disabled={!btnState}
+        >
           Enviar
         </Button>
         <Button
           color="error"
           variant="contained"
           onClick={() => handleCancel()}
+          disabled={!btnState}
         >
           Cancelar
         </Button>
@@ -157,7 +174,7 @@ const ModalMultasDominio = ({ openDialog, setOpenModal, user }) => {
         autoHideDuration={5000}
         onClose={() => setOpenSnackbar(false)}
         anchorOrigin={{ vertical: "top", horizontal: "center" }} // Ajusta la posición del Snackbar
-        style={{ marginTop: index * 75 }} // Ajusta el espacio entre Snackbars
+        style={{ bottom: -750 }} // Ajusta el espacio entre Snackbars
       >
         <Alert
           onClose={handleClose}

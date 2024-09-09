@@ -10,6 +10,7 @@ import {
   faNotesMedical,
   faQrcode,
   faCat,
+  faCar
 } from "@fortawesome/free-solid-svg-icons";
 import Card from "../Card/Card";
 import "./Home.css";
@@ -153,7 +154,7 @@ const Home = () => {
           onClick={() => handleOpenModal()}
           titulo={"Multas de Tránsito"}
           descripcion={"Consulta de Multas por Dominio"}
-          Icono={<FontAwesomeIcon icon={faNotesMedical} />}
+          Icono={<FontAwesomeIcon icon={faCar} />}
         />
         
       </div>
