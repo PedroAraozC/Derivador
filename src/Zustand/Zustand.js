@@ -52,11 +52,11 @@ const useStore = create((set, get) => ({
     set({ botonState: false });
   },
 
-  obtenerPermisos: async (idTusuario) => {
+  obtenerPermisos: async (idTusuario, idPersona) => {
     try {
       set({ errors: "" });
       // const response = await axios.get(`/usuarios/permisos/${idUsuario}`);
-      const response = await axios.get(`/usuarios/permisos/${idTusuario}`);
+      const response = await axios.get(`/usuarios/permisos/${idTusuario}/${idPersona}`);
       const data = response.data.usuario;
       set({ permisos: data });
     } catch (error) {

@@ -72,7 +72,7 @@ export default function ListaPrueba() {
   };
 
   React.useEffect(() => {
-    obtenerPermisos(user.id_tusuario);
+    obtenerPermisos(user.id_tusuario, user.id_persona);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -109,8 +109,6 @@ export default function ListaPrueba() {
     return menu;
   }, []);
 
-  //FILTRADO PARA SACAR LA OPCION DE EDITAR PERFIL DEL SIDEBAR
-  const menuItemsFiltered = menuItems.slice(1);
 
   const irACATASTRO = () => {
     const token = localStorage.getItem("token");
@@ -177,7 +175,7 @@ export default function ListaPrueba() {
         
         </> : <></>}
         {/* Construye cada elemento del menú */}
-        {menuItemsFiltered.map((item, index) => (
+        {menuItems.map((item, index) => (
           <div key={index} className="d-flex justify-content-between w-100 flex-column">
             {/* Elemento del menú */}
             <ListItemButton onClick={() => handleClick(item.label)}>
