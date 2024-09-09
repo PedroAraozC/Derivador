@@ -151,14 +151,14 @@ const Home = () => {
         />
         <Card
           onClick={() => handleOpenModal()}
-          titulo={"Multas por Dominio"}
+          titulo={"Multas de Tránsito"}
           descripcion={"Consulta de Multas por Dominio"}
           Icono={<FontAwesomeIcon icon={faNotesMedical} />}
         />
         
       </div>
 
-      <ModalMultasDominio openDialog={openModal}/>
+      <ModalMultasDominio openDialog={openModal} setOpenModal={setOpenModal} user={user}/>
     </div>
   );
 };
