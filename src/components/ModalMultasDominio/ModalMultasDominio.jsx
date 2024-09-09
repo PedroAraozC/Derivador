@@ -57,7 +57,7 @@ const ModalMultasDominio = ({ openDialog, setOpenModal, user }) => {
       setError("warning");
       // Aquí iría la lógica para manejar el envío del formulario
     }
-    setOpenSnackbar(false);
+    // setOpenSnackbar(false);
     setBtnState(true);
     setMessage("");
   };
@@ -171,7 +171,7 @@ const ModalMultasDominio = ({ openDialog, setOpenModal, user }) => {
       </DialogActions>
       <Snackbar
         open={openSnackbar}
-        autoHideDuration={5000}
+        autoHideDuration={4000}
         onClose={() => setOpenSnackbar(false)}
         anchorOrigin={{ vertical: "top", horizontal: "center" }} // Ajusta la posición del Snackbar
         style={{ bottom: -750 }} // Ajusta el espacio entre Snackbars
