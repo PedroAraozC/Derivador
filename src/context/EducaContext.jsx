@@ -307,7 +307,7 @@ const ProviderEducacion = ({ children }) => {
       const response = await axios.post("/admin/existeEnPermisosPersona", { id });
       if (response.status === 200) {
         setExisteEnPP(true);
-        setPermisosPorPersona(response.data)
+        setPermisosPorPersona(response.data.data)
       } else {
         setExisteEnPP(false);
       }

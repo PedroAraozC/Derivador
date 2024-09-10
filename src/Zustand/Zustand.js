@@ -40,8 +40,8 @@ const useStore = create((set, get) => ({
       });
       set({ user: data.user.usuarioSinContraseña });
       axios.defaults.headers.common["Authorization"] = data.token;
-      axiosLici.defaults.headers.common["Authorization"] = token;
-      axiosMuni.defaults.headers.common["Authorization"] = token;
+      axiosLici.defaults.headers.common["Authorization"] = data.token;
+      axiosMuni.defaults.headers.common["Authorization"] = data.token;
       localStorage.setItem("token", data.token);
     } catch (error) {
       set({
@@ -56,11 +56,11 @@ const useStore = create((set, get) => ({
     set({ botonState: false });
   },
 
-  obtenerPermisos: async (idTusuario) => {
+  obtenerPermisos: async (idTusuario, idPersona) => {
     try {
       set({ errors: "" });
       // const response = await axios.get(`/usuarios/permisos/${idUsuario}`);
-      const response = await axiosLici.get(`/usuarios/permisos/${idTusuario}`);
+      const response = await axios.get(`/usuarios/permisos/${idTusuario}/${idPersona}`);
       const data = response.data.usuario;
       set({ permisos: data });
     } catch (error) {
