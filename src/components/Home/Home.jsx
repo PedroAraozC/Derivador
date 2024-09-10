@@ -6,18 +6,26 @@ import {
 } from "@fortawesome/free-regular-svg-icons";
 import {
   faBuildingCircleCheck,
-   faCommentsDollar, faNotesMedical, faQrcode, faCat } from "@fortawesome/free-solid-svg-icons";
+  faCommentsDollar,
+  faNotesMedical,
+  faQrcode,
+  faCat,
+  faCar,
+} from "@fortawesome/free-solid-svg-icons";
 import Card from "../Card/Card";
 import "./Home.css";
 import useStore from "../../Zustand/Zustand";
 import { cuilToDni } from "../../helpers/extraerDNI";
-
+import { useState } from "react";
+import ModalMultasDominio from "../ModalMultasDominio/ModalMultasDominio";
 const Home = () => {
   const { user } = useStore();
   // console.log(user);
   // const handleRedirect = (url) => {
   //   window.location.href = url;
   // };
+
+  const [openModal, setOpenModal] = useState(false);
 
   const irABOLETIN = () => {
     const token = localStorage.getItem("token");
@@ -56,16 +64,15 @@ const Home = () => {
     window.open(url.toString(), "_blank");
   };
   const irAEXPEDIENTES = () => {
-
-    const url = new URL(
-      `http://181.105.6.205:8890`
-    );
+    const url = new URL(`http://181.105.6.205:8890`);
 
     window.open(url.toString(), "_blank");
   };
   const irACATASTRO = () => {
     const token = localStorage.getItem("token");
-    const url = new URL(`https://catastro.smt.gob.ar/?auth=${token}&destino=catastro`);
+    const url = new URL(
+      `https://catastro.smt.gob.ar/?auth=${token}&destino=catastro`
+    );
     url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
   };
@@ -84,60 +91,78 @@ const Home = () => {
     window.open(url.toString(), "_blank");
   };
 
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
+
   return (
     <div className="contPadreHome">
-        <div className="cardsContHome">
-          <Card
-            onClick={() => irABOLETIN()}
-            titulo={"Boletin Oficial"}
-            descripcion={
-              "Publicación Digital que contiene la normativa municipal y actos de gobierno"
-            }
-            Icono={<FontAwesomeIcon icon={faNewspaper} />}
-          />
-          <Card
-            onClick={() => irACREDENCIAL()}
-            titulo={"Credencial"}
-            descripcion={"Ver credencial digital"}
-            Icono={<FontAwesomeIcon icon={faQrcode} />}
-          />
-           <Card
-          onClick={() => irAEXPEDIENTES()}
-          titulo={"Expedientes"}
-          descripcion={"Ingreso a sistema de expedientes"}
-          Icono={<FontAwesomeIcon icon={faFolderOpen} />}
-        /> 
-          <Card
-            onClick={() => irATURNOS()}
-            titulo={"Licencia de Conducir"}
-            descripcion={"Requsitos para Licencia de conducir"}
-            Icono={<FontAwesomeIcon icon={faIdCard} />}
-          />
-          <Card
+      <div className="cardsContHome">
+        <Card
+          onClick={() => irABOLETIN()}
+          titulo={"Boletin Oficial"}
+          descripcion={
+            "Publicación Digital que contiene la normativa municipal y actos de gobierno"
+          }
+          Icono={<FontAwesomeIcon icon={faNewspaper} />}
+        />
+        <Card
+          onClick={() => irACARNETSANIDAD()}
+          titulo={"Carnet de Sanidad"}
+          descripcion={"Consulta del Carnet Digital"}
+          Icono={<FontAwesomeIcon icon={faNotesMedical} />}
+        />
+        <Card
           onClick={() => irACATASTRO()}
           titulo={"Catastro"}
           descripcion={"Catastro y Edificaciones"}
           Icono={<FontAwesomeIcon icon={faBuildingCircleCheck} />}
         />
         <Card
+          onClick={() => irACREDENCIAL()}
+          titulo={"Credencial"}
+          descripcion={"Ver credencial digital"}
+          Icono={<FontAwesomeIcon icon={faQrcode} />}
+        />
+        <Card
+          onClick={() => irAEXPEDIENTES()}
+          titulo={"Expedientes"}
+          descripcion={"Ingreso a sistema de expedientes"}
+          Icono={<FontAwesomeIcon icon={faFolderOpen} />}
+        />
+        <Card
+          onClick={() => irATURNOS()}
+          titulo={"Licencia de Conducir"}
+          descripcion={"Requsitos para Licencia de conducir"}
+          Icono={<FontAwesomeIcon icon={faIdCard} />}
+        />
+        <Card
           onClick={() => irALICITACIONES()}
           titulo={"Licitaciones"}
-          descripcion={"Convocatoria para la contratación de bienes, obras y servicios."}
+          descripcion={
+            "Convocatoria para la contratación de bienes, obras y servicios."
+          }
           Icono={<FontAwesomeIcon icon={faCommentsDollar} />}
         />
-         <Card
+        <Card
+          onClick={() => handleOpenModal()}
+          titulo={"Multas de Tránsito"}
+          descripcion={"Consulta de Multas por Dominio"}
+          Icono={<FontAwesomeIcon icon={faCar} />}
+        />
+        <Card
           onClick={() => irACEMA()}
           titulo={"Servicios de Población Animal"}
           descripcion={"Turnos y Requsitos"}
           Icono={<FontAwesomeIcon icon={faCat} />}
         />
-        <Card
-          onClick={() => irACARNETSANIDAD()}
-          titulo={"Carnet de Sanidad"}
-          descripcion={"Consulta del Carnet Digital"}
-          Icono={<FontAwesomeIcon icon={faNotesMedical}/>}
-        />
       </div>
+
+      <ModalMultasDominio
+        openDialog={openModal}
+        setOpenModal={setOpenModal}
+        user={user}
+      />
     </div>
   );
 };
