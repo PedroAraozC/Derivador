@@ -126,7 +126,7 @@ const ModalMultasDominio = ({ openDialog, setOpenModal, user }) => {
                 paddingTop: "0px",
               }}
             >
-              Dominio/s
+              Dominios/DNI
             </InputLabel>
             <Input
               id="message"
