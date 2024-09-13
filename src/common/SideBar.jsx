@@ -25,6 +25,7 @@ import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import useStore from "../Zustand/Zustand";
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
 import ApartmentOutlinedIcon from '@mui/icons-material/ApartmentOutlined';
+import QueryStats from "@mui/icons-material/QueryStats";
 
 export default function ListaPrueba() {
   const { user, obtenerPermisos, permisos } = useStore();
@@ -66,13 +67,15 @@ export default function ListaPrueba() {
         return <AdminPanelSettingsIcon />;
       case "PANEL EMPLEADOS":
         return <AdminPanelSettingsOutlinedIcon />;
+        case "BLOOMBERG":
+          return <QueryStats />;
       default:
         return <AccountTreeIcon />;
     }
   };
 
   React.useEffect(() => {
-    obtenerPermisos(user.id_tusuario, user.id_persona);
+    obtenerPermisos(user?.id_tusuario, user?.id_persona);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -134,6 +137,12 @@ export default function ListaPrueba() {
     url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
   };
+  const irAGED = () => {
+    const token = localStorage.getItem("token");
+    const url = new URL(`http://181.105.6.205:9006/`);
+    url.searchParams.append("auth", token);
+    window.open(url.toString(), "_blank");
+  };
   const irABOLETIN = () => {
     const token = localStorage.getItem("token");
     const url = new URL(
@@ -163,7 +172,7 @@ export default function ListaPrueba() {
           </ListItemIcon>
           <ListItemText primary="INICIO" />
         </ListItemButton>
-        {user.id_tusuario == 1 || user.documento_persona == "27220303026" || user.documento_persona == "23213275739"? <>
+        {user?.id_tusuario == 1 || user?.documento_persona == "27220303026" || user?.documento_persona == "23213275739"? <>
         <ListItemButton
           onClick={() => irACATASTRO()}
           component="a"
@@ -195,6 +204,9 @@ export default function ListaPrueba() {
                         onClick={
                           subItem.descripcion === "Gestión Financiera"
                             ? () => irAGAF()
+                            :
+                            subItem.descripcion === "Gerencia de Datos"
+                            ? () => irAGED()
                             : subItem.descripcion === "Boletín Municipal"
                             ? () => irABOLETIN()
                             : subItem.descripcion === "Carnet de Manejo"

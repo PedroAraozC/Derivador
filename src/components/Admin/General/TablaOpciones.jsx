@@ -92,6 +92,7 @@ export default function TablaOpciones() {
 
   const handleAgregar = async(event, opcion) => {
     event.preventDefault()
+    console.log(opcion);
     // const formularioValido = validarFormulario();
         try {
             const response = await axios.post("/admin/altaOpcion", opcion );
@@ -239,7 +240,7 @@ export default function TablaOpciones() {
                 sx={{width: 300, marginBottom: 2}}
                 required={true}
               />
-              <Button variant='outlined' sx={{width: 300}}>Aceptar</Button>
+              <Button variant='outlined' type='submit' sx={{width: 300}}>Aceptar</Button>
             </form>
           </div>
         </Box>
