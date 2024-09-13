@@ -56,7 +56,7 @@ export default function NavBar() {
                 {authenticated && (
                   <div className="d-flex align-items-center">
                     <p className="m-0 d-none d-md-block">
-                      {user.nombre_persona}
+                      {user?.nombre_persona}
                     </p>
                     <IconButton
                       size="large"
