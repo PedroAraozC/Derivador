@@ -1,24 +1,49 @@
 /* AgregarPattrimonio.jsx */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Button, InputLabel, MenuItem, Select, Switch, TextField } from "@mui/material"
+import {
+  Button,
+  InputLabel,
+  MenuItem,
+  Select,
+  Switch,
+  TextField,
+} from "@mui/material";
 import { useContext, useEffect, useRef, useState } from "react";
-import { Snackbar } from '@mui/material';
-import Alert from '@mui/material/Alert';
+import { Snackbar } from "@mui/material";
+import Alert from "@mui/material/Alert";
 import axios from "../../../config/axios";
 import { EducaContext } from "../../../context/EducaContext";
-import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
+import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 
 const AgregarPatrimonio = () => {
   const [archivo, setArchivo] = useState(null);
   const [imagenCarrousel1, setImagenCarrousel1] = useState(null);
   const [imagenCarrousel2, setImagenCarrousel2] = useState(null);
   const [imagenCarrousel3, setImagenCarrousel3] = useState(null);
-  const fileInputRef = useRef(null);
+  const fileInputRefCard = useRef(null);
+  const fileInputRef1 = useRef(null);
+  const fileInputRef2 = useRef(null);
+  const fileInputRef3 = useRef(null);
+
   const [buttonDis, setButtonDis] = useState(false);
   const [errores, setErrores] = useState({});
-  const { obtenerCategoria, categoria, obtenerAutor, autor, obtenerEstado, estado, obtenerMaterial, material, obtenerTipologia, tipologia, obtenerUbicacion, ubicacion } = useContext(EducaContext);
+
+  const {
+    obtenerCategoria,
+    categoria,
+    obtenerAutor,
+    autor,
+    obtenerEstado,
+    estado,
+    obtenerMaterial,
+    material,
+    obtenerTipologia,
+    tipologia,
+    obtenerUbicacion,
+    ubicacion,
+  } = useContext(EducaContext);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMensaje, setSnackbarMensaje] = useState('');
+  const [snackbarMensaje, setSnackbarMensaje] = useState("");
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
@@ -57,22 +82,43 @@ const AgregarPatrimonio = () => {
     setImagenCarrousel1(null);
     setImagenCarrousel2(null);
     setImagenCarrousel3(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = null;
+
+    if (fileInputRefCard.current) {
+      fileInputRefCard.current.value = null;
+    }
+    if (fileInputRef1.current) {
+      fileInputRef1.current.value = null;
+    }
+    if (fileInputRef2.current) {
+      fileInputRef2.current.value = null;
+    }
+    if (fileInputRef3.current) {
+      fileInputRef3.current.value = null;
     }
   };
 
   // Función para validar el formulario antes de enviarlo
   const validarFormulario = () => {
     const nuevosErrores = {};
-    const regex = /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?((1[0-7]\d(\.\d+)?|180(\.0+)?|\d{1,2}(\.\d+)?))$/;
+    const regex =
+      /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?((1[0-7]\d(\.\d+)?|180(\.0+)?|\d{1,2}(\.\d+)?))$/;
 
-    if (!formularioValues.nombre_patrimonio || formularioValues.nombre_patrimonio.length > 40) {
-      nuevosErrores.nombre_patrimonio = "Ingrese un nombre de máximo 40 caracteres";
-      setSnackbarMensaje("Ingrese un nombre del autor/a de máximo 40 caracteres");
+    if (
+      !formularioValues.nombre_patrimonio ||
+      formularioValues.nombre_patrimonio.length > 40
+    ) {
+      nuevosErrores.nombre_patrimonio =
+        "Ingrese un nombre de máximo 40 caracteres";
+      setSnackbarMensaje(
+        "Ingrese un nombre del autor/a de máximo 40 caracteres"
+      );
     }
-    if (!formularioValues.anio_emplazamiento || formularioValues.anio_emplazamiento.length > 4) {
-      nuevosErrores.anio_emplazamiento = "Ingrese un año de máximo 4 caracteres";
+    if (
+      !formularioValues.anio_emplazamiento ||
+      formularioValues.anio_emplazamiento.length > 4
+    ) {
+      nuevosErrores.anio_emplazamiento =
+        "Ingrese un año de máximo 4 caracteres";
       setSnackbarMensaje("Ingrese un año de máximo 4 caracteres");
     }
     if (!formularioValues.origen || formularioValues.origen.length > 80) {
@@ -80,8 +126,11 @@ const AgregarPatrimonio = () => {
       setSnackbarMensaje("Describa el origen en un máximo de 80 caracteres");
     }
     if (!formularioValues.latylon || !regex.test(formularioValues.latylon)) {
-      nuevosErrores.latylon = "Ingrese coordenadas válidas en formato Latitud, Longitud";
-      setSnackbarMensaje("Ingrese coordenadas válidas en formato Latitud, Longitud");
+      nuevosErrores.latylon =
+        "Ingrese coordenadas válidas en formato Latitud, Longitud";
+      setSnackbarMensaje(
+        "Ingrese coordenadas válidas en formato Latitud, Longitud"
+      );
     }
 
     setErrores(nuevosErrores);
@@ -110,7 +159,7 @@ const AgregarPatrimonio = () => {
     });
   };
 
-  const handleAgregar = async (event, patri) => {
+  const handleAgregar = async (event) => {
     event.preventDefault();
     const formularioValido = validarFormulario();
     setButtonDis(true);
@@ -118,25 +167,48 @@ const AgregarPatrimonio = () => {
     if (formularioValido) {
       try {
         const formData = new FormData();
-        formData.append("archivo", archivo);
-        formData.append("imagen_carrousel_1", imagenCarrousel1);
-        formData.append("imagen_carrousel_2", imagenCarrousel2);
-        formData.append("imagen_carrousel_3", imagenCarrousel3);
 
-        // Añadir otros datos del formulario
-        for (const key in formularioValues) {
-          formData.append(key, formularioValues[key]);
+        formData.append(
+          "nombre_patrimonio",
+          formularioValues.nombre_patrimonio
+        );
+        if (archivo) formData.append("imagen_card", archivo);
+        if (imagenCarrousel1)
+          formData.append("imagen_carrousel_1", imagenCarrousel1);
+        if (imagenCarrousel2)
+          formData.append("imagen_carrousel_2", imagenCarrousel2);
+        if (imagenCarrousel3)
+          formData.append("imagen_carrousel_3", imagenCarrousel3);
+
+        const response = await axios.post(
+          "/admin/agregarPatrimonio",
+          formularioValues
+        );
+        console.log(response.status == 201);
+        if (response.status == 201) {
+          try {
+            const responseImagenes = await axios.post(
+              "/admin/crearPatrimonioImagenes",
+              formData,
+              {
+                headers: { "Content-Type": "multipart/form-data" },
+              }
+            );
+            console.log(
+              "Respuesta del servidor (imágenes):",
+              responseImagenes.data
+            );
+          } catch (error) {
+            console.error("Error al enviar imágenes:", error);
+            setSnackbarMensaje("Error al enviar imágenes.");
+            setSnackbarOpen(true);
+            setButtonDis(false);
+            throw error;
+          }
         }
-
-        const response = await axios.post("/admin/agregarPatrimonio", formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-
         setSnackbarMensaje("Patrimonio creado.");
         setSnackbarOpen(true);
-        resetFormulario();  // Resetea el formulario
+        resetFormulario(); // Resetea el formulario
         setButtonDis(false); // Vuelve a habilitar el botón
         return response.data;
       } catch (error) {
@@ -147,7 +219,7 @@ const AgregarPatrimonio = () => {
         throw new Error("Error al agregar el patrimonio");
       }
     } else {
-      console.log('Algo salió mal :(');
+      console.log("Algo salió mal :(");
       setSnackbarOpen(true);
       setButtonDis(false);
     }
@@ -174,8 +246,11 @@ const AgregarPatrimonio = () => {
   }, []);
 
   const conseguirLatyLon = () => {
-    window.open("https://support.google.com/maps/answer/18539?hl=es&co=GENIE.Platform%3DDesktop", "_blank");
-  }
+    window.open(
+      "https://support.google.com/maps/answer/18539?hl=es&co=GENIE.Platform%3DDesktop",
+      "_blank"
+    );
+  };
 
   return (
     <>
@@ -183,7 +258,10 @@ const AgregarPatrimonio = () => {
         <h3>Agregar Patrimonio</h3>
       </div>
       <div className="container mt-3 mb-3">
-        <form className="d-flex gap-5 justify-content-center align-items-center formAgregarcausal" onSubmit={(event) => handleAgregar(event, formularioValues)}>
+        <form
+          className="d-flex gap-5 justify-content-center align-items-center formAgregarcausal"
+          onSubmit={(event) => handleAgregar(event)}
+        >
           <div>
             <InputLabel sx={{ marginTop: 2 }}>NOMBRE PATRIMONIO</InputLabel>
             <TextField
@@ -191,7 +269,7 @@ const AgregarPatrimonio = () => {
               onChange={handleInputChange}
               name="nombre_patrimonio"
               value={formularioValues.nombre_patrimonio}
-              sx={{ width: 400, minHeight: '56px' }}
+              sx={{ width: 400, minHeight: "56px" }}
               required={true}
             />
             <InputLabel sx={{ marginTop: 2 }}>AÑO EMPLAZAMIENTO</InputLabel>
@@ -200,7 +278,7 @@ const AgregarPatrimonio = () => {
               onChange={handleInputChange}
               name="anio_emplazamiento"
               value={formularioValues.anio_emplazamiento}
-              sx={{ width: 400, minHeight: '56px' }}
+              sx={{ width: 400, minHeight: "56px" }}
               required={true}
             />
             <InputLabel sx={{ marginTop: 2 }}>DESCRIPCIÓN</InputLabel>
@@ -209,7 +287,7 @@ const AgregarPatrimonio = () => {
               onChange={handleInputChange}
               name="descripcion"
               value={formularioValues.descripcion}
-              sx={{ width: 400, minHeight: '56px' }}
+              sx={{ width: 400, minHeight: "56px" }}
               required={true}
             />
             <InputLabel sx={{ marginTop: 2 }}>ORIGEN</InputLabel>
@@ -218,19 +296,22 @@ const AgregarPatrimonio = () => {
               onChange={handleInputChange}
               name="origen"
               value={formularioValues.origen}
-              sx={{ width: 400, minHeight: '56px' }}
+              sx={{ width: 400, minHeight: "56px" }}
               required={true}
             />
             <div className="d-flex algin-items-center gap-2 mt-3 mb-2">
               <InputLabel>LATITUD y LONGITUD</InputLabel>
-              <HelpOutlineOutlinedIcon sx={{ cursor: 'pointer' }} onClick={conseguirLatyLon} />
+              <HelpOutlineOutlinedIcon
+                sx={{ cursor: "pointer" }}
+                onClick={conseguirLatyLon}
+              />
             </div>
             <TextField
               placeholder="Ingrese el valor de las coordenadas"
               onChange={handleInputChange}
               name="latylon"
               value={formularioValues.latylon}
-              sx={{ width: 400, minHeight: '56px' }}
+              sx={{ width: 400, minHeight: "56px" }}
               required={true}
             />
             <div className="d-flex flex-column">
@@ -253,10 +334,7 @@ const AgregarPatrimonio = () => {
             >
               {Array.isArray(categoria) &&
                 categoria.map((e) => (
-                  <MenuItem
-                    key={e.id_categoria}
-                    value={e.id_categoria}
-                  >
+                  <MenuItem key={e.id_categoria} value={e.id_categoria}>
                     {e.nombre_categoria}
                   </MenuItem>
                 ))}
@@ -271,10 +349,7 @@ const AgregarPatrimonio = () => {
             >
               {Array.isArray(tipologia) &&
                 tipologia.map((e) => (
-                  <MenuItem
-                    key={e.id_tipologia}
-                    value={e.id_tipologia}
-                  >
+                  <MenuItem key={e.id_tipologia} value={e.id_tipologia}>
                     {e.nombre_tipologia}
                   </MenuItem>
                 ))}
@@ -289,10 +364,7 @@ const AgregarPatrimonio = () => {
             >
               {Array.isArray(material) &&
                 material.map((e) => (
-                  <MenuItem
-                    key={e.id_material}
-                    value={e.id_material}
-                  >
+                  <MenuItem key={e.id_material} value={e.id_material}>
                     {e.nombre_material}
                   </MenuItem>
                 ))}
@@ -307,10 +379,7 @@ const AgregarPatrimonio = () => {
             >
               {Array.isArray(estado) &&
                 estado.map((e) => (
-                  <MenuItem
-                    key={e.id_estado}
-                    value={e.id_estado}
-                  >
+                  <MenuItem key={e.id_estado} value={e.id_estado}>
                     {e.nombre_estado}
                   </MenuItem>
                 ))}
@@ -325,10 +394,7 @@ const AgregarPatrimonio = () => {
             >
               {Array.isArray(autor) &&
                 autor.map((e) => (
-                  <MenuItem
-                    key={e.id_autor}
-                    value={e.id_autor}
-                  >
+                  <MenuItem key={e.id_autor} value={e.id_autor}>
                     {e.nombre_autor}
                   </MenuItem>
                 ))}
@@ -343,58 +409,112 @@ const AgregarPatrimonio = () => {
             >
               {Array.isArray(ubicacion) &&
                 ubicacion.map((e) => (
-                  <MenuItem
-                    key={e.id_ubicacion}
-                    value={e.id_ubicacion}
-                  >
+                  <MenuItem key={e.id_ubicacion} value={e.id_ubicacion}>
                     {e.nombre_ubicacion}
                   </MenuItem>
                 ))}
             </Select>
           </div>
           <div className="d-flex flex-column">
-            <InputLabel sx={{ marginBottom: 4, textAlign: 'center' }}>INGRESE UNA IMAGEN PARA LA CARD (900x600 px)</InputLabel>
+            <InputLabel sx={{ marginBottom: 4, textAlign: "center" }}>
+              INGRESE UNA IMAGEN PARA LA CARD (900x600 px)
+            </InputLabel>
             <input
               type="file"
               accept=".png, .webp, .jpg"
               onChange={(event) => setArchivo(event.target.files[0])}
               required={false}
-              style={{ width: 400, paddingTop: 5, paddingBottom: 30, border: '4px dotted #ccc', padding: '20px' }}
+              name="imagen_card"
+              ref={fileInputRefCard}
+              style={{
+                width: 400,
+                paddingTop: 5,
+                paddingBottom: 30,
+                border: "4px dotted #ccc",
+                padding: "20px",
+              }}
             />
             <InputLabel sx={{ marginTop: 2 }}>IMAGEN CARROUSEL #1</InputLabel>
             <input
               type="file"
               accept=".png, .webp, .jpg"
-              onChange={(event) => handleCarrouselFileChange(event, setImagenCarrousel1)}
-              style={{ width: 400, paddingTop: 5, paddingBottom: 30, border: '4px dotted #ccc', padding: '20px' }}
+              name="imagenCarrousel1"
+              ref={fileInputRef1}
+              onChange={(event) =>
+                handleCarrouselFileChange(event, setImagenCarrousel1)
+              }
+              style={{
+                width: 400,
+                paddingTop: 5,
+                paddingBottom: 30,
+                border: "4px dotted #ccc",
+                padding: "20px",
+              }}
             />
             <InputLabel sx={{ marginTop: 2 }}>IMAGEN CARROUSEL #2</InputLabel>
             <input
               type="file"
+              ref={fileInputRef2}
               accept=".png, .webp, .jpg"
-              onChange={(event) => handleCarrouselFileChange(event, setImagenCarrousel2)}
-              style={{ width: 400, paddingTop: 5, paddingBottom: 30, border: '4px dotted #ccc', padding: '20px' }}
+              onChange={(event) =>
+                handleCarrouselFileChange(event, setImagenCarrousel2)
+              }
+              style={{
+                width: 400,
+                paddingTop: 5,
+                paddingBottom: 30,
+                border: "4px dotted #ccc",
+                padding: "20px",
+              }}
             />
             <InputLabel sx={{ marginTop: 2 }}>IMAGEN CARROUSEL #3</InputLabel>
             <input
               type="file"
+              ref={fileInputRef3}
               accept=".png, .webp, .jpg"
-              onChange={(event) => handleCarrouselFileChange(event, setImagenCarrousel3)}
-              style={{ width: 400, paddingTop: 5, paddingBottom: 30, border: '4px dotted #ccc', padding: '20px' }}
+              onChange={(event) =>
+                handleCarrouselFileChange(event, setImagenCarrousel3)
+              }
+              style={{
+                width: 400,
+                paddingTop: 5,
+                paddingBottom: 30,
+                border: "4px dotted #ccc",
+                padding: "20px",
+              }}
             />
-            <Button variant="contained" color="success" type="submit" disabled={buttonDis} className="mt-5">AGREGAR</Button>
+            <Button
+              variant="contained"
+              color="success"
+              type="submit"
+              disabled={buttonDis}
+              className="mt-5"
+            >
+              AGREGAR
+            </Button>
           </div>
         </form>
         {errores ? (
-          <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
-            <Alert onClose={handleSnackbarClose} severity="info" elevation={6} variant="filled">
+          <Snackbar
+            open={snackbarOpen}
+            autoHideDuration={6000}
+            onClose={handleSnackbarClose}
+          >
+            <Alert
+              onClose={handleSnackbarClose}
+              severity="info"
+              elevation={6}
+              variant="filled"
+            >
               {snackbarMensaje}
             </Alert>
           </Snackbar>
-        ) : <></>}
+        ) : (
+          <></>
+        )}
       </div>
     </>
-  )
-}
+  );
+};
 
 export default AgregarPatrimonio;
