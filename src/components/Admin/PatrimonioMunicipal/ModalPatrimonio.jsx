@@ -1,4 +1,3 @@
-/* ModalPatrimonio.jsx */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { useState, useEffect, useContext, useRef } from "react";
@@ -19,6 +18,7 @@ import {
 import axios from "../../../config/axios";
 import { EducaContext } from "../../../context/EducaContext";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
+import "./ModalPatrimonio.css"
 import { AutoFixHigh } from "@mui/icons-material";
 
 const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
@@ -275,6 +275,7 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
     borderRadius: "10px",
     boxShadow: 24,
     p: 4,
+    overflowY: "auto"
   };
 
   return (
@@ -286,16 +287,16 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
           </p>
         </div>
         <Divider />
-        <div className="d-flex flex-column justify-content-center">
-          <form className="d-flex gap-5 justify-content-center align-items-center formAgregarcausal">
-            <div>
+        <div className="d-flex flex-column justify-content-center" >
+          <form className="d-flex flex-column flex-xxl-row gap-5 justify-content-center align-items-center formAgregarcausal ">
+            <div style={{width: "100%"}}>
               <InputLabel sx={{ marginTop: 2 }}>NOMBRE PATRIMONIO</InputLabel>
               <TextField
                 placeholder="Ingrese el nombre del patrimonio..."
                 onChange={handleInputChange}
                 name="nombre_patrimonio"
                 value={formularioValues.nombre_patrimonio}
-                sx={{ width: 400, minHeight: "56px" }} 
+                sx={{ width: "100%", minHeight: "56px" }} 
                 required={true}
               />
               <InputLabel sx={{ marginTop: 2 }}>AÑO EMPLAZAMIENTO</InputLabel>
@@ -304,7 +305,7 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
                 onChange={handleInputChange}
                 name="anio_emplazamiento"
                 value={formularioValues.anio_emplazamiento}
-                sx={{ width: 400, minHeight: "56px" }}
+                sx={{ width: "100%", minHeight: "56px" }}
                 required={true}
               />
               <InputLabel sx={{ marginTop: 2 }}>DESCRIPCIÓN</InputLabel>
@@ -313,7 +314,7 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
                 onChange={handleInputChange}
                 name="descripcion"
                 value={formularioValues.descripcion}
-                sx={{ width: 400, minHeight: "56px" }}
+                sx={{ width: "100%", minHeight: "56px" }}
                 required={true}
               />
               <InputLabel sx={{ marginTop: 2 }}>ORIGEN</InputLabel>
@@ -322,7 +323,7 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
                 onChange={handleInputChange}
                 name="origen"
                 value={formularioValues.origen}
-                sx={{ width: 400, minHeight: "56px" }}
+                sx={{ width: "100%", minHeight: "56px" }}
                 required={true}
               />
               <div className="d-flex algin-items-center gap-2 mt-3 mb-2">
@@ -337,7 +338,7 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
                 onChange={handleInputChange}
                 name="latylon"
                 value={formularioValues.latylon}
-                sx={{ width: 400, minHeight: "56px" }}
+                sx={{ width: "100%", minHeight: "56px" }}
                 required={true}
               />
               <div className="d-flex flex-column">
@@ -349,13 +350,13 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
                 />
               </div>
             </div>
-            <div>
+            <div style={{width: "100%"}}>
               <InputLabel sx={{ marginTop: 0 }}>TIPO DE CATEGORÍA</InputLabel>
               <Select
                 value={formularioValues.id_categoria}
                 onChange={handleInputChange}
                 name="id_categoria"
-                sx={{ width: 400 }}
+                sx={{ width: "100%" }}
                 required={true}
               >
                 {Array.isArray(categoria) &&
@@ -370,7 +371,7 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
                 value={formularioValues.id_tipologia}
                 onChange={handleInputChange}
                 name="id_tipologia"
-                sx={{ width: 400 }}
+                sx={{ width: "100%" }}
                 required={true}
               >
                 {Array.isArray(tipologia) &&
@@ -385,7 +386,7 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
                 value={formularioValues.id_material}
                 onChange={handleInputChange}
                 name="id_material"
-                sx={{ width: 400 }}
+                sx={{ width: "100%" }}
                 required={true}
               >
                 {Array.isArray(material) &&
@@ -400,7 +401,7 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
                 value={formularioValues.id_estado}
                 onChange={handleInputChange}
                 name="id_estado"
-                sx={{ width: 400 }}
+                sx={{ width: "100%" }}
                 required={true}
               >
                 {Array.isArray(estado) &&
@@ -415,7 +416,7 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
                 value={formularioValues.id_autor}
                 onChange={handleInputChange}
                 name="id_autor"
-                sx={{ width: 400 }}
+                sx={{ width: "100%" }}
                 required={true}
               >
                 {Array.isArray(autor) &&
@@ -430,7 +431,7 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
                 value={formularioValues.id_ubicacion}
                 onChange={handleInputChange}
                 name="id_ubicacion"
-                sx={{ width: 400 }}
+                sx={{ width: "100%" }}
                 required={true}
               >
                 {Array.isArray(ubicacion) &&
@@ -441,7 +442,7 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
                   ))}
               </Select>
             </div>
-            <div className="d-flex flex-column">
+            <div className="d-flex flex-column " style={{width: "100%"}}>
               <InputLabel sx={{ marginBottom: 4, textAlign: "center" }}>
                 EDITAR IMAGEN CARD (900x600 px)
               </InputLabel>
@@ -452,7 +453,7 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
                 onChange={(event) => setArchivo(event.target.files[0])}
                 required={false}
                 style={{
-                  width: 400,
+                  width: "100%",
                   paddingTop: 5,
                   paddingBottom: 30,
                   border: "4px dotted #ccc",
@@ -467,7 +468,7 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
                   handleCarrouselFileChange(event, setImagenCarrousel1)
                 }
                 style={{
-                  width: 400,
+                  width: "100%",
                   paddingTop: 5,
                   paddingBottom: 30,
                   border: "4px dotted #ccc",
@@ -482,7 +483,7 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
                   handleCarrouselFileChange(event, setImagenCarrousel2)
                 }
                 style={{
-                  width: 400,
+                  width: "100%",
                   paddingTop: 5,
                   paddingBottom: 30,
                   border: "4px dotted #ccc",
@@ -497,7 +498,7 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
                   handleCarrouselFileChange(event, setImagenCarrousel3)
                 }
                 style={{
-                  width: 400,
+                  width: "100%",
                   paddingTop: 5,
                   paddingBottom: 30,
                   border: "4px dotted #ccc",
@@ -509,7 +510,7 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
                       onChange={handleInputChange}
                       name="imagen_carrousel_1"
                       value={formularioValues.imagen_carrousel_1}
-                      sx={{ width: 400,  minHeight: '56px' }}
+                      sx={{ width: "100%",  minHeight: '56px' }}
                       required={true}
                       className="mt-5"
                     />
@@ -518,7 +519,7 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
                       onChange={handleInputChange}
                       name="imagen_carrousel_2"
                       value={formularioValues.imagen_carrousel_2}
-                      sx={{ width: 400,  minHeight: '56px' }}
+                      sx={{ width: "100%",  minHeight: '56px' }}
                       required={true}
                       className="mt-5"
                     />
@@ -527,7 +528,7 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
                       onChange={handleInputChange}
                       name="imagen_carrousel_3"
                       value={formularioValues.imagen_carrousel_3}
-                      sx={{ width: 400,  minHeight: '56px' }}
+                      sx={{ width: "100%",  minHeight: '56px' }}
                       required={true}
                       className="mt-5"
                     /> */}
