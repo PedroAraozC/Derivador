@@ -288,7 +288,7 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
         </div>
         <Divider />
         <div className="d-flex flex-column justify-content-center" >
-          <form className="d-flex flex-column flex-xxl-row gap-5 justify-content-center align-items-center formAgregarcausal ">
+          <form className="d-flex flex-column flex-xxl-row gap-5 justify-content-center align-items-center formAgregarcausal">
             <div style={{width: "100%"}}>
               <InputLabel sx={{ marginTop: 2 }}>NOMBRE PATRIMONIO</InputLabel>
               <TextField

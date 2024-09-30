@@ -259,7 +259,7 @@ const AgregarPatrimonio = () => {
       </div>
       <div className="container mt-3 mb-3">
         <form
-          className="d-flex gap-5 justify-content-center align-items-center formAgregarcausal"
+          className="d-flex flex-column flex-xxl-row gap-5 justify-content-center align-items-center formAgregarcausal"
           onSubmit={(event) => handleAgregar(event)}
         >
           <div>
