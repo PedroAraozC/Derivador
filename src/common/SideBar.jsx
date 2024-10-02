@@ -137,6 +137,12 @@ export default function ListaPrueba() {
     url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
   };
+  const irACAPHUMANO = () => {
+    const token = localStorage.getItem("token");
+    const url = new URL(`http://181.105.6.205:93/`);
+    url.searchParams.append("auth", token);
+    window.open(url.toString(), "_blank");
+  };
   const irAGED = () => {
     const token = localStorage.getItem("token");
     const url = new URL(`http://181.105.6.205:9006/`);
@@ -206,7 +212,9 @@ export default function ListaPrueba() {
                             ? () => irAGAF()
                             :
                             subItem.descripcion === "Gerencia de Datos"
-                            ? () => irAGED()
+                            ? () => irAGED() :
+                            subItem.descripcion === "Capital Humano"
+                            ? () => irACAPHUMANO()
                             : subItem.descripcion === "Boletín Municipal"
                             ? () => irABOLETIN()
                             : subItem.descripcion === "Carnet de Manejo"
