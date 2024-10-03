@@ -66,6 +66,8 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
     habilita: 0,
   });
 
+  let nombreViejo = patrimonio?.nombre_patrimonio;
+
   // Función para validar el formulario antes de enviarlo
   const validarFormulario = () => {
     const nuevosErrores = {};
@@ -155,6 +157,24 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
         if (imagenCarrousel2) formData.append('imagen_carrousel_2', imagenCarrousel2);
         if (imagenCarrousel3) formData.append('imagen_carrousel_3', imagenCarrousel3);
   
+        if (nombreViejo !== patri.nombre_patrimonio) {
+          // Si el nombre ha cambiado, renombrar carpeta y archivos
+          try {
+              const responseRenombrar = await axios.post('/admin/renombrarPatrimonio', {
+                  id_patrimonio: patri.id_patrimonio,
+                  nombre_antiguo: nombreViejo,
+                  nombre_nuevo: patri.nombre_patrimonio
+              });
+              console.log('Respuesta del servidor (renombrar patrimonio):', responseRenombrar.data);
+          } catch (error) {
+              console.error('Error al renombrar archivos/carpeta:', error);
+              setSnackbarMensaje("Error al renombrar archivos/carpeta.");
+              setSnackbarOpen(true);
+              setButtonDis(false);
+              throw error;
+          }
+      }
+      
         // Enviar imágenes
         try {
           const responseImagenes = await axios.post('/admin/editarPatrimonioImagenes', formData, {
@@ -277,8 +297,11 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
     p: 4,
     overflowY: "auto"
   };
+""
+console.log(nombreViejo, "viejo");
 
   return (
+    <>
     <Modal open={modalAbierto}>
       <Box sx={style}>
         <div className="d-flex justify-content-around align-items-center mb-3">
@@ -505,59 +528,34 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
                   padding: "20px",
                 }}
               />
-              {/* <TextField
-                      placeholder="Ingrese la URL de la imagen para el carrousel"
-                      onChange={handleInputChange}
-                      name="imagen_carrousel_1"
-                      value={formularioValues.imagen_carrousel_1}
-                      sx={{ width: "100%",  minHeight: '56px' }}
-                      required={true}
-                      className="mt-5"
-                    />
-                <TextField
-                      placeholder="Ingrese la URL de la imagen para el carrousel"
-                      onChange={handleInputChange}
-                      name="imagen_carrousel_2"
-                      value={formularioValues.imagen_carrousel_2}
-                      sx={{ width: "100%",  minHeight: '56px' }}
-                      required={true}
-                      className="mt-5"
-                    />
-                <TextField
-                      placeholder="Ingrese la URL de la imagen para el carrousel"
-                      onChange={handleInputChange}
-                      name="imagen_carrousel_3"
-                      value={formularioValues.imagen_carrousel_3}
-                      sx={{ width: "100%",  minHeight: '56px' }}
-                      required={true}
-                      className="mt-5"
-                    /> */}
+            
             </div>
           </form>
           <Button
             onClick={() => editarPatrimonio(formularioValues)}
-            className="mt-3"
+            className="mt-3 w-25 d-flex align-self-center"
             variant="outlined"
             disabled={buttonDis}
           >
             Guardar cambios
           </Button>
-          {/* <form
-            action="/admin/editarPatrimonio"
-            method="POST"
-            encType="multipart/form-data"
+          <Button
+            onClick={() => handleClose()}
+            className="mt-3 w-25 d-flex align-self-center"
+            variant="contained"
+            disabled={buttonDis} color="error"
           >
-            <input type="file" name="imagen_carrousel_1" />
-            <input type="file" name="imagen_carrousel_2" />
-            <input type="file" name="imagen_carrousel_3" />
-            <input type="submit" value="Enviar" />
-          </form> */}
+           Cancelar
+          </Button>
         </div>
+   </Box>
+    </Modal> 
         {errores ? (
           <Snackbar
             open={snackbarOpen}
             autoHideDuration={6000}
             onClose={handleSnackbarClose}
+            // sx={{position: "fixed", margin: "10", left:"0"}}
           >
             <Alert
               onClose={handleSnackbarClose}
@@ -571,8 +569,8 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
         ) : (
           <></>
         )}
-      </Box>
-    </Modal>
+     
+        </>
   );
 };
 
