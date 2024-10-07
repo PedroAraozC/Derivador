@@ -35,6 +35,7 @@ const ProviderEducacion = ({ children }) => {
   const [permisosTUsuarios, setPermisosTUsuarios] = useState([]);
   const [empleados, setEmpleados] = useState([]);
   const [ProcesosSinId, setProcesosSinId] = useState([]);
+  const [linksPanelGestion, setLinksPanelGestion] = useState([]);
   const [existeEnPP, setExisteEnPP] = useState(null);
   const [permisosPorPersona, setPermisosPorPersona] = useState(null);
   //Funcion para listar las convocatorias
@@ -316,7 +317,18 @@ const ProviderEducacion = ({ children }) => {
       setExisteEnPP(false);
     }
   };
-  
+  const obtenerLinksPanelGestion = async (id) => {
+    let datos = {
+      id: id
+    }
+    try {
+      const resultado = await axios.post("/panel_gestion/listarLinks", datos);
+      // Actualiza los estados con las convocatorias filtradas y ordenadas
+      setLinksPanelGestion(resultado.data.links);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <EducaContext.Provider
@@ -384,7 +396,9 @@ const ProviderEducacion = ({ children }) => {
         obtenerReparticiones,
         reparticiones,
         obtenerProcesos,
-        procesos
+        procesos,
+        obtenerLinksPanelGestion,
+        linksPanelGestion
       }}
     >
       {children}
