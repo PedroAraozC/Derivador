@@ -4,6 +4,7 @@ import { useState, useEffect, useContext } from "react";
 import { Modal, Box, Button, Divider, InputLabel, Switch, TextField, Snackbar, Alert } from "@mui/material";
 import { EducaContext } from "../../../../context/EducaContext";
 import axios from "../../../../config/axios";
+import axiosLici from "../../../../config/axiosLicitaciones";
 
 const ModalMaterial = ({materiales, modalAbierto, handleClose}) => {
 
@@ -82,17 +83,18 @@ const ModalMaterial = ({materiales, modalAbierto, handleClose}) => {
   }
 
 
-  const editarAutor = async (event, material) => {
-    event.preventDefault()
+  const editarAutor = async (event) => {
     const formularioValido = validarFormulario();
     if (formularioValido) {
       try {
-        const response = await axios.post(
-          "/admin/editarMaterial",
-          material
+        const response = await axiosLici.post(
+          "/admin/editarMaterialPatrimonio",
+          formularioValues
         );
-        handleClose()
+        // handleClose()
         actualizador()
+        setSnackbarMensaje("Material editado con éxito.");
+        setSnackbarOpen(true);
         return response.data;
       } catch (error) {
         console.error("Error al editar el material:", error);
@@ -149,7 +151,7 @@ const ModalMaterial = ({materiales, modalAbierto, handleClose}) => {
                 </div>
               </form>
                 <Button
-                  onClick={() => editarAutor(formularioValues)}
+                  onClick={() => editarAutor()}
                   className="mt-3"
                   variant="outlined"
                 >

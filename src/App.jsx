@@ -29,6 +29,7 @@ import PanelReparticiones from "./components/Admin/Reparticiones/PanelReparticio
 import PermisosTUsuario from "./components/Admin/TiposUsuarios/PermisosTUsuario";
 import PanelUsuarios from "./components/Admin/Usuarios/PanelUsuarios";
 import PrivateRouteAdmin from "./routes/PrivateRouteAdmin";
+import PanelGestion from "./components/PanelGestion/PanelGestion";
 // import PrivateRouteAdminLicitaciones from "./routes/PrivateRouteAdminLicitaciones";
 // import PrivateRouteAdminPatrimonio from "./routes/PrivateRouteAdminPatrimonio";
 // import PrivateRouteEmpleadoJerarquico from "./routes/PrivateRouteEmpleadoJerarquico";
@@ -99,6 +100,12 @@ function App() {
               <Route exact path="/agregar-causal" element={<PrivateRoute><AgregarCausal /></PrivateRoute>} />
               <Route exact path="/agregar-convoca" element={<PrivateRoute><AgregarConvocatoria /></PrivateRoute>} />
               {/* EDUCACION */}
+
+
+              {/* PANEL DE GESTION */}
+              <Route exact path="/panel_gestion" element={<PrivateRoute><PanelGestion /></PrivateRoute>} />
+              {/* PANEL DE GESTION */}
+
 
             </Routes>
           </ProviderEducacion>

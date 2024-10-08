@@ -14,18 +14,23 @@ import { useNavigate } from "react-router-dom";
 import DvrIcon from "@mui/icons-material/Dvr";
 import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import PersonIcon from "@mui/icons-material/Person";
-import ReportGmailerrorredIcon from "@mui/icons-material/ReportGmailerrorred";
 import TuneIcon from "@mui/icons-material/Tune";
 import HomeIcon from "@mui/icons-material/Home";
 import QueryStatsIcon from "@mui/icons-material/QueryStats";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import "./SideBar.css";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import useStore from "../Zustand/Zustand";
-import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
-import ApartmentOutlinedIcon from '@mui/icons-material/ApartmentOutlined';
-import QueryStats from "@mui/icons-material/QueryStats";
+import AccountBoxOutlinedIcon from '@mui/icons-material/AccountBoxOutlined';
+import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
+import AutoAwesomeMotionOutlinedIcon from '@mui/icons-material/AutoAwesomeMotionOutlined';
+import BrokenImageOutlinedIcon from '@mui/icons-material/BrokenImageOutlined';
+import BuildOutlinedIcon from '@mui/icons-material/BuildOutlined'
+import BrowserUpdatedOutlinedIcon from '@mui/icons-material/BrowserUpdatedOutlined';
+import ContactPhoneOutlinedIcon from '@mui/icons-material/ContactPhoneOutlined';
+import Diversity3OutlinedIcon from '@mui/icons-material/Diversity3Outlined';
+import HomeWorkOutlinedIcon from '@mui/icons-material/HomeWorkOutlined';
+import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
 
 export default function ListaPrueba() {
   const { user, obtenerPermisos, permisos } = useStore();
@@ -53,8 +58,6 @@ export default function ListaPrueba() {
     switch (nombreOpcion) {
       case "SERVICIOS":
         return <DvrIcon />;
-      case "REPORTES":
-        return <ReportGmailerrorredIcon />;
       case "ESTADISTICAS":
         return <QueryStatsIcon />;
       case "PARAMETROS":
@@ -63,12 +66,26 @@ export default function ListaPrueba() {
         return <PersonIcon />;
       case "GESTION FINANCIERA":
         return <AttachMoneyIcon />;
-      case "PANEL ADMINISTRADOR":
-        return <AdminPanelSettingsIcon />;
-      case "PANEL EMPLEADOS":
-        return <AdminPanelSettingsOutlinedIcon />;
-        case "BLOOMBERG":
-          return <QueryStats />;
+      case "CONFIGURACIÓN":
+        return <BuildOutlinedIcon />;
+      case "EDICION DE PERFIL":
+        return <AccountBoxOutlinedIcon />;
+      case "PANEL DE GESTION":
+        return <AssessmentOutlinedIcon />;
+      case "BOLETIN OFICIAL":
+        return <AutoAwesomeMotionOutlinedIcon />;
+      case "BLOOMBERG":
+          return <BrokenImageOutlinedIcon />;
+      case "COMPROBANTES":
+          return <BrowserUpdatedOutlinedIcon />;
+      case "ATENCION CIUDADANA":
+          return <ContactPhoneOutlinedIcon />;
+      case "CAPITAL HUMANO":
+          return <Diversity3OutlinedIcon />;
+      case "EDUCACION":
+          return <MenuBookOutlinedIcon />;
+      case "PATRIMONIO MUNICIPAL":
+          return <HomeWorkOutlinedIcon />;
       default:
         return <AccountTreeIcon />;
     }
@@ -178,22 +195,11 @@ export default function ListaPrueba() {
           </ListItemIcon>
           <ListItemText primary="INICIO" />
         </ListItemButton>
-        {user?.id_tusuario == 1 || user?.documento_persona == "27220303026" || user?.documento_persona == "23213275739"? <>
-        <ListItemButton
-          onClick={() => irACATASTRO()}
-          component="a"
-          className="w-100"
-        >
-          <ApartmentOutlinedIcon sx={{ color: "rgba(0, 0, 0, 0.54)" }} />
-          <ListItemText primary="CATASTRO" className="ms-3"/>
-        </ListItemButton>
-        
-        </> : <></>}
         {/* Construye cada elemento del menú */}
         {menuItems.map((item, index) => (
           <div key={index} className="d-flex justify-content-between w-100 flex-column">
             {/* Elemento del menú */}
-            <ListItemButton onClick={() => handleClick(item.label)}>
+            <ListItemButton onClick={() => handleClick(item.label)} className="itemsSidebar">
               <ListItemIcon>{mapearIcono(item.label)}</ListItemIcon>
               <ListItemText primary={item.label} />
               {item.subItems && (openList === item.label ? <ExpandLess /> : <ExpandMore />)}
@@ -221,6 +227,8 @@ export default function ListaPrueba() {
                             ? () => irATURNOS()
                             : subItem.descripcion === "Licitaciones y Concursos"
                             ? () => irALICITACIONES()
+                            : subItem.descripcion === "Catastro"
+                            ? () => irACATASTRO()
                             : () => redirigir(`/${subItem.label}`)
                         }
                       />
@@ -234,7 +242,7 @@ export default function ListaPrueba() {
       </div>
 
       <div className="d-flex flex-column justify-content-center align-items-center">
-        <p className="footer text-center">
+        <p className="footer text-center mt-5">
           Desarrollado por Dirección de Innovación Tecnológica
           <span style={{ fontSize: "1.4em", verticalAlign: "-0.1em" }}>©</span> 2024
         </p>
