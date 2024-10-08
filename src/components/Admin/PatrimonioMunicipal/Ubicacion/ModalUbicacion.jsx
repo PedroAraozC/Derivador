@@ -20,6 +20,7 @@ const ModalUbicacion = ({ ubicaciones, modalAbierto, handleClose }) => {
   const [deviceWidth, setDeviceWidth] = useState(window.innerWidth);
   const { actualizador } = useContext(EducaContext);
   const [errores, setErrores] = useState({});
+  const [buttonDis, setButtonDis] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMensaje, setSnackbarMensaje] = useState("");
   const [formularioValues, setFormularioValues] = useState({
@@ -108,6 +109,12 @@ const ModalUbicacion = ({ ubicaciones, modalAbierto, handleClose }) => {
         actualizador();
         setSnackbarMensaje("Ubicación editada con éxito.");
         setSnackbarOpen(true);
+        setTimeout(() => {
+          handleClose();
+          setSnackbarOpen(false);
+          setButtonDis(false);
+        }, 1500);
+        actualizador();
         return response.data;
       } catch (error) {
         console.error("Error al editar la ubicacion:", error);
@@ -125,8 +132,8 @@ const ModalUbicacion = ({ ubicaciones, modalAbierto, handleClose }) => {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: isMobile ? "90%" : "1200px", // Ajusta el ancho según el dispositivo
-    height: "50%",
+    width: isMobile ? "100%" : "500px", // Ajusta el ancho según el dispositivo
+    // height: "50%",
     bgcolor: "background.paper",
     border: "2px solid #000",
     boxShadow: 24,
@@ -134,6 +141,7 @@ const ModalUbicacion = ({ ubicaciones, modalAbierto, handleClose }) => {
   };
 
   return (
+    <>
     <Modal open={modalAbierto} onClose={handleClose}>
       <Box sx={style}>
         <div className="d-flex justify-content-around align-items-center mb-3">
@@ -172,6 +180,8 @@ const ModalUbicacion = ({ ubicaciones, modalAbierto, handleClose }) => {
             Guardar cambios
           </Button>
         </div>
+      </Box>
+    </Modal>
         {errores ? (
           <Snackbar
             open={snackbarOpen}
@@ -190,8 +200,7 @@ const ModalUbicacion = ({ ubicaciones, modalAbierto, handleClose }) => {
         ) : (
           <></>
         )}
-      </Box>
-    </Modal>
+        </>
   );
 };
 

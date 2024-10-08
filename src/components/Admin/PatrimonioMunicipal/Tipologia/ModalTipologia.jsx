@@ -21,6 +21,7 @@ const ModalTipologia = ({ tipologias, modalAbierto, handleClose }) => {
   const { actualizador } = useContext(EducaContext);
   const [errores, setErrores] = useState({});
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [buttonDis, setButtonDis] = useState(false);
   const [snackbarMensaje, setSnackbarMensaje] = useState("");
   const [formularioValues, setFormularioValues] = useState({
     nombre_tipologia: "",
@@ -104,10 +105,16 @@ const ModalTipologia = ({ tipologias, modalAbierto, handleClose }) => {
           "/admin/editarTipologiaPatrimonio",
           formularioValues
         );
-        // handleClose()
+        handleClose()
         actualizador();
         setSnackbarMensaje("Categoria editada con éxito.");
         setSnackbarOpen(true);
+        setTimeout(() => {
+          handleClose();
+          setSnackbarOpen(false);
+          setButtonDis(false);
+        }, 1500);
+        actualizador();
         return response.data;
       } catch (error) {
         console.error("Error al editar la tipologia:", error);
@@ -125,8 +132,8 @@ const ModalTipologia = ({ tipologias, modalAbierto, handleClose }) => {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: isMobile ? "90%" : "1200px", // Ajusta el ancho según el dispositivo
-    height: "50%",
+    width: isMobile ? "100%" : "500px", // Ajusta el ancho según el dispositivo
+    // height: "50%",
     bgcolor: "background.paper",
     border: "2px solid #000",
     boxShadow: 24,
@@ -134,6 +141,7 @@ const ModalTipologia = ({ tipologias, modalAbierto, handleClose }) => {
   };
 
   return (
+    <>
     <Modal open={modalAbierto} onClose={handleClose}>
       <Box sx={style}>
         <div className="d-flex justify-content-around align-items-center mb-3">
@@ -143,7 +151,7 @@ const ModalTipologia = ({ tipologias, modalAbierto, handleClose }) => {
         </div>
         <Divider />
         <div className="d-flex flex-column justify-content-center">
-          <form className="d-flex justify-content-around flex-column">
+          <form className="d-flex flex-column flex-xxl-row gap-5 justify-content-center align-items-center formAgregarcausal">
             <div className="w-50 d-flex flex-column gap-3 p-2">
               <InputLabel>TIPOLOGÍA</InputLabel>
               <TextField
@@ -151,6 +159,7 @@ const ModalTipologia = ({ tipologias, modalAbierto, handleClose }) => {
                 onChange={handleInputChange}
                 name="nombre_tipologia"
                 value={formularioValues.nombre_tipologia}
+                
               />
             </div>
             <div className="d-flex flex-column gap-3 w-50 p-2">
@@ -166,32 +175,34 @@ const ModalTipologia = ({ tipologias, modalAbierto, handleClose }) => {
           </form>
           <Button
             onClick={() => editarTipologia()}
-            className="mt-3"
+            className="mt-3 w-50 d-flex align-self-center"
             variant="outlined"
           >
             Guardar cambios
           </Button>
         </div>
-        {errores ? (
-          <Snackbar
-            open={snackbarOpen}
-            autoHideDuration={6000}
-            onClose={handleSnackbarClose}
-          >
-            <Alert
-              onClose={handleSnackbarClose}
-              severity="info"
-              elevation={6}
-              variant="filled"
-            >
-              {snackbarMensaje}
-            </Alert>
-          </Snackbar>
-        ) : (
-          <></>
-        )}
       </Box>
     </Modal>
+
+  {errores ? (
+    <Snackbar
+      open={snackbarOpen}
+      autoHideDuration={6000}
+      onClose={handleSnackbarClose}
+    >
+      <Alert
+        onClose={handleSnackbarClose}
+        severity="info"
+        elevation={6}
+        variant="filled"
+      >
+        {snackbarMensaje}
+      </Alert>
+    </Snackbar>
+  ) : (
+    <></>
+  )}
+  </>
   );
 };
 

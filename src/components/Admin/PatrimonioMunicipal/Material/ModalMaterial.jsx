@@ -11,6 +11,7 @@ const ModalMaterial = ({materiales, modalAbierto, handleClose}) => {
   const [deviceWidth, setDeviceWidth] = useState(window.innerWidth);
   const { actualizador } = useContext(EducaContext);
   const [errores, setErrores] = useState({});
+  const [buttonDis, setButtonDis] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMensaje, setSnackbarMensaje] = useState('');
   const [formularioValues, setFormularioValues] = useState({
@@ -95,6 +96,12 @@ const ModalMaterial = ({materiales, modalAbierto, handleClose}) => {
         actualizador()
         setSnackbarMensaje("Material editado con éxito.");
         setSnackbarOpen(true);
+        setTimeout(() => {
+          handleClose();
+          setSnackbarOpen(false);
+          setButtonDis(false);
+        }, 1500);
+        actualizador();
         return response.data;
       } catch (error) {
         console.error("Error al editar el material:", error);
@@ -106,20 +113,21 @@ const ModalMaterial = ({materiales, modalAbierto, handleClose}) => {
       setSnackbarOpen(true);
     }};
 
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: isMobile ? "90%" : "1200px", // Ajusta el ancho según el dispositivo
-    height: "50%",
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 4,
-  };
+    const style = {
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      width: isMobile ? "100%" : "500px", // Ajusta el ancho según el dispositivo
+      // height: "50%",
+      bgcolor: "background.paper",
+      border: "2px solid #000",
+      boxShadow: 24,
+      p: 4,
+    };
 
   return (
+    <>
     <Modal open={modalAbierto} onClose={handleClose}>
       <Box sx={style}>
         <div className="d-flex justify-content-around align-items-center mb-3">
@@ -129,7 +137,7 @@ const ModalMaterial = ({materiales, modalAbierto, handleClose}) => {
         </div>
         <Divider />
         <div className="d-flex flex-column justify-content-center">
-              <form className="d-flex justify-content-around flex-column">
+              <form className="d-flex flex-column flex-xxl-row gap-5 justify-content-center align-items-center formAgregarcausal">
                 <div className="w-50 d-flex flex-column gap-3 p-2">
                   <InputLabel>MATERIAL</InputLabel>
                   <TextField
@@ -158,6 +166,8 @@ const ModalMaterial = ({materiales, modalAbierto, handleClose}) => {
                   Guardar cambios
                 </Button>
         </div>
+      </Box>
+    </Modal>
         {errores? (
             <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
                 <Alert onClose={handleSnackbarClose} severity="info" elevation={6} variant="filled">
@@ -165,8 +175,7 @@ const ModalMaterial = ({materiales, modalAbierto, handleClose}) => {
                 </Alert>
             </Snackbar>
             ):<></>}
-      </Box>
-    </Modal>
+            </>
   );
 };
 
