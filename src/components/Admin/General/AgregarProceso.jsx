@@ -7,12 +7,12 @@ import Swal from "sweetalert2";
 import axios from "../../../config/axios";
 
 const AgregarProceso = ({ option }) => {
-    //HAY QUE OBTENER DE ALGUNA FORMA EL ID DE LA OPCION A CARGAR EL PROCESO
 
     const [isModalAttachOpen, setIsModalAttachOpen] = useState(false);
     const [nombre_proceso, setNombre_proceso] = useState("");
     const [descripcion, setDescripcion] = useState("");
     const [habilita, setHabilita] = useState(false);
+
     const limpia_campos = () => {
         setNombre_proceso("");
         setDescripcion("");
@@ -24,10 +24,10 @@ const AgregarProceso = ({ option }) => {
     };
     const agregar = async () => {
         const datos = {
-            id_opcion: option.id,
+            id_opcion: option.subItems[0].id_opcion,
             nombre_proceso: nombre_proceso,
             descripcion: descripcion,
-            habilita: habilita ? "1" : "0", // No es necesario verificar si habilita es true, ya que su valor ya es un booleano
+            habilita: habilita ? "1" : "0",
         };
 
         if (nombre_proceso.trim() === "" || descripcion.trim() === "") {
@@ -49,6 +49,7 @@ const AgregarProceso = ({ option }) => {
         }
         setIsModalAttachOpen(false);
     };
+
 
     return (
         <>

@@ -27,14 +27,14 @@ import {
 const GraficosCapHumanoPlantaPorCatego = () => {
     const { resultSearch } = useStore();
     const [categorias, setCategorias] = useState([]);
-  
+
     useEffect(() => {
       let sumatoriaPorCodi10 = {};
 
       // Itera sobre cada objeto y realiza la sumatoria
       resultSearch[0].forEach((objeto) => {
         const codi10 = objeto.CODI_10;
-        const valor = objeto[""];
+        const valor = objeto["cantidad"];
 
         // Si ya hay una entrada para este CODI_10, suma el valor
         if (sumatoriaPorCodi10[codi10]) {
@@ -109,7 +109,8 @@ const GraficosCapHumanoPlantaPorCatego = () => {
           <Pie data={data} options={options} />
         </div>
         {/* se repite el div por el tema del width */}
-        <div className="d-flex-col w-50 d-none d-sm-block">
+      
+        <div className="container d-flex-col w-50 d-none d-sm-block">
           <p className="text-center"><b>Total por Categoría</b></p>
           <div className="d-flex justify-content-center flex-wrap">
             {
@@ -122,7 +123,10 @@ const GraficosCapHumanoPlantaPorCatego = () => {
            
            
           </div>
+          <div className="container">
+
           <Pie data={data} options={options} />
+          </div>
         </div>
       </>
     ) : (

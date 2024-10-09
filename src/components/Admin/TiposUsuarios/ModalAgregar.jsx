@@ -26,11 +26,11 @@ const ModalAgregar = ({ modalAgregarAbierto, handleClose }) => {
 
         if (!formularioValues.nombre_tusuario || formularioValues.nombre_tusuario.length > 30) {
             nuevosErrores.nombre_tusuario = "Ingrese un nombre de máximo 30 caracteres";
-            setSnackbarMensaje("Ingrese un nombre del autor/a de máximo 30 caracteres");
+            setSnackbarMensaje("Ingrese un nombre de máximo 30 caracteres");
         }
         if (!formularioValues.observacion || formularioValues.observacion.length > 140) {
-            nuevosErrores.observacion = "Ingrese un nombre de máximo 140 caracteres";
-            setSnackbarMensaje("Ingrese un nombre del autor/a de máximo 140 caracteres");
+            nuevosErrores.observacion = "Ingrese un máximo 140 caracteres";
+            setSnackbarMensaje("Ingrese un máximo 140 caracteres");
         }
 
         setErrores(nuevosErrores);

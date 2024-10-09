@@ -4,3 +4,11 @@
 .css-10hburv-MuiTypography-root{
     font-size: .9rem !important;
 }
+.subitemsSidebar{
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+.itemsSidebar{
+    padding-top: 0.2 !important;
+    padding-bottom: 0.2 !important;
+}

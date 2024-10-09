@@ -51,13 +51,13 @@ const GraficosCapHumanoPlantaMunicipal = () => {
         });
       });
 
-      setArrayFiltrado(newArray);
+      setArrayFiltrado(newArray.filter(tipo => !tipo.nombre.includes("_")));
     }
   }, [resultSearch]);
 
   const data = {
     labels: Object.keys(resultSearch[0][0]).filter(
-      (rs) => !rs.includes("sexo")
+      (rs) => !rs.includes("sexo") && !rs.includes("_")
     ),
     datasets: [
       {
@@ -84,7 +84,10 @@ const GraficosCapHumanoPlantaMunicipal = () => {
   return (
     <>
       {resultSearch[0].length != 0 ? (
-        <Pie data={data} options={options} />
+        <div className="container d-flex justify-content-center">
+
+          <Pie data={data} options={options} />
+        </div>
       ) : (
         <GraficoPieEsqueleto />
       )}

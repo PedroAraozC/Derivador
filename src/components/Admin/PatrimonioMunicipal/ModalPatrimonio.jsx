@@ -1,3 +1,4 @@
+/* ModalPatrimonio.jsx */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { useState, useEffect, useContext, useRef } from "react";
@@ -100,9 +101,12 @@ const ModalPatrimonio = ({patrimonio, modalAbierto, handleClose}) => {
         );
           setSnackbarMensaje("Patrimonio editado.");
           setSnackbarOpen(true);
-          // handleClose()
+          setTimeout(() => {
+            handleClose()
+            setSnackbarOpen(false);
+            setButtonDis(false)
+          }, 1500);
           actualizador()
-          setButtonDis(false)
           return response.data;
         } catch (error) {
           console.error("Error al editar el patrimonio:", error);

@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react-hooks/exhaustive-deps */
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { alpha } from '@mui/material/styles';
@@ -9,6 +7,7 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
+import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
@@ -21,8 +20,10 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
+import { visuallyHidden } from '@mui/utils';
 import useStore from '../../../Zustand/Zustand';
-import { TablePagination } from '@mui/material';
+import { Button } from '@mui/material';
+import axios from '../../../config/axios';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -40,19 +41,44 @@ function getComparator(order, orderBy) {
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
+function stableSort(array, comparator) {
+  const stabilizedThis = array.map((el, index) => [el, index]);
+  stabilizedThis.sort((a, b) => {
+    const order = comparator(a[0], b[0]);
+    if (order !== 0) {
+      return order;
+    }
+    return a[1] - b[1];
+  });
+  return stabilizedThis.map((el) => el[0]);
+}
+
 function EnhancedTableHead(props) {
-    const [cabeceras, setCabeceras] = React.useState([])
+    const [cabeceras,setCabeceras] = React.useState([])
     const { resultSearch } = useStore();
-    const { onSelectAllClick, orderBy, numSelected, rowCount, onRequestSort, copiaResultSearch } =
+    // eslint-disable-next-line react/prop-types
+    const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort, copiaResultSearch } =
       props;
 
-      React.useEffect(() => {
-        if( resultSearch.length > 0){
-        
-          setCabeceras(Object.keys(copiaResultSearch[0][0]))
-        }
-      }, [resultSearch])
+  React.useEffect(() => {
+    if(resultSearch.length > 0){
+        const valoresUnicos = [
+            // eslint-disable-next-line react/prop-types
+            ...new Set(copiaResultSearch[0].filter(o=>o.CODI_10 >=18 && o.CODI_10<=24).map((objeto) => objeto.CODI_10)),
+          ];
+    
+          const primeraColumnaReparticion = "SECRETARIA";
+          const valoresUnicosOrdenados = [
+            primeraColumnaReparticion,
+            ...valoresUnicos.sort((a, b) => a - b),
+          ];
+    
+          setCabeceras(valoresUnicosOrdenados);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resultSearch])
 
+    
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -74,13 +100,21 @@ function EnhancedTableHead(props) {
         {cabeceras.map((headCell) => (
           <TableCell
             key={headCell.id}
+            align={headCell.numeric ? 'right' : 'left'}
+            padding={headCell.disablePadding ? 'none' : 'normal'}
+            sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
+              direction={orderBy === headCell.id ? order : 'asc'}
               onClick={createSortHandler(headCell.id)}
             >
-              {headCell=="codi_07"? "ITEM" : headCell == "DETA_07"? "REPARTICION" : headCell.toUpperCase()}
-              
+              {headCell}
+              {orderBy === headCell.id ? (
+                <Box component="span" sx={visuallyHidden}>
+                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                </Box>
+              ) : null}
             </TableSortLabel>
           </TableCell>
         ))}
@@ -153,7 +187,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function TablaPorReparticion() {
+export default function TablaPorCategoriaYSec() {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
@@ -161,8 +195,9 @@ export default function TablaPorReparticion() {
   const [dense, setDense] = React.useState(true);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   
-  const { resultSearch,setResultSearch } = useStore();
+  const { resultSearch,setResultSearch, setFlagCategoriasFuncionarios, flagCategoriasFuncionarios, valuesCapHumano} = useStore();
   const [copiaResultSearch] = React.useState(resultSearch)
+  const [filas,setFilas] = React.useState([])
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -175,11 +210,11 @@ export default function TablaPorReparticion() {
     setSelected([]);
   };
 
+  let newSelected = [];
   const handleClick = (event, row) => {
-  
-   setResultSearch(copiaResultSearch[0].filter(rs=>rs.DETA_07.includes(row.DETA_07)))
+   
+   setResultSearch(copiaResultSearch[0].filter(rs=>rs.DETA_07.includes(row.SECRETARIA)))
     const selectedIndex = selected.indexOf(row);
-    let newSelected = [];
   
     if (selectedIndex === -1) {
       // Si no está seleccionado, selecciona el nuevo
@@ -187,11 +222,30 @@ export default function TablaPorReparticion() {
     } else {
       // Si ya está seleccionado, deselecciona todos
       newSelected = [];
-      setResultSearch(copiaResultSearch[0])
+      setResultSearch(copiaResultSearch[0]);
     }
   
     setSelected(newSelected);
   };
+
+  const getData = async (SP) => {
+    try {
+      const obj = { procedimiento: SP };
+      const resultado = await axios.post("/listar/ejecutarProcedimiento", obj);
+      setResultSearch(resultado.data);
+    } catch (error) {
+      console.log(error);
+      // setError(error.response.data?.message || error.message)
+    }
+  };
+
+  const haceMagia = () =>{
+    console.log("ffffff");
+    setResultSearch([]);
+    getData(valuesCapHumano);
+    setFlagCategoriasFuncionarios(!flagCategoriasFuncionarios)
+  }
+  
   
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -201,39 +255,95 @@ export default function TablaPorReparticion() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-  
+
   const handleChangeDense = (event) => {
     setDense(event.target.checked);
   };
 
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
-  function stableSort(array, comparator) {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-      const order = comparator(a[0], b[0]);
-      if (order !== 0) {
-        return order;
-      }
-      return a[1] - b[1];
-    });
-    return stabilizedThis.map((el) => el[0]);
-  }
 
-  const visibleRows = stableSort(copiaResultSearch[0], getComparator(order, orderBy)).slice(
-    page * rowsPerPage,
-    page * rowsPerPage + rowsPerPage,
-  )
+  React.useEffect(() => {
+    if (copiaResultSearch.length > 0) {
+      const valoresUnicos = [
+        ...new Set(copiaResultSearch[0].filter(o=>o.CODI_10 >=18 && o.CODI_10<=24).map((objeto) => objeto.CODI_10)),
+      ];
 
+      const primeraColumnaReparticion = "SECRETARIA";
+      const valoresUnicosOrdenados = [
+        primeraColumnaReparticion,
+        ...valoresUnicos.sort((a, b) => a - b),
+      ];
+
+      const datosOrganizados = {};
+
+      copiaResultSearch[0].forEach((dato) => {
+        const reparticion = dato.DETA_07;
+        if (!datosOrganizados[reparticion]) {
+          datosOrganizados[reparticion] = { SECRETARIA: reparticion };
+        }
+        datosOrganizados[reparticion][dato.CODI_10] = dato["cantidad"];
+      });
+
+    const filasTabla = Object.keys(datosOrganizados).map((reparticion) => {
+      const fila = { SECRETARIA: reparticion };
+  
+      valoresUnicosOrdenados.forEach((columna) => {
+          if (columna === 18) {
+              // Sumar los valores de las columnas 15, 16 y 17 y asignar a la columna 18
+              fila[columna] = (datosOrganizados[reparticion][columna] || 0) +
+                              (datosOrganizados[reparticion][15] || 0) +
+                              (datosOrganizados[reparticion][16] || 0) +
+                              (datosOrganizados[reparticion][17] || 0);
+          } else {
+              // Para otras columnas, asignar el valor directamente
+              fila[columna] = datosOrganizados[reparticion][columna] || 0;
+          }
+      });
+  
+      return fila;
+  });  
+     
+filasTabla.forEach((objeto) => {
+  for (const key in objeto) {
+    const value = objeto[key];
+    
+    if (parseInt(key) === 15 || parseInt(key) === 16 || parseInt(key) === 17) {
+            // Suma el valor a la categoría 18 y elimina la propiedad
+            objeto[18] = (objeto[18] || 0) + value;
+            delete objeto[key];
+          }
+       
+          if (parseInt(key) >= 50) {
+            delete objeto[key];
+          }
+        }
+      });
+      
+      setFilas(
+        filasTabla.map((fila) => {
+          const filaOrdenada = {};
+          valoresUnicosOrdenados.forEach((columna) => {
+            filaOrdenada[columna] = fila[columna];
+          });
+          return filaOrdenada;
+        })
+      );
+
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [copiaResultSearch]);
+
+  const visibleRows = stableSort(filas, getComparator(order, orderBy)).slice(
+        page * rowsPerPage,
+        page * rowsPerPage + rowsPerPage,
+      )
+
+    
   return (
-    <Box  sx={{ 
-      width: '100%', 
-      // Los breakpoints deben estar dentro de un objeto anidado
-      width: { 
-        xs: '100%',  // Para pantallas extra pequeñas
-        md: '110%'   // Para pantallas medianas y más grandes
-      } 
-    }}>
+    <Box sx={{ width: '100%' }}>
+      <Button onClick={haceMagia}>Funcionarios</Button>
+      <Switch onClick={haceMagia}/>
       <Paper sx={{ width: '100%', mb: 2 }}>
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
@@ -248,11 +358,11 @@ export default function TablaPorReparticion() {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={copiaResultSearch.length}
+              rowCount={resultSearch[0].length}
               copiaResultSearch={copiaResultSearch}
             />
             {
-            copiaResultSearch.length > 0 &&
+            filas.length > 0 &&
             <TableBody>
               {visibleRows.map((row, index) => {
                 const isItemSelected = isSelected(row);
@@ -278,15 +388,15 @@ export default function TablaPorReparticion() {
                         }}
                       />
                     </TableCell>
-                    <TableCell >{row.codi_07}</TableCell>
-                    <TableCell >{row.DETA_07}</TableCell>
-                    <TableCell >{row.MUJERES == null? 0 : row.MUJERES}</TableCell>
-                    <TableCell >{row.MUJERES_PROM_EDAD == null? 0 : Math.trunc(row.MUJERES_PROM_EDAD / row.MUJERES) }</TableCell>
-                    <TableCell >{row.VARONES == null? 0 : row.VARONES}</TableCell>
-                    <TableCell >{row.VARONES_PROM_EDAD == null? 0 : Math.trunc(row.VARONES_PROM_EDAD / row.VARONES)}</TableCell>
-                    <TableCell >{row.PLANTA}</TableCell>
-                    <TableCell >{row.CONTRATO}</TableCell>
-                    <TableCell >{row.FUNCIONARIOS}</TableCell>
+                   
+                    <TableCell >{row.SECRETARIA}</TableCell>
+                    <TableCell >{row[18]}</TableCell>
+                    <TableCell >{row[19]}</TableCell>
+                    <TableCell >{row[20]}</TableCell>
+                    <TableCell >{row[21]}</TableCell>
+                    <TableCell >{row[22]}</TableCell>
+                    <TableCell >{row[23]}</TableCell>
+                    <TableCell >{row[24]}</TableCell>
                   </TableRow>
                 );
               })}
@@ -294,10 +404,11 @@ export default function TablaPorReparticion() {
             </TableBody>
             }
           </Table>
-          <TablePagination
+        </TableContainer>
+        <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={copiaResultSearch[0].length}
+          count={filas.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
@@ -305,7 +416,6 @@ export default function TablaPorReparticion() {
           labelRowsPerPage="Filas por página"
           labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count}`}
         />
-        </TableContainer>
       </Paper>
       <FormControlLabel
         control={<Switch checked={dense} onChange={handleChangeDense} />}

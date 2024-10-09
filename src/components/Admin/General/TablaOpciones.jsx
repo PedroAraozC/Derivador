@@ -72,12 +72,11 @@ export default function TablaOpciones() {
     return acc;
   }, []) : [];
 
-  const groupedOptionsWithId = groupedOptions.map((option, index) => ({
-    id: index + 1, // El índice comienza desde 0, por lo que sumamos 1 para obtener un ID que comience desde 1
+  const groupedOptionsWithId = groupedOptions.map((option) => ({
     nombre_opcion: option.nombre_opcion,
     subItems: option.subItems
   }));
-
+  
   const styleModal = {
     position: 'absolute',
     top: '50%',
@@ -93,6 +92,7 @@ export default function TablaOpciones() {
 
   const handleAgregar = async(event, opcion) => {
     event.preventDefault()
+    console.log(opcion);
     // const formularioValido = validarFormulario();
         try {
             const response = await axios.post("/admin/altaOpcion", opcion );
@@ -190,13 +190,9 @@ export default function TablaOpciones() {
                             {option.subItems.map((subItem, subIndex) => (
                               <TableRow key={subIndex}>
                                 {/* Agrega celdas vacías */}
-                                <TableCell>Proceso:</TableCell>
                                 <TableCell></TableCell>
                                 <TableCell>{subItem.nombre_proceso}</TableCell>
                                 <TableCell>
-                                  <button className='btn'>
-                                    <DeleteIcon/>
-                                  </button>
                                   <button className='btn'>
                                     <EditIcon/>
                                   </button>
@@ -244,7 +240,7 @@ export default function TablaOpciones() {
                 sx={{width: 300, marginBottom: 2}}
                 required={true}
               />
-              <Button variant='outlined' sx={{width: 300}}>Aceptar</Button>
+              <Button variant='outlined' type='submit' sx={{width: 300}}>Aceptar</Button>
             </form>
           </div>
         </Box>

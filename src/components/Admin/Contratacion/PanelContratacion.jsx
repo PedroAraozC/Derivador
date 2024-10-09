@@ -1,7 +1,7 @@
 import { Alert, Button, InputLabel, MenuItem, Select, Snackbar, Switch, TextField } from "@mui/material";
 import { useState, useEffect, useRef } from "react";
 import useStore from "../../../Zustand/Zustand";
-import axios from "../../../config/axios";
+import axios from "../../../config/axiosLicitaciones";
 import TablaContratacion from "./TablaContratacion";
 
 const PanelContratacion = () => {
@@ -97,9 +97,9 @@ const validarFormulario = () => {
         throw new Error("Error al agregar la contratacion");
       }
     } else {
-      console.log('Algo salió mal :(');
       setSnackbarMensaje("Por favor, corrige los errores en el formulario.");
       setSnackbarOpen(true);
+      setButtonDis(false)
     }
   };
 
@@ -130,6 +130,8 @@ const validarFormulario = () => {
     setButtonDis(false)
     setLlevaAnexo(false)
     setButtonDisAnexo(false);
+    setArchivo(null);
+    setAnexo(null);
   }
 
   useEffect(() => {

@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect, useRef } from "react";
 import { Modal, Box, Button, Divider, InputLabel, MenuItem, Select, Switch, TextField, Snackbar, Alert, } from "@mui/material";
-import axios from "../../../config/axios";
+import axios from "../../../config/axiosLicitaciones";
 import useStore from "../../../Zustand/Zustand";
 // import LaunchIcon from "@mui/icons-material/Launch";
 
@@ -46,10 +46,6 @@ const ModalContratacion = ({ contratacion, modalAbierto, handleClose, modoEdicio
         if (!formularioValues.hora_presentacion || !/^\d{2}:\d{2}:\d{2}$/.test(formularioValues.hora_presentacion)) {
             nuevosErrores.hora_designa = "Ingrese una hora válida (formato: HH:MM:SS)";
             setSnackbarMensaje("Ingrese una hora válida (formato: HH:MM:SS)");
-        }
-        if(!formularioValues.archivo){
-            nuevosErrores.archivo = "Ingrese un archivo";
-            setSnackbarMensaje("Ingrese un archivo");
         }
         setErrores(nuevosErrores);
         // Si hay errores, muestra el Snackbar
@@ -111,6 +107,7 @@ const ModalContratacion = ({ contratacion, modalAbierto, handleClose, modoEdicio
     const handleFileInputChangeAnexo = () => {
         const file = anexoInputRef.current.files[0];
         setAnexo(file); // Asignar el archivo al estado
+        console.log(anexo)
     };
 
     const editarContratacion = async (contratacion) => {

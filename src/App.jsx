@@ -1,5 +1,5 @@
 import Home from "./components/Home/Home";
-import Login from "./components/Login/Login";
+// import Login from "./components/Login/Login";
 import { Routes, Route, HashRouter } from "react-router-dom";
 import Layout from "./common/Layout";
 import CapitalHumano from "./pages/CapitalHumano/CapitalHumano";
@@ -27,23 +27,24 @@ import PanelTUsuarios from "./components/Admin/TiposUsuarios/PanelTUsuarios";
 import PanelTDocumento from "./components/Admin/TipoDocumento/PanelTDocumento";
 import PanelReparticiones from "./components/Admin/Reparticiones/PanelReparticiones";
 import PermisosTUsuario from "./components/Admin/TiposUsuarios/PermisosTUsuario";
+import PanelUsuarios from "./components/Admin/Usuarios/PanelUsuarios";
+import PrivateRouteAdmin from "./routes/PrivateRouteAdmin";
+import PanelGestion from "./components/PanelGestion/PanelGestion";
+// import PrivateRouteAdminLicitaciones from "./routes/PrivateRouteAdminLicitaciones";
+// import PrivateRouteAdminPatrimonio from "./routes/PrivateRouteAdminPatrimonio";
+// import PrivateRouteEmpleadoJerarquico from "./routes/PrivateRouteEmpleadoJerarquico";
+// import PrivateRouteEducacion from "./routes/PrivateRouteEducacion";
 
 function App() {
   const url = new URL(window.location.href);
   const logout = url.searchParams.get("logout");
   const token = url.searchParams.get("auth");
 
-
   if(localStorage.getItem("token")){
     localStorage.setItem("token", token != null ? token : localStorage.getItem("token"));
   }else if(token){
     localStorage.setItem("token", token);
   }
-
-
-
-
-
 
   url.searchParams.delete("logout");
   url.searchParams.delete("auth");
@@ -66,12 +67,13 @@ function App() {
 
 
               {/* ADMINISTRADOR GENERAL */}
-              <Route exact path="/opcion" element={<PrivateRoute><PanelAdmin /></PrivateRoute>} />
-              <Route exact path="/genero" element={<PrivateRoute><PanelGenero /></PrivateRoute>} />
-              <Route exact path="/tipo-usuario" element={<PrivateRoute><PanelTUsuarios /></PrivateRoute>} />
-              <Route exact path="/tipo_documento" element={<PrivateRoute><PanelTDocumento /></PrivateRoute>} />
-              <Route exact path="/reparticion" element={<PrivateRoute><PanelReparticiones /></PrivateRoute>} />
-              <Route exact path="/permisos-usuario" element={<PrivateRoute><PermisosTUsuario /></PrivateRoute>} />
+              <Route exact path="/opcion" element={<PrivateRouteAdmin><PanelAdmin /></PrivateRouteAdmin>} />
+              <Route exact path="/genero" element={<PrivateRouteAdmin><PanelGenero /></PrivateRouteAdmin>} />
+              <Route exact path="/tipo-usuario" element={<PrivateRouteAdmin><PanelTUsuarios /></PrivateRouteAdmin>} />
+              <Route exact path="/tipo_documento" element={<PrivateRouteAdmin><PanelTDocumento /></PrivateRouteAdmin>} />
+              <Route exact path="/reparticion" element={<PrivateRouteAdmin><PanelReparticiones /></PrivateRouteAdmin>} />
+              <Route exact path="/permisos-usuario" element={<PrivateRouteAdmin><PermisosTUsuario /></PrivateRouteAdmin>} />
+              <Route exact path="/panel_usuario" element={<PrivateRouteAdmin><PanelUsuarios /></PrivateRouteAdmin>} />
 
               {/* ADMINISTRADOR GENERAL */}
               
@@ -79,7 +81,7 @@ function App() {
               <Route exact path="/panel_contratacion" element={<PrivateRoute><PanelContratacion /></PrivateRoute>} />
               {/* LICITACION */}
 
-                {/*PATRIMONIO*/ }
+              {/*PATRIMONIO*/ }
               <Route exact path="/panel_patrimonio" element={<PrivateRoute><PanelPatrimonioMunicipal /></PrivateRoute>} />
               <Route exact path="/agregar-patrimonio" element={<PrivateRoute><AgregarPatrimonio /></PrivateRoute>} />
               <Route exact path="/agregar-autor" element={<PrivateRoute><AgregarAutor /></PrivateRoute>} />
@@ -88,7 +90,7 @@ function App() {
               <Route exact path="/agregar-tipologia" element={<PrivateRoute><AgregarTipologia /></PrivateRoute>} />
               <Route exact path="/agregar-categoria" element={<PrivateRoute><AgregarCategoria /></PrivateRoute>} />
               <Route exact path="/agregar-ubicacion" element={<PrivateRoute><AgregarUbicacion /></PrivateRoute>} />
-                {/*PATRIMONIO*/ }
+              {/*PATRIMONIO*/ }
 
 
               {/* EDUCACION */}
@@ -98,6 +100,12 @@ function App() {
               <Route exact path="/agregar-causal" element={<PrivateRoute><AgregarCausal /></PrivateRoute>} />
               <Route exact path="/agregar-convoca" element={<PrivateRoute><AgregarConvocatoria /></PrivateRoute>} />
               {/* EDUCACION */}
+
+
+              {/* PANEL DE GESTION */}
+              <Route exact path="/panel_gestion" element={<PrivateRoute><PanelGestion /></PrivateRoute>} />
+              {/* PANEL DE GESTION */}
+
 
             </Routes>
           </ProviderEducacion>

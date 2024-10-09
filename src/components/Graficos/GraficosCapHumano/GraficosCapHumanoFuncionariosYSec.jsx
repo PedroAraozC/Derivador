@@ -25,7 +25,7 @@ import {
   );
 
 
-const GraficosCapHumanoFuncionarios = () => {
+const GraficosCapHumanoFuncionariosYSec = () => {
     const { resultSearch } = useStore();
     const [categorias, setCategorias] = useState([]);
 
@@ -125,4 +125,4 @@ const GraficosCapHumanoFuncionarios = () => {
   )
 }
 
-export default GraficosCapHumanoFuncionarios
+export default GraficosCapHumanoFuncionariosYSec

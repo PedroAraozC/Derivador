@@ -10,7 +10,7 @@ import {
   } from "chart.js";
   import { Pie } from "react-chartjs-2";
   import { useEffect, useState } from "react";
-  import { coloresCategoriasFun } from "../../../helpers/constantes";
+  import { coloresCategoriasMun } from "../../../helpers/constantes";
   import useStore from "../../../Zustand/Zustand";
   import GraficoPieEsqueleto from "../../Esqueletos/GraficoPieEsqueleto";
   
@@ -24,11 +24,9 @@ import {
     Legend
   );
 
-
-const GraficosCapHumanoFuncionarios = () => {
+const GraficosCapHumanoPlantaPorCategoYSec = () => {
     const { resultSearch } = useStore();
     const [categorias, setCategorias] = useState([]);
-
 
     useEffect(() => {
       let sumatoriaPorCodi10 = {};
@@ -47,8 +45,18 @@ const GraficosCapHumanoFuncionarios = () => {
         }
       });
 
+      sumatoriaPorCodi10[18] +=
+        (sumatoriaPorCodi10[15] || 0) +
+        (sumatoriaPorCodi10[16] || 0) +
+        (sumatoriaPorCodi10[17] || 0);
+
+      // Elimina las entradas de 15, 16 y 17
+      delete sumatoriaPorCodi10[15];
+      delete sumatoriaPorCodi10[16];
+      delete sumatoriaPorCodi10[17];
+
       for (let clave in sumatoriaPorCodi10) {
-        if (parseInt(clave) < 50) {
+        if (parseInt(clave) >= 50) {
           delete sumatoriaPorCodi10[clave];
         }
       }
@@ -62,7 +70,7 @@ const GraficosCapHumanoFuncionarios = () => {
         {
           label: "",
           data: Object.values(categorias),
-          backgroundColor: Object.keys(categorias).map((cat) => coloresCategoriasFun[cat]),
+          backgroundColor: Object.keys(categorias).map((cat) => coloresCategoriasMun[cat]),
           hoverOffset: 4,
         },
       ],
@@ -87,29 +95,32 @@ const GraficosCapHumanoFuncionarios = () => {
       <>
         <div className="d-flex-col w-100 d-sm-none">
           <p className="text-center"><b>Total por Categoría</b></p>
-          <div className="d-flex justify-content-center flex-wrap">
+          <div className=" d-flex justify-content-center">
             {
               Object.entries(categorias).map(([propiedad, valor], index) => ( 
               <div key={index}>
-               <p style={{"background-color":`${coloresCategoriasFun[propiedad]}`,"color":"white","border-radius":"5px"}} className="me-3 px-1"> {propiedad}: {isNaN(valor)? 0 : valor} </p>
+               <p style={{"background-color":`${coloresCategoriasMun[propiedad]}`,"color":"white","border-radius":"5px"}} className="me-3 px-1"> {propiedad}: {isNaN(valor)? 0 : valor} </p>
               </div>
             ))
             }
+           
            
           </div>
           <Pie data={data} options={options} />
         </div>
         {/* se repite el div por el tema del width */}
+      
         <div className="container d-flex-col w-50 d-none d-sm-block">
           <p className="text-center"><b>Total por Categoría</b></p>
           <div className="d-flex justify-content-center flex-wrap">
             {
               Object.entries(categorias).map(([propiedad, valor], index) => ( 
               <div key={index}>
-              <p style={{"background-color":`${coloresCategoriasFun[propiedad]}`,"color":"white","border-radius":"5px"}} className="me-2 px-1">{propiedad}: {isNaN(valor)? 0 : valor} </p>
+              <p style={{"background-color":`${coloresCategoriasMun[propiedad]}`,"color":"white","border-radius":"5px"}} className="me-3 px-1">{propiedad}: {isNaN(valor)? 0 : valor} </p>
               </div>
             ))
             }
+           
            
           </div>
           <div className="container">
@@ -125,4 +136,4 @@ const GraficosCapHumanoFuncionarios = () => {
   )
 }
 
-export default GraficosCapHumanoFuncionarios
+export default GraficosCapHumanoPlantaPorCategoYSec
