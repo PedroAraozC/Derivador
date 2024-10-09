@@ -7,6 +7,7 @@ import Estado from "./Estado/Estado";
 import Autor from "./Autor/Autor";
 import Ubicacion from "./Ubicacion/Ubicacion";
 import Patrimonio from "./Patrimonio";
+import Banner from "./Banner/Banner"
 
 const PanelEducacion = () => {
     const [tablaVisible, setTablaVisible] = useState('patrimonios');
@@ -26,6 +27,7 @@ const PanelEducacion = () => {
                 <Button variant="outlined" onClick={verTabla('estado')}>Estado</Button>
                 <Button variant="outlined" onClick={verTabla('autor')}>Autor</Button>
                 <Button variant="outlined" onClick={verTabla('ubicacion')}>Ubicacion</Button>
+                <Button variant="outlined" onClick={verTabla('banner')}>Banner</Button>
             </div>
             <div>
                 {tablaVisible === 'patrimonios' && <Patrimonio />}
@@ -35,6 +37,7 @@ const PanelEducacion = () => {
                 {tablaVisible === 'estado' && <Estado />}
                 {tablaVisible === 'autor' && <Autor />}
                 {tablaVisible === 'ubicacion' && <Ubicacion />}
+                {tablaVisible === 'banner' && <Banner />}
             </div>
         </>
     );

@@ -9,20 +9,18 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TablePagination from "@mui/material/TablePagination";
 import Paper from "@mui/material/Paper";
- import ModalCategoria from "./ModalCategoria";
+import ModalCategoria from "./ModalCategoria";
 import { Button } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import { useNavigate } from "react-router-dom";
 import { EducaContext } from "../../../../context/EducaContext";
 
 const TablaCategoriaBack = () => {
-  // eslint-disable-next-line no-unused-vars
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [modalAbierto, setModalAbierto] = useState(false);
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null);
-  const { categoria, obtenerCategoria, refresh } =
-    useContext(EducaContext);
+  const { categoria, obtenerCategoria, refresh } = useContext(EducaContext);
   const [paginatedArray, setPaginatedArray] = useState([]);
   const navigate = useNavigate();
 
@@ -32,10 +30,7 @@ const TablaCategoriaBack = () => {
 
   useEffect(() => {
     setPaginatedArray(
-      categoria?.slice(
-        page * rowsPerPage,
-        (page + 1) * rowsPerPage
-      )
+      categoria?.slice(page * rowsPerPage, (page + 1) * rowsPerPage)
     );
   }, [categoria, page, rowsPerPage]);
 
@@ -52,8 +47,6 @@ const TablaCategoriaBack = () => {
       }
     });
   };
-
- 
 
   const abrirModal = (categoria) => {
     setCategoriaSeleccionada(categoria);
@@ -94,17 +87,16 @@ const TablaCategoriaBack = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell></TableCell>
-                <TableCell>ID</TableCell>
-                <TableCell>Nombre de Categoria</TableCell>
-                <TableCell>Habilitado</TableCell>
+                <TableCell sx={{ textAlign: 'center' }}></TableCell>
+                <TableCell sx={{ textAlign: 'center' }}>Nombre de Categoria</TableCell>
+                <TableCell sx={{ textAlign: 'center' }}>Habilitado</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {Array.isArray(categoria) &&
                 paginatedArray?.map((categoria) => (
                   <TableRow key={categoria.id_categoria}>
-                    <TableCell>
+                    <TableCell sx={{ textAlign: 'center' }}>
                       <Checkbox
                         checked={
                           categoriaSeleccionada?.id_categoria ===
@@ -115,9 +107,12 @@ const TablaCategoriaBack = () => {
                         }
                       />
                     </TableCell>
-                    <TableCell>{categoria.id_categoria}</TableCell>
-                    <TableCell>{categoria.nombre_categoria}</TableCell>
-                    <TableCell>{categoria.habilita == 1 ? 'SI':('NO')}</TableCell>
+                    <TableCell sx={{ textAlign: 'center' }}>
+                      {categoria.nombre_categoria}
+                    </TableCell>
+                    <TableCell sx={{ textAlign: 'center' }}>
+                      {categoria.habilita == 1 ? 'SI' : 'NO'}
+                    </TableCell>
                   </TableRow>
                 ))}
             </TableBody>

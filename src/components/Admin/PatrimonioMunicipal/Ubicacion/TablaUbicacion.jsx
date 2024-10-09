@@ -16,7 +16,6 @@ import { EducaContext } from "../../../../context/EducaContext";
 import ModalUbicacion from "./ModalUbicacion";
 
 const TablaUbicacion = () => {
-  // eslint-disable-next-line no-unused-vars
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [modalAbierto, setModalAbierto] = useState(false);
@@ -24,7 +23,8 @@ const TablaUbicacion = () => {
   const { ubicacion, obtenerUbicacion, refresh } = useContext(EducaContext);
   const [paginatedArray, setPaginatedArray] = useState([]);
   const navigate = useNavigate();
-  //Funcion para listar las convocatorias
+
+  // Función para listar las convocatorias
   useEffect(() => {
     obtenerUbicacion();
   }, [refresh]);
@@ -72,7 +72,6 @@ const TablaUbicacion = () => {
       <div className="container d-flex justify-content-end mt-5">
         <Button
           variant="contained"
-          disabled={ubicacionSeleccionada !== null}
           onClick={() => navigate("/agregar-ubicacion")}
         >
           NUEVO
@@ -81,7 +80,7 @@ const TablaUbicacion = () => {
           variant="contained"
           className="mx-3"
           disabled={ubicacionSeleccionada === null}
-          onClick={() => abrirModal(ubicacionSeleccionada, true)}
+          onClick={() => abrirModal(ubicacionSeleccionada)}
         >
           EDITAR
         </Button>
@@ -91,17 +90,16 @@ const TablaUbicacion = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell></TableCell>
-                <TableCell>ID</TableCell>
-                <TableCell>Nombre de la Ubicación</TableCell>
-                <TableCell>Habilitado</TableCell>
+                <TableCell align="center"></TableCell> {/* Centrado */}
+                <TableCell align="center">Nombre de la Ubicación</TableCell> {/* Centrado */}
+                <TableCell align="center">Habilitado</TableCell> {/* Centrado */}
               </TableRow>
             </TableHead>
             <TableBody>
               {Array.isArray(ubicacion) &&
                 paginatedArray?.map((ubicacion) => (
                   <TableRow key={ubicacion.id_ubicacion}>
-                    <TableCell>
+                    <TableCell align="center"> {/* Centrado */}
                       <Checkbox
                         checked={
                           ubicacionSeleccionada?.id_ubicacion ===
@@ -112,9 +110,8 @@ const TablaUbicacion = () => {
                         }
                       />
                     </TableCell>
-                    <TableCell>{ubicacion.id_ubicacion}</TableCell>
-                    <TableCell>{ubicacion.nombre_ubicacion}</TableCell>
-                    <TableCell>{ubicacion.habilita == 1 ? 'SI':('NO')}</TableCell>
+                    <TableCell align="center">{ubicacion.nombre_ubicacion}</TableCell> {/* Centrado */}
+                    <TableCell align="center">{ubicacion.habilita === 1 ? 'SI' : 'NO'}</TableCell> {/* Centrado */}
                   </TableRow>
                 ))}
             </TableBody>
