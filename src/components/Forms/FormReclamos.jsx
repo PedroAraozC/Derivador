@@ -16,6 +16,8 @@ import {
 } from "@mui/material";
 import Alert from '@mui/material/Alert';
 import Button from "@mui/material/Button";
+import axiosLici from "../../config/axiosLicitaciones";
+import axiosMuni from "../../config/axiosMuni";
 
 // eslint-disable-next-line react/prop-types
 const FormReclamos = () => {
@@ -36,7 +38,8 @@ const FormReclamos = () => {
     e.preventDefault();
     try {
       setFlagButton(true);
-      const resultado = await axios.post("/reclamos/listar", values);
+      // const resultado = await axios.post("/reclamos/listar", values);
+      const resultado = await axiosLici.post("/reclamos/listar", values);
       setResultSearch(resultado.data.resultado[0]);
       setValuesGraficos(values);
       // setFormFlagReclamos(false)
@@ -90,7 +93,8 @@ const FormReclamos = () => {
   const [errorPermiso, setErrorPermiso] = useState("");
   const obtenerProcedimientosAlmacenados = async () => {
     try {
-      const resultado = await axios.get("/reclamos/listarProcedimientos");
+      // const resultado = await axios.get("/reclamos/listarProcedimientos");
+      const resultado = await axiosLici.get("/reclamos/listarProcedimientos");
       setStoreProcedures(resultado.data.results);
     } catch (error) {
       console.log(error);

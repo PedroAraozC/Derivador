@@ -32,6 +32,7 @@ function EnhancedTableHead(props) {
         if( resultSearch.length > 0){
           let arrTotal = [Object.keys(copiaResultSearch[0][0])]
           arrTotal[0].push('Total')
+      
           setCabeceras(arrTotal)
         }
       }, [resultSearch])
@@ -60,7 +61,7 @@ function EnhancedTableHead(props) {
               active={orderBy === columnName}
               onClick={createSortHandler(columnName)}
             >
-              {columnName}
+              {columnName.toUpperCase()}
             </TableSortLabel>
           </TableCell>
         ))}
@@ -139,13 +140,15 @@ export default function TablaPlantaMunicipal() {
   const [selectedTotal, setSelectedTotal] = React.useState(true);
   const { resultSearch,setResultSearch } = useStore();
   const [copiaResultSearch] = React.useState(resultSearch)
-
+  
+  
   const sumarColumna = (filas, nombreColumna) => {
     return filas.reduce((total, fila) => {
       const valor = parseInt(fila[nombreColumna], 10);
       return isNaN(valor) ? total : total + valor;
     }, 0);
   };
+
   const totalizarFilas = (filas) => {
     return filas.map((fila) => {
       const totalFila = Object.values(fila).reduce((subtotal, valor) => {
@@ -155,10 +158,31 @@ export default function TablaPlantaMunicipal() {
       return totalFila;
     });
   };
-  const totalesFilas = totalizarFilas(copiaResultSearch[0]);
+
+  const sumarValores = (arrays) => {
+    return arrays.map(subArray => {
+      return subArray.reduce((total, [key, value]) => {
+        if (key === 'CONTRATO' || key === 'PLANTA' || key === 'FUNCIONARIOS') {
+          total += value;
+        }
+        return total;
+      }, 0);
+    });
+  };
+  
+  let filtrado = []
+  for (let index = 0; index < copiaResultSearch[0].length; index++) {
+    let arrayDeArrays = Object.entries(copiaResultSearch[0][index]);
+    
+    filtrado.push(arrayDeArrays.filter(subArray => 
+      typeof subArray[0] === 'string' && !subArray[0].includes('_')
+    ))
+  }
+
+  
+  const totalesFilas = sumarValores(filtrado);
   const totalPlanta = totalesFilas[0] + totalesFilas[1]
-
-
+ 
   const handleSelectAllClick = () => {
     setResultSearch(copiaResultSearch[0]);
     setSelected([]);
@@ -178,7 +202,14 @@ export default function TablaPlantaMunicipal() {
   const isSelected = (id) => selected.indexOf(id) !== -1;
   
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ 
+      width: '100%', 
+      // Los breakpoints deben estar dentro de un objeto anidado
+      width: { 
+        xs: '100%',  // Para pantallas extra pequeñas
+        md: '110%'   // Para pantallas medianas y más grandes
+      } 
+    }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
@@ -221,8 +252,11 @@ export default function TablaPlantaMunicipal() {
                       </TableCell>
                       <TableCell>{row.sexo}</TableCell>
                       <TableCell>{row.PLANTA}</TableCell>
+                      <TableCell>{Math.trunc(row.PLANTA_PROM_EDAD / row.PLANTA)}</TableCell>
                       <TableCell>{row.CONTRATO}</TableCell>
+                      <TableCell>{Math.trunc(row.CONTRATO_PROM_EDAD / row.CONTRATO)}</TableCell>
                       <TableCell>{row.FUNCIONARIOS}</TableCell>
+                      <TableCell>{Math.trunc(row.FUNCIONARIOS_PROM_EDAD / row.FUNCIONARIOS)}</TableCell>
                       <TableCell>{totalesFilas[index]}</TableCell>
                     </TableRow>
                   );
@@ -243,10 +277,19 @@ export default function TablaPlantaMunicipal() {
                     {sumarColumna(copiaResultSearch[0], "PLANTA")}
                   </TableCell>
                   <TableCell align="left">
+                    {Math.trunc((copiaResultSearch[0][0].PLANTA_PROM_EDAD + copiaResultSearch[0][1].PLANTA_PROM_EDAD) / (copiaResultSearch[0][0].PLANTA + copiaResultSearch[0][1].PLANTA))}
+                  </TableCell>
+                  <TableCell align="left">
                     {sumarColumna(copiaResultSearch[0], "CONTRATO")}
                   </TableCell>
                   <TableCell align="left">
+                  {Math.trunc((copiaResultSearch[0][0].CONTRATO_PROM_EDAD + copiaResultSearch[0][1].CONTRATO_PROM_EDAD) / (copiaResultSearch[0][0].CONTRATO + copiaResultSearch[0][1].CONTRATO))}
+                  </TableCell>
+                  <TableCell align="left">
                     {sumarColumna(copiaResultSearch[0], "FUNCIONARIOS")}
+                  </TableCell>
+                  <TableCell align="left">
+                  {Math.trunc((copiaResultSearch[0][0].FUNCIONARIOS_PROM_EDAD + copiaResultSearch[0][1].FUNCIONARIOS_PROM_EDAD) / (copiaResultSearch[0][0].FUNCIONARIOS + copiaResultSearch[0][1].FUNCIONARIOS))}
                   </TableCell>
                   <TableCell align="left" sx={{ fontWeight: 'bold' }}>
                     {totalPlanta}

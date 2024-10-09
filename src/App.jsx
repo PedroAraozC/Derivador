@@ -29,10 +29,11 @@ import PanelReparticiones from "./components/Admin/Reparticiones/PanelReparticio
 import PermisosTUsuario from "./components/Admin/TiposUsuarios/PermisosTUsuario";
 import PanelUsuarios from "./components/Admin/Usuarios/PanelUsuarios";
 import PrivateRouteAdmin from "./routes/PrivateRouteAdmin";
-import PrivateRouteAdminLicitaciones from "./routes/PrivateRouteAdminLicitaciones";
-import PrivateRouteAdminPatrimonio from "./routes/PrivateRouteAdminPatrimonio";
-import PrivateRouteEmpleadoJerarquico from "./routes/PrivateRouteEmpleadoJerarquico";
-import PrivateRouteEducacion from "./routes/PrivateRouteEducacion";
+import PanelGestion from "./components/PanelGestion/PanelGestion";
+// import PrivateRouteAdminLicitaciones from "./routes/PrivateRouteAdminLicitaciones";
+// import PrivateRouteAdminPatrimonio from "./routes/PrivateRouteAdminPatrimonio";
+// import PrivateRouteEmpleadoJerarquico from "./routes/PrivateRouteEmpleadoJerarquico";
+// import PrivateRouteEducacion from "./routes/PrivateRouteEducacion";
 
 function App() {
   const url = new URL(window.location.href);
@@ -61,8 +62,8 @@ function App() {
               {/* <Route exact path="/*" element={<Home/>} /> */}
               <Route exact path="/*" element={<PrivateRoute key="home"><Home /></PrivateRoute>} />
               {/* <Route exact path="/registro" element={<Registro />} /> */}
-              <Route exact path="/estadistica_rrhh" element={<PrivateRouteEmpleadoJerarquico key="cap-humano"><CapitalHumano /></PrivateRouteEmpleadoJerarquico>}/>
-              <Route exact path="/estadistica_ac" element={<PrivateRouteEmpleadoJerarquico key="reclamos"><Reclamos /></PrivateRouteEmpleadoJerarquico>}/>
+              <Route exact path="/estadistica_rrhh" element={<PrivateRoute key="cap-humano"><CapitalHumano /></PrivateRoute>}/>
+              <Route exact path="/estadistica_ac" element={<PrivateRoute key="reclamos"><Reclamos /></PrivateRoute>}/>
 
 
               {/* ADMINISTRADOR GENERAL */}
@@ -77,28 +78,34 @@ function App() {
               {/* ADMINISTRADOR GENERAL */}
               
               {/* LICITACION */}
-              <Route exact path="/panel_contratacion" element={<PrivateRouteAdminLicitaciones><PanelContratacion /></PrivateRouteAdminLicitaciones>} />
+              <Route exact path="/panel_contratacion" element={<PrivateRoute><PanelContratacion /></PrivateRoute>} />
               {/* LICITACION */}
 
               {/*PATRIMONIO*/ }
-              <Route exact path="/panel_patrimonio" element={<PrivateRouteAdminPatrimonio><PanelPatrimonioMunicipal /></PrivateRouteAdminPatrimonio>} />
-              <Route exact path="/agregar-patrimonio" element={<PrivateRouteAdminPatrimonio><AgregarPatrimonio /></PrivateRouteAdminPatrimonio>} />
-              <Route exact path="/agregar-autor" element={<PrivateRouteAdminPatrimonio><AgregarAutor /></PrivateRouteAdminPatrimonio>} />
-              <Route exact path="/agregar-estado" element={<PrivateRouteAdminPatrimonio><AgregarEstado /></PrivateRouteAdminPatrimonio>} />
-              <Route exact path="/agregar-material" element={<PrivateRouteAdminPatrimonio><AgregarMaterial /></PrivateRouteAdminPatrimonio>} />
-              <Route exact path="/agregar-tipologia" element={<PrivateRouteAdminPatrimonio><AgregarTipologia /></PrivateRouteAdminPatrimonio>} />
-              <Route exact path="/agregar-categoria" element={<PrivateRouteAdminPatrimonio><AgregarCategoria /></PrivateRouteAdminPatrimonio>} />
-              <Route exact path="/agregar-ubicacion" element={<PrivateRouteAdminPatrimonio><AgregarUbicacion /></PrivateRouteAdminPatrimonio>} />
+              <Route exact path="/panel_patrimonio" element={<PrivateRoute><PanelPatrimonioMunicipal /></PrivateRoute>} />
+              <Route exact path="/agregar-patrimonio" element={<PrivateRoute><AgregarPatrimonio /></PrivateRoute>} />
+              <Route exact path="/agregar-autor" element={<PrivateRoute><AgregarAutor /></PrivateRoute>} />
+              <Route exact path="/agregar-estado" element={<PrivateRoute><AgregarEstado /></PrivateRoute>} />
+              <Route exact path="/agregar-material" element={<PrivateRoute><AgregarMaterial /></PrivateRoute>} />
+              <Route exact path="/agregar-tipologia" element={<PrivateRoute><AgregarTipologia /></PrivateRoute>} />
+              <Route exact path="/agregar-categoria" element={<PrivateRoute><AgregarCategoria /></PrivateRoute>} />
+              <Route exact path="/agregar-ubicacion" element={<PrivateRoute><AgregarUbicacion /></PrivateRoute>} />
               {/*PATRIMONIO*/ }
 
 
               {/* EDUCACION */}
-              <Route exact path="/panel_educacion" element={<PrivateRouteEducacion><PanelEducacion /></PrivateRouteEducacion>} />
-              <Route exact path="/agregar-establecimiento" element={<PrivateRouteEducacion><AgregarEstablecimiento /></PrivateRouteEducacion>} />
-              <Route exact path="/agregar-caracter" element={<PrivateRouteEducacion><AgregarCaracter /></PrivateRouteEducacion>} />
-              <Route exact path="/agregar-causal" element={<PrivateRouteEducacion><AgregarCausal /></PrivateRouteEducacion>} />
-              <Route exact path="/agregar-convoca" element={<PrivateRouteEducacion><AgregarConvocatoria /></PrivateRouteEducacion>} />
+              <Route exact path="/panel_educacion" element={<PrivateRoute><PanelEducacion /></PrivateRoute>} />
+              <Route exact path="/agregar-establecimiento" element={<PrivateRoute><AgregarEstablecimiento /></PrivateRoute>} />
+              <Route exact path="/agregar-caracter" element={<PrivateRoute><AgregarCaracter /></PrivateRoute>} />
+              <Route exact path="/agregar-causal" element={<PrivateRoute><AgregarCausal /></PrivateRoute>} />
+              <Route exact path="/agregar-convoca" element={<PrivateRoute><AgregarConvocatoria /></PrivateRoute>} />
               {/* EDUCACION */}
+
+
+              {/* PANEL DE GESTION */}
+              <Route exact path="/panel_gestion" element={<PrivateRoute><PanelGestion /></PrivateRoute>} />
+              {/* PANEL DE GESTION */}
+
 
             </Routes>
           </ProviderEducacion>

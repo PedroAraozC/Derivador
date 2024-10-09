@@ -97,9 +97,9 @@ const validarFormulario = () => {
         throw new Error("Error al agregar la contratacion");
       }
     } else {
-      console.log('Algo salió mal :(');
       setSnackbarMensaje("Por favor, corrige los errores en el formulario.");
       setSnackbarOpen(true);
+      setButtonDis(false)
     }
   };
 
@@ -130,6 +130,8 @@ const validarFormulario = () => {
     setButtonDis(false)
     setLlevaAnexo(false)
     setButtonDisAnexo(false);
+    setArchivo(null);
+    setAnexo(null);
   }
 
   useEffect(() => {

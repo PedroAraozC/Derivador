@@ -11,62 +11,53 @@ import {
   ListItemText,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-// import DvrIcon from "@mui/icons-material/Dvr";
+import DvrIcon from "@mui/icons-material/Dvr";
 import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import PersonIcon from "@mui/icons-material/Person";
-import ReportGmailerrorredIcon from "@mui/icons-material/ReportGmailerrorred";
 import TuneIcon from "@mui/icons-material/Tune";
 import HomeIcon from "@mui/icons-material/Home";
 import QueryStatsIcon from "@mui/icons-material/QueryStats";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import "./SideBar.css";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import useStore from "../Zustand/Zustand";
-import ArticleIconOutlined from "@mui/icons-material/ArticleOutlined";
+import AccountBoxOutlinedIcon from '@mui/icons-material/AccountBoxOutlined';
+import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
+import AutoAwesomeMotionOutlinedIcon from '@mui/icons-material/AutoAwesomeMotionOutlined';
+import BrokenImageOutlinedIcon from '@mui/icons-material/BrokenImageOutlined';
+import BuildOutlinedIcon from '@mui/icons-material/BuildOutlined'
+import BrowserUpdatedOutlinedIcon from '@mui/icons-material/BrowserUpdatedOutlined';
+import ContactPhoneOutlinedIcon from '@mui/icons-material/ContactPhoneOutlined';
+import Diversity3OutlinedIcon from '@mui/icons-material/Diversity3Outlined';
+import HomeWorkOutlinedIcon from '@mui/icons-material/HomeWorkOutlined';
+import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
 
 export default function ListaPrueba() {
+  const { user, obtenerPermisos, permisos } = useStore();
+  const [state, setState] = React.useState({
+    left: false,
+  });
   const navigate = useNavigate();
   const redirigir = (ruta) => {
     navigate(ruta);
     setState(false);
   };
 
-  const irAGAF = () => {
-    const token = localStorage.getItem("token");
-    const url = new URL(`http://181.105.6.205:9005/`);
-    url.searchParams.append("auth", token);
-    window.open(url.toString(), "_blank");
-  };
-  const irABOLETIN = () => {
-    const token = localStorage.getItem("token");
-    const url = new URL(
-      `https://boletinoficial.smt.gob.ar/?auth=${token}&destino=boletin`
-      // `https://ciudaddigital.smt.gob.ar/?destino=boletin`
-    );
-    url.searchParams.append("auth", token);
-    window.open(url.toString(), "_blank");
-  };
-
-  const { user, obtenerPermisos, permisos } = useStore();
-  const [state, setState] = React.useState({
-    left: false,
-  });
-  const [openLists, setOpenLists] = React.useState({}); // Estado para controlar qué listas están abiertas
+  const [openList, setOpenList] = React.useState(null); // Estado para controlar qué lista está abierta
 
   const handleClick = (label) => {
-    setOpenLists({ ...openLists, [label]: !openLists[label] });
+    // Si el label ya está abierto, ciérralo; de lo contrario, abre el nuevo y cierra el anterior
+    setOpenList(openList === label ? null : label);
   };
 
   const toggleDrawer = (open) => {
     setState({ left: open });
   };
+
   const mapearIcono = (nombreOpcion) => {
     switch (nombreOpcion) {
-      // case "SERVICIOS":
-      //   return <DvrIcon />;
-      case "REPORTES":
-        return <ReportGmailerrorredIcon />;
+      case "SERVICIOS":
+        return <DvrIcon />;
       case "ESTADISTICAS":
         return <QueryStatsIcon />;
       case "PARAMETROS":
@@ -75,15 +66,33 @@ export default function ListaPrueba() {
         return <PersonIcon />;
       case "GESTION FINANCIERA":
         return <AttachMoneyIcon />;
-      case "PANEL ADMIN":
-        return <AdminPanelSettingsIcon />;
+      case "CONFIGURACIÓN":
+        return <BuildOutlinedIcon />;
+      case "EDICION DE PERFIL":
+        return <AccountBoxOutlinedIcon />;
+      case "PANEL DE GESTION":
+        return <AssessmentOutlinedIcon />;
+      case "BOLETIN OFICIAL":
+        return <AutoAwesomeMotionOutlinedIcon />;
+      case "BLOOMBERG":
+          return <BrokenImageOutlinedIcon />;
+      case "COMPROBANTES":
+          return <BrowserUpdatedOutlinedIcon />;
+      case "ATENCION CIUDADANA":
+          return <ContactPhoneOutlinedIcon />;
+      case "CAPITAL HUMANO":
+          return <Diversity3OutlinedIcon />;
+      case "EDUCACION":
+          return <MenuBookOutlinedIcon />;
+      case "PATRIMONIO MUNICIPAL":
+          return <HomeWorkOutlinedIcon />;
       default:
         return <AccountTreeIcon />;
     }
   };
 
   React.useEffect(() => {
-    obtenerPermisos(user.id_tusuario);
+    obtenerPermisos(user?.id_tusuario, user?.id_persona);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -120,9 +129,6 @@ export default function ListaPrueba() {
     return menu;
   }, []);
 
-  //FILTRADO PARA SACAR LA OPCION DE EDITAR PERFIL DEL SIDEBAR
-  const menuItemsFiltered = menuItems.slice(1);
-  // console.log(menuItemsFiltered)
 
   const irACATASTRO = () => {
     const token = localStorage.getItem("token");
@@ -130,7 +136,6 @@ export default function ListaPrueba() {
     url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
   };
-  
   const irATURNOS = () => {
     const token = localStorage.getItem("token");
     const url = new URL(
@@ -141,6 +146,33 @@ export default function ListaPrueba() {
   };
   const irALICITACIONES = () => {
     const url = new URL(`https://licitaciones.smt.gob.ar`);
+    window.open(url.toString(), "_blank");
+  };
+  const irAGAF = () => {
+    const token = localStorage.getItem("token");
+    const url = new URL(`http://181.105.6.205:9005/`);
+    url.searchParams.append("auth", token);
+    window.open(url.toString(), "_blank");
+  };
+  const irACAPHUMANO = () => {
+    const token = localStorage.getItem("token");
+    const url = new URL(`http://181.105.6.205:93/`);
+    url.searchParams.append("auth", token);
+    window.open(url.toString(), "_blank");
+  };
+  const irAGED = () => {
+    const token = localStorage.getItem("token");
+    const url = new URL(`http://181.105.6.205:9006/`);
+    url.searchParams.append("auth", token);
+    window.open(url.toString(), "_blank");
+  };
+  const irABOLETIN = () => {
+    const token = localStorage.getItem("token");
+    const url = new URL(
+      `https://boletinoficial.smt.gob.ar/?auth=${token}&destino=boletin`
+      // `https://ciudaddigital.smt.gob.ar/?destino=boletin`
+    );
+    url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
   };
 
@@ -163,51 +195,40 @@ export default function ListaPrueba() {
           </ListItemIcon>
           <ListItemText primary="INICIO" />
         </ListItemButton>
-        {user.id_tusuario == 1? <>
-        <ListItemButton
-          onClick={() => irACATASTRO()}
-          component="a"
-          className="w-100"
-        >
-          <ArticleIconOutlined sx={{ color: "rgba(0, 0, 0, 0.54)" }} />
-          <ListItemText primary="CATASTRO" className="ms-3"/>
-        </ListItemButton>
-        
-        </> : <></>}
         {/* Construye cada elemento del menú */}
-        {menuItemsFiltered.map((item, index) => (
-          <div
-            key={index}
-            className="d-flex justify-content-between w-100 flex-column"
-          >
+        {menuItems.map((item, index) => (
+          <div key={index} className="d-flex justify-content-between w-100 flex-column">
             {/* Elemento del menú */}
-            <ListItemButton onClick={() => handleClick(item.label)}>
+            <ListItemButton onClick={() => handleClick(item.label)} className="itemsSidebar">
               <ListItemIcon>{mapearIcono(item.label)}</ListItemIcon>
               <ListItemText primary={item.label} />
-              {item.subItems &&
-                (openLists[item.label] ? <ExpandLess /> : <ExpandMore />)}
+              {item.subItems && (openList === item.label ? <ExpandLess /> : <ExpandMore />)}
             </ListItemButton>
 
             {/* Sub-elementos del menú si existen */}
             {item.subItems && (
-              <Collapse in={openLists[item.label]} timeout="auto" unmountOnExit>
+              <Collapse in={openList === item.label} timeout="auto" unmountOnExit>
                 <List component="div">
                   {item.subItems.map((subItem, subIndex) => (
-                    <ListItemButton
-                      key={subIndex}
-                      component="a"
-                      className="w-100"
-                    >
+                    <ListItemButton key={subIndex} component="a" className="w-100 ps-5 subitemsSidebar">
                       <ListItemText
                         primary={subItem.descripcion}
                         onClick={
-                          subItem.descripcion == "Gestión Financiera"
+                          subItem.descripcion === "Gestión Financiera"
                             ? () => irAGAF()
-                            : subItem.descripcion == "Boletín Municipal"
+                            :
+                            subItem.descripcion === "Gerencia de Datos"
+                            ? () => irAGED() :
+                            subItem.descripcion === "Capital Humano"
+                            ? () => irACAPHUMANO()
+                            : subItem.descripcion === "Boletín Municipal"
                             ? () => irABOLETIN()
-                            :subItem.descripcion == "Carnet de Manejo"
-                            ? () => irATURNOS():subItem.descripcion == "Licitaciones y Concursos"
+                            : subItem.descripcion === "Carnet de Manejo"
+                            ? () => irATURNOS()
+                            : subItem.descripcion === "Licitaciones y Concursos"
                             ? () => irALICITACIONES()
+                            : subItem.descripcion === "Catastro"
+                            ? () => irACATASTRO()
                             : () => redirigir(`/${subItem.label}`)
                         }
                       />
@@ -221,12 +242,9 @@ export default function ListaPrueba() {
       </div>
 
       <div className="d-flex flex-column justify-content-center align-items-center">
-        <p className="footer text-center">
+        <p className="footer text-center mt-5">
           Desarrollado por Dirección de Innovación Tecnológica
-          <span style={{ fontSize: "1.4em", verticalAlign: "-0.1em" }}>
-            ©
-          </span>{" "}
-          2024
+          <span style={{ fontSize: "1.4em", verticalAlign: "-0.1em" }}>©</span> 2024
         </p>
       </div>
     </Box>
