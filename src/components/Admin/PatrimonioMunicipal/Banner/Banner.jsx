@@ -1,3 +1,4 @@
+import TablaBanner from "./TablaBanner"
 
 const Banner = () => {
   return (
@@ -5,7 +6,7 @@ const Banner = () => {
             <h4 className="mt-3 mb-1">
               Cambiar Imagenes del Banner
             </h4>
-            <TablaAutor/>
+            <TablaBanner/>
           </div>
   )
 }
