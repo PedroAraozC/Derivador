@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Table, Button, Form } from "react-bootstrap";
+import ModalBanner from "./ModalBanner";
 import "./TablaBanner.css";
 
 function TablaBanner() {
@@ -7,7 +8,8 @@ function TablaBanner() {
     { id: 1, imageUrl: "imagen1.jpg", enabled: true },
     { id: 2, imageUrl: "imagen2.jpg", enabled: false },
   ]);
-  
+  const [showModal, setShowModal] = useState(false);
+
   const handleEnableToggle = (id) => {
     setBanners((prevBanners) =>
       prevBanners.map((banner) =>
@@ -16,17 +18,22 @@ function TablaBanner() {
     );
   };
 
+
   const handleAddBanner = () => {
-    const newBanner = {
-      id: banners.length + 1,
-      imageUrl: "new-image.jpg",
-      enabled: true,
-    };
-    setBanners([...banners, newBanner]);
+    setShowModal(true); // Abre el modal
   };
 
-  const handleDeleteBanner = (id) => {
-    setBanners(banners.filter((banner) => banner.id !== id));
+  const handleCloseModal = () => {
+    setShowModal(false); // Cierra el modal
+  };
+
+  const handleUploadSuccess = (newImageUrl) => {
+    const newBanner = {
+      id: banners.length + 1,
+      imageUrl: newImageUrl, // Imagen recién subida
+      enabled: true,
+    };
+    setBanners([...banners, newBanner]); // Añade el nuevo banner a la tabla
   };
 
   return (
@@ -37,6 +44,7 @@ function TablaBanner() {
           <tr>
             <th>Imagen</th>
             <th>Habilitado</th>
+            <th>Vista Previa</th>
           </tr>
         </thead>
         <tbody>
@@ -51,12 +59,19 @@ function TablaBanner() {
                 />
               </td>
               <td>
-                <Button variant="danger" onClick={() => handleDeleteBanner(banner.id)}>Eliminar</Button>
+                <Button variant="primary">Vista Previa</Button>
               </td>
             </tr>
           ))}
         </tbody>
       </Table>
+
+      {/* Modal separado para subir la imagen */}
+      <ModalBanner
+        show={showModal}
+        handleClose={handleCloseModal}
+        onUploadSuccess={handleUploadSuccess}
+      />
     </div>
   );
 }
