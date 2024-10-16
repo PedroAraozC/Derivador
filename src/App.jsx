@@ -30,6 +30,8 @@ import PermisosTUsuario from "./components/Admin/TiposUsuarios/PermisosTUsuario"
 import PanelUsuarios from "./components/Admin/Usuarios/PanelUsuarios";
 import PrivateRouteAdmin from "./routes/PrivateRouteAdmin";
 import PanelGestion from "./components/PanelGestion/PanelGestion";
+import SuccessPage from "./components/BotonDePagoMacro/SuccessPage";
+import ErrorPage from "./components/BotonDePagoMacro/ErrorPage";
 // import PrivateRouteAdminLicitaciones from "./routes/PrivateRouteAdminLicitaciones";
 // import PrivateRouteAdminPatrimonio from "./routes/PrivateRouteAdminPatrimonio";
 // import PrivateRouteEmpleadoJerarquico from "./routes/PrivateRouteEmpleadoJerarquico";
@@ -105,6 +107,10 @@ function App() {
               {/* PANEL DE GESTION */}
               <Route exact path="/panel_gestion" element={<PrivateRoute><PanelGestion /></PrivateRoute>} />
               {/* PANEL DE GESTION */}
+
+              {/* BOTON DE PAGO */}
+              <Route exact path="/LibreDeudaPagoExitoso" element={<PrivateRoute key="success"><SuccessPage/></PrivateRoute>} />
+              <Route exact path="/LibreDeudaPagoRechazado" element={<PrivateRoute key="errorPago"><ErrorPage/></PrivateRoute>} />
 
 
             </Routes>

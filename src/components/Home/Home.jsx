@@ -11,6 +11,7 @@ import {
   faQrcode,
   faCat,
   faCar,
+  faRoadCircleCheck
 } from "@fortawesome/free-solid-svg-icons";
 import Card from "../Card/Card";
 import "./Home.css";
@@ -18,6 +19,7 @@ import useStore from "../../Zustand/Zustand";
 import { cuilToDni } from "../../helpers/extraerDNI";
 import { useState } from "react";
 import ModalMultasDominio from "../ModalMultasDominio/ModalMultasDominio";
+import ModalLibreDeuda from "../ModalLibreDeuda/ModalLibreDeuda";
 const Home = () => {
   const { user } = useStore();
   // console.log(user);
@@ -26,6 +28,7 @@ const Home = () => {
   // };
 
   const [openModal, setOpenModal] = useState(false);
+  const [openModalLibreDeuda, setOpenModalLibreDeuda] = useState(false)
 
   const irABOLETIN = () => {
     const token = localStorage.getItem("token");
@@ -95,6 +98,11 @@ const Home = () => {
     setOpenModal(true);
   };
 
+  const handleOpenModalLibreDeuda = () => {
+    setOpenModalLibreDeuda(true);
+  };
+
+
   return (
     <div className="contPadreHome">
       <div className="cardsContHome">
@@ -112,10 +120,10 @@ const Home = () => {
           descripcion={"Consulta del Carnet Digital"}
           Icono={<FontAwesomeIcon icon={faNotesMedical} />}
         />
-        <Card
+       <Card
           onClick={() => irACATASTRO()}
-          titulo={"Catastro"}
-          descripcion={"Catastro y Edificaciones"}
+          titulo={"Catastro y Edificaciones"}
+          descripcion={"Ingreso de carpetas y consulta de padrones"}
           Icono={<FontAwesomeIcon icon={faBuildingCircleCheck} />}
         />
         <Card
@@ -151,6 +159,12 @@ const Home = () => {
           Icono={<FontAwesomeIcon icon={faCar} />}
         />
         <Card
+          onClick={() => handleOpenModalLibreDeuda()}
+          titulo={"Libre Deuda"}
+          descripcion={"Obtener Libre Deuda personal o de dominio"}
+          Icono={<FontAwesomeIcon icon={faRoadCircleCheck} />}
+        />
+        <Card
           onClick={() => irACEMA()}
           titulo={"Servicios de Población Animal"}
           descripcion={"Turnos y Requsitos"}
@@ -161,6 +175,12 @@ const Home = () => {
       <ModalMultasDominio
         openDialog={openModal}
         setOpenModal={setOpenModal}
+        user={user}
+      />
+
+      <ModalLibreDeuda
+        openDialog={openModalLibreDeuda}
+        setOpenModal={setOpenModalLibreDeuda}
         user={user}
       />
     </div>
