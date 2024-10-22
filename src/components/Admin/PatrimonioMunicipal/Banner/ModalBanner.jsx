@@ -1,48 +1,59 @@
 import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import axios from "../../../../config/axios";
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
-function ModalBanner({ show, handleClose, onUploadSuccess }) {
+function ModalBanner({ show, handleClose, actualizador, onUploadSuccess }) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [buttonDis, setButtonDis] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMensaje, setSnackbarMensaje] = useState("");
 
-  // Función para manejar el cambio de archivo
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    console.log("Archivo seleccionado:", file); // Verifica si el archivo se está seleccionando correctamente
     setSelectedFile(file);
   };
-  
+
   const handleUpload = async (event) => {
     event.preventDefault();
     setButtonDis(true);
-  
+
     try {
       const formData = new FormData();
-      // Solo incluir el archivo
+
       if (selectedFile) {
-        formData.append("imagen_banner", selectedFile); // Asegúrate de que este nombre coincida
+        formData.append("imagen_banner", selectedFile);
       } else {
         throw new Error("No se ha seleccionado ninguna imagen");
       }
-  
-      // Envía la imagen al backend
+
       const response = await axios.post("http://localhost:3050/admin/crearBannerImagenes", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-  
-      console.log("Imagen subida correctamente", response.data);
+
+      if (response.status === 200) {
+        const imageUrl = response.data.imageUrl; // Asegúrate de que el backend devuelva la URL de la imagen
+        setSnackbarMensaje("Imagen de banner subida con éxito.");
+        setSnackbarOpen(true);
+
+        onUploadSuccess(imageUrl); // Pasa la URL al componente padre para actualizar la tabla
+        setTimeout(() => {
+          handleClose();
+          setSnackbarOpen(false);
+        }, 1500);
+      }
     } catch (error) {
-      console.error("Error en la respuesta del servidor:", error.response?.data || error.message);
+      console.error("Error al subir la imagen de banner:", error);
+      setSnackbarMensaje("Error al subir la imagen de banner.");
+      setSnackbarOpen(true);
     } finally {
       setButtonDis(false);
     }
   };
-  
+
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
@@ -62,6 +73,12 @@ function ModalBanner({ show, handleClose, onUploadSuccess }) {
           Subir Imagen
         </Button>
       </Modal.Footer>
+
+      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={() => setSnackbarOpen(false)}>
+        <Alert onClose={() => setSnackbarOpen(false)} severity="info" elevation={6} variant="filled">
+          {snackbarMensaje}
+        </Alert>
+      </Snackbar>
     </Modal>
   );
 }
