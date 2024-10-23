@@ -10,6 +10,8 @@ function TablaBanner() {
   const [selectedBanner, setSelectedBanner] = useState(null);
   const [imagenBanner, setImagenBanner] = useState("");
   const [isPreviewLoading, setIsPreviewLoading] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMensaje, setSnackbarMensaje] = useState('');
 
   const fetchBanners = async () => {
     try {
@@ -24,14 +26,37 @@ function TablaBanner() {
     fetchBanners();
   }, []);
 
-  const handleEnableToggle = async (id, hab) => {
-    console.log(id);
-    const response = await axios.post("http://localhost:3050/admin/deshabilitarBanner", {id, hab});
+  const handleEnableToggle = async (id, habilita) => {
+    const nuevoEstado = habilita === 1 ? 0 : 1; 
+
     setBanners((prevBanners) =>
       prevBanners.map((banner) =>
-        banner.id_banner === id ? { ...banner, enabled: !banner.enabled } : banner
+        banner.id_banner === id ? { ...banner, habilita: nuevoEstado } : banner
       )
     );
+
+    try {
+      await axios.post("admin/deshabilitarBanner", { id, hab: nuevoEstado });
+
+      setSnackbarMensaje("");
+      setSnackbarOpen(true);
+      setTimeout(() => {
+        setSnackbarOpen(false);
+      }, 1500);
+    } catch (error) {
+      console.error("Error al actualizar el estado del banner:", error);
+  
+      setBanners((prevBanners) =>
+        prevBanners.map((banner) =>
+          banner.id_banner === id ? { ...banner, habilita: habilita } : banner
+        )
+      );
+      setSnackbarMensaje("Error al actualizar el banner.");
+      setSnackbarOpen(true);
+      setTimeout(() => {
+        setSnackbarOpen(false);
+      }, 1500);
+    }
   };
 
   const handleAddBanner = () => {
@@ -45,7 +70,7 @@ function TablaBanner() {
   const handleUploadSuccess = (newImageUrl) => {
     const newBanner = {
       imageUrl: `/var/www/vhosts/cidituc.smt.gob.ar/Fotos-Patrimonio/Banner/${newImageUrl}`,
-      enabled: true,
+      habilita: true,
     };
     setBanners((prevBanners) => [...prevBanners, newBanner]);
   };
@@ -91,7 +116,7 @@ function TablaBanner() {
               <td>
                 <Form.Check
                   type="switch"
-                  checked={banner.enabled}
+                  checked={banner.habilita === 1}
                   onChange={() => handleEnableToggle(banner.id_banner, banner.habilita)}
                   disabled={isPreviewLoading}
                 />
@@ -133,6 +158,11 @@ function TablaBanner() {
           </Button>
         </Modal.Footer>
       </Modal>
+
+      {/* Snackbar para notificaciones */}
+      {snackbarOpen && (
+        <div className="snackbar">{snackbarMensaje}</div>
+      )}
     </div>
   );
 }
