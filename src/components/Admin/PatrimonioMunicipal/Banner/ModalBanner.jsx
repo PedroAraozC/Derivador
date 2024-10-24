@@ -28,13 +28,13 @@ function ModalBanner({ show, handleClose, actualizador, onUploadSuccess }) {
         throw new Error("No se ha seleccionado ninguna imagen");
       }
 
-      const response = await axios.post("http://localhost:3050/admin/crearBannerImagenes", formData, {
+      const response = await axios.post("/admin/crearBannerImagenes", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-
-      if (response.status === 200) {
+console.log(response.status);
+      if (response.status == 200) {
         const imageUrl = response.data.imageUrl; // Asegúrate de que el backend devuelva la URL de la imagen
         setSnackbarMensaje("Imagen de banner subida con éxito.");
         setSnackbarOpen(true);
@@ -55,8 +55,8 @@ function ModalBanner({ show, handleClose, actualizador, onUploadSuccess }) {
   };
 
   return (
-    <Modal show={show} onHide={handleClose}>
-      <Modal.Header closeButton>
+    <Modal show={show} >
+      <Modal.Header >
         <Modal.Title>Subir Nueva Imagen de Banner</Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -69,7 +69,7 @@ function ModalBanner({ show, handleClose, actualizador, onUploadSuccess }) {
         <Button variant="secondary" onClick={handleClose}>
           Cancelar
         </Button>
-        <Button variant="primary" onClick={handleUpload} disabled={buttonDis}>
+        <Button variant="primary" onClick={handleUpload} disabled={buttonDis || selectedFile == null }>
           Subir Imagen
         </Button>
       </Modal.Footer>

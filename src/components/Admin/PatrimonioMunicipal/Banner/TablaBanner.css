@@ -14,6 +14,7 @@
     width: 100%;
     margin-top: 15px;
     border-collapse: collapse;
+    
   }
   
   .table thead {
@@ -30,11 +31,33 @@
   .table tbody td {
     padding: 10px;
     border-bottom: 1px solid #dee2e6;
+    word-wrap: break-word; /* Permitir que el texto se divida en múltiples líneas si es necesario */
+    max-width: 350px; /* Ajustar según el tamaño que deseas */
+    overflow: hidden; /* Evitar que el contenido se desborde */
+    text-overflow: ellipsis; /* Agregar puntos suspensivos si el texto es muy largo */
   }
   
   .table tbody tr:nth-child(even) {
     background-color: #f2f2f2;
   }
   
-  /* Botones */
+  .ellipsis-text {
+    margin: 0;
+    max-width: 100%;
+     white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis  !important;
+  }
   
+  .a {
+
+    width: auto;
+height: 4dvh;
+  }
+
+.b {
+
+display: flex;
+justify-content: center;
+}
+
