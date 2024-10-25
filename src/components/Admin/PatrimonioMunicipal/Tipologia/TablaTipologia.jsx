@@ -9,14 +9,13 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TablePagination from "@mui/material/TablePagination";
 import Paper from "@mui/material/Paper";
- import ModalTipologia from "./ModalTipologia";
+import ModalTipologia from "./ModalTipologia";
 import { Button } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import { useNavigate } from "react-router-dom";
 import { EducaContext } from "../../../../context/EducaContext";
 
 const TablaTipologia = () => {
-  // eslint-disable-next-line no-unused-vars
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [modalAbierto, setModalAbierto] = useState(false);
@@ -24,31 +23,27 @@ const TablaTipologia = () => {
   const { tipologia, obtenerTipologia, refresh } = useContext(EducaContext);
   const [paginatedArray, setPaginatedArray] = useState([]);
   const navigate = useNavigate();
-  //Funcion para listar las convocatorias
+
+  // Obtener la tipología al montar el componente o cuando `refresh` cambie
   useEffect(() => {
     obtenerTipologia();
   }, [refresh]);
 
+  // Actualizar el array paginado cuando la tipología, la página o el número de filas cambien
   useEffect(() => {
     setPaginatedArray(
-      tipologia?.slice(
-        page * rowsPerPage,
-        (page + 1) * rowsPerPage
-      )
+      tipologia?.slice(page * rowsPerPage, (page + 1) * rowsPerPage)
     );
   }, [tipologia, page, rowsPerPage]);
 
   const handleCheckboxChange = (tipologiaId) => {
-    const tipologias = tipologia?.find(
-      (tip) => tip.id_tipologia === tipologiaId
-    );
-
+    const selectedTipologia = tipologia?.find((tip) => tip.id_tipologia === tipologiaId);
+    
     setTipologiaSeleccionada((prevTipologia) => {
       if (!prevTipologia || prevTipologia.id_tipologia !== tipologiaId) {
-        return tipologias;
-      } else {
-        return null;
+        return selectedTipologia;
       }
+      return null; // Si ya está seleccionada, deselecciona
     });
   };
 
@@ -74,14 +69,14 @@ const TablaTipologia = () => {
           variant="contained"
           disabled={tipologiaSeleccionada !== null}
           onClick={() => navigate("/agregar-tipologia")}
+          style={{ marginRight: '10px' }} // Espaciado entre botones
         >
           NUEVO
         </Button>
         <Button
           variant="contained"
-          className="mx-3"
           disabled={tipologiaSeleccionada === null}
-          onClick={() => abrirModal(tipologiaSeleccionada, true)}
+          onClick={() => abrirModal(tipologiaSeleccionada)}
         >
           EDITAR
         </Button>
@@ -91,30 +86,23 @@ const TablaTipologia = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell></TableCell>
-                <TableCell>ID</TableCell>
-                <TableCell>Nombre de Tipologia</TableCell>
-                <TableCell>Habilitado</TableCell>
+                <TableCell align="center"></TableCell>
+                <TableCell align="center">Nombre de Tipología</TableCell>
+                <TableCell align="center">Habilitado</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {Array.isArray(tipologia) &&
                 paginatedArray?.map((tipologia) => (
                   <TableRow key={tipologia.id_tipologia}>
-                    <TableCell>
+                    <TableCell align="center">
                       <Checkbox
-                        checked={
-                          tipologiaSeleccionada?.id_tipologia ===
-                          tipologia.id_tipologia
-                        }
-                        onChange={() =>
-                          handleCheckboxChange(tipologia.id_tipologia)
-                        }
+                        checked={tipologiaSeleccionada?.id_tipologia === tipologia.id_tipologia}
+                        onChange={() => handleCheckboxChange(tipologia.id_tipologia)}
                       />
                     </TableCell>
-                    <TableCell>{tipologia.id_tipologia}</TableCell>
-                    <TableCell>{tipologia.nombre_tipologia}</TableCell>
-                    <TableCell>{tipologia.habilita == 1 ? 'SI':('NO')}</TableCell>
+                    <TableCell align="center">{tipologia.nombre_tipologia}</TableCell>
+                    <TableCell align="center">{tipologia.habilita === 1 ? 'SI' : 'NO'}</TableCell>
                   </TableRow>
                 ))}
             </TableBody>
@@ -127,7 +115,7 @@ const TablaTipologia = () => {
             page={page}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
-            labelRowsPerPage="Columnas por pagina"
+            labelRowsPerPage="Columnas por página"
           />
         </TableContainer>
         <ModalTipologia
