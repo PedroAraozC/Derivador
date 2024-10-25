@@ -111,7 +111,7 @@ function TablaBanner() {
   return (
     <div className="banner-table-container">
       <Button onClick={handleAddBanner}>Agregar Imagen</Button>
-      <Table striped bordered hover >
+      <Table responsive striped bordered hover >
         <thead>
           <tr >
             <th>Imagen</th>
