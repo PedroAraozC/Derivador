@@ -2,16 +2,16 @@ import React from 'react'
 import botonPago from "../../assets/macro-pago.png";
 import { Button } from '@mui/material';
 
-const BotonDePago = ({callbackSuccess,callbackCancel,frase,guid,secretKey, asunto, monto, user, entradaUsuario, setOpenSnackbar, setMensaje, setError, btnState, setBtnState}) => {
+const BotonDePago = ({callbackSuccess,callbackCancel,frase,guid,secretKey, asunto, monto, user, entradaUsuario, setOpenSnackbar, setMensaje, setError, btnState}) => {
 
     const handlePaymentClick = () => {
 
         if (entradaUsuario.trim() !== "") {
-            setBtnState(true);
+
         const emailData = {
             message: entradaUsuario.toUpperCase(),
             recipient: "tmfconsultas@smt.gob.ar",
-            subjet: "Consulta de Multas de Tránsito",
+            subjet: asunto,
           };
           localStorage.setItem("emailData",JSON.stringify(emailData))
           localStorage.setItem("user",JSON.stringify(user))
@@ -60,7 +60,6 @@ const BotonDePago = ({callbackSuccess,callbackCancel,frase,guid,secretKey, asunt
         document.body.appendChild(form);
         form.submit();
 
-        setBtnState(false);
 
     } else {
         setOpenSnackbar(true);
@@ -81,7 +80,7 @@ const BotonDePago = ({callbackSuccess,callbackCancel,frase,guid,secretKey, asunt
 
   return (
     <Button
-    disabled={btnState}
+      disabled={!btnState}
       variant="text"
        type="submit"
        onClick={handlePaymentClick}

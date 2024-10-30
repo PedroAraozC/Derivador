@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {
   Box,
   Input,
+  InputAdornment ,
   Button,
   Dialog,
   DialogActions,
@@ -13,55 +14,19 @@ import {
   Alert,
   TextField,
 } from "@mui/material";
-import axios from "../../config/axios";
+
 import BotonDePago from "../BotonDePagoMacro/BotonDePago";
+import CheckIcon from '@mui/icons-material/Check'; // Ícono de tilde
+import CloseIcon from '@mui/icons-material/Close'; // Ícono de cruz
+import { useEffect } from "react";
+import axios from "../../config/axios";
 
 const ModalLibreDeuda = ({ openDialog, setOpenModal, user }) => {
   const [message, setMessage] = useState("");
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [error, setError] = useState("error");
   const [mensaje, setMensaje] = useState("Algo Explotó :/");
-  const [btnState, setBtnState] = useState(false);
-
-  const handleSend = async () => {
-    if (message.trim() !== "") {
-      setBtnState(false);
-      try {
-        const emailData = {
-          user,
-          message: message.toUpperCase(),
-          recipient: "tmfconsultas@smt.gob.ar",
-          subjet: "Consulta de Multas de Tránsito",
-        };
-        const reslut = await axios.post(
-          "https://estadisticas.smt.gob.ar:5000/usuarios/obtenerLibreDeuda",
-          emailData
-        );
-        setOpenSnackbar(true);
-        setMensaje("Consulta enviada con éxito!");
-        setError("success");
-
-        console.log(reslut.data);
-        console.log("Mensaje enviado:", message, email.value, user);
-        const timer = setTimeout(() => {
-          setOpenModal(false);
-        }, 5000);
-      } catch (error) {
-        setOpenSnackbar(true);
-        setMensaje("Algo explotó! :(");
-        setError("error");
-        console.error("Algo salió mal :(", error);
-      }
-    } else {
-      setOpenSnackbar(true);
-      setMensaje(`Por favor, ingrese la información solicitada`);
-      setError("warning");
-      // Aquí iría la lógica para manejar el envío del formulario
-    }
-    // setOpenSnackbar(false);
-    setBtnState(true);
-    setMessage("");
-  };
+  const [esValido, setEsValido] = useState(false);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -74,6 +39,43 @@ const ModalLibreDeuda = ({ openDialog, setOpenModal, user }) => {
     setOpenModal(false);
     setMessage("");
   };
+
+  const verificarEntradaDominioODNI = (valor) => {
+    const inputValue = valor.toUpperCase();
+    // const regex = /^(?:\d{7,8}|[A-Z]{3}\d{3}|[A-Z]{2}\d{3}[A-Z]{2}|\d{3}[A-Z]{3})$/;
+    const regex = /^(?:\d{7,8}|[A-Z]{3}\d{3}|[A-Z]{2}\d{3}[A-Z]{2}|[A-Z]{1}\d{3}[A-Z]{3}|\d{3}[A-Z]{3})$/;
+
+    setMessage(inputValue)
+
+
+    if (regex.test(inputValue)) {
+     
+      setEsValido(true); // Entrada válida
+    } else {
+    
+      setEsValido(false); // Entrada inválida
+    }
+  }
+
+  const [montoLibreDeuda, setMontoLibreDeuda] = useState(null)
+  const obtenerMontoLibreDeuda = async () => {
+    try {
+      const {data} = await axios.get(`/usuarios/obtenerMonto?id=${1}`)
+      console.log(data.monto[0].precio);
+      
+      setMontoLibreDeuda(Number(data.monto[0].precio));
+      
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
+
+  useEffect(() => {
+    obtenerMontoLibreDeuda();
+  }, [])
+  
+
   return (
     <Dialog
       open={openDialog}
@@ -127,17 +129,16 @@ const ModalLibreDeuda = ({ openDialog, setOpenModal, user }) => {
                 paddingTop: "0px",
               }}
             >
-              Dominios / DNI
+              Dominio / DNI
             </InputLabel>
             <Input
               id="message"
               minRows={4}
-              placeholder="Escriba el dominio solicitado aquí..."
+              placeholder="Sólo números y letras, sin guiones ni puntos"
               autoFocus
               resize={"none"}
               value={message}
-              
-              onChange={(e) => setMessage(e.target.value.toUpperCase())}
+              onChange={(e)=>verificarEntradaDominioODNI(e.target.value)}
               style={{
                 // width: "100%",
                 // padding: "5px",
@@ -148,8 +149,17 @@ const ModalLibreDeuda = ({ openDialog, setOpenModal, user }) => {
                 fontWeight: 500,
               }}
               inputProps={{
-                maxLength: 50 // Ajusta el límite de caracteres aquí
+                maxLength: 12 // Ajusta el límite de caracteres aquí
               }}
+              endAdornment={ // Agregar íconos al final del input
+                <InputAdornment position="end">
+                  {esValido === true ? (
+                    <CheckIcon style={{ color: 'green' }} /> // Tilde en verde si es válido
+                  ) : esValido === false ? (
+                    <CloseIcon style={{ color: 'red' }} /> // Cruz en rojo si es inválido
+                  ) : null}
+                </InputAdornment>
+              }
             />
           </FormControl>
         </Box>
@@ -166,7 +176,7 @@ const ModalLibreDeuda = ({ openDialog, setOpenModal, user }) => {
           Enviar
         </Button> */}
         {/* <BotonDePago callbackSuccess ={"https://cidituc.smt.gob.ar/#/LibreDeudaPagoExitoso"} callbackCancel ={"https://cidituc.smt.gob.ar/#/LibreDeudaPagoRechazado"} frase={"3K/1IIpZFYIdJmk6atqNbA7iQ+bLLdqqGhAdMamkT1Y="} guid ={"62be1013-a33f-434c-8a90-6cb72fe924bf"} secretKey ={"MUNIESMDETUCUMANDIRECCIONCATASTRO_ebcb1ea7-b9de-43c5-ac3a-691cb968512b"} asunto ={"Libre Deuda"} monto ={545645} entradaUsuario={message} setOpenSnackbar={setOpenSnackbar} setMensaje={setMensaje} setError={setError}/> */}
-        <BotonDePago callbackSuccess ={"http://localhost:5173/#/LibreDeudaPagoExitoso"} callbackCancel ={"http://localhost:5173/#/LibreDeudaPagoRechazado"} frase={"3K/1IIpZFYIdJmk6atqNbA7iQ+bLLdqqGhAdMamkT1Y="} guid ={"ed73ca37-2997-4c6c-b1d1-3a9853ed3344"} secretKey ={"MUNIESMDETUCUMANDIRECCIONCATASTRO_78696696-b930-4efe-b13a-7b12c96c8e30"} asunto ={"Libre Deuda"} monto ={545645} entradaUsuario={message} setOpenSnackbar={setOpenSnackbar} setMensaje={setMensaje} setError={setError} btnState={btnState} setBtnState={setBtnState} user={user}/>
+        <BotonDePago callbackSuccess ={"http://localhost:5173/#/LibreDeudaPagoExitoso"} callbackCancel ={"http://localhost:5173/#/LibreDeudaPagoRechazado"} frase={"3K/1IIpZFYIdJmk6atqNbA7iQ+bLLdqqGhAdMamkT1Y="} guid ={"ed73ca37-2997-4c6c-b1d1-3a9853ed3344"} secretKey ={"MUNIESMDETUCUMANDIRECCIONCATASTRO_78696696-b930-4efe-b13a-7b12c96c8e30"} asunto ={"Libre Deuda"} monto ={montoLibreDeuda} entradaUsuario={message} setOpenSnackbar={setOpenSnackbar} setMensaje={setMensaje} setError={setError} btnState={esValido} user={user}/>
         <Button
           color="error"
           variant="outlined"

@@ -19,14 +19,17 @@ const SuccessPage = () => {
                  obj
               );
             setOpenSnackbar(true);
-            setMensaje("Consulta enviada con éxito!");
+            setMensaje("Consulta enviada con éxito. Revise su casilla de correo mas tarde..");
             setError("success");
     
             console.log(data);
          
-            // const timer = setTimeout(() => {
-            //   setOpenModal(false);
-            // }, 5000);
+           setTimeout(() => {
+            localStorage.removeItem('user');
+            localStorage.removeItem('emailData');
+            // window.location.href = 'https://cidituc.smt.gob.ar/#/home';
+            window.location.href = 'http://localhost:5173/#/home';
+            }, 5000);
             
           } catch (error) {
             setOpenSnackbar(true);
@@ -52,12 +55,12 @@ const SuccessPage = () => {
       };
 
   return (
-    <div>SuccessPage
+    <div>
 
-
-<Snackbar
+      <h4 className='text-center mt-4'>Pago realizado con éxtio. El tribunal de faltas le va a responder al correo indicado en su cuenta de Ciudadano Digital.</h4>
+      <Snackbar
         open={openSnackbar}
-        autoHideDuration={4000}
+        autoHideDuration={6000}
         onClose={() => setOpenSnackbar(false)}
         anchorOrigin={{ vertical: "top", horizontal: "center" }} // Ajusta la posición del Snackbar
         style={{ bottom: "-70%" }} // Ajusta el espacio entre Snackbars
@@ -65,7 +68,7 @@ const SuccessPage = () => {
         <Alert
           onClose={handleClose}
           severity={error}
-          variant="filled"
+          variant="filled" 
           sx={{ width: "100%" }}
         >
           {mensaje}

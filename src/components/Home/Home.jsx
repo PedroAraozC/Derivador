@@ -161,7 +161,7 @@ const Home = () => {
         <Card
           onClick={() => handleOpenModalLibreDeuda()}
           titulo={"Libre Deuda"}
-          descripcion={"Obtener Libre Deuda personal o de dominio"}
+          descripcion={"Solicitar Libre Deuda en Tribunal Municipal de Faltas"}
           Icono={<FontAwesomeIcon icon={faRoadCircleCheck} />}
         />
         <Card
