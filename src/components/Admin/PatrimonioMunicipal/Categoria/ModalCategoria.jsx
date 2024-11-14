@@ -20,6 +20,7 @@ const ModalCategoria = ({ categorias, modalAbierto, handleClose }) => {
   const [deviceWidth, setDeviceWidth] = useState(window.innerWidth);
   const { actualizador } = useContext(EducaContext);
   const [errores, setErrores] = useState({});
+  const [buttonDis, setButtonDis] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMensaje, setSnackbarMensaje] = useState("");
   const [formularioValues, setFormularioValues] = useState({
@@ -110,6 +111,12 @@ const ModalCategoria = ({ categorias, modalAbierto, handleClose }) => {
         actualizador();
         setSnackbarMensaje("Categoria editada con éxito.");
         setSnackbarOpen(true);
+        setTimeout(() => {
+          handleClose();
+          setSnackbarOpen(false);
+          setButtonDis(false);
+        }, 1500);
+        actualizador();
         return response.data;
       } catch (error) {
         console.error("Error al editar la categoria:", error);
@@ -127,8 +134,8 @@ const ModalCategoria = ({ categorias, modalAbierto, handleClose }) => {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: isMobile ? "90%" : "1200px", // Ajusta el ancho según el dispositivo
-    height: "50%",
+    width: isMobile ? "100%" : "500px", // Ajusta el ancho según el dispositivo
+    // height: "50%",
     bgcolor: "background.paper",
     border: "2px solid #000",
     boxShadow: 24,
@@ -136,6 +143,7 @@ const ModalCategoria = ({ categorias, modalAbierto, handleClose }) => {
   };
 
   return (
+    <>
     <Modal open={modalAbierto} onClose={handleClose}>
       <Box sx={style}>
         <div className="d-flex justify-content-around align-items-center mb-3">
@@ -145,7 +153,7 @@ const ModalCategoria = ({ categorias, modalAbierto, handleClose }) => {
         </div>
         <Divider />
         <div className="d-flex flex-column justify-content-center">
-          <form className="d-flex justify-content-around flex-column">
+          <form className="d-flex flex-column flex-xxl-row gap-5 justify-content-center align-items-center formAgregarcausal">
             <div className="w-50 d-flex flex-column gap-3 p-2">
               <InputLabel>ESTADO</InputLabel>
               <TextField
@@ -153,6 +161,7 @@ const ModalCategoria = ({ categorias, modalAbierto, handleClose }) => {
                 onChange={handleInputChange}
                 name="nombre_categoria"
                 value={formularioValues.nombre_categoria}
+                sx={{ width: "100%", minHeight: "56px" }} 
               />
             </div>
             <div className="d-flex flex-column gap-3 w-50 p-2">
@@ -168,19 +177,19 @@ const ModalCategoria = ({ categorias, modalAbierto, handleClose }) => {
           </form>
           <Button
             onClick={() => editarCategoria()}
-            className="mt-3"
+            className="mt-3 w-50 d-flex align-self-center"
             variant="outlined"
           >
             Guardar cambios
           </Button>
         </div>
+      </Box>
+    </Modal>
         {errores ? (
           <Snackbar
             open={snackbarOpen}
             autoHideDuration={6000}
             onClose={handleSnackbarClose}
-            anchorOrigin={{ vertical: "top", horizontal: "left"}} // Ajusta la posición del Snackbar
-            style={{ bottom: "-70%", position:"absolute"}}
           >
             <Alert
               onClose={handleSnackbarClose}
@@ -195,8 +204,7 @@ const ModalCategoria = ({ categorias, modalAbierto, handleClose }) => {
         ) : (
           <></>
         )}
-      </Box>
-    </Modal>
+        </>
   );
 };
 

@@ -11,6 +11,7 @@ const ModalAutor = ({autor, modalAbierto, handleClose}) => {
   const [deviceWidth, setDeviceWidth] = useState(window.innerWidth);
   const { actualizador } = useContext(EducaContext);
   const [errores, setErrores] = useState({});
+  const [buttonDis, setButtonDis] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMensaje, setSnackbarMensaje] = useState('');
   const [formularioValues, setFormularioValues] = useState({
@@ -97,6 +98,12 @@ const validarFormulario = () => {
         actualizador();
         setSnackbarMensaje("Autor editado con éxito.");
         setSnackbarOpen(true);
+        setTimeout(() => {
+          handleClose();
+          setSnackbarOpen(false);
+          setButtonDis(false);
+        }, 1500);
+        actualizador();
         return response.data;
       } catch (error) {
         console.error("Error al editar el autor:", error);
@@ -108,21 +115,21 @@ const validarFormulario = () => {
       setSnackbarOpen(true);
     }};
 
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: isMobile ? "90%" : "1200px", // Ajusta el ancho según el dispositivo
-    height: "50%",
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 4,
-  };
-
+    const style = {
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      width: isMobile ? "100%" : "500px", // Ajusta el ancho según el dispositivo
+      // height: "50%",
+      bgcolor: "background.paper",
+      border: "2px solid #000",
+      boxShadow: 24,
+      p: 4,
+    };
 
   return (
+    <>
     <Modal open={modalAbierto} onClose={handleClose}>
       <Box sx={style}>
         <div className="d-flex justify-content-around align-items-center mb-3">
@@ -148,8 +155,8 @@ const validarFormulario = () => {
                         placeholder="Descripción del Autor/a"
                         onChange={handleInputChange}
                         name="descripcion_autor"
-                        value={formularioValues.descripcion_autor}
-                        style={{width: 300, marginBottom: 2, border: '1px solid #ccc', borderRadius: 4, minHeight: '100px', minWidth: '100%'}}
+                        value={formularioValues.descripcion_autor}      
+                        style={{resize:"none", width: 300, marginBottom: 2, border: '1px solid #ccc', borderRadius: 4, minHeight: '100px', minWidth: '100%'}}
                     />
                 </div>
                 <div className="d-flex flex-column gap-3 w-50 p-2">
@@ -171,6 +178,8 @@ const validarFormulario = () => {
                   Guardar cambios
                 </Button>
         </div>
+      </Box>
+    </Modal>
         {errores? (
             <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
                 <Alert onClose={handleSnackbarClose} severity="info" elevation={6} variant="filled">
@@ -178,8 +187,7 @@ const validarFormulario = () => {
                 </Alert>
             </Snackbar>
             ):<></>}
-      </Box>
-    </Modal>
+            </>
   )
 }
 

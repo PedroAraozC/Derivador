@@ -16,7 +16,6 @@ import { useNavigate } from "react-router-dom";
 import { EducaContext } from "../../../../context/EducaContext";
 
 const TablaEstado = () => {
-  // eslint-disable-next-line no-unused-vars
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [modalAbierto, setModalAbierto] = useState(false);
@@ -24,6 +23,7 @@ const TablaEstado = () => {
   const { estado, obtenerEstado, refresh } = useContext(EducaContext);
   const [paginatedArray, setPaginatedArray] = useState([]);
   const navigate = useNavigate();
+
   useEffect(() => {
     obtenerEstado();
   }, [refresh]);
@@ -35,10 +35,8 @@ const TablaEstado = () => {
   }, [estado, page, rowsPerPage]);
 
   const handleCheckboxChange = (Id) => {
-    const estados = estado?.find(
-      (cat) => cat.id_estado === Id
-    );
-
+    const estados = estado?.find((cat) => cat.id_estado === Id);
+    
     setEstadoSeleccionada((prevEstado) => {
       if (!prevEstado || prevEstado.id_estado !== Id) {
         return estados;
@@ -87,17 +85,16 @@ const TablaEstado = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell></TableCell>
-                <TableCell>ID</TableCell>
-                <TableCell>Nombre de Estado</TableCell>
-                <TableCell>Habilitado</TableCell>
+                <TableCell align="center"></TableCell>
+                <TableCell align="center">Nombre de Estado</TableCell>
+                <TableCell align="center">Habilitado</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {Array.isArray(estado) &&
                 paginatedArray?.map((estado) => (
                   <TableRow key={estado.id_estado}>
-                    <TableCell>
+                    <TableCell align="center">
                       <Checkbox
                         checked={
                           estadoSeleccionada?.id_estado ===
@@ -108,10 +105,9 @@ const TablaEstado = () => {
                         }
                       />
                     </TableCell>
-                    <TableCell>{estado.id_estado}</TableCell>
-                    <TableCell>{estado.nombre_estado}</TableCell>
-                    <TableCell>
-                      {estado.habilita == 1 ? "SI" : "NO"}
+                    <TableCell align="center">{estado.nombre_estado}</TableCell>
+                    <TableCell align="center">
+                      {estado.habilita === 1 ? "SI" : "NO"}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -125,7 +121,7 @@ const TablaEstado = () => {
             page={page}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
-            labelRowsPerPage="Columnas por pagina"
+            labelRowsPerPage="Columnas por página"
           />
         </TableContainer>
         <ModalEstado

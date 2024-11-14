@@ -114,8 +114,8 @@ const Home = () => {
         />
         <Card
           onClick={() => irACATASTRO()}
-          titulo={"Catastro"}
-          descripcion={"Catastro y Edificaciones"}
+          titulo={"Dirección de Catastro y Edificación"}
+          descripcion={"Sistema de consulta y autogestión"}
           Icono={<FontAwesomeIcon icon={faBuildingCircleCheck} />}
         />
         <Card
