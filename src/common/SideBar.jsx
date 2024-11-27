@@ -168,7 +168,7 @@ export default function ListaPrueba() {
   };
   const irSAEP = () => {
     const token = localStorage.getItem("token");
-    const url = new URL(`http://181.105.6.205:8696/`);
+    const url = new URL(`https://admision.smt.gob.ar/`);
     url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
   };
