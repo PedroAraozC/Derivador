@@ -11,7 +11,7 @@ const BotonDePago = ({callbackSuccess,callbackCancel,frase,guid,secretKey, asunt
         const emailData = {
             message: entradaUsuario.toUpperCase(),
             recipient: "tmfconsultas@smt.gob.ar",
-            subjet: asunto,
+            subject: asunto,
           };
           localStorage.setItem("emailData",JSON.stringify(emailData))
           localStorage.setItem("user",JSON.stringify(user))

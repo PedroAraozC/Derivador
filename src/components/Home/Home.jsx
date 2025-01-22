@@ -158,18 +158,20 @@ const Home = () => {
           descripcion={"Consulta de Multas por Dominio"}
           Icono={<FontAwesomeIcon icon={faCar} />}
         />
+        
         <Card
           onClick={() => handleOpenModalLibreDeuda()}
-          titulo={"Libre Deuda"}
-          descripcion={"Solicitar Libre Deuda en Tribunal Municipal de Faltas"}
+          titulo={"Libre Deuda Catastro"}
+          descripcion={"Solicitar Libre Deuda en Catastro y Edificación"}
           Icono={<FontAwesomeIcon icon={faRoadCircleCheck} />}
         />
-        <Card
+        
+        {/* <Card
           onClick={() => irACEMA()}
           titulo={"Servicios de Población Animal"}
           descripcion={"Turnos y Requsitos"}
           Icono={<FontAwesomeIcon icon={faCat} />}
-        />
+        /> */}
       </div>
 
       <ModalMultasDominio
