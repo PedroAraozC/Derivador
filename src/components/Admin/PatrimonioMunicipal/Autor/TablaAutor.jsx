@@ -9,7 +9,6 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TablePagination from "@mui/material/TablePagination";
 import Paper from "@mui/material/Paper";
-// import VisibilityIcon from "@mui/icons-material/Visibility";
 import { Button } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import { useNavigate } from "react-router-dom";
@@ -17,7 +16,6 @@ import { EducaContext } from "../../../../context/EducaContext";
 import ModalAutor from "./ModalAutor";
 
 const TablaAutor = () => {
-  // eslint-disable-next-line no-unused-vars
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [modalAbierto, setModalAbierto] = useState(false);
@@ -25,24 +23,19 @@ const TablaAutor = () => {
   const { autor, obtenerAutor, refresh } = useContext(EducaContext);
   const [paginatedArray, setPaginatedArray] = useState([]);
   const navigate = useNavigate();
-  //Funcion para listar las convocatorias
+
   useEffect(() => {
     obtenerAutor();
   }, [refresh]);
 
   useEffect(() => {
     setPaginatedArray(
-      autor?.slice(
-        page * rowsPerPage,
-        (page + 1) * rowsPerPage
-      )
+      autor?.slice(page * rowsPerPage, (page + 1) * rowsPerPage)
     );
   }, [autor, page, rowsPerPage]);
 
   const handleCheckboxChange = (Id) => {
-    const categoria = autor?.find(
-      (cat) => cat.id_autor === Id
-    );
+    const categoria = autor?.find((cat) => cat.id_autor === Id);
 
     setAutorSeleccionado((prevCategoria) => {
       if (!prevCategoria || prevCategoria.id_autor !== Id) {
@@ -92,34 +85,35 @@ const TablaAutor = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell></TableCell>
-                <TableCell>ID</TableCell>
-                <TableCell>Nombre</TableCell>
-                <TableCell>Descripción</TableCell>
-                <TableCell>Habilitado</TableCell>
+                <TableCell sx={{ textAlign: 'center' }}></TableCell>
+                <TableCell sx={{ textAlign: 'center' }}>Nombre</TableCell>
+                <TableCell sx={{ textAlign: 'center' }}>Descripción</TableCell>
+                <TableCell sx={{ textAlign: 'center' }}>Habilitado</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {Array.isArray(autor) &&
                 paginatedArray?.map((autor) => (
                   <TableRow key={autor.id_autor}>
-                    <TableCell>
+                    <TableCell sx={{ textAlign: 'center' }}>
                       <Checkbox
                         checked={
-                          autorSeleccionado?.id_autor ===
-                          autor.id_autor
+                          autorSeleccionado?.id_autor === autor.id_autor
                         }
                         onChange={() =>
                           handleCheckboxChange(autor.id_autor)
                         }
-                        // onClick={()=>abrirModal(autor)}
                       />
                     </TableCell>
-                    <TableCell>{autor.id_autor}</TableCell>
-                    <TableCell>{autor.nombre_autor}</TableCell>
-                    <TableCell>{autor.descripcion_autor}</TableCell>
-                    <TableCell>{autor.habilita == 1 ? 'SI':('NO')}</TableCell>
-                    
+                    <TableCell sx={{ textAlign: 'center' }}>
+                      {autor.nombre_autor}
+                    </TableCell>
+                    <TableCell sx={{ textAlign: 'center' }}>
+                      {autor.descripcion_autor}
+                    </TableCell>
+                    <TableCell sx={{ textAlign: 'center' }}>
+                      {autor.habilita === 1 ? 'SI' : 'NO'}
+                    </TableCell>
                   </TableRow>
                 ))}
             </TableBody>

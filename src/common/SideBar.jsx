@@ -166,6 +166,12 @@ export default function ListaPrueba() {
     url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
   };
+  const irSAEP = () => {
+    const token = localStorage.getItem("token");
+    const url = new URL(`https://admision.smt.gob.ar/`);
+    url.searchParams.append("auth", token);
+    window.open(url.toString(), "_blank");
+  };
   const irABOLETIN = () => {
     const token = localStorage.getItem("token");
     const url = new URL(
@@ -221,6 +227,9 @@ export default function ListaPrueba() {
                             ? () => irAGED() :
                             subItem.descripcion === "Capital Humano"
                             ? () => irACAPHUMANO()
+                            :
+                            subItem.descripcion === "Sistema de Admisión"
+                            ? () => irSAEP()
                             : subItem.descripcion === "Boletín Municipal"
                             ? () => irABOLETIN()
                             : subItem.descripcion === "Carnet de Manejo"

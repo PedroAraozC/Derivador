@@ -3,6 +3,7 @@ import {
   faIdCard,
   faNewspaper,
   faFolderOpen,
+  faMap,
 } from "@fortawesome/free-regular-svg-icons";
 import {
   faBuildingCircleCheck,
@@ -94,6 +95,15 @@ const Home = () => {
     window.open(url.toString(), "_blank");
   };
 
+  const irAMAPA = () => {
+    const token = localStorage.getItem("token");
+    const url = new URL(
+      `https://mapa.smt.gob.ar/?auth=${token}`
+    );
+    url.searchParams.append("auth", token);
+    window.open(url.toString(), "_blank");
+  };
+
   const handleOpenModal = () => {
     setOpenModal(true);
   };
@@ -122,8 +132,8 @@ const Home = () => {
         />
        <Card
           onClick={() => irACATASTRO()}
-          titulo={"Catastro y Edificaciones"}
-          descripcion={"Ingreso de carpetas y consulta de padrones"}
+          titulo={"Dirección de Catastro y Edificación"}
+          descripcion={"Sistema de consulta y autogestión"}
           Icono={<FontAwesomeIcon icon={faBuildingCircleCheck} />}
         />
         <Card
@@ -172,6 +182,15 @@ const Home = () => {
           descripcion={"Turnos y Requsitos"}
           Icono={<FontAwesomeIcon icon={faCat} />}
         /> */}
+        
+        {user.id_tusuario == 1 &&
+          <Card
+            onClick={() => irAMAPA()}
+            titulo={"Mapa Municipal"}
+            descripcion={""}
+            Icono={<FontAwesomeIcon icon={faMap} />}
+          />
+      }
       </div>
 
       <ModalMultasDominio

@@ -141,7 +141,6 @@ const TablaPatrimonioMunicipal = () => {
             <TableHead>
               <TableRow>
                 <TableCell></TableCell>
-                <TableCell>ID</TableCell>
                 <TableCell>Nombre Patrimonio</TableCell>
                 <TableCell>Tipología</TableCell>
                 <TableCell>Ubicación</TableCell>
@@ -164,7 +163,6 @@ const TablaPatrimonioMunicipal = () => {
                         }
                       />
                     </TableCell>
-                    <TableCell>{patrimonio.id_patrimonio}</TableCell>
                     <TableCell>{patrimonio.nombre_patrimonio}</TableCell>
                     <TableCell>{patrimonio.nombre_tipologia}</TableCell>
                     <TableCell>{patrimonio.nombre_ubicacion}</TableCell>

@@ -1,22 +1,23 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { useContext, useEffect, useState } from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import TablePagination from "@mui/material/TablePagination";
-import Paper from "@mui/material/Paper";
-import ModalMaterial from "./ModalMaterial";
-import { Button } from "@mui/material";
-import Checkbox from "@mui/material/Checkbox";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TablePagination,
+  Paper,
+  Button,
+  Checkbox,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { EducaContext } from "../../../../context/EducaContext";
+import ModalMaterial from "./ModalMaterial";
 
 const TablaMaterial = () => {
-  // eslint-disable-next-line no-unused-vars
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [modalAbierto, setModalAbierto] = useState(false);
@@ -24,39 +25,44 @@ const TablaMaterial = () => {
   const { material, obtenerMaterial, refresh } = useContext(EducaContext);
   const [paginatedArray, setPaginatedArray] = useState([]);
   const navigate = useNavigate();
+
+  // Obtener materiales al montar el componente o cuando refresh cambie
   useEffect(() => {
     obtenerMaterial();
   }, [refresh]);
 
+  // Actualizar el array paginado según la página y las filas por página
   useEffect(() => {
     setPaginatedArray(
       material?.slice(page * rowsPerPage, (page + 1) * rowsPerPage)
     );
   }, [material, page, rowsPerPage]);
 
+  // Manejar el cambio de estado del checkbox
   const handleCheckboxChange = (materialId) => {
-    const materiales = material?.find(
+    const materialSeleccionado = material?.find(
       (mat) => mat.id_material === materialId
     );
 
     setMaterialSeleccionado((prevMaterial) => {
-      if (!prevMaterial || prevMaterial.id_material !== materialId) {
-        return materiales;
-      } else {
-        return null;
-      }
+      return prevMaterial?.id_material !== materialId
+        ? materialSeleccionado
+        : null; // Deseleccionar si ya está seleccionado
     });
   };
 
+  // Abrir modal para editar material
   const abrirModal = (material) => {
     setMaterialSeleccionado(material);
     setModalAbierto(true);
   };
 
+  // Manejar el cambio de página
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
+  // Manejar el cambio de filas por página
   const handleChangeRowsPerPage = (event) => {
     const newRowsPerPage = parseInt(event.target.value, 10);
     setRowsPerPage(newRowsPerPage);
@@ -77,7 +83,7 @@ const TablaMaterial = () => {
           variant="contained"
           className="mx-3"
           disabled={materialSeleccionado === null}
-          onClick={() => abrirModal(materialSeleccionado, true)}
+          onClick={() => abrirModal(materialSeleccionado)}
         >
           EDITAR
         </Button>
@@ -87,17 +93,16 @@ const TablaMaterial = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell></TableCell>
-                <TableCell>ID</TableCell>
-                <TableCell>Nombre de Material</TableCell>
-                <TableCell>Habilitado</TableCell>
+                <TableCell align="center"></TableCell>
+                <TableCell align="center">Nombre de Material</TableCell>
+                <TableCell align="center">Habilitado</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {Array.isArray(material) &&
                 paginatedArray?.map((material) => (
                   <TableRow key={material.id_material}>
-                    <TableCell>
+                    <TableCell align="center">
                       <Checkbox
                         checked={
                           materialSeleccionado?.id_material ===
@@ -108,10 +113,9 @@ const TablaMaterial = () => {
                         }
                       />
                     </TableCell>
-                    <TableCell>{material.id_material}</TableCell>
-                    <TableCell>{material.nombre_material}</TableCell>
-                    <TableCell>
-                      {material.habilita == 1 ? "SI" : "NO"}
+                    <TableCell align="center">{material.nombre_material}</TableCell>
+                    <TableCell align="center">
+                      {material.habilita === 1 ? "SI" : "NO"}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -125,7 +129,7 @@ const TablaMaterial = () => {
             page={page}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
-            labelRowsPerPage="Columnas por pagina"
+            labelRowsPerPage="Columnas por página"
           />
         </TableContainer>
         <ModalMaterial
