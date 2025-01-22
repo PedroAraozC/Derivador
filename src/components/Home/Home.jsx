@@ -41,10 +41,10 @@ const Home = () => {
     window.open(url.toString(), "_blank");
   };
 
-  const irATURNOS = () => {
+  const irATURNOS = (reparticion) => {
     const token = localStorage.getItem("token");
     const url = new URL(
-      `https://turnos.smt.gob.ar/?auth=${token}&destino=turnero&rep=1711`
+      `https://turnos.smt.gob.ar/?auth=${token}&destino=turnero&rep=${reparticion}`
     );
     url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
@@ -149,9 +149,15 @@ const Home = () => {
           Icono={<FontAwesomeIcon icon={faFolderOpen} />}
         />
         <Card
-          onClick={() => irATURNOS()}
+          onClick={() => irATURNOS(1711)}
           titulo={"Licencia de Conducir"}
           descripcion={"Requsitos para Licencia de conducir"}
+          Icono={<FontAwesomeIcon icon={faIdCard} />}
+        />
+        <Card
+          onClick={() => irATURNOS(241)}
+          titulo={"Ficha Médica Escolar"}
+          descripcion={"Turnos para obtención de ficha médica en inicio escolar"}
           Icono={<FontAwesomeIcon icon={faIdCard} />}
         />
         <Card
@@ -169,12 +175,12 @@ const Home = () => {
           Icono={<FontAwesomeIcon icon={faCar} />}
         />
         
-        <Card
+        {/* <Card
           onClick={() => handleOpenModalLibreDeuda()}
           titulo={"Libre Deuda Catastro"}
           descripcion={"Solicitar Libre Deuda en Catastro y Edificación"}
           Icono={<FontAwesomeIcon icon={faRoadCircleCheck} />}
-        />
+        /> */}
         
         {/* <Card
           onClick={() => irACEMA()}
