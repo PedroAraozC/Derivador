@@ -12,7 +12,8 @@ import {
   faQrcode,
   faCat,
   faCar,
-  faRoadCircleCheck
+  faRoadCircleCheck,
+  faTrailer
 } from "@fortawesome/free-solid-svg-icons";
 import Card from "../Card/Card";
 import "./Home.css";
@@ -104,6 +105,12 @@ const Home = () => {
     window.open(url.toString(), "_blank");
   };
 
+  const irACorralonConsultaPublica = () => {
+    const url = new URL(`http://181.105.6.205:9007/#/consultaPublicaCorralon`);
+
+    window.open(url.toString(), "_blank");
+  };
+
   const handleOpenModal = () => {
     setOpenModal(true);
   };
@@ -171,10 +178,17 @@ const Home = () => {
         <Card
           onClick={() => handleOpenModal()}
           titulo={"Multas de Tránsito"}
-          descripcion={"Consulta de Multas por Dominio"}
+          descripcion={"Consulta de Multas por Dominio."}
           Icono={<FontAwesomeIcon icon={faCar} />}
         />
         
+        <Card
+          onClick={() => irACorralonConsultaPublica()}
+          titulo={"Consulta de Vehículo Secuestrado"}
+          descripcion={"Consulta de ingresos al corralón por Dominio."}
+          Icono={<FontAwesomeIcon icon={faTrailer} />}
+        />
+
         {/* <Card
           onClick={() => handleOpenModalLibreDeuda()}
           titulo={"Libre Deuda Catastro"}
