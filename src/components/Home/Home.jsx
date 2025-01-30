@@ -219,11 +219,11 @@ const Home = () => {
         user={user}
       />
 
-      <ModalLibreDeuda
+      {/* <ModalLibreDeuda
         openDialog={openModalLibreDeuda}
         setOpenModal={setOpenModalLibreDeuda}
         user={user}
-      />
+      /> */}
     </div>
   );
 };
