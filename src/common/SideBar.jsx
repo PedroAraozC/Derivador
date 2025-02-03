@@ -148,12 +148,14 @@ export default function ListaPrueba() {
     const url = new URL(`https://licitaciones.smt.gob.ar`);
     window.open(url.toString(), "_blank");
   };
+
   const irAGAF = () => {
     const token = localStorage.getItem("token");
     const url = new URL(`http://181.105.6.205:9005/`);
     url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
   };
+
   const irACAPHUMANO = () => {
     const token = localStorage.getItem("token");
     const url = new URL(`http://181.105.6.205:93/`);
@@ -182,6 +184,12 @@ export default function ListaPrueba() {
     window.open(url.toString(), "_blank");
   };
 
+  const irACorralon= () => {
+    const token = localStorage.getItem("token");
+    const url = new URL(`http://181.105.6.205:9007/`);
+    url.searchParams.append("auth", token);
+    window.open(url.toString(), "_blank");
+  };
 
   const list = () => (
     <Box
@@ -238,6 +246,8 @@ export default function ListaPrueba() {
                             ? () => irALICITACIONES()
                             : subItem.descripcion === "Catastro"
                             ? () => irACATASTRO()
+                            : subItem.descripcion === "Corralón"
+                            ? () => irACorralon()
                             : () => redirigir(`/${subItem.label}`)
                         }
                       />
