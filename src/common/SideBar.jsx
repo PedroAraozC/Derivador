@@ -31,6 +31,7 @@ import ContactPhoneOutlinedIcon from '@mui/icons-material/ContactPhoneOutlined';
 import Diversity3OutlinedIcon from '@mui/icons-material/Diversity3Outlined';
 import HomeWorkOutlinedIcon from '@mui/icons-material/HomeWorkOutlined';
 import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
+import CarCrashIcon from '@mui/icons-material/CarCrash';
 
 export default function ListaPrueba() {
   const { user, obtenerPermisos, permisos } = useStore();
@@ -86,6 +87,8 @@ export default function ListaPrueba() {
           return <MenuBookOutlinedIcon />;
       case "PATRIMONIO MUNICIPAL":
           return <HomeWorkOutlinedIcon />;
+          case "CORRALON":
+            return <CarCrashIcon />;
       default:
         return <AccountTreeIcon />;
     }
