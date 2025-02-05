@@ -5,6 +5,7 @@ import { Modal, Box, Button, Divider, InputLabel, Switch, TextField, Snackbar, A
 import { EducaContext } from "../../../../context/EducaContext";
 import axios from "../../../../config/axios";
 import axiosLici from "../../../../config/axiosLicitaciones";
+import axiosPatri from "../../../../config/axiosPatrimonio";
 
 const ModalAutor = ({autor, modalAbierto, handleClose}) => {
 
@@ -90,7 +91,7 @@ const validarFormulario = () => {
     const formularioValido = validarFormulario();
     if (formularioValido) {
       try {
-        const response = await axiosLici.post(
+        const response = await axiosPatri.post(
           "/admin/editarAutorPartimonio",
           formularioValues
         );
