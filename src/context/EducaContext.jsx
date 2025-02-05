@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
 import axios from "../config/axios";
+import axiosPatri from "../config/axiosPatrimonio";
 
 export const EducaContext = createContext();
 
@@ -172,7 +173,7 @@ const ProviderEducacion = ({ children }) => {
 
   const obtenerCategoria = async () => {
     try {
-      const resultado = await axios.get("/admin/listarCategorias");
+      const resultado = await axiosPatri.get("/admin/listarCategorias");
       // Actualiza los estados con las convocatorias filtradas y ordenadas
       setCategoria(resultado.data.categorias);
     } catch (error) {
@@ -181,7 +182,7 @@ const ProviderEducacion = ({ children }) => {
   };
   const obtenerTipologia = async () => {
     try {
-      const resultado = await axios.get("/admin/listarTipologias");
+      const resultado = await axiosPatri.get("/admin/listarTipologias");
       // console.log(resultado.data.tipologias)
       setTipologia(resultado.data.tipologias);
     } catch (error) {
@@ -190,7 +191,7 @@ const ProviderEducacion = ({ children }) => {
   };
   const obtenerMaterial = async () => {
     try {
-      const resultado = await axios.get("/admin/listarMateriales");
+      const resultado = await axiosPatri.get("/admin/listarMateriales");
       // console.log(resultado.data.materiales);
       setMaterial(resultado.data.materiales);
     } catch (error) {
@@ -199,7 +200,7 @@ const ProviderEducacion = ({ children }) => {
   };
   const obtenerEstado = async () => {
     try {
-      const resultado = await axios.get("/admin/listarEstados");
+      const resultado = await axiosPatri.get("/admin/listarEstados");
       // console.log(resultado.data.materiales);
       setEstado(resultado.data.estados);
     } catch (error) {
@@ -208,7 +209,7 @@ const ProviderEducacion = ({ children }) => {
   };
   const obtenerAutor = async () => {
     try {
-      const resultado = await axios.get("/admin/listarAutores");
+      const resultado = await axiosPatri.get("/admin/listarAutores");
       // console.log(resultado.data.materiales);
       setAutor(resultado.data.autores);
     } catch (error) {
@@ -217,7 +218,7 @@ const ProviderEducacion = ({ children }) => {
   }  
   const obtenerUbicacion = async () => {
     try {
-      const resultado = await axios.get("/admin/listarUbicaciones");
+      const resultado = await axiosPatri.get("/admin/listarUbicaciones");
       // console.log(resultado.data.materiales);
       setUbicacion(resultado.data.ubicaciones);
     } catch (error) {
@@ -226,7 +227,7 @@ const ProviderEducacion = ({ children }) => {
   }
   const obtenerPatrimonios = async () => {
     try {
-      const resultado = await axios.get("/admin/listarPatrimonio");
+      const resultado = await axiosPatri.get("/admin/listarPatrimonio");
       // console.log(resultado.data.materiales);
       setPatrimonios(resultado.data.patrimonios);
     } catch (error) {

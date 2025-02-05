@@ -129,7 +129,7 @@ const useStore = create((set, get) => ({
   obtenerOpciones: async () => {
     try {
       set({ errors: "" });
-      const response = await axiosLici.get("/usuarios/opciones");
+      const response = await axios.get("/usuarios/opciones");
       const data = response.data;
       set({ opciones: data });
     } catch (error) {
@@ -153,6 +153,7 @@ const useStore = create((set, get) => ({
       set({ errors: errorMessage });
     }
   },
+
   logout: () => {
     set({ authenticated: false });
     localStorage.removeItem("token");
@@ -177,7 +178,7 @@ const useStore = create((set, get) => ({
       axiosLici.defaults.headers.common["Authorization"] = token;
       axiosMuni.defaults.headers.common["Authorization"] = token;
       // const { data } = await axios.get("/usuarios/authStatus");
-      const { data } = await axiosLici.get("/usuarios/authStatus");
+      const { data } = await axios.get("/usuarios/authStatus");
       set({ user: data.usuarioSinContraseña });
       set({
         authenticated: true,

@@ -6,6 +6,7 @@ import Alert from '@mui/material/Alert';
 import { useNavigate } from "react-router-dom";
 import axios from "../../../../config/axios";
 import { EducaContext } from "../../../../context/EducaContext";
+import axiosPatri from "../../../../config/axiosPatrimonio";
 
 const AgregarCategoria = () => {
 
@@ -64,7 +65,7 @@ const AgregarCategoria = () => {
       const formularioValido = validarFormulario();
       if (formularioValido) {
           try {
-              const response = await axios.post( "/admin/agregarCategoria", categoria );
+              const response = await axiosPatri.post( "/admin/agregarCategoria", categoria );
               setSnackbarMensaje("Categoria creada.");
               setSnackbarOpen(true);
               setTimeout(() => {

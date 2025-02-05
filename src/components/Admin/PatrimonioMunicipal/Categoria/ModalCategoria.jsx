@@ -15,6 +15,7 @@ import {
 import { EducaContext } from "../../../../context/EducaContext";
 import axios from "../../../../config/axios";
 import axiosLici from "../../../../config/axiosLicitaciones";
+import axiosPatri from "../../../../config/axiosPatrimonio";
 
 const ModalCategoria = ({ categorias, modalAbierto, handleClose }) => {
   const [deviceWidth, setDeviceWidth] = useState(window.innerWidth);
@@ -103,7 +104,7 @@ const ModalCategoria = ({ categorias, modalAbierto, handleClose }) => {
     if (formularioValido) {
       try {
         console.log(formularioValues)
-        const response = await axiosLici.post(
+        const response = await axiosPatri.post(
           "/admin/editarCategoriaPatrimonio",
           formularioValues
         );

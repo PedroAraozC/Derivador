@@ -20,6 +20,7 @@ import { EducaContext } from "../../../context/EducaContext";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import "./ModalPatrimonio.css"
 import { AutoFixHigh } from "@mui/icons-material";
+import axiosPatri from "../../../config/axiosPatrimonio";
 
 const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
   const [deviceWidth, setDeviceWidth] = useState(window.innerWidth);
@@ -160,7 +161,7 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
         if (nombreViejo !== patri.nombre_patrimonio) {
           // Si el nombre ha cambiado, renombrar carpeta y archivos
           try {
-              const responseRenombrar = await axios.post('/admin/renombrarPatrimonio', {
+              const responseRenombrar = await axiosPatri.post('/admin/renombrarPatrimonio', {
                   id_patrimonio: patri.id_patrimonio,
                   nombre_antiguo: nombreViejo,
                   nombre_nuevo: patri.nombre_patrimonio
@@ -177,7 +178,7 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
       
         // Enviar imágenes
         try {
-          const responseImagenes = await axios.post('/admin/editarPatrimonioImagenes', formData, {
+          const responseImagenes = await axiosPatri.post('/admin/editarPatrimonioImagenes', formData, {
             headers: { "Content-Type": "multipart/form-data" }
           });
           console.log('Respuesta del servidor (imágenes):', responseImagenes.data);
@@ -198,7 +199,7 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
         }
   
         // Enviar datos del patrimonio
-        const response = await axios.post('/admin/editarPatrimonio', formularioValues);
+        const response = await axiosPatri.post('/admin/editarPatrimonio', formularioValues);
         console.log('Respuesta del servidor (datos del patrimonio):', response.data);
   
         setSnackbarMensaje("Patrimonio editado.");

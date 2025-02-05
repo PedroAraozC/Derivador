@@ -3,6 +3,7 @@ import { Modal, Button, Form } from "react-bootstrap";
 import axios from "../../../../config/axios";
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import axiosPatri from "../../../../config/axiosPatrimonio";
 
 function ModalBanner({ show, handleClose, actualizador, onUploadSuccess }) {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -28,7 +29,7 @@ function ModalBanner({ show, handleClose, actualizador, onUploadSuccess }) {
         throw new Error("No se ha seleccionado ninguna imagen");
       }
 
-      const response = await axios.post("/admin/crearBannerImagenes", formData, {
+      const response = await axiosPatri.post("/admin/crearBannerImagenes", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
