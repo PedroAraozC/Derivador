@@ -50,7 +50,7 @@ function App() {
   }
 
   url.searchParams.delete("logout");
-  url.searchParams.delete("auth");
+  // url.searchParams.delete("auth");
   history.replaceState(null, "", url.toString());
 
   if (logout) {

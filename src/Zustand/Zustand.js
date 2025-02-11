@@ -166,7 +166,14 @@ const useStore = create((set, get) => ({
 
   getAuth: async () => {
     try {
-      const token = localStorage.getItem("token");
+      const url = new URL(window.location.href);
+      const tokenURL = url.searchParams.get("auth");
+
+      url.searchParams.delete("auth");
+      history.replaceState(null, "", url.toString());
+      
+      // const token = localStorage.getItem("token");
+      const token = tokenURL? tokenURL : localStorage.getItem("token");
       if (!token) {
         set({ loading: false });
         // return set({ authenticated: false });
@@ -178,15 +185,15 @@ const useStore = create((set, get) => ({
       axiosLici.defaults.headers.common["Authorization"] = token;
       axiosMuni.defaults.headers.common["Authorization"] = token;
       // const { data } = await axios.get("/usuarios/authStatus");
-      const { data } = await axios.get("/usuarios/authStatus");
+      const { data } = await axiosMuni.get("/usuarios/authStatus");
       set({ user: data.usuarioSinContraseña });
       set({
         authenticated: true,
       });
     } catch (error) {
       set({ authenticated: false });
-      localStorage.removeItem("token");
       get().logout();
+      localStorage.removeItem("token");
       console.log("error de auth");
       console.log(error);
     }
