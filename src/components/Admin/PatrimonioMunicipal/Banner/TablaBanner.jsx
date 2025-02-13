@@ -3,6 +3,7 @@ import { Table, Button, Form, Modal } from "react-bootstrap";
 import ModalBanner from "./ModalBanner";
 import axios from "../../../../config/axios";
 import "./TablaBanner.css";
+import axiosPatri from "../../../../config/axiosPatrimonio";
 
 function TablaBanner() {
   const [banners, setBanners] = useState([]);
@@ -15,7 +16,7 @@ function TablaBanner() {
   const [nombreCortado, setNombreCortado] = useState(null);
   const fetchBanners = async () => {
     try {
-      const response = await axios.get("/admin/obtenerBanners");
+      const response = await axiosPatri.get("/admin/obtenerBanners");
       setBanners(response.data);
     } catch (error) {
       console.error("Error al obtener los banners:", error);
@@ -36,7 +37,7 @@ function TablaBanner() {
     );
 
     try {
-      await axios.post("/admin/deshabilitarBanner", { id, hab: nuevoEstado });
+      await axiosPatri.post("/admin/deshabilitarBanner", { id, hab: nuevoEstado });
 
       setSnackbarMensaje("");
       setSnackbarOpen(true);
@@ -81,7 +82,7 @@ function TablaBanner() {
     setSelectedBanner(banner);
 
     try {
-      const response = await axios.get(`/admin/imagenPreview`, {
+      const response = await axiosPatri.get(`/admin/imagenPreview`, {
         params: { banner },
       });
       setImagenBanner(response.data.banner.base64Image);

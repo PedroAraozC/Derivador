@@ -6,6 +6,7 @@ import Alert from '@mui/material/Alert';
 import { useNavigate } from "react-router-dom";
 import axios from "../../../../config/axios";
 import { EducaContext } from "../../../../context/EducaContext";
+import axiosPatri from "../../../../config/axiosPatrimonio";
 
 const AgregarAutor = () => {
     const [errores, setErrores] = useState({});
@@ -63,7 +64,7 @@ const AgregarAutor = () => {
         const formularioValido = validarFormulario();
         if (formularioValido) {
             try {
-                const response = await axios.post( "/admin/agregarAutor", autor );
+                const response = await axiosPatri.post( "/admin/agregarAutor", autor );
                 console.log(response.data)
 
                 setSnackbarMensaje("Autor creado.");

@@ -6,6 +6,7 @@ import Alert from '@mui/material/Alert';
 import { useNavigate } from "react-router-dom";
 import axios from "../../../../config/axios";
 import { EducaContext } from "../../../../context/EducaContext";
+import axiosPatri from "../../../../config/axiosPatrimonio";
 
 const AgregarMaterial = () => {
 
@@ -64,7 +65,7 @@ const AgregarMaterial = () => {
       const formularioValido = validarFormulario();
       if (formularioValido) {
           try {
-              const response = await axios.post( "/admin/agregarMaterial", material );
+              const response = await axiosPatri.post( "/admin/agregarMaterial", material );
               setSnackbarMensaje("Material creado.");
               setSnackbarOpen(true);
               setTimeout(() => {
