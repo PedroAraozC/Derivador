@@ -203,7 +203,7 @@ const Home = () => {
           Icono={<FontAwesomeIcon icon={faCat} />}
         /> */}
         
-        {user.id_tusuario == 1 &&
+        {user.id_tusuario == 1 || user.id_tusuario == 24 &&
           <Card
             onClick={() => irAMAPA()}
             titulo={"Mapa Municipal"}

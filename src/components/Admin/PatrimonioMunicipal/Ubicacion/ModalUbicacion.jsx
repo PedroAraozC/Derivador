@@ -94,7 +94,7 @@ const ModalUbicacion = ({ ubicaciones, modalAbierto, handleClose }) => {
   }, []);
   const isMobile = deviceWidth <= 600;
   if (!ubicaciones) {
-    return null;
+    return null; 
   }
 
   const editarUbicacion = async (event) => {
