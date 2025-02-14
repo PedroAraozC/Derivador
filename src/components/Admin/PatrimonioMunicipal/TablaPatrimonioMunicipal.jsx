@@ -18,6 +18,7 @@ import ModalPatrimonio from "./ModalPatrimonio";
 import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "../../../config/axios";
 import "./TablaPatrimonioMunicipal.css";
+import axiosPatri from "../../../config/axiosPatrimonio";
 
 const TablaPatrimonioMunicipal = () => {
   const [page, setPage] = useState(0);
@@ -92,7 +93,7 @@ const TablaPatrimonioMunicipal = () => {
     console.log(patri, "id_patri");
     try {
       setButtonDis(true);
-      const response = await axios.post(
+      const response = await axiosPatri.post(
         "/admin/deshabilitarPatrimonio",
         patri
       );

@@ -6,6 +6,7 @@ import Alert from '@mui/material/Alert';
 import { useNavigate } from "react-router-dom";
 import axios from "../../../../config/axios";
 import { EducaContext } from "../../../../context/EducaContext";
+import axiosPatri from "../../../../config/axiosPatrimonio";
 
 const AgregarTipologia = () => {
 
@@ -64,7 +65,7 @@ const AgregarTipologia = () => {
       const formularioValido = validarFormulario();
       if (formularioValido) {
           try {
-              const response = await axios.post( "/admin/agregarTipologia", tipologia );
+              const response = await axiosPatri.post( "/admin/agregarTipologia", tipologia );
               setSnackbarMensaje("Tipologia creada.");
               setSnackbarOpen(true);
               setTimeout(() => {

@@ -14,6 +14,7 @@ import Alert from "@mui/material/Alert";
 import axios from "../../../config/axios";
 import { EducaContext } from "../../../context/EducaContext";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
+import axiosPatri from "../../../config/axiosPatrimonio";
 
 const AgregarPatrimonio = () => {
   const [archivo, setArchivo] = useState(null);
@@ -180,14 +181,14 @@ const AgregarPatrimonio = () => {
         if (imagenCarrousel3)
           formData.append("imagen_carrousel_3", imagenCarrousel3);
 
-        const response = await axios.post(
+        const response = await axiosPatri.post(
           "/admin/agregarPatrimonio",
           formularioValues
         );
         console.log(response.status == 201);
         if (response.status == 201) {
           try {
-            const responseImagenes = await axios.post(
+            const responseImagenes = await axiosPatri.post(
               "/admin/crearPatrimonioImagenes",
               formData,
               {

@@ -31,6 +31,7 @@ import ContactPhoneOutlinedIcon from '@mui/icons-material/ContactPhoneOutlined';
 import Diversity3OutlinedIcon from '@mui/icons-material/Diversity3Outlined';
 import HomeWorkOutlinedIcon from '@mui/icons-material/HomeWorkOutlined';
 import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
+import CarCrashIcon from '@mui/icons-material/CarCrash';
 
 export default function ListaPrueba() {
   const { user, obtenerPermisos, permisos } = useStore();
@@ -86,6 +87,8 @@ export default function ListaPrueba() {
           return <MenuBookOutlinedIcon />;
       case "PATRIMONIO MUNICIPAL":
           return <HomeWorkOutlinedIcon />;
+          case "CORRALON":
+            return <CarCrashIcon />;
       default:
         return <AccountTreeIcon />;
     }
@@ -148,12 +151,14 @@ export default function ListaPrueba() {
     const url = new URL(`https://licitaciones.smt.gob.ar`);
     window.open(url.toString(), "_blank");
   };
+
   const irAGAF = () => {
     const token = localStorage.getItem("token");
     const url = new URL(`http://181.105.6.205:9005/`);
     url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
   };
+
   const irACAPHUMANO = () => {
     const token = localStorage.getItem("token");
     const url = new URL(`http://181.105.6.205:93/`);
@@ -182,6 +187,12 @@ export default function ListaPrueba() {
     window.open(url.toString(), "_blank");
   };
 
+  const irACorralon= () => {
+    const token = localStorage.getItem("token");
+    const url = new URL(`http://181.105.6.205:9007/`);
+    url.searchParams.append("auth", token);
+    window.open(url.toString(), "_blank");
+  };
 
   const list = () => (
     <Box
@@ -238,6 +249,8 @@ export default function ListaPrueba() {
                             ? () => irALICITACIONES()
                             : subItem.descripcion === "Catastro"
                             ? () => irACATASTRO()
+                            : subItem.descripcion === "Corralón"
+                            ? () => irACorralon()
                             : () => redirigir(`/${subItem.label}`)
                         }
                       />

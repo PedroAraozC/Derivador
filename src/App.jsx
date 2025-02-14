@@ -30,6 +30,9 @@ import PermisosTUsuario from "./components/Admin/TiposUsuarios/PermisosTUsuario"
 import PanelUsuarios from "./components/Admin/Usuarios/PanelUsuarios";
 import PrivateRouteAdmin from "./routes/PrivateRouteAdmin";
 import PanelGestion from "./components/PanelGestion/PanelGestion";
+import SuccessPage from "./components/BotonDePagoMacro/SuccessPage";
+import ErrorPage from "./components/BotonDePagoMacro/ErrorPage";
+import Montos from "./components/TribunalDeFaltas/Montos";
 // import PrivateRouteAdminLicitaciones from "./routes/PrivateRouteAdminLicitaciones";
 // import PrivateRouteAdminPatrimonio from "./routes/PrivateRouteAdminPatrimonio";
 // import PrivateRouteEmpleadoJerarquico from "./routes/PrivateRouteEmpleadoJerarquico";
@@ -47,7 +50,7 @@ function App() {
   }
 
   url.searchParams.delete("logout");
-  url.searchParams.delete("auth");
+  // url.searchParams.delete("auth");
   history.replaceState(null, "", url.toString());
 
   if (logout) {
@@ -106,6 +109,10 @@ function App() {
               <Route exact path="/panel_gestion" element={<PrivateRoute><PanelGestion /></PrivateRoute>} />
               {/* PANEL DE GESTION */}
 
+              {/* BOTON DE PAGO */}
+              <Route exact path="/LibreDeudaPagoExitoso" element={<PrivateRoute key="success"><SuccessPage/></PrivateRoute>} />
+              <Route exact path="/LibreDeudaPagoRechazado" element={<PrivateRoute key="errorPago"><ErrorPage/></PrivateRoute>} />
+              <Route exact path="/montos" element={<PrivateRoute key="montos"><Montos/></PrivateRoute>} />
 
             </Routes>
           </ProviderEducacion>

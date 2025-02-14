@@ -6,6 +6,7 @@ import Alert from '@mui/material/Alert';
 import { useNavigate } from "react-router-dom";
 import axios from "../../../../config/axios";
 import { EducaContext } from "../../../../context/EducaContext";
+import axiosPatri from "../../../../config/axiosPatrimonio";
 
 const AgregarEstado = () => {
 
@@ -64,7 +65,7 @@ const AgregarEstado = () => {
       const formularioValido = validarFormulario();
       if (formularioValido) {
           try {
-              const response = await axios.post( "/admin/agregarEstado", estado );
+              const response = await axiosPatri.post( "/admin/agregarEstado", estado );
               setSnackbarMensaje("Estado creado.");
               setSnackbarOpen(true);
               setTimeout(() => {

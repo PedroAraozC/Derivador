@@ -12,6 +12,8 @@ import {
   faQrcode,
   faCat,
   faCar,
+  faRoadCircleCheck,
+  faTrailer
 } from "@fortawesome/free-solid-svg-icons";
 import Card from "../Card/Card";
 import "./Home.css";
@@ -19,6 +21,7 @@ import useStore from "../../Zustand/Zustand";
 import { cuilToDni } from "../../helpers/extraerDNI";
 import { useState } from "react";
 import ModalMultasDominio from "../ModalMultasDominio/ModalMultasDominio";
+import ModalLibreDeuda from "../ModalLibreDeuda/ModalLibreDeuda";
 const Home = () => {
   const { user } = useStore();
   // console.log(user);
@@ -27,6 +30,7 @@ const Home = () => {
   // };
 
   const [openModal, setOpenModal] = useState(false);
+  const [openModalLibreDeuda, setOpenModalLibreDeuda] = useState(false)
 
   const irABOLETIN = () => {
     const token = localStorage.getItem("token");
@@ -38,10 +42,10 @@ const Home = () => {
     window.open(url.toString(), "_blank");
   };
 
-  const irATURNOS = () => {
+  const irATURNOS = (reparticion) => {
     const token = localStorage.getItem("token");
     const url = new URL(
-      `https://turnos.smt.gob.ar/?auth=${token}&destino=turnero&rep=1711`
+      `https://turnos.smt.gob.ar/?auth=${token}&destino=turnero&rep=${reparticion}`
     );
     url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
@@ -101,9 +105,20 @@ const Home = () => {
     window.open(url.toString(), "_blank");
   };
 
+  const irACorralonConsultaPublica = () => {
+    const url = new URL(`http://181.105.6.205:9007/#/consultaPublicaCorralon`);
+
+    window.open(url.toString(), "_blank");
+  };
+
   const handleOpenModal = () => {
     setOpenModal(true);
   };
+
+  const handleOpenModalLibreDeuda = () => {
+    setOpenModalLibreDeuda(true);
+  };
+
 
   return (
     <div className="contPadreHome">
@@ -122,7 +137,7 @@ const Home = () => {
           descripcion={"Consulta del Carnet Digital"}
           Icono={<FontAwesomeIcon icon={faNotesMedical} />}
         />
-        <Card
+       <Card
           onClick={() => irACATASTRO()}
           titulo={"Dirección de Catastro y Edificación"}
           descripcion={"Sistema de consulta y autogestión"}
@@ -141,9 +156,15 @@ const Home = () => {
           Icono={<FontAwesomeIcon icon={faFolderOpen} />}
         />
         <Card
-          onClick={() => irATURNOS()}
+          onClick={() => irATURNOS(1711)}
           titulo={"Licencia de Conducir"}
           descripcion={"Requsitos para Licencia de conducir"}
+          Icono={<FontAwesomeIcon icon={faIdCard} />}
+        />
+        <Card
+          onClick={() => irATURNOS(241)}
+          titulo={"Ficha Médica Escolar"}
+          descripcion={"Turnos para obtención de ficha médica en inicio escolar"}
           Icono={<FontAwesomeIcon icon={faIdCard} />}
         />
         <Card
@@ -157,15 +178,30 @@ const Home = () => {
         <Card
           onClick={() => handleOpenModal()}
           titulo={"Multas de Tránsito"}
-          descripcion={"Consulta de Multas por Dominio"}
+          descripcion={"Consulta de Multas por Dominio."}
           Icono={<FontAwesomeIcon icon={faCar} />}
         />
+        
         <Card
+          onClick={() => irACorralonConsultaPublica()}
+          titulo={"Consulta de Vehículo Secuestrado"}
+          descripcion={"Consulta de ingresos al corralón por Dominio."}
+          Icono={<FontAwesomeIcon icon={faTrailer} />}
+        />
+
+        {/* <Card
+          onClick={() => handleOpenModalLibreDeuda()}
+          titulo={"Libre Deuda Catastro"}
+          descripcion={"Solicitar Libre Deuda en Catastro y Edificación"}
+          Icono={<FontAwesomeIcon icon={faRoadCircleCheck} />}
+        /> */}
+        
+        {/* <Card
           onClick={() => irACEMA()}
           titulo={"Servicios de Población Animal"}
           descripcion={"Turnos y Requsitos"}
           Icono={<FontAwesomeIcon icon={faCat} />}
-        />
+        /> */}
         
         {user.id_tusuario == 1 || user.id_tusuario == 24 &&
           <Card
@@ -182,6 +218,12 @@ const Home = () => {
         setOpenModal={setOpenModal}
         user={user}
       />
+
+      {/* <ModalLibreDeuda
+        openDialog={openModalLibreDeuda}
+        setOpenModal={setOpenModalLibreDeuda}
+        user={user}
+      /> */}
     </div>
   );
 };
