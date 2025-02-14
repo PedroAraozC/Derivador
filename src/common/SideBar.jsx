@@ -32,6 +32,7 @@ import Diversity3OutlinedIcon from '@mui/icons-material/Diversity3Outlined';
 import HomeWorkOutlinedIcon from '@mui/icons-material/HomeWorkOutlined';
 import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
 import CarCrashIcon from '@mui/icons-material/CarCrash';
+import MapIcon from '@mui/icons-material/Map';
 
 export default function ListaPrueba() {
   const { user, obtenerPermisos, permisos } = useStore();
@@ -87,8 +88,10 @@ export default function ListaPrueba() {
           return <MenuBookOutlinedIcon />;
       case "PATRIMONIO MUNICIPAL":
           return <HomeWorkOutlinedIcon />;
-          case "CORRALON":
+      case "CORRALON":
             return <CarCrashIcon />;
+      case "MAPA MUNICIPAL":
+            return <MapIcon />;
       default:
         return <AccountTreeIcon />;
     }
@@ -194,6 +197,13 @@ export default function ListaPrueba() {
     window.open(url.toString(), "_blank");
   };
 
+  const irAMapa= () => {
+    const token = localStorage.getItem("token");
+    const url = new URL(`https://mapa.smt.gob.ar/`);
+    url.searchParams.append("auth", token);
+    window.open(url.toString(), "_blank");
+  };
+
   const list = () => (
     <Box
       sx={{ width: 250 }}
@@ -251,6 +261,8 @@ export default function ListaPrueba() {
                             ? () => irACATASTRO()
                             : subItem.descripcion === "Corralón"
                             ? () => irACorralon()
+                            : subItem.descripcion === "Mapa Municipal"
+                            ? () => irAMapa()
                             : () => redirigir(`/${subItem.label}`)
                         }
                       />
