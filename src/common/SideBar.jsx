@@ -197,9 +197,11 @@ export default function ListaPrueba() {
     window.open(url.toString(), "_blank");
   };
 
-  const irAMapa= () => {
+  const irAMAPA = () => {
     const token = localStorage.getItem("token");
-    const url = new URL(`https://mapa.smt.gob.ar/`);
+    const url = new URL(
+      `https://mapa.smt.gob.ar/?auth=${token}`
+    );
     url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
   };
@@ -262,7 +264,7 @@ export default function ListaPrueba() {
                             : subItem.descripcion === "Corralón"
                             ? () => irACorralon()
                             : subItem.descripcion === "Mapa Municipal"
-                            ? () => irAMapa()
+                            ? () => irAMAPA()
                             : () => redirigir(`/${subItem.label}`)
                         }
                       />
