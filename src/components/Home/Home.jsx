@@ -12,7 +12,7 @@ import {
   faQrcode,
   faCar,
   faRoadCircleCheck,
-  faTrailer
+  faTrailer,
 } from "@fortawesome/free-solid-svg-icons";
 import Card from "../Card/Card";
 import "./Home.css";
@@ -29,7 +29,7 @@ const Home = () => {
   // };
 
   const [openModal, setOpenModal] = useState(false);
-  const [openModalLibreDeuda, setOpenModalLibreDeuda] = useState(false)
+  const [openModalLibreDeuda, setOpenModalLibreDeuda] = useState(false);
 
   const irABOLETIN = () => {
     const token = localStorage.getItem("token");
@@ -128,7 +128,6 @@ const Home = () => {
     setOpenModalLibreDeuda(true);
   };
 
-
   return (
     <div className="contPadreHome">
       <div className="cardsContHome">
@@ -146,7 +145,7 @@ const Home = () => {
           descripcion={"Consulta del Carnet Digital"}
           Icono={<FontAwesomeIcon icon={faNotesMedical} />}
         />
-       <Card
+        <Card
           onClick={() => irACATASTRO()}
           titulo={"Dirección de Catastro y Edificación"}
           descripcion={"Sistema de consulta y autogestión"}
@@ -173,7 +172,9 @@ const Home = () => {
         <Card
           onClick={() => irATURNOS(241)}
           titulo={"Ficha Médica Escolar"}
-          descripcion={"Turnos para obtención de ficha médica en inicio escolar"}
+          descripcion={
+            "Turnos para obtención de ficha médica en inicio escolar"
+          }
           Icono={<FontAwesomeIcon icon={faIdCard} />}
         />
         <Card
@@ -190,7 +191,7 @@ const Home = () => {
           descripcion={"Consulta de Multas por Dominio."}
           Icono={<FontAwesomeIcon icon={faCar} />}
         />
-        
+
         <Card
           onClick={() => irACorralonConsultaPublica()}
           titulo={"Consulta de Vehículo Secuestrado"}
@@ -200,8 +201,8 @@ const Home = () => {
         <Card
           onClick={() => irADENGUE()}
           titulo={"Consulta de Dengue"}
-          descripcion={"Consulta de ingresos al corralón por Dominio."}
-          Icono={<FontAwesomeIcon icon={faTrailer} />}
+          descripcion={"Auto consulta dengue."}
+          Icono={<FontAwesomeIcon icon={faMosquito} />}
         />
 
         {/* <Card
@@ -210,14 +211,14 @@ const Home = () => {
           descripcion={"Solicitar Libre Deuda en Catastro y Edificación"}
           Icono={<FontAwesomeIcon icon={faRoadCircleCheck} />}
         /> */}
-        
+
         {/* <Card
           onClick={() => irACEMA()}
           titulo={"Servicios de Población Animal"}
           descripcion={"Turnos y Requsitos"}
           Icono={<FontAwesomeIcon icon={faCat} />}
         /> */}
-        
+
         {/* {user.id_tusuario == 1 || user.id_tusuario == 24 &&
           <Card
             onClick={() => irAMAPA()}
@@ -235,10 +236,10 @@ const Home = () => {
       />
 
       {/* <ModalLibreDeuda
-        openDialog={openModalLibreDeuda}
-        setOpenModal={setOpenModalLibreDeuda}
-        user={user}
-      /> */}
+  openDialog={openModalLibreDeuda}
+  setOpenModal={setOpenModalLibreDeuda}
+  user={user}
+/> */}
     </div>
   );
 };
