@@ -112,12 +112,12 @@ const Home = () => {
   };
 
   const irADENGUE = () => {
-    const token = localStorage.getItem("token");
+    // const token = localStorage.getItem("token");
     const url = new URL(
-      `https://test.smt.gob.ar/?auth=${token}&destino=dengue`
+      `https://test.smt.gob.ar/`
       // `https://ciudaddigital.smt.gob.ar/?destino=boletin`
     );
-    url.searchParams.append("auth", token);
+    // url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
   };
 
@@ -201,7 +201,7 @@ const Home = () => {
         />
         <Card
           onClick={() => irADENGUE()}
-          titulo={"Consulta de Dengue"}
+          titulo={"Consulta sobre Dengue"}
           descripcion={"Auto consulta dengue."}
           Icono={<FontAwesomeIcon icon={faMosquito} />}
         />
