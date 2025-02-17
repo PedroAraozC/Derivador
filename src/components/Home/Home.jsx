@@ -201,7 +201,7 @@ const Home = () => {
         />
         <Card
           onClick={() => irADENGUE()}
-          titulo={"Consulta de Dengue"}
+          titulo={"Consulta sobre Dengue"}
           descripcion={"Auto consulta dengue."}
           Icono={<FontAwesomeIcon icon={faMosquito} />}
         />
