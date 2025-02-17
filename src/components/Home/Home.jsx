@@ -3,14 +3,13 @@ import {
   faIdCard,
   faNewspaper,
   faFolderOpen,
-  faMap,
+  // faMap,
 } from "@fortawesome/free-regular-svg-icons";
 import {
   faBuildingCircleCheck,
   faCommentsDollar,
   faNotesMedical,
   faQrcode,
-  faCat,
   faCar,
   faRoadCircleCheck,
   faTrailer
@@ -96,14 +95,14 @@ const Home = () => {
     window.open(url.toString(), "_blank");
   };
 
-  const irAMAPA = () => {
-    const token = localStorage.getItem("token");
-    const url = new URL(
-      `https://mapa.smt.gob.ar/?auth=${token}`
-    );
-    url.searchParams.append("auth", token);
-    window.open(url.toString(), "_blank");
-  };
+  // const irAMAPA = () => {
+  //   const token = localStorage.getItem("token");
+  //   const url = new URL(
+  //     `https://mapa.smt.gob.ar/?auth=${token}`
+  //   );
+  //   url.searchParams.append("auth", token);
+  //   window.open(url.toString(), "_blank");
+  // };
 
   const irACorralonConsultaPublica = () => {
     const url = new URL(`http://181.105.6.205:9007/#/consultaPublicaCorralon`);
@@ -219,14 +218,14 @@ const Home = () => {
           Icono={<FontAwesomeIcon icon={faCat} />}
         /> */}
         
-        {user.id_tusuario == 1 &&
+        {/* {user.id_tusuario == 1 || user.id_tusuario == 24 &&
           <Card
             onClick={() => irAMAPA()}
             titulo={"Mapa Municipal"}
             descripcion={""}
             Icono={<FontAwesomeIcon icon={faMap} />}
           />
-      }
+      } */}
       </div>
 
       <ModalMultasDominio
