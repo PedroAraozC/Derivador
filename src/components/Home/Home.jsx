@@ -13,6 +13,7 @@ import {
   faCar,
   faRoadCircleCheck,
   faTrailer,
+  faMosquito,
 } from "@fortawesome/free-solid-svg-icons";
 import Card from "../Card/Card";
 import "./Home.css";
