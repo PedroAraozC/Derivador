@@ -111,6 +111,16 @@ const Home = () => {
     window.open(url.toString(), "_blank");
   };
 
+  const irADENGUE = () => {
+    const token = localStorage.getItem("token");
+    const url = new URL(
+      `https://test.smt.gob.ar/?auth=${token}&destino=dengue`
+      // `https://ciudaddigital.smt.gob.ar/?destino=boletin`
+    );
+    url.searchParams.append("auth", token);
+    window.open(url.toString(), "_blank");
+  };
+
   const handleOpenModal = () => {
     setOpenModal(true);
   };
@@ -185,6 +195,12 @@ const Home = () => {
         <Card
           onClick={() => irACorralonConsultaPublica()}
           titulo={"Consulta de Vehículo Secuestrado"}
+          descripcion={"Consulta de ingresos al corralón por Dominio."}
+          Icono={<FontAwesomeIcon icon={faTrailer} />}
+        />
+        <Card
+          onClick={() => irADENGUE()}
+          titulo={"Consulta de Dengue"}
           descripcion={"Consulta de ingresos al corralón por Dominio."}
           Icono={<FontAwesomeIcon icon={faTrailer} />}
         />
