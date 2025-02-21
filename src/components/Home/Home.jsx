@@ -69,7 +69,7 @@ const Home = () => {
     window.open(url.toString(), "_blank");
   };
   const irAEXPEDIENTES = () => {
-    const url = new URL(`http://181.105.6.205:8890`);
+    const url = new URL(`http://181.105.6.205:9008`);
 
     window.open(url.toString(), "_blank");
   };
