@@ -12,7 +12,8 @@ import {
   faQrcode,
   faCar,
   faRoadCircleCheck,
-  faTrailer
+  faTrailer,
+  faMosquito,
 } from "@fortawesome/free-solid-svg-icons";
 import Card from "../Card/Card";
 import "./Home.css";
@@ -29,7 +30,7 @@ const Home = () => {
   // };
 
   const [openModal, setOpenModal] = useState(false);
-  const [openModalLibreDeuda, setOpenModalLibreDeuda] = useState(false)
+  const [openModalLibreDeuda, setOpenModalLibreDeuda] = useState(false);
 
   const irABOLETIN = () => {
     const token = localStorage.getItem("token");
@@ -68,7 +69,7 @@ const Home = () => {
     window.open(url.toString(), "_blank");
   };
   const irAEXPEDIENTES = () => {
-    const url = new URL(`http://181.105.6.205:8890`);
+    const url = new URL(`http://181.105.6.205:9008`);
 
     window.open(url.toString(), "_blank");
   };
@@ -110,6 +111,16 @@ const Home = () => {
     window.open(url.toString(), "_blank");
   };
 
+  const irADENGUE = () => {
+    // const token = localStorage.getItem("token");
+    const url = new URL(
+      `https://test.smt.gob.ar/`
+      // `https://ciudaddigital.smt.gob.ar/?destino=boletin`
+    );
+    // url.searchParams.append("auth", token);
+    window.open(url.toString(), "_blank");
+  };
+
   const handleOpenModal = () => {
     setOpenModal(true);
   };
@@ -117,7 +128,6 @@ const Home = () => {
   const handleOpenModalLibreDeuda = () => {
     setOpenModalLibreDeuda(true);
   };
-
 
   return (
     <div className="contPadreHome">
@@ -136,7 +146,7 @@ const Home = () => {
           descripcion={"Consulta del Carnet Digital"}
           Icono={<FontAwesomeIcon icon={faNotesMedical} />}
         />
-       <Card
+        <Card
           onClick={() => irACATASTRO()}
           titulo={"Dirección de Catastro y Edificación"}
           descripcion={"Sistema de consulta y autogestión"}
@@ -163,7 +173,9 @@ const Home = () => {
         <Card
           onClick={() => irATURNOS(241)}
           titulo={"Ficha Médica Escolar"}
-          descripcion={"Turnos para obtención de ficha médica en inicio escolar"}
+          descripcion={
+            "Turnos para obtención de ficha médica en inicio escolar"
+          }
           Icono={<FontAwesomeIcon icon={faIdCard} />}
         />
         <Card
@@ -180,12 +192,18 @@ const Home = () => {
           descripcion={"Consulta de Multas por Dominio."}
           Icono={<FontAwesomeIcon icon={faCar} />}
         />
-        
+
         <Card
           onClick={() => irACorralonConsultaPublica()}
           titulo={"Consulta de Vehículo Secuestrado"}
           descripcion={"Consulta de ingresos al corralón por Dominio."}
           Icono={<FontAwesomeIcon icon={faTrailer} />}
+        />
+        <Card
+          onClick={() => irADENGUE()}
+          titulo={"Consulta sobre Dengue"}
+          descripcion={"Auto consulta dengue."}
+          Icono={<FontAwesomeIcon icon={faMosquito} />}
         />
 
         {/* <Card
@@ -194,14 +212,14 @@ const Home = () => {
           descripcion={"Solicitar Libre Deuda en Catastro y Edificación"}
           Icono={<FontAwesomeIcon icon={faRoadCircleCheck} />}
         /> */}
-        
+
         {/* <Card
           onClick={() => irACEMA()}
           titulo={"Servicios de Población Animal"}
           descripcion={"Turnos y Requsitos"}
           Icono={<FontAwesomeIcon icon={faCat} />}
         /> */}
-        
+
         {/* {user.id_tusuario == 1 || user.id_tusuario == 24 &&
           <Card
             onClick={() => irAMAPA()}
@@ -219,10 +237,10 @@ const Home = () => {
       />
 
       {/* <ModalLibreDeuda
-        openDialog={openModalLibreDeuda}
-        setOpenModal={setOpenModalLibreDeuda}
-        user={user}
-      /> */}
+  openDialog={openModalLibreDeuda}
+  setOpenModal={setOpenModalLibreDeuda}
+  user={user}
+/> */}
     </div>
   );
 };
