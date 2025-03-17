@@ -300,22 +300,20 @@ const ModalContratacion = ({ contratacion, modalAbierto, handleClose, modoEdicio
                                 sx={{ width: 300, marginTop: 2 }}
                                 required={true}
                             />
-                            <InputLabel sx={{ marginTop: 2 }}>HABILITA</InputLabel>
-                            <Switch
-                                checked={formularioValues.habilita === 1}
-                                onChange={handleHabilitarChange}
-                                name="habilita"
-                                sx={{ marginTop: 2 }}
-                            />
-                        </div>
-                        <div>
                             <InputLabel sx={{marginTop: 3}}>Detalle</InputLabel>
                             <textarea
                                 placeholder="Información Adicional..."
                                 onChange={handleInputChange}
                                 name="detalle"
                                 value={formularioValues.detalle}
-                                style={{ width: 400, borderRadius: 5, padding: 5,  }}
+                                style={{ width: 300, borderRadius: 5, padding: 5,  }}
+                            />
+                            <InputLabel sx={{ marginTop: 2 }}>HABILITA</InputLabel>
+                            <Switch
+                                checked={formularioValues.habilita === 1}
+                                onChange={handleHabilitarChange}
+                                name="habilita"
+                                sx={{ marginTop: 2 }}
                             />
                             <InputLabel sx={{marginTop: 5}}>EDITAR PLIEGO (OBLIGATORIO)</InputLabel>
                             <input
@@ -327,6 +325,7 @@ const ModalContratacion = ({ contratacion, modalAbierto, handleClose, modoEdicio
                                 style={{ width: 300, paddingTop: 5, paddingBottom: 30 }}
                             />
                         </div>
+                        
                     </form>
                     <div className="ps-4">
 
