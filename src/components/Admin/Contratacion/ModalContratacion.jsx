@@ -21,6 +21,7 @@ const ModalContratacion = ({ contratacion, modalAbierto, handleClose, modoEdicio
     const [buttonDisAnexo, setButtonDisAnexo] = useState(false);
     const handleSnackbarClose = () => { setSnackbarOpen(false); };
 
+    
     useEffect(() => {
         const fetchData = async () => {
             try {
