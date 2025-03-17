@@ -82,8 +82,8 @@ export default function TablaOpciones() {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 900,
-    height: '50%',
+    width: 600,
+    height: '40%',
     bgcolor: 'background.paper',
     borderRadius: '10px',
     boxShadow: 24,
@@ -96,8 +96,14 @@ export default function TablaOpciones() {
     // const formularioValido = validarFormulario();
         try {
             const response = await axios.post("/admin/altaOpcion", opcion );
+            if(response.status === 201){
+              alert(response.data?.message)
+              handleClose()
+            }else{
+              alert(response.data?.message)
+            }
             console.log(response.data)
-            return response.data;
+
 
           } catch (error) {
             console.error("Error al agregar la opcion:", error);
