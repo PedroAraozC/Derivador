@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import axios from "../../../../config/axios";
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import axiosPatri from "../../../../config/axiosPatrimonio";
@@ -34,7 +33,6 @@ function ModalBanner({ show, handleClose, actualizador, onUploadSuccess }) {
           "Content-Type": "multipart/form-data",
         },
       });
-console.log(response.status);
       if (response.status == 200) {
         const imageUrl = response.data.imageUrl; // Asegúrate de que el backend devuelva la URL de la imagen
         setSnackbarMensaje("Imagen de banner subida con éxito.");

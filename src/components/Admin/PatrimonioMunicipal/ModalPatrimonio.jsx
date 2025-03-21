@@ -29,6 +29,7 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
   const [imagenCarrousel2, setImagenCarrousel2] = useState(null);
   const [imagenCarrousel3, setImagenCarrousel3] = useState(null);
   const [archivo, setArchivo] = useState(null);
+  const [archivos, setArchivos] = useState([]);
   const fileInputRef = useRef(null);
   const [buttonDis, setButtonDis] = useState(false);
   const [errores, setErrores] = useState({});
@@ -284,6 +285,8 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
   if (!patrimonio) {
     return null;
   }
+
+  
 
   const style = {
     position: "absolute",
