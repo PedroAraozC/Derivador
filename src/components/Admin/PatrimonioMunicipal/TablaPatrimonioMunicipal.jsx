@@ -54,6 +54,50 @@ const TablaPatrimonioMunicipal = () => {
     );
   }, [patrimonios, page, rowsPerPage, searchTerm]);
 
+  useEffect(() => {
+    const handleImagenesActualizadas = async (event) => {
+      const { nombrePatrimonio, nuevaImagen, nombreImagen } = event.detail;
+      if (nombrePatrimonio && nuevaImagen && nombreImagen) {
+        setImagenes(prev => ({
+          ...prev,
+          [nombrePatrimonio]: {
+            ...prev[nombrePatrimonio],
+            [nombreImagen]: nuevaImagen
+          }
+        }));
+      }
+    };
+
+    window.addEventListener('imagenesActualizadas', handleImagenesActualizadas);
+    return () => {
+      window.removeEventListener('imagenesActualizadas', handleImagenesActualizadas);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleImagenesActualizadas = async (event) => {
+      const { nombrePatrimonio } = event.detail;
+      if (nombrePatrimonio) {
+        try {
+          const response = await axiosPatri.get(`admin/imagenPreviewTabla/${nombrePatrimonio}`);
+          if (response.data && Object.keys(response.data).length > 0) {
+            setImagenes(prev => ({
+              ...prev,
+              [nombrePatrimonio]: response.data
+            }));
+          }
+        } catch (error) {
+          console.error("Error al actualizar las imágenes:", error);
+        }
+      }
+    };
+
+    window.addEventListener('imagenesActualizadas', handleImagenesActualizadas);
+    return () => {
+      window.removeEventListener('imagenesActualizadas', handleImagenesActualizadas);
+    };
+  }, []);
+
   const handleCheckboxChange = (patrimonioId) => {
     const patrimonio = patrimonios?.find(
       (conv) => conv.id_patrimonio === patrimonioId
@@ -69,29 +113,25 @@ const TablaPatrimonioMunicipal = () => {
   };
 
   const handleRowExpand = async (nombrePatrimonio) => {
-    setExpandedRows((prev) => ({
+    setExpandedRows(prev => ({
       ...prev,
-      [nombrePatrimonio]: !prev[nombrePatrimonio],
+      [nombrePatrimonio]: !prev[nombrePatrimonio]
     }));
 
-    if (!expandedRows[nombrePatrimonio]) {
+    if (!expandedRows[nombrePatrimonio] && !imagenes[nombrePatrimonio]) {
       try {
-        const response = await axiosPatri.get(
-          `admin/imagenPreviewTabla/${nombrePatrimonio}`
-        );
-
-        console.log(response.data, "response.data");
-        if (!response.data || Object.keys(response.data).length === 0) {
-          console.log("No hay imágenes disponibles.");
-          return;
+        const response = await axiosPatri.get(`admin/imagenPreviewTabla/${nombrePatrimonio}`);
+        
+        if (response.data && Object.keys(response.data).length > 0) {
+          setImagenes(prev => ({
+            ...prev,
+            [nombrePatrimonio]: response.data
+          }));
         }
-
-        setImagenes((prev) => ({
-          ...prev,
-          [nombrePatrimonio]: response.data, // Guardamos el objeto completo con nombres de archivo como claves
-        }));
       } catch (error) {
         console.error("Error al obtener las imágenes:", error);
+        setSnackbarMensaje("Error al cargar las imágenes");
+        setSnackbarOpen(true);
       }
     }
   };
@@ -105,14 +145,13 @@ const TablaPatrimonioMunicipal = () => {
       setImagenSeleccionada(null);
     } else {
       setImagenSeleccionada({
-        nombreImagen, // Nombre del archivo de la imagen (ej. "Diana y Endimión_1.jpg")
-        imagen: base64Image, // Contenido base64 de la imagen
-        nombrePatrimonio, // Nombre del patrimonio
+        nombreImagen,
+        imagen: base64Image,
+        nombrePatrimonio,
       });
     }
   };
 
-  // Manejar eliminación de imagen
   const handleDeleteImage = async () => {
     console.log(imagenSeleccionada, "imagenSeleccionada");
 
@@ -121,13 +160,11 @@ const TablaPatrimonioMunicipal = () => {
     try {
       const { nombrePatrimonio, nombreImagen } = imagenSeleccionada;
 
-      // Enviar solicitud al backend para eliminar la imagen
       await axiosPatri.post("/admin/eliminarImagenPatrimonio", {
         nombrePatrimonio,
-        nombreImagen, // Ahora enviamos el nombre de la imagen en lugar del índice
+        nombreImagen,
       });
 
-      // Actualizar la lista de imágenes eliminando la imagen seleccionada
       setImagenes((prev) => {
         const updatedImages = { ...prev };
         if (updatedImages[nombrePatrimonio]) {
@@ -330,8 +367,8 @@ const TablaPatrimonioMunicipal = () => {
                     {expandedRows[patrimonio.nombre_patrimonio] && imagenSeleccionada && 
                       imagenSeleccionada.nombrePatrimonio === patrimonio.nombre_patrimonio && (
                       <TableRow>
-                        <TableCell colSpan={6}>
-                          <div className="mt-3 text-center">
+                        <TableCell colSpan={7}>
+                          <div className="mt-3 text-center d-flex justify-content-center gap-3">
                             <Button
                               variant="contained"
                               color="error"
@@ -346,6 +383,7 @@ const TablaPatrimonioMunicipal = () => {
                     )}
                   </>
                 ))}
+                
             </TableBody>
           </Table>
           <TablePagination
