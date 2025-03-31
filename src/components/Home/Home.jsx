@@ -14,6 +14,8 @@ import {
   faRoadCircleCheck,
   faTrailer,
   faMosquito,
+  faPeopleGroup,
+  faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 import Card from "../Card/Card";
 import "./Home.css";
@@ -93,6 +95,16 @@ const Home = () => {
       )}`
     );
 
+    window.open(url.toString(), "_blank");
+  };
+
+
+  const irACONSULTAPUBLICA = () => {
+    const token = localStorage.getItem("token");
+    const url = new URL(
+      `http://consultapublica.smt.gob.ar:9085/ext/auth/cidituc/?auth=${token}`
+    );
+    // url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
   };
 
@@ -204,6 +216,13 @@ const Home = () => {
           titulo={"Consulta sobre Dengue"}
           descripcion={"Auto consulta dengue."}
           Icono={<FontAwesomeIcon icon={faMosquito} />}
+        />
+
+<Card
+          onClick={() => irACONSULTAPUBLICA()}
+          titulo={"Consulta pública"}
+          descripcion={"Programa de participación ciudadana"}
+          Icono={<FontAwesomeIcon icon={faUsers} />}
         />
 
         {/* <Card
