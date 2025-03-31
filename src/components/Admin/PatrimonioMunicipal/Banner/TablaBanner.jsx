@@ -148,10 +148,8 @@ function TablaBanner() {
         </tbody>
       </Table>
 
-      {/* Modal para subir la imagen */}
       <ModalBanner show={showModal} handleClose={handleCloseModal} onUploadSuccess={handleUploadSuccess}/>
 
-      {/* Modal para mostrar vista previa de la imagen */}
       <Modal show={selectedBanner !== null && imagenBanner !== ""} onHide={handleClosePreview}>
         <Modal.Header closeButton>
           <Modal.Title>{nombreCortado}</Modal.Title>
@@ -173,7 +171,6 @@ function TablaBanner() {
         </Modal.Footer>
       </Modal>
 
-      {/* Snackbar para notificaciones */}
       {snackbarOpen && (
         <div className="snackbar">{snackbarMensaje}</div>
       )}
