@@ -102,7 +102,7 @@ const Home = () => {
   const irACONSULTAPUBLICA = () => {
     const token = localStorage.getItem("token");
     const url = new URL(
-      `http://consultapublica.smt.gob.ar:9085/ext/auth/cidituc/?auth=${token}`
+      `http://consultapublica.smt.gob.ar/ext/auth/cidituc/?auth=${token}`
     );
     // url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
