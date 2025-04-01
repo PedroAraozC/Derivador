@@ -19,7 +19,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import QueryStatsIcon from "@mui/icons-material/QueryStats";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import "./SideBar.css";
-import { ExpandLess, ExpandMore } from "@mui/icons-material";
+import { ExpandLess, ExpandMore, Queue } from "@mui/icons-material";
 import useStore from "../Zustand/Zustand";
 import AccountBoxOutlinedIcon from '@mui/icons-material/AccountBoxOutlined';
 import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
@@ -92,6 +92,8 @@ export default function ListaPrueba() {
             return <CarCrashIcon />;
       case "MAPA MUNICIPAL":
             return <MapIcon />;
+            case "GESTION DE TURNOS":
+              return <Queue/>;
       default:
         return <AccountTreeIcon />;
     }
@@ -206,6 +208,17 @@ export default function ListaPrueba() {
     window.open(url.toString(), "_blank");
   };
 
+  const irAGESTIONTURNOS = () => {
+    const token = localStorage.getItem("token");
+    const url = new URL(
+      `https://turnos.smt.gob.ar/?auth=${token}#/admin
+
+`
+    );
+    url.searchParams.append("auth", token);
+    window.open(url.toString(), "_blank");
+  };
+
   const list = () => (
     <Box
       sx={{ width: 250 }}
@@ -265,6 +278,8 @@ export default function ListaPrueba() {
                             ? () => irACorralon()
                             : subItem.descripcion === "Mapa Municipal"
                             ? () => irAMAPA()
+                            : subItem.descripcion === "gestion de turnos"
+                            ? () => irAGESTIONTURNOS()
                             : () => redirigir(`/${subItem.label}`)
                         }
                       />
