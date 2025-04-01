@@ -5,7 +5,7 @@ import axios from "../../../config/axios";
 import { EducaContext } from "../../../context/EducaContext";
 import { Spinner } from "react-bootstrap";
 
-const PermisosEspecificos = ({ empleado, modalPermisosAbierto, handleClose }) => {
+const PermisosEspecificos = ({ empleado, modalPermisosAbierto, handleClose, desactivarCheckbox }) => {
     const [deviceWidth, setDeviceWidth] = useState(window.innerWidth);
     const [buttonDis, setButtonDis] = useState(false);
     const [loading, setLoading] = useState(true);  // Estado para el loader
@@ -32,12 +32,12 @@ const PermisosEspecificos = ({ empleado, modalPermisosAbierto, handleClose }) =>
             existeEnPermisoPersona(empleado?.id_persona);
             setPermisosModificados([]);
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [empleado]);
 
     useEffect(() => {
         obtenerProcesosSinId();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // Restablece los estados al cerrar el modal
@@ -45,6 +45,7 @@ const PermisosEspecificos = ({ empleado, modalPermisosAbierto, handleClose }) =>
         setProcessStates({});
         setPermisosModificados([]);
         handleClose();
+        desactivarCheckbox();
     };
 
     // Sincroniza el array de permisosModificados completo
@@ -86,7 +87,7 @@ const PermisosEspecificos = ({ empleado, modalPermisosAbierto, handleClose }) =>
             setButtonDis(false);
         }
     };
-    
+
     const handleSnackbarClose = () => {
         setSnackbarOpen(false);
     };
@@ -126,17 +127,22 @@ const PermisosEspecificos = ({ empleado, modalPermisosAbierto, handleClose }) =>
     };
 
     return (
-        <Modal open={modalPermisosAbierto} onClose={handleCloseModal}>
+        <Modal
+            open={modalPermisosAbierto}
+            onClose={(event, reason) => {
+                if (reason !== "backdropClick") return;
+            }}
+        >
             <Box sx={style}>
                 {loading ? (
-                    <Spinner/>
+                    <Spinner />
                 ) : (
                     <>
                         <div className="d-flex justify-content-around align-items-center mb-3">
                             <h2 style={{ fontSize: "1.3rem", margin: 0 }}>
                                 Permisos específicos de {empleado.nombre_persona}
                             </h2>
-                            <p className="m-0" style={{fontSize: '1.3rem'}}>{empleado.nombre_tusuario}</p>
+                            <p className="m-0" style={{ fontSize: '1.3rem' }}>{empleado.nombre_tusuario}</p>
                         </div>
                         <Divider />
                         <div className="d-flex flex-column justify-content-center">
@@ -156,14 +162,25 @@ const PermisosEspecificos = ({ empleado, modalPermisosAbierto, handleClose }) =>
                                         ))}
                                 </div>
                             </form>
-                            <Button
-                                onClick={handleSubmit}
-                                className="mt-3"
-                                variant="outlined"
-                                disabled={buttonDis}
-                            >
-                                Guardar cambios
-                            </Button>
+                            <div className="d-flex gap-3 align-items-center justify-content-center mt-3">
+                                <Button
+                                    onClick={handleSubmit}
+                                    className="mt-3"
+                                    variant="outlined"
+                                    disabled={buttonDis}
+                                >
+                                    Guardar cambios
+                                </Button>
+                                <Button
+                                    onClick={handleCloseModal}
+                                    className="mt-3"
+                                    variant="outlined"
+                                    color="secondary"
+                                >
+                                    Cancelar
+                                </Button>
+                            </div>
+
                         </div>
                     </>
                 )}
