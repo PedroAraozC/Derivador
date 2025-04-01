@@ -150,6 +150,7 @@ const TablaUsuarios = () => {
                     empleado={empleadoSeleccionado}
                     modalPermisosAbierto={modalPermisosAbierto}
                     handleClose={() => setModalPermisosAbierto(false)}
+                    desactivarCheckbox={() => setEmpleadoSeleccionado(null)}
                 />
             </div>
         </>
