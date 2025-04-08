@@ -16,6 +16,7 @@ import {
   faMosquito,
   faPeopleGroup,
   faUsers,
+  faCat,
 } from "@fortawesome/free-solid-svg-icons";
 import Card from "../Card/Card";
 import "./Home.css";
