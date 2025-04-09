@@ -78,6 +78,11 @@ const PermisosEspecificos = ({ empleado, modalPermisosAbierto, handleClose, desa
             console.log(response)
             setSnackbarMensaje("Permisos modificados.");
             setSnackbarOpen(true);
+            setTimeout(() => {
+                handleCloseModal();
+                setSnackbarOpen(false);
+            }
+            , 2000);
             actualizador();
         } catch (error) {
             console.error("Error al cambiar los permisos:", error);
