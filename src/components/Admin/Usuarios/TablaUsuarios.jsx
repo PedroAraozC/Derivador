@@ -32,13 +32,18 @@ const TablaUsuarios = () => {
     }, [refresh]);
 
     useEffect(() => {
-        const filteredEmpleados = empleados?.filter(e =>
-            (e.nombre_persona?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-            ((e.afiliado && e.afiliado.toString().toLowerCase().includes(searchTerm.toLowerCase()))) ||
-            (e.email_persona?.toLowerCase().includes(searchTerm.toLowerCase()))
-        );
+        const filteredEmpleados = empleados?.filter(e => {
+            const nombreCompleto = `${e.nombre_persona} ${e.apellido_persona}`;
+            return (
+                nombreCompleto.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                (e.afiliado && e.afiliado.toString().toLowerCase().includes(searchTerm.toLowerCase())) ||
+                (e.documento_persona && e.documento_persona.toString().toLowerCase().includes(searchTerm.toLowerCase()))
+            );
+        });
+    
         setPaginatedArray(filteredEmpleados?.slice(page * rowsPerPage, (page + 1) * rowsPerPage));
     }, [empleados, page, rowsPerPage, searchTerm]);
+    
 
     const handleCheckboxChange = (empleadoId) => {
         const empleado = empleados?.find(
