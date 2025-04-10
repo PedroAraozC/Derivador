@@ -16,6 +16,7 @@ import {
   faMosquito,
   faPeopleGroup,
   faUsers,
+  faCat,
 } from "@fortawesome/free-solid-svg-icons";
 import Card from "../Card/Card";
 import "./Home.css";
@@ -232,12 +233,12 @@ const Home = () => {
           Icono={<FontAwesomeIcon icon={faRoadCircleCheck} />}
         /> */}
 
-        {/* <Card
+        <Card
           onClick={() => irACEMA()}
           titulo={"Servicios de Población Animal"}
           descripcion={"Turnos y Requsitos"}
           Icono={<FontAwesomeIcon icon={faCat} />}
-        /> */}
+        />
 
         {/* {user.id_tusuario == 1 || user.id_tusuario == 24 &&
           <Card
