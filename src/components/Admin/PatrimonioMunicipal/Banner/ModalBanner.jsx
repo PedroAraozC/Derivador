@@ -18,35 +18,37 @@ function ModalBanner({ show, handleClose, actualizador, onUploadSuccess }) {
   const handleUpload = async (event) => {
     event.preventDefault();
     setButtonDis(true);
-
+    
     try {
-      const formData = new FormData();
-
-      if (selectedFile) {
-        formData.append("imagen_banner", selectedFile);
-      } else {
+      if (!selectedFile) {
         throw new Error("No se ha seleccionado ninguna imagen");
       }
 
-      const response = await axiosPatri.post("/admin/crearBannerImagenes", formData, {
+      const formData = new FormData();
+      formData.append('imagen_banner', selectedFile);
+      
+      const response = await axiosPatri.post('/admin/crearBannerImagenes', formData, {
         headers: {
-          "Content-Type": "multipart/form-data",
-        },
+          'Content-Type': 'multipart/form-data'
+        }
       });
-      if (response.status == 200) {
-        const imageUrl = response.data.imageUrl; // Asegúrate de que el backend devuelva la URL de la imagen
-        setSnackbarMensaje("Imagen de banner subida con éxito.");
-        setSnackbarOpen(true);
 
-        onUploadSuccess(imageUrl); // Pasa la URL al componente padre para actualizar la tabla
+      if (response.status === 200 && response.data.nombre_banner) {
+        setSnackbarMensaje("Imagen de banner subida con éxito");
+        setSnackbarOpen(true);
+        onUploadSuccess(response.data.nombre_banner);
+        
         setTimeout(() => {
           handleClose();
           setSnackbarOpen(false);
+          setSelectedFile(null);
         }, 1500);
+      } else {
+        throw new Error("Respuesta del servidor incompleta");
       }
     } catch (error) {
-      console.error("Error al subir la imagen de banner:", error);
-      setSnackbarMensaje("Error al subir la imagen de banner.");
+      console.error("Error al subir la imagen:", error);
+      setSnackbarMensaje(error.response?.data?.message || error.message);
       setSnackbarOpen(true);
     } finally {
       setButtonDis(false);
@@ -54,27 +56,50 @@ function ModalBanner({ show, handleClose, actualizador, onUploadSuccess }) {
   };
 
   return (
-    <Modal show={show} >
-      <Modal.Header >
+    <Modal show={show} onHide={handleClose}>
+      <Modal.Header closeButton>
         <Modal.Title>Subir Nueva Imagen de Banner</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form.Group controlId="formFile" className="mb-3">
           <Form.Label>Seleccionar Imagen</Form.Label>
-          <Form.Control type="file" onChange={handleFileChange} />
+          <Form.Control 
+            type="file" 
+            onChange={handleFileChange}
+            accept="image/*"
+            disabled={buttonDis}
+          />
+          {selectedFile && (
+            <small className="text-muted">
+              Archivo seleccionado: {selectedFile.name}
+            </small>
+          )}
         </Form.Group>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
+        <Button variant="secondary" onClick={handleClose} disabled={buttonDis}>
           Cancelar
         </Button>
-        <Button variant="primary" onClick={handleUpload} disabled={buttonDis || selectedFile == null }>
-          Subir Imagen
+        <Button 
+          variant="primary" 
+          onClick={handleUpload}
+          disabled={buttonDis || !selectedFile}
+        >
+          {buttonDis ? 'Subiendo...' : 'Subir Imagen'}
         </Button>
       </Modal.Footer>
 
-      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={() => setSnackbarOpen(false)}>
-        <Alert onClose={() => setSnackbarOpen(false)} severity="info" elevation={6} variant="filled">
+      <Snackbar 
+        open={snackbarOpen} 
+        autoHideDuration={6000} 
+        onClose={() => setSnackbarOpen(false)}
+      >
+        <Alert 
+          onClose={() => setSnackbarOpen(false)} 
+          severity="info" 
+          elevation={6} 
+          variant="filled"
+        >
           {snackbarMensaje}
         </Alert>
       </Snackbar>

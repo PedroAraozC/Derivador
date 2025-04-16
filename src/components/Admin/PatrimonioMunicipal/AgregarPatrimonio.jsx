@@ -15,6 +15,7 @@ import axios from "../../../config/axios";
 import { EducaContext } from "../../../context/EducaContext";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import axiosPatri from "../../../config/axiosPatrimonio";
+import { useNavigate } from "react-router-dom";
 
 const AgregarPatrimonio = () => {
   const [archivo, setArchivo] = useState(null);
@@ -48,6 +49,8 @@ const AgregarPatrimonio = () => {
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
+
+  const navigate = useNavigate();
 
   const [formularioValues, setFormularioValues] = useState({
     nombre_patrimonio: "",
@@ -163,64 +166,98 @@ const AgregarPatrimonio = () => {
   const handleAgregar = async (event) => {
     event.preventDefault();
     const formularioValido = validarFormulario();
-    setButtonDis(true);
-
+    
     if (formularioValido) {
+      setButtonDis(true);
       try {
-        const formData = new FormData();
-
-        formData.append(
-          "nombre_patrimonio",
-          formularioValues.nombre_patrimonio
-        );
-        if (archivo) formData.append("imagen_card", archivo);
-        if (imagenCarrousel1)
-          formData.append("imagen_carrousel_1", imagenCarrousel1);
-        if (imagenCarrousel2)
-          formData.append("imagen_carrousel_2", imagenCarrousel2);
-        if (imagenCarrousel3)
-          formData.append("imagen_carrousel_3", imagenCarrousel3);
-
-        const response = await axiosPatri.post(
+        // Primero crear el patrimonio
+        const responsePatrimonio = await axiosPatri.post(
           "/admin/agregarPatrimonio",
           formularioValues
         );
-        console.log(response.status == 201);
-        if (response.status == 201) {
-          try {
-            const responseImagenes = await axiosPatri.post(
-              "/admin/crearPatrimonioImagenes",
-              formData,
-              {
-                headers: { "Content-Type": "multipart/form-data" },
+
+        if (responsePatrimonio.status === 201) {
+          // Si hay imágenes para subir
+          if (archivo || imagenCarrousel1 || imagenCarrousel2 || imagenCarrousel3) {
+            const formData = new FormData();
+            formData.append("nombre_patrimonio", formularioValues.nombre_patrimonio);
+
+            // Agregar imágenes solo si existen
+            if (archivo) {
+              const extension = archivo.name.split('.').pop();
+              formData.append('imagen_card', archivo, `${formularioValues.nombre_patrimonio}_card.${extension}`);
+            }
+            if (imagenCarrousel1) {
+              const extension = imagenCarrousel1.name.split('.').pop();
+              formData.append('imagen_carrousel_1', imagenCarrousel1, `${formularioValues.nombre_patrimonio}_1.${extension}`);
+            }
+            if (imagenCarrousel2) {
+              const extension = imagenCarrousel2.name.split('.').pop();
+              formData.append('imagen_carrousel_2', imagenCarrousel2, `${formularioValues.nombre_patrimonio}_2.${extension}`);
+            }
+            if (imagenCarrousel3) {
+              const extension = imagenCarrousel3.name.split('.').pop();
+              formData.append('imagen_carrousel_3', imagenCarrousel3, `${formularioValues.nombre_patrimonio}_3.${extension}`);
+            }
+
+            try {
+              // Debug: ver contenido del FormData
+              for (let [key, value] of formData.entries()) {
+                console.log(`${key}:`, value instanceof File ? {
+                  name: value.name,
+                  type: value.type,
+                  size: value.size
+                } : value);
               }
-            );
-            console.log(
-              "Respuesta del servidor (imágenes):",
-              responseImagenes.data
-            );
-          } catch (error) {
-            console.error("Error al enviar imágenes:", error);
-            setSnackbarMensaje("Error al enviar imágenes.");
-            setSnackbarOpen(true);
-            setButtonDis(false);
-            throw error;
+
+              const responseImagenes = await axiosPatri.post(
+                "/admin/crearPatrimonioImagenes",
+                formData,
+                {
+                  headers: { 
+                    "Content-Type": "multipart/form-data"
+                  },
+                  maxContentLength: Infinity,
+                  maxBodyLength: Infinity
+                }
+              );
+
+              console.log("Respuesta del servidor (imágenes):", responseImagenes.data);
+              setSnackbarMensaje("Patrimonio e imágenes creados correctamente.");
+            } catch (errorImagenes) {
+              console.error("Error al enviar imágenes:", errorImagenes);
+              console.error("Detalles del error:", errorImagenes.response?.data);
+              setSnackbarMensaje("Error al enviar imágenes: " + 
+                (errorImagenes.response?.data?.message || errorImagenes.message));
+              setSnackbarOpen(true);
+              // No lanzamos el error aquí para permitir que se complete la creación del patrimonio
+            }
           }
+
+          setSnackbarMensaje("Patrimonio creado correctamente.");
+          setSnackbarOpen(true);
+          
+          // Esperar un momento para que se vea el mensaje
+          setTimeout(() => {
+            navigate("/panel_patrimonio"); // Redireccionar después de crear
+          }, 1500);
+          
+          resetFormulario();
         }
-        setSnackbarMensaje("Patrimonio creado.");
-        setSnackbarOpen(true);
-        resetFormulario(); // Resetea el formulario
-        setButtonDis(false); // Vuelve a habilitar el botón
-        return response.data;
       } catch (error) {
-        console.error("Error al agregar el patrimonio:", error);
-        setSnackbarMensaje("Error al agregar el patrimonio.");
+        console.error("Error completo:", error);
+        console.error("Detalles del error:", error.response?.data);
+        
+        setSnackbarMensaje(
+          "Error al agregar el patrimonio: " + 
+          (error.response?.data?.message || error.message)
+        );
         setSnackbarOpen(true);
+      } finally {
         setButtonDis(false);
-        throw new Error("Error al agregar el patrimonio");
       }
     } else {
-      console.log("Algo salió mal :(");
+      setSnackbarMensaje("Por favor, corrija los errores del formulario");
       setSnackbarOpen(true);
       setButtonDis(false);
     }
