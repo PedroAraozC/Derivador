@@ -70,8 +70,8 @@ function TablaBanner() {
 
   const handleUploadSuccess = (newImageUrl) => {
     const newBanner = {
-      imageUrl: `/var/www/vhosts/cidituc.smt.gob.ar/Fotos-Patrimonio/Banner/${newImageUrl}`,
-      habilita: true,
+      nombre_banner: newImageUrl,
+      habilita: 1
     };
     setBanners((prevBanners) => [...prevBanners, newBanner]);
     fetchBanners()
@@ -82,14 +82,25 @@ function TablaBanner() {
     setSelectedBanner(banner);
 
     try {
-      const response = await axiosPatri.get(`/admin/imagenPreview`, {
-        params: { banner },
-      });
-      setImagenBanner(response.data.banner.base64Image);
+        const response = await axiosPatri.get(`/admin/imagenPreview`, {
+            params: { banner: banner.nombre_banner }
+        });
+
+        console.log('Respuesta del servidor:', response.data);
+
+        if (response.data && response.data.banner && response.data.banner.base64Image) {
+            setImagenBanner(response.data.banner.base64Image);
+        } else {
+            console.error('No se recibió la imagen en base64');
+            setSnackbarMensaje('Error al cargar la imagen');
+            setSnackbarOpen(true);
+        }
     } catch (error) {
-      console.error("Error al cargar la vista previa:", error);
+        console.error("Error al cargar la vista previa:", error);
+        setSnackbarMensaje('Error al cargar la vista previa');
+        setSnackbarOpen(true);
     } finally {
-      setIsPreviewLoading(false);
+        setIsPreviewLoading(false);
     }
   };
 
@@ -153,15 +164,23 @@ function TablaBanner() {
       <Modal show={selectedBanner !== null && imagenBanner !== ""} onHide={handleClosePreview}>
         <Modal.Header closeButton>
           <Modal.Title>{nombreCortado}</Modal.Title>
-          
         </Modal.Header>
         <Modal.Body>
-          {selectedBanner && (
+          {selectedBanner && imagenBanner ? (
             <img
               src={`data:image/jpeg;base64,${imagenBanner}`}
-              alt="Vista Previa"
-              style={{ width: "100%" }}
+              alt={selectedBanner.nombre_banner}
+              style={{ 
+                width: "100%",
+                height: "auto",
+                maxHeight: "500px",
+                objectFit: "contain"
+              }}
             />
+          ) : (
+            <div className="text-center">
+              <span>Cargando imagen...</span>
+            </div>
           )}
         </Modal.Body>
         <Modal.Footer>

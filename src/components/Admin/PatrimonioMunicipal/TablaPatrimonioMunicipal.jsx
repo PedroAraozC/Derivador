@@ -114,25 +114,34 @@ const TablaPatrimonioMunicipal = () => {
 
   const handleRowExpand = async (nombrePatrimonio) => {
     setExpandedRows(prev => ({
-      ...prev,
-      [nombrePatrimonio]: !prev[nombrePatrimonio]
+        ...prev,
+        [nombrePatrimonio]: !prev[nombrePatrimonio]
     }));
 
-    if (!expandedRows[nombrePatrimonio] && !imagenes[nombrePatrimonio]) {
-      try {
-        const response = await axiosPatri.get(`admin/imagenPreviewTabla/${nombrePatrimonio}`);
-        
-        if (response.data && Object.keys(response.data).length > 0) {
-          setImagenes(prev => ({
-            ...prev,
-            [nombrePatrimonio]: response.data
-          }));
+    if (!expandedRows[nombrePatrimonio]) {
+        try {
+            const response = await axiosPatri.get(`admin/imagenPreviewTabla/${nombrePatrimonio}`);
+            
+            if (response && response.data) {
+                setImagenes(prev => ({
+                    ...prev,
+                    [nombrePatrimonio]: response.data
+                }));
+            } else {
+                setImagenes(prev => ({
+                    ...prev,
+                    [nombrePatrimonio]: {}
+                }));
+            }
+        } catch (error) {
+            console.error("Error al obtener las imágenes:", error);
+            setSnackbarMensaje("Error al cargar las imágenes");
+            setSnackbarOpen(true);
+            setImagenes(prev => ({
+                ...prev,
+                [nombrePatrimonio]: {}
+            }));
         }
-      } catch (error) {
-        console.error("Error al obtener las imágenes:", error);
-        setSnackbarMensaje("Error al cargar las imágenes");
-        setSnackbarOpen(true);
-      }
     }
   };
 
@@ -206,24 +215,27 @@ const TablaPatrimonioMunicipal = () => {
   };
 
   const handleDelete = async (patri) => {
-    console.log(patri);
-    console.log(patri, "id_patri");
     try {
       setButtonDis(true);
+
       const response = await axiosPatri.post(
         "/admin/deshabilitarPatrimonio",
-        patri
+        { id_patrimonio: patri.id_patrimonio }
       );
-      setSnackbarMensaje("Patrimonio deshabilitado.");
-      setSnackbarOpen(true);
-      actualizador();
-      setButtonDis(false);
-      return response.data;
+
+      if (response.data) {
+        setSnackbarMensaje("Patrimonio deshabilitado correctamente");
+        setSnackbarOpen(true);
+        await actualizador();
+      }
+
     } catch (error) {
       console.error("Error al deshabilitar el patrimonio:", error);
-      setSnackbarMensaje("Error al deshabilitar el patrimonio.");
+      setSnackbarMensaje("Error al deshabilitar el patrimonio: " + 
+        (error.response?.data?.message || error.message));
       setSnackbarOpen(true);
-      throw new Error("Error al deshabilitar el patrimonio");
+    } finally {
+      setButtonDis(false);
     }
   };
 
@@ -291,7 +303,7 @@ const TablaPatrimonioMunicipal = () => {
                       <TableCell sx={{ textAlign: "center" }}>
                         <button
                           className="btn"
-                          disabled={!buttonDis && patrimonio.habilita != 1}
+                          disabled={buttonDis || patrimonio.habilita !== 1}
                           onClick={() => handleDelete(patrimonio)}
                         >
                           <DeleteIcon className="iconDelete" />
@@ -314,50 +326,53 @@ const TablaPatrimonioMunicipal = () => {
                     {expandedRows[patrimonio.nombre_patrimonio] && (
                       <TableRow>
                         <TableCell colSpan={6}>
-                          {imagenes[patrimonio.nombre_patrimonio] &&
-                          Object.keys(imagenes[patrimonio.nombre_patrimonio]).length > 0 ? (
-                            <div
-                              style={{
-                                display: "flex",
-                                gap: "10px",
-                                flexWrap: "wrap",
-                              }}
-                            >
-                              {Object.entries(imagenes[patrimonio.nombre_patrimonio]).map(
-                                ([nombreImagen, base64Image]) => (
-                                  <div
-                                    key={nombreImagen}
-                                    style={{ textAlign: "center" }}
-                                  >
-                                    <img
-                                      src={`data:image/jpeg;base64,${base64Image}`}
-                                      alt={nombreImagen}
-                                      style={{
-                                        width: "150px",
-                                        height: "100px",
-                                        objectFit: "cover",
-                                        borderRadius: "8px",
-                                        cursor: "pointer",
-                                        border:
-                                          imagenSeleccionada?.nombreImagen === nombreImagen
-                                            ? "3px solid red"
-                                            : "none",
-                                      }}
-                                      onClick={() =>
-                                        handleSelectImage(
-                                          nombreImagen,
-                                          base64Image,
-                                          patrimonio.nombre_patrimonio
-                                        )
-                                      }
-                                    />
-                                    <div style={{ fontSize: "12px", marginTop: "4px" }}>
-                                      {nombreImagen.replace(/\.[^/.]+$/, "")}
+                          {imagenes.hasOwnProperty(patrimonio.nombre_patrimonio) ? (
+                            Object.keys(imagenes[patrimonio.nombre_patrimonio]).length > 0 ? (
+                              <div
+                                style={{
+                                  display: "flex",
+                                  gap: "10px",
+                                  flexWrap: "wrap",
+                                }}
+                              >
+                                {Object.entries(imagenes[patrimonio.nombre_patrimonio]).map(
+                                  ([nombreImagen, base64Image]) => (
+                                    <div
+                                      key={nombreImagen}
+                                      style={{ textAlign: "center" }}
+                                    >
+                                      <img
+                                        src={`data:image/jpeg;base64,${base64Image}`}
+                                        alt={nombreImagen}
+                                        style={{
+                                          width: "150px",
+                                          height: "100px",
+                                          objectFit: "cover",
+                                          borderRadius: "8px",
+                                          cursor: "pointer",
+                                          border:
+                                            imagenSeleccionada?.nombreImagen === nombreImagen
+                                              ? "3px solid red"
+                                              : "none",
+                                        }}
+                                        onClick={() =>
+                                          handleSelectImage(
+                                            nombreImagen,
+                                            base64Image,
+                                            patrimonio.nombre_patrimonio
+                                          )
+                                        }
+                                      />
+                                      <div style={{ fontSize: "12px", marginTop: "4px" }}>
+                                        {nombreImagen.replace(/\.[^/.]+$/, "")}
+                                      </div>
                                     </div>
-                                  </div>
-                                )
-                              )}
-                            </div>
+                                  )
+                                )}
+                              </div>
+                            ) : (
+                              <p>No hay imágenes disponibles para este patrimonio</p>
+                            )
                           ) : (
                             <p>Cargando imágenes...</p>
                           )}

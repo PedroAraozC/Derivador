@@ -31,6 +31,7 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
   const fileInputRef = useRef(null);
   const [buttonDis, setButtonDis] = useState(false);
   const [errores, setErrores] = useState({});
+  
   const {
     obtenerCategoria,
     categoria,
@@ -171,28 +172,47 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
           }
       }
       
-        if (archivo || imagenCarrousel1 || imagenCarrousel2 || imagenCarrousel3) {
+      if ([archivo, imagenCarrousel1, imagenCarrousel2, imagenCarrousel3].some(img => img !== null)) {
+          const formData = new FormData();
+          formData.append('nombre_patrimonio', patri.nombre_patrimonio);
+          formData.append('id_patrimonio', patri.id_patrimonio);
+      
+          if (archivo) {
+            const extension = archivo.name.split('.').pop();
+            formData.append('imagen_card', archivo, `${patri.nombre_patrimonio}_card.${extension}`);
+          }
+          if (imagenCarrousel1) {
+            const extension = imagenCarrousel1.name.split('.').pop();
+            formData.append('imagen_carrousel_1', imagenCarrousel1, `${patri.nombre_patrimonio}_1.${extension}`);
+          }
+          if (imagenCarrousel2) {
+            const extension = imagenCarrousel2.name.split('.').pop();
+            formData.append('imagen_carrousel_2', imagenCarrousel2, `${patri.nombre_patrimonio}_2.${extension}`);
+          }
+          if (imagenCarrousel3) {
+            const extension = imagenCarrousel3.name.split('.').pop();
+            formData.append('imagen_carrousel_3', imagenCarrousel3, `${patri.nombre_patrimonio}_3.${extension}`);
+          }
+      
           try {
             const responseImagenes = await axiosPatri.post('/admin/editarPatrimonioImagenes', formData, {
-              headers: { "Content-Type": "multipart/form-data" }
-            });
-            console.log('Respuesta del servidor (imágenes):', responseImagenes.data);
-
-            await actualizador();
-
-            const event = new CustomEvent('imagenesActualizadas', {
-              detail: {
-                nombrePatrimonio: patri.nombre_patrimonio,
-                nuevasImagenes: responseImagenes.data.imagenes
+              headers: { 
+                'Content-Type': 'multipart/form-data'
               }
             });
-            window.dispatchEvent(event);
-
+      
+            console.log('Respuesta del servidor (imágenes):', responseImagenes.data);
+      
+            window.dispatchEvent(new CustomEvent('imagenesActualizadas', {
+              detail: {
+                nombrePatrimonio: patri.nombre_patrimonio
+              }
+            }));
+      
           } catch (error) {
             console.error('Error al enviar imágenes:', error);
-            setSnackbarMensaje("Error al enviar imágenes.");
+            setSnackbarMensaje("Error al enviar imágenes: " + error.message);
             setSnackbarOpen(true);
-            setButtonDis(false);
             throw error;
           }
         }
@@ -233,11 +253,6 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
     }
   };
   
-
-  // const handleFileInputChange = (event) => {
-  //   const file = event.target.files[0];
-  //   setArchivo(file);
-  // };
 
   const handleCarrouselFileChange = (event, setter) => {
     const file = event.target.files[0];

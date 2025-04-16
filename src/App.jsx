@@ -42,6 +42,7 @@ function App() {
   const url = new URL(window.location.href);
   const logout = url.searchParams.get("logout");
   const token = url.searchParams.get("auth");
+  
 
   if(localStorage.getItem("token")){
     localStorage.setItem("token", token != null ? token : localStorage.getItem("token"));
