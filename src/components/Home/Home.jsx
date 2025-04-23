@@ -219,12 +219,12 @@ const Home = () => {
           Icono={<FontAwesomeIcon icon={faMosquito} />}
         />
 
-<Card
+{/* <Card
           onClick={() => irACONSULTAPUBLICA()}
           titulo={"Consulta pública"}
           descripcion={"Programa de participación ciudadana"}
           Icono={<FontAwesomeIcon icon={faUsers} />}
-        />
+        /> */}
 
         {/* <Card
           onClick={() => handleOpenModalLibreDeuda()}
