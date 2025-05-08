@@ -17,14 +17,17 @@ import {
   faPeopleGroup,
   faUsers,
   faCat,
+  faClipboardQuestion,
 } from "@fortawesome/free-solid-svg-icons";
 import Card from "../Card/Card";
 import "./Home.css";
 import useStore from "../../Zustand/Zustand";
 import { cuilToDni } from "../../helpers/extraerDNI";
 import { useState } from "react";
-import ModalMultasDominio from "../ModalMultasDominio/ModalMultasDominio";
 import ModalLibreDeuda from "../ModalLibreDeuda/ModalLibreDeuda";
+import { useNavigate } from "react-router-dom";
+import ModalMultas from "../ModalMultas/ModalMultas";
+
 const Home = () => {
   const { user } = useStore();
   // console.log(user);
@@ -142,6 +145,8 @@ const Home = () => {
     setOpenModalLibreDeuda(true);
   };
 
+  const navigate = useNavigate()
+
   return (
     <div className="contPadreHome">
       <div className="cardsContHome">
@@ -199,11 +204,18 @@ const Home = () => {
           }
           Icono={<FontAwesomeIcon icon={faCommentsDollar} />}
         />
-        <Card
+        {/* <Card
           onClick={() => handleOpenModal()}
           titulo={"Multas de Tránsito"}
           descripcion={"Consulta de Multas por Dominio."}
           Icono={<FontAwesomeIcon icon={faCar} />}
+        /> */}
+
+        <Card
+          onClick={() => navigate("/multas")}
+          titulo={"Multas"}
+          descripcion={"Consulta de Multas."}
+          Icono={<FontAwesomeIcon icon={faClipboardQuestion} />}
         />
 
         <Card
@@ -250,7 +262,7 @@ const Home = () => {
       } */}
       </div>
 
-      <ModalMultasDominio
+      <ModalMultas
         openDialog={openModal}
         setOpenModal={setOpenModal}
         user={user}

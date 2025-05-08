@@ -33,6 +33,7 @@ import PanelGestion from "./components/PanelGestion/PanelGestion";
 import SuccessPage from "./components/BotonDePagoMacro/SuccessPage";
 import ErrorPage from "./components/BotonDePagoMacro/ErrorPage";
 import Montos from "./components/TribunalDeFaltas/Montos";
+import Multas from "./pages/Multas/Multas";
 // import PrivateRouteAdminLicitaciones from "./routes/PrivateRouteAdminLicitaciones";
 // import PrivateRouteAdminPatrimonio from "./routes/PrivateRouteAdminPatrimonio";
 // import PrivateRouteEmpleadoJerarquico from "./routes/PrivateRouteEmpleadoJerarquico";
@@ -114,6 +115,8 @@ function App() {
               <Route exact path="/LibreDeudaPagoExitoso" element={<PrivateRoute key="success"><SuccessPage/></PrivateRoute>} />
               <Route exact path="/LibreDeudaPagoRechazado" element={<PrivateRoute key="errorPago"><ErrorPage/></PrivateRoute>} />
               <Route exact path="/montos" element={<PrivateRoute key="montos"><Montos/></PrivateRoute>} />
+
+              <Route exact path="/multas" element={<PrivateRoute key="multas"><Multas/></PrivateRoute>} />
 
             </Routes>
           </ProviderEducacion>
