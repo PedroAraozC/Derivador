@@ -1,10 +1,12 @@
 import { faBowlFood, faCar } from '@fortawesome/free-solid-svg-icons';
 import React, { useState } from 'react'
-import ModalMultasDominio from '../../components/ModalMultas/ModalMultas';
+import ModalMultas from '../../components/ModalMultas/ModalMultas';
 import useStore from '../../Zustand/Zustand';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Card from '../../components/Card/Card';
 import { faBuilding } from '@fortawesome/free-regular-svg-icons';
+import { Link } from 'react-router-dom';
+import { ArrowBack } from '@mui/icons-material';
 
 const Multas = () => {
     const { user } = useStore();
@@ -22,6 +24,9 @@ const Multas = () => {
       }
 
   return (
+    <>
+    
+         <Link style={{ textDecoration: 'none' }} to="/home"><ArrowBack/> VOLVER</Link>
       <div className='d-flex justify-content-center'>
           <Card
               onClick={() => abrirModal("Consulta de Multas de Tránsito", "Dominio/DNI")}
@@ -31,20 +36,20 @@ const Multas = () => {
           />
 
           <Card
-             onClick={() => abrirModal("Consulta de Multas de Catastro", "Padrón/Domicilio")}
+             onClick={() => abrirModal("Consulta de Multas de Catastro", "Padrón y Domicilio")}
               titulo={"Multas de Catastro"}
               descripcion={"Consulta de Multas por Padrón y Domicilio."}
               Icono={<FontAwesomeIcon icon={faBuilding} />}
           />
 
           <Card
-              onClick={() => abrirModal("Consulta de Multas de Bromatología", "CUIT/Razon Social")}
+              onClick={() => abrirModal("Consulta de Multas de Bromatología", "CUIT y Razón Social")}
               titulo={"Multas de Bromatología"}
               descripcion={"Consulta de Multas por CUIT y razón social."}
               Icono={<FontAwesomeIcon icon={faBowlFood} />}
           />
 
-          <ModalMultasDominio
+          <ModalMultas
               openDialog={openModal}
               setOpenModal={setOpenModal}
               user={user}
@@ -53,6 +58,7 @@ const Multas = () => {
           />
 
       </div>
+    </>
   )
 }
 
