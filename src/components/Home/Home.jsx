@@ -164,12 +164,12 @@ const Home = () => {
           descripcion={"Consulta del Carnet Digital"}
           Icono={<FontAwesomeIcon icon={faNotesMedical} />}
         />
-        <Card
+        {/* <Card
           onClick={() => irACATASTRO()}
           titulo={"Dirección de Catastro y Edificación"}
           descripcion={"Sistema de consulta y autogestión"}
           Icono={<FontAwesomeIcon icon={faBuildingCircleCheck} />}
-        />
+        /> */}
         <Card
           onClick={() => irACREDENCIAL()}
           titulo={"Credencial"}
