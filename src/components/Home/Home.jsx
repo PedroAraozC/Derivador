@@ -17,7 +17,7 @@ import {
   faPeopleGroup,
   faUsers,
   faCat,
-  faClipboardQuestion,
+  faClipboardQuestion, faBus
 } from "@fortawesome/free-solid-svg-icons";
 import Card from "../Card/Card";
 import "./Home.css";
@@ -195,6 +195,14 @@ const Home = () => {
             "Turnos para obtención de ficha médica en inicio escolar"
           }
           Icono={<FontAwesomeIcon icon={faIdCard} />}
+        />
+        <Card
+          onClick={() => irATURNOS(1710)}
+          titulo={"Tarjeta Ciudadana - SUBE"}
+          descripcion={
+            "Turnos para transferir saldo de ciudadana a SUBE"
+          }
+          Icono={<FontAwesomeIcon icon={faBus} />}
         />
         <Card
           onClick={() => irALICITACIONES()}
