@@ -80,7 +80,7 @@ function App() {
               <Route exact path="/reparticion" element={<PrivateRouteAdmin><PanelReparticiones /></PrivateRouteAdmin>} />
               <Route exact path="/permisos-usuario" element={<PrivateRouteAdmin><PermisosTUsuario /></PrivateRouteAdmin>} />
               <Route exact path="/panel_usuario" element={<PrivateRouteAdmin><PanelUsuarios /></PrivateRouteAdmin>} />
-
+              <Route exact path="/validar_usuarios" element={<PrivateRouteAdmin key="validar_usuarios"><FormularioBusquedaUsuario /></PrivateRouteAdmin>} />
               {/* ADMINISTRADOR GENERAL */}
               
               {/* LICITACION */}
@@ -119,7 +119,6 @@ function App() {
 
               <Route exact path="/multas" element={<PrivateRoute key="multas"><Multas/></PrivateRoute>} />
 
-              <Route exact path="/validar_usuarios" element={<PrivateRoute key="validar_usuarios"><FormularioBusquedaUsuario /></PrivateRoute>} />
             </Routes>
           </ProviderEducacion>
         </Layout>
