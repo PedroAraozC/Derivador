@@ -21,20 +21,28 @@ const FormularioBusquedaUsuario = () => {
   const [cuil, setCuil] = useState('');
   const [email, setEmail] = useState('');
   const [usuario, setUsuario] = useState(null);
+  const [usuariosEncontrados, setUsuariosEncontrados] = useState([]);
   const [botonState, setBotonState] = useState(false)
 
-  // Mock: función que simula una búsqueda
   const buscarUsuario = async () => {
     setBotonState(true)
     try {
-      const {data} = await axios.get(`/usuarios/buscarUsuarioParaValidar?documento_persona=${cuil}&email_persona=${email}`);
-      console.log(data.usuarioSinContraseña);
-      setUsuario(data.usuarioSinContraseña)
+      const { data } = await axios.get(`/usuarios/buscarUsuarioParaValidar?documento_persona=${cuil}&email_persona=${email}`);
+
+      if (data.usuarios.length === 1) {
+        setUsuario(data.usuarios[0]);
+        setUsuariosEncontrados([]);
+      } else {
+        setUsuariosEncontrados(data.usuarios);
+        setUsuario(null);
+      }
+
     } catch (error) {
-    setUsuario(null)
-    console.error(error);
-    const mensaje = error.response?.data?.message || "Ocurrió un error inesperado";
-    alert(mensaje);
+      setUsuario(null)
+      setUsuariosEncontrados([]);
+      console.error(error);
+      const mensaje = error.response?.data?.message || "Ocurrió un error inesperado";
+      alert(mensaje);
     }
     setBotonState(false)
   };
@@ -127,6 +135,33 @@ const FormularioBusquedaUsuario = () => {
       >
         Buscar
       </Button>
+
+      {usuariosEncontrados.length > 1 && (
+        <Box mt={2}>
+          <Typography variant="subtitle1">Hay más de una coincidencia. Seleccione una:</Typography>
+          <FormControl fullWidth margin="normal">
+            <Select
+              value=""
+              displayEmpty
+              onChange={(e) => {
+                const seleccionado = usuariosEncontrados.find(
+                  (u) => u.id_persona === e.target.value
+                );
+                
+                setUsuario(seleccionado);
+                setUsuariosEncontrados([]);
+              }}
+            >
+              <MenuItem value="" disabled>Seleccione...</MenuItem>
+              {usuariosEncontrados.map((u) => (
+                <MenuItem key={u.is_persona} value={u.id_persona}>
+                  {u.apellido_persona}, {u.nombre_persona} - {u.documento_persona}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Box>
+      )}
 
       {usuario && (
         <Box component="form" noValidate autoComplete="off">
