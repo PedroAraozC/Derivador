@@ -21,6 +21,8 @@ import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import useStore from "../../Zustand/Zustand";
 import { Terminos } from "./Terminos";
+import { validarClave } from "../../utils/validarClave";
+import { patronEmail } from "../../utils/PatternEmail";
 
 export const Registro = () => {
   const [confirmarContraseña, setConfirmarContraseña] = useState("");
@@ -115,12 +117,6 @@ export const Registro = () => {
     return digitoVerificador === digitoEsperado;
   }
 
-  function validarClave(clave) {
-    // La expresión regular busca al menos un número (\d) y al menos una letra mayúscula ([A-Z])
-    const regex = /^(?=.*\d)(?=.*[A-Z])/;
-    return regex.test(clave);
-  }
-
   const obtenerDatosDB = async () => {
     try {
       const paisesDB = await cdigitalApi.get("/ciudadanoDigital/paises");
@@ -155,9 +151,6 @@ export const Registro = () => {
     const cuilValidado = validarCUIL(formData.documento_persona);
 
     // ! Verificar Email
-    // const patronEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const patronEmail =
-      /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.(com|net|org|gov|edu|info)$/i;
 
     if (!cuilValidado) {
       return Swal.fire({

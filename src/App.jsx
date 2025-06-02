@@ -34,6 +34,7 @@ import SuccessPage from "./components/BotonDePagoMacro/SuccessPage";
 import ErrorPage from "./components/BotonDePagoMacro/ErrorPage";
 import Montos from "./components/TribunalDeFaltas/Montos";
 import Multas from "./pages/Multas/Multas";
+import FormularioBusquedaUsuario from "./components/ValidarUsuarios/FormularioBusquedaUsuario";
 // import PrivateRouteAdminLicitaciones from "./routes/PrivateRouteAdminLicitaciones";
 // import PrivateRouteAdminPatrimonio from "./routes/PrivateRouteAdminPatrimonio";
 // import PrivateRouteEmpleadoJerarquico from "./routes/PrivateRouteEmpleadoJerarquico";
@@ -118,6 +119,7 @@ function App() {
 
               <Route exact path="/multas" element={<PrivateRoute key="multas"><Multas/></PrivateRoute>} />
 
+              <Route exact path="/validar_usuarios" element={<PrivateRoute key="validar_usuarios"><FormularioBusquedaUsuario /></PrivateRoute>} />
             </Routes>
           </ProviderEducacion>
         </Layout>

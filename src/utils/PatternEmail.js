@@ -1,0 +1,1 @@
+export const patronEmail = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.(com|net|org|gov|edu|info)$/i;
