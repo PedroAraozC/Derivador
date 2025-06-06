@@ -272,7 +272,7 @@ export default function ListaPrueba() {
                             ? () => irATURNOS()
                             : subItem.descripcion === "Licitaciones y Concursos"
                             ? () => irALICITACIONES()
-                            : subItem.descripcion === "Catastro"
+                            : subItem.descripcion === "CATASTRO"
                             ? () => irACATASTRO()
                             : subItem.descripcion === "Corralón"
                             ? () => irACorralon()
