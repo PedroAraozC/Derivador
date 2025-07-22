@@ -33,6 +33,7 @@ import HomeWorkOutlinedIcon from '@mui/icons-material/HomeWorkOutlined';
 import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
 import CarCrashIcon from '@mui/icons-material/CarCrash';
 import MapIcon from '@mui/icons-material/Map';
+import ApartmentIcon from '@mui/icons-material/Apartment';
 
 export default function ListaPrueba() {
   const { user, obtenerPermisos, permisos } = useStore();
@@ -92,8 +93,10 @@ export default function ListaPrueba() {
             return <CarCrashIcon />;
       case "MAPA MUNICIPAL":
             return <MapIcon />;
-            case "GESTION DE TURNOS":
+      case "GESTION DE TURNOS":
               return <Queue/>;
+      case "CATASTRO":
+              return <ApartmentIcon/>;
       default:
         return <AccountTreeIcon />;
     }
@@ -272,7 +275,7 @@ export default function ListaPrueba() {
                             ? () => irATURNOS()
                             : subItem.descripcion === "Licitaciones y Concursos"
                             ? () => irALICITACIONES()
-                            : subItem.descripcion === "CATASTRO"
+                            : subItem.descripcion === "Catastro"
                             ? () => irACATASTRO()
                             : subItem.descripcion === "Corralón"
                             ? () => irACorralon()
