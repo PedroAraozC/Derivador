@@ -222,6 +222,17 @@ export default function ListaPrueba() {
     window.open(url.toString(), "_blank");
   };
 
+  const irAAtencionCiudadana = () => {
+    const token = localStorage.getItem("token");
+    const url = new URL(
+      `https://ac.smt.gob.ar/?auth=${token}
+
+`
+    );
+    url.searchParams.append("auth", token);
+    window.open(url.toString(), "_blank");
+  };
+
   const list = () => (
     <Box
       sx={{ width: 250 }}
@@ -279,6 +290,8 @@ export default function ListaPrueba() {
                             ? () => irACATASTRO()
                             : subItem.descripcion === "Corralón"
                             ? () => irACorralon()
+                            : subItem.descripcion === "Atención Ciudadana"
+                            ? () => irAAtencionCiudadana()
                             : subItem.descripcion === "Mapa Municipal"
                             ? () => irAMAPA()
                             : subItem.descripcion === "gestion de turnos"

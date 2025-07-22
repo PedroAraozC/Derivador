@@ -6,15 +6,15 @@ import {
   // faMap,
 } from "@fortawesome/free-regular-svg-icons";
 import {
-  faBuildingCircleCheck,
+  // faBuildingCircleCheck,
   faCommentsDollar,
   faNotesMedical,
   faQrcode,
-  faCar,
-  faRoadCircleCheck,
+  // faCar,
+  // faRoadCircleCheck,
   faTrailer,
   faMosquito,
-  faPeopleGroup,
+  // faPeopleGroup,
   faUsers,
   faCat,
   faClipboardQuestion, faBus
@@ -24,7 +24,7 @@ import "./Home.css";
 import useStore from "../../Zustand/Zustand";
 import { cuilToDni } from "../../helpers/extraerDNI";
 import { useState } from "react";
-import ModalLibreDeuda from "../ModalLibreDeuda/ModalLibreDeuda";
+// import ModalLibreDeuda from "../ModalLibreDeuda/ModalLibreDeuda";
 import { useNavigate } from "react-router-dom";
 import ModalMultas from "../ModalMultas/ModalMultas";
 
@@ -36,7 +36,7 @@ const Home = () => {
   // };
 
   const [openModal, setOpenModal] = useState(false);
-  const [openModalLibreDeuda, setOpenModalLibreDeuda] = useState(false);
+  // const [openModalLibreDeuda, setOpenModalLibreDeuda] = useState(false);
 
   const irABOLETIN = () => {
     const token = localStorage.getItem("token");
@@ -79,14 +79,16 @@ const Home = () => {
 
     window.open(url.toString(), "_blank");
   };
-  const irACATASTRO = () => {
-    const token = localStorage.getItem("token");
-    const url = new URL(
-      `https://catastro.smt.gob.ar/?auth=${token}&destino=catastro`
-    );
-    url.searchParams.append("auth", token);
-    window.open(url.toString(), "_blank");
-  };
+
+  // const irACATASTRO = () => {
+  //   const token = localStorage.getItem("token");
+  //   const url = new URL(
+  //     `https://catastro.smt.gob.ar/?auth=${token}&destino=catastro`
+  //   );
+  //   url.searchParams.append("auth", token);
+  //   window.open(url.toString(), "_blank");
+  // };
+
   const irALICITACIONES = () => {
     const url = new URL(`https://licitaciones.smt.gob.ar`);
     window.open(url.toString(), "_blank");
@@ -137,13 +139,23 @@ const Home = () => {
     window.open(url.toString(), "_blank");
   };
 
-  const handleOpenModal = () => {
-    setOpenModal(true);
+  const irAPermisosVarios = () => {
+    // const token = localStorage.getItem("token");
+    const url = new URL(
+      `https://test.smt.gob.ar/`
+      // `https://ciudaddigital.smt.gob.ar/?destino=boletin`
+    );
+    // url.searchParams.append("auth", token);
+    window.open(url.toString(), "_blank");
   };
 
-  const handleOpenModalLibreDeuda = () => {
-    setOpenModalLibreDeuda(true);
-  };
+  // const handleOpenModal = () => {
+  //   setOpenModal(true);
+  // };
+
+  // const handleOpenModalLibreDeuda = () => {
+  //   setOpenModalLibreDeuda(true);
+  // };
 
   const navigate = useNavigate()
 
@@ -239,12 +251,12 @@ const Home = () => {
           Icono={<FontAwesomeIcon icon={faMosquito} />}
         />
 
-         <Card
+        <Card
           onClick={() => irACONSULTAPUBLICA()}
           titulo={"Consulta Pública"}
           descripcion={"Programa de participación ciudadana"}
           Icono={<FontAwesomeIcon icon={faUsers} />}
-        /> 
+        />
 
         {/* <Card
           onClick={() => handleOpenModalLibreDeuda()}
@@ -259,6 +271,14 @@ const Home = () => {
           descripcion={"Turnos y Requsitos"}
           Icono={<FontAwesomeIcon icon={faCat} />}
         />
+
+        {user.id_tusuario == 1  &&
+          <Card
+            onClick={() => irAPermisosVarios()}
+            titulo={"Permisos Varios"}
+            descripcion={"Gestión de permisos varios"}
+            Icono={<FontAwesomeIcon icon={faFolderOpen} />}
+          />}
 
         {/* {user.id_tusuario == 1 || user.id_tusuario == 24 &&
           <Card
