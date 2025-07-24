@@ -17,7 +17,8 @@ import {
   // faPeopleGroup,
   faUsers,
   faCat,
-  faClipboardQuestion, faBus
+  faClipboardQuestion, faBus,
+  faCashRegister
 } from "@fortawesome/free-solid-svg-icons";
 import Card from "../Card/Card";
 import "./Home.css";
@@ -104,6 +105,13 @@ const Home = () => {
     window.open(url.toString(), "_blank");
   };
 
+  const irADIM = () => {
+    const token = localStorage.getItem("token");
+    const url = new URL(
+      `https://dim360.complex2real.com/login-cidituc?token=${token}&cuit=${user.documento_persona}`
+    );
+    window.open(url.toString(), "_blank");
+  };
 
   const irACONSULTAPUBLICA = () => {
     const token = localStorage.getItem("token");
@@ -250,6 +258,13 @@ const Home = () => {
           descripcion={"Auto consulta dengue."}
           Icono={<FontAwesomeIcon icon={faMosquito} />}
         />
+
+        {/* <Card
+          onClick={() => irADIM()}
+          titulo={"DIM 360"}
+          descripcion={"Dirección de Ingresos Municipales"}
+          Icono={<FontAwesomeIcon icon={faCashRegister} />}
+        /> */}
 
         <Card
           onClick={() => irACONSULTAPUBLICA()}
