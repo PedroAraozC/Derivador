@@ -35,7 +35,7 @@ import {
 
 function Solicitud_permisos() {
   const navigate = useNavigate();
-  const directorio = import.meta.env.VITE_API_URL2;
+  const directorio = import.meta.env.VITE_APP_RUTA_BACK_PERMISOS;
   const [cuil, setCuil] = useState("");
   const [estadocuil, setEstadocuil] = useState(true);
   const [solicitante, setSolicitante] = useState("");
