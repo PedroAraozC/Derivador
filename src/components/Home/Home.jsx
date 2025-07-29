@@ -289,7 +289,7 @@ const Home = () => {
 
         {user.id_tusuario == 1  &&
           <Card
-            onClick={() => irAPermisosVarios()}
+            onClick={() => navigate('/via-publica')}
             titulo={"Permisos Varios"}
             descripcion={"Gestión de permisos varios"}
             Icono={<FontAwesomeIcon icon={faFolderOpen} />}
