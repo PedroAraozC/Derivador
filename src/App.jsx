@@ -35,6 +35,7 @@ import ErrorPage from "./components/BotonDePagoMacro/ErrorPage";
 import Montos from "./components/TribunalDeFaltas/Montos";
 import Multas from "./pages/Multas/Multas";
 import FormularioBusquedaUsuario from "./components/ValidarUsuarios/FormularioBusquedaUsuario";
+import Solicitud_permisos from "./pages/ViaPublica/Solicitud_permisos";
 // import PrivateRouteAdminLicitaciones from "./routes/PrivateRouteAdminLicitaciones";
 // import PrivateRouteAdminPatrimonio from "./routes/PrivateRouteAdminPatrimonio";
 // import PrivateRouteEmpleadoJerarquico from "./routes/PrivateRouteEmpleadoJerarquico";
@@ -118,6 +119,9 @@ function App() {
               <Route exact path="/montos" element={<PrivateRoute key="montos"><Montos/></PrivateRoute>} />
 
               <Route exact path="/multas" element={<PrivateRoute key="multas"><Multas/></PrivateRoute>} />
+              
+              {/* VIA PUBLICA */}
+              <Route exact path="/via-publica" element={<PrivateRoute key="via-publica"><Solicitud_permisos/></PrivateRoute>} />
 
             </Routes>
           </ProviderEducacion>
