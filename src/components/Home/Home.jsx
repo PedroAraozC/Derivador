@@ -17,8 +17,11 @@ import {
   // faPeopleGroup,
   faUsers,
   faCat,
-  faClipboardQuestion, faBus,
-  faCashRegister
+  faClipboardQuestion,
+  faBus,
+  faCashRegister,
+  faKitMedical,
+  faHandHoldingMedical,
 } from "@fortawesome/free-solid-svg-icons";
 import Card from "../Card/Card";
 import "./Home.css";
@@ -28,6 +31,7 @@ import { useState } from "react";
 // import ModalLibreDeuda from "../ModalLibreDeuda/ModalLibreDeuda";
 import { useNavigate } from "react-router-dom";
 import ModalMultas from "../ModalMultas/ModalMultas";
+import { FaFileMedicalAlt, FaMedkit } from "react-icons/fa";
 
 const Home = () => {
   const { user } = useStore();
@@ -113,7 +117,6 @@ const Home = () => {
     window.open(url.toString(), "_blank");
   };
 
-
   const irACONSULTAPUBLICA = () => {
     const token = localStorage.getItem("token");
     const url = new URL(
@@ -149,12 +152,41 @@ const Home = () => {
   };
 
   const irAPermisosVarios = () => {
-    // const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
     const url = new URL(
-      `https://test.smt.gob.ar/`
+      `https://permisos.smt.gob.ar/?auth=${token}`
       // `https://ciudaddigital.smt.gob.ar/?destino=boletin`
     );
     // url.searchParams.append("auth", token);
+    window.open(url.toString(), "_blank");
+  };
+  const irAAsitPubica = async () => {
+    const tokenAsitencia = "f64b5a5a3efd8ade6bbf6c0b595d08aeef25c5fa";
+    const documentoRecortado = user.documento_persona.toString().slice(2, -1);
+
+    const resp = await fetch(
+      "https://asistenciapublica.bymovi.com/api/v3/turnero/link_acceso_paciente",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Authorization": `${tokenAsitencia}`,
+        },
+        body: JSON.stringify({
+          nombre: `${user.nombre_persona} ${user.apellido_persona}`,
+          documento: documentoRecortado,
+          cuil: user.documento_persona,
+          telefono: user.telefono_persona,
+          email: user.email_persona,
+          fecha_nacimiento: user.fecha_nacimiento_persona
+            ? user.fecha_nacimiento_persona.toString().slice(0, 10)
+            : "",
+          genero: user.id_genero == 1 ? "F" : "M",
+        }),
+      }
+    );
+    const data = await resp.json();
+    const url = new URL(`${data.url}`);
     window.open(url.toString(), "_blank");
   };
 
@@ -166,7 +198,7 @@ const Home = () => {
   //   setOpenModalLibreDeuda(true);
   // };
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
     <div className="contPadreHome">
@@ -220,9 +252,7 @@ const Home = () => {
         <Card
           onClick={() => irATURNOS(1710)}
           titulo={"Tarjeta Ciudadana - SUBE"}
-          descripcion={
-            "Turnos para transferir saldo de ciudadana a SUBE"
-          }
+          descripcion={"Turnos para transferir saldo de ciudadana a SUBE"}
           Icono={<FontAwesomeIcon icon={faBus} />}
         />
         <Card
@@ -287,14 +317,21 @@ const Home = () => {
           descripcion={"Turnos y Requsitos"}
           Icono={<FontAwesomeIcon icon={faCat} />}
         />
+        <Card
+          onClick={() => irAAsitPubica()}
+          titulo={"Turnero Asistencia Pública"}
+          descripcion={"Turnos y Requsitos"}
+          Icono={<FontAwesomeIcon icon={faHandHoldingMedical} />}
+        />
 
-        {user.id_tusuario == 1  &&
+        {user.id_tusuario == 1 && (
           <Card
             onClick={() => irAPermisosVarios()}
             titulo={"Permisos Varios"}
             descripcion={"Gestión de permisos varios"}
             Icono={<FontAwesomeIcon icon={faFolderOpen} />}
-          />}
+          />
+        )}
 
         {/* {user.id_tusuario == 1 || user.id_tusuario == 24 &&
           <Card
