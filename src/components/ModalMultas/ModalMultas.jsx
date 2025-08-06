@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import axios from "../../config/axios";
 
-const ModalMultasDominio = ({ openDialog, setOpenModal, user }) => {
+const ModalMultas = ({ openDialog, setOpenModal, user, asunto, campo }) => {
   const [message, setMessage] = useState("");
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [error, setError] = useState("error");
@@ -30,7 +30,7 @@ const ModalMultasDominio = ({ openDialog, setOpenModal, user }) => {
           user,
           message: message.toUpperCase(),
           recipient: "tmfconsultas@smt.gob.ar",
-          subjet: "Consulta de Multas de Tránsito",
+          subjet: asunto,
         };
         const reslut = await axios.post(
           "https://estadisticas.smt.gob.ar:5000/usuarios/consultaMulta",
@@ -110,7 +110,7 @@ const ModalMultasDominio = ({ openDialog, setOpenModal, user }) => {
             <Input
               style={{ fontWeight: "bold" }}
               id="subject"
-              value="Consulta de Multas de Tránsito"
+              value={asunto}
               disabled
             />
           </FormControl>
@@ -126,13 +126,13 @@ const ModalMultasDominio = ({ openDialog, setOpenModal, user }) => {
                 paddingTop: "0px",
               }}
             >
-              Dominios/DNI
+              {campo}
             </InputLabel>
             <Input
               id="message"
               minRows={4}
-              placeholder="Escriba el dominio solicitado aquí..."
-              autoFocus
+              placeholder="Escriba la información solicitada aquí..."
+              // autoFocus
               resize={"none"}
               value={message}
               onChange={(e) => setMessage(e.target.value.toUpperCase())}
@@ -189,4 +189,4 @@ const ModalMultasDominio = ({ openDialog, setOpenModal, user }) => {
   );
 };
 
-export default ModalMultasDominio;
+export default ModalMultas;

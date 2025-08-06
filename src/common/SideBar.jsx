@@ -19,7 +19,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import QueryStatsIcon from "@mui/icons-material/QueryStats";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import "./SideBar.css";
-import { ExpandLess, ExpandMore } from "@mui/icons-material";
+import { ExpandLess, ExpandMore, Queue } from "@mui/icons-material";
 import useStore from "../Zustand/Zustand";
 import AccountBoxOutlinedIcon from '@mui/icons-material/AccountBoxOutlined';
 import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
@@ -33,6 +33,7 @@ import HomeWorkOutlinedIcon from '@mui/icons-material/HomeWorkOutlined';
 import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
 import CarCrashIcon from '@mui/icons-material/CarCrash';
 import MapIcon from '@mui/icons-material/Map';
+import ApartmentIcon from '@mui/icons-material/Apartment';
 
 export default function ListaPrueba() {
   const { user, obtenerPermisos, permisos } = useStore();
@@ -92,6 +93,10 @@ export default function ListaPrueba() {
             return <CarCrashIcon />;
       case "MAPA MUNICIPAL":
             return <MapIcon />;
+      case "GESTION DE TURNOS":
+              return <Queue/>;
+      case "CATASTRO":
+              return <ApartmentIcon/>;
       default:
         return <AccountTreeIcon />;
     }
@@ -206,6 +211,28 @@ export default function ListaPrueba() {
     window.open(url.toString(), "_blank");
   };
 
+  const irAGESTIONTURNOS = () => {
+    const token = localStorage.getItem("token");
+    const url = new URL(
+      `https://turnos.smt.gob.ar/?auth=${token}#/admin
+
+`
+    );
+    url.searchParams.append("auth", token);
+    window.open(url.toString(), "_blank");
+  };
+
+  const irAAtencionCiudadana = () => {
+    const token = localStorage.getItem("token");
+    const url = new URL(
+      `https://ac.smt.gob.ar/?auth=${token}
+
+`
+    );
+    url.searchParams.append("auth", token);
+    window.open(url.toString(), "_blank");
+  };
+
   const list = () => (
     <Box
       sx={{ width: 250 }}
@@ -263,8 +290,12 @@ export default function ListaPrueba() {
                             ? () => irACATASTRO()
                             : subItem.descripcion === "Corralón"
                             ? () => irACorralon()
+                            : subItem.descripcion === "Atención Ciudadana"
+                            ? () => irAAtencionCiudadana()
                             : subItem.descripcion === "Mapa Municipal"
                             ? () => irAMAPA()
+                            : subItem.descripcion === "gestion de turnos"
+                            ? () => irAGESTIONTURNOS()
                             : () => redirigir(`/${subItem.label}`)
                         }
                       />

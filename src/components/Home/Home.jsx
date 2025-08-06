@@ -6,22 +6,29 @@ import {
   // faMap,
 } from "@fortawesome/free-regular-svg-icons";
 import {
-  faBuildingCircleCheck,
+  // faBuildingCircleCheck,
   faCommentsDollar,
   faNotesMedical,
   faQrcode,
-  faCar,
-  faRoadCircleCheck,
+  // faCar,
+  // faRoadCircleCheck,
   faTrailer,
   faMosquito,
+  // faPeopleGroup,
+  faUsers,
+  faCat,
+  faClipboardQuestion, faBus,
+  faCashRegister
 } from "@fortawesome/free-solid-svg-icons";
 import Card from "../Card/Card";
 import "./Home.css";
 import useStore from "../../Zustand/Zustand";
 import { cuilToDni } from "../../helpers/extraerDNI";
 import { useState } from "react";
-import ModalMultasDominio from "../ModalMultasDominio/ModalMultasDominio";
-import ModalLibreDeuda from "../ModalLibreDeuda/ModalLibreDeuda";
+// import ModalLibreDeuda from "../ModalLibreDeuda/ModalLibreDeuda";
+import { useNavigate } from "react-router-dom";
+import ModalMultas from "../ModalMultas/ModalMultas";
+
 const Home = () => {
   const { user } = useStore();
   // console.log(user);
@@ -30,7 +37,7 @@ const Home = () => {
   // };
 
   const [openModal, setOpenModal] = useState(false);
-  const [openModalLibreDeuda, setOpenModalLibreDeuda] = useState(false);
+  // const [openModalLibreDeuda, setOpenModalLibreDeuda] = useState(false);
 
   const irABOLETIN = () => {
     const token = localStorage.getItem("token");
@@ -48,6 +55,14 @@ const Home = () => {
       `https://turnos.smt.gob.ar/?auth=${token}&destino=turnero&rep=${reparticion}`
     );
     url.searchParams.append("auth", token);
+    window.open(url.toString(), "_blank");
+  };
+
+  const irADIM = () => {
+    const token = localStorage.getItem("token");
+    const url = new URL(
+      `https://dim360.complex2real.com/login-cidituc?token=${token}&cuit=${user.documento_persona}`
+    );
     window.open(url.toString(), "_blank");
   };
 
@@ -73,14 +88,16 @@ const Home = () => {
 
     window.open(url.toString(), "_blank");
   };
-  const irACATASTRO = () => {
-    const token = localStorage.getItem("token");
-    const url = new URL(
-      `https://catastro.smt.gob.ar/?auth=${token}&destino=catastro`
-    );
-    url.searchParams.append("auth", token);
-    window.open(url.toString(), "_blank");
-  };
+
+  // const irACATASTRO = () => {
+  //   const token = localStorage.getItem("token");
+  //   const url = new URL(
+  //     `https://catastro.smt.gob.ar/?auth=${token}&destino=catastro`
+  //   );
+  //   url.searchParams.append("auth", token);
+  //   window.open(url.toString(), "_blank");
+  // };
+
   const irALICITACIONES = () => {
     const url = new URL(`https://licitaciones.smt.gob.ar`);
     window.open(url.toString(), "_blank");
@@ -93,6 +110,16 @@ const Home = () => {
       )}`
     );
 
+    window.open(url.toString(), "_blank");
+  };
+
+
+  const irACONSULTAPUBLICA = () => {
+    const token = localStorage.getItem("token");
+    const url = new URL(
+      `http://consultapublica.smt.gob.ar/ext/auth/cidituc/?auth=${token}`
+    );
+    // url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
   };
 
@@ -121,13 +148,25 @@ const Home = () => {
     window.open(url.toString(), "_blank");
   };
 
-  const handleOpenModal = () => {
-    setOpenModal(true);
+  const irAPermisosVarios = () => {
+    // const token = localStorage.getItem("token");
+    const url = new URL(
+      `https://test.smt.gob.ar/`
+      // `https://ciudaddigital.smt.gob.ar/?destino=boletin`
+    );
+    // url.searchParams.append("auth", token);
+    window.open(url.toString(), "_blank");
   };
 
-  const handleOpenModalLibreDeuda = () => {
-    setOpenModalLibreDeuda(true);
-  };
+  // const handleOpenModal = () => {
+  //   setOpenModal(true);
+  // };
+
+  // const handleOpenModalLibreDeuda = () => {
+  //   setOpenModalLibreDeuda(true);
+  // };
+
+  const navigate = useNavigate()
 
   return (
     <div className="contPadreHome">
@@ -146,12 +185,12 @@ const Home = () => {
           descripcion={"Consulta del Carnet Digital"}
           Icono={<FontAwesomeIcon icon={faNotesMedical} />}
         />
-        <Card
+        {/* <Card
           onClick={() => irACATASTRO()}
           titulo={"Dirección de Catastro y Edificación"}
           descripcion={"Sistema de consulta y autogestión"}
           Icono={<FontAwesomeIcon icon={faBuildingCircleCheck} />}
-        />
+        /> */}
         <Card
           onClick={() => irACREDENCIAL()}
           titulo={"Credencial"}
@@ -179,6 +218,14 @@ const Home = () => {
           Icono={<FontAwesomeIcon icon={faIdCard} />}
         />
         <Card
+          onClick={() => irATURNOS(1710)}
+          titulo={"Tarjeta Ciudadana - SUBE"}
+          descripcion={
+            "Turnos para transferir saldo de ciudadana a SUBE"
+          }
+          Icono={<FontAwesomeIcon icon={faBus} />}
+        />
+        <Card
           onClick={() => irALICITACIONES()}
           titulo={"Licitaciones"}
           descripcion={
@@ -186,11 +233,18 @@ const Home = () => {
           }
           Icono={<FontAwesomeIcon icon={faCommentsDollar} />}
         />
-        <Card
+        {/* <Card
           onClick={() => handleOpenModal()}
           titulo={"Multas de Tránsito"}
           descripcion={"Consulta de Multas por Dominio."}
           Icono={<FontAwesomeIcon icon={faCar} />}
+        /> */}
+
+        <Card
+          onClick={() => navigate("/multas")}
+          titulo={"Multas"}
+          descripcion={"Consulta de Multas."}
+          Icono={<FontAwesomeIcon icon={faClipboardQuestion} />}
         />
 
         <Card
@@ -206,6 +260,20 @@ const Home = () => {
           Icono={<FontAwesomeIcon icon={faMosquito} />}
         />
 
+        <Card
+          onClick={() => irADIM()}
+          titulo={"DIM 360"}
+          descripcion={"Dirección de Ingresos Municipales"}
+          Icono={<FontAwesomeIcon icon={faCashRegister} />}
+        />
+
+        <Card
+          onClick={() => irACONSULTAPUBLICA()}
+          titulo={"Consulta Pública"}
+          descripcion={"Programa de participación ciudadana"}
+          Icono={<FontAwesomeIcon icon={faUsers} />}
+        />
+
         {/* <Card
           onClick={() => handleOpenModalLibreDeuda()}
           titulo={"Libre Deuda Catastro"}
@@ -213,12 +281,20 @@ const Home = () => {
           Icono={<FontAwesomeIcon icon={faRoadCircleCheck} />}
         /> */}
 
-        {/* <Card
+        <Card
           onClick={() => irACEMA()}
           titulo={"Servicios de Población Animal"}
           descripcion={"Turnos y Requsitos"}
           Icono={<FontAwesomeIcon icon={faCat} />}
-        /> */}
+        />
+
+        {user.id_tusuario == 1  &&
+          <Card
+            onClick={() => irAPermisosVarios()}
+            titulo={"Permisos Varios"}
+            descripcion={"Gestión de permisos varios"}
+            Icono={<FontAwesomeIcon icon={faFolderOpen} />}
+          />}
 
         {/* {user.id_tusuario == 1 || user.id_tusuario == 24 &&
           <Card
@@ -230,7 +306,7 @@ const Home = () => {
       } */}
       </div>
 
-      <ModalMultasDominio
+      <ModalMultas
         openDialog={openModal}
         setOpenModal={setOpenModal}
         user={user}

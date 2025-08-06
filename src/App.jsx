@@ -33,6 +33,8 @@ import PanelGestion from "./components/PanelGestion/PanelGestion";
 import SuccessPage from "./components/BotonDePagoMacro/SuccessPage";
 import ErrorPage from "./components/BotonDePagoMacro/ErrorPage";
 import Montos from "./components/TribunalDeFaltas/Montos";
+import Multas from "./pages/Multas/Multas";
+import FormularioBusquedaUsuario from "./components/ValidarUsuarios/FormularioBusquedaUsuario";
 // import PrivateRouteAdminLicitaciones from "./routes/PrivateRouteAdminLicitaciones";
 // import PrivateRouteAdminPatrimonio from "./routes/PrivateRouteAdminPatrimonio";
 // import PrivateRouteEmpleadoJerarquico from "./routes/PrivateRouteEmpleadoJerarquico";
@@ -42,6 +44,7 @@ function App() {
   const url = new URL(window.location.href);
   const logout = url.searchParams.get("logout");
   const token = url.searchParams.get("auth");
+  
 
   if(localStorage.getItem("token")){
     localStorage.setItem("token", token != null ? token : localStorage.getItem("token"));
@@ -77,7 +80,7 @@ function App() {
               <Route exact path="/reparticion" element={<PrivateRouteAdmin><PanelReparticiones /></PrivateRouteAdmin>} />
               <Route exact path="/permisos-usuario" element={<PrivateRouteAdmin><PermisosTUsuario /></PrivateRouteAdmin>} />
               <Route exact path="/panel_usuario" element={<PrivateRouteAdmin><PanelUsuarios /></PrivateRouteAdmin>} />
-
+              <Route exact path="/validar_usuarios" element={<PrivateRouteAdmin key="validar_usuarios"><FormularioBusquedaUsuario /></PrivateRouteAdmin>} />
               {/* ADMINISTRADOR GENERAL */}
               
               {/* LICITACION */}
@@ -113,6 +116,8 @@ function App() {
               <Route exact path="/LibreDeudaPagoExitoso" element={<PrivateRoute key="success"><SuccessPage/></PrivateRoute>} />
               <Route exact path="/LibreDeudaPagoRechazado" element={<PrivateRoute key="errorPago"><ErrorPage/></PrivateRoute>} />
               <Route exact path="/montos" element={<PrivateRoute key="montos"><Montos/></PrivateRoute>} />
+
+              <Route exact path="/multas" element={<PrivateRoute key="multas"><Multas/></PrivateRoute>} />
 
             </Routes>
           </ProviderEducacion>

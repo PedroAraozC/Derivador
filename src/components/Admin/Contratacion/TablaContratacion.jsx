@@ -30,7 +30,7 @@ const TablaContratacion = () => {
     }, []);
 
     useEffect(() => {
-        setPaginatedArray(contrataciones.slice(page * rowsPerPage, (page + 1) * rowsPerPage));
+        setPaginatedArray(contrataciones?.slice(page * rowsPerPage, (page + 1) * rowsPerPage));
     }, [contrataciones, page, rowsPerPage]);
 
     const handleCheckboxChange = (contratacionId) => {
@@ -120,7 +120,7 @@ const TablaContratacion = () => {
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25, { label: "Todas", value: -1 }]}
                         component="div"
-                        count={contrataciones.length}
+                        count={contrataciones?.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}

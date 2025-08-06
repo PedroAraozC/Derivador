@@ -1,5 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable react/prop-types */
 import { useState, useEffect, useContext, useRef } from "react";
 import {
   Modal,
@@ -29,9 +27,11 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
   const [imagenCarrousel2, setImagenCarrousel2] = useState(null);
   const [imagenCarrousel3, setImagenCarrousel3] = useState(null);
   const [archivo, setArchivo] = useState(null);
+  const [archivos, setArchivos] = useState([]);
   const fileInputRef = useRef(null);
   const [buttonDis, setButtonDis] = useState(false);
   const [errores, setErrores] = useState({});
+  
   const {
     obtenerCategoria,
     categoria,
@@ -69,7 +69,6 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
 
   let nombreViejo = patrimonio?.nombre_patrimonio;
 
-  // Función para validar el formulario antes de enviarlo
   const validarFormulario = () => {
     const nuevosErrores = {};
     const regex =
@@ -107,12 +106,11 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
 
     setErrores(nuevosErrores);
 
-    // Si hay errores, muestra el Snackbar
     if (Object.keys(nuevosErrores).length > 0) {
       setSnackbarOpen(true);
     }
 
-    return Object.keys(nuevosErrores).length === 0; // Retorna true si no hay errores
+    return Object.keys(nuevosErrores).length === 0;
   };
 
   const handleInputChange = (event) => {
@@ -139,7 +137,6 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
       try {
         console.log('ID Patrimonio:', patri.id_patrimonio);
   
-        // Validar ID del patrimonio
         if (!patri.id_patrimonio) {
           console.error('El valor de id_patrimonio no está definido');
           setSnackbarMensaje("El ID del patrimonio no está definido.");
@@ -148,7 +145,6 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
           return;
         }
   
-        // Crear FormData para subir imágenes
         const formData = new FormData();
         formData.append('id_patrimonio', patri.id_patrimonio); 
         formData.append('nombre_patrimonio', patri.nombre_patrimonio);
@@ -159,7 +155,7 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
         if (imagenCarrousel3) formData.append('imagen_carrousel_3', imagenCarrousel3);
   
         if (nombreViejo !== patri.nombre_patrimonio) {
-          // Si el nombre ha cambiado, renombrar carpeta y archivos
+  
           try {
               const responseRenombrar = await axiosPatri.post('/admin/renombrarPatrimonio', {
                   id_patrimonio: patri.id_patrimonio,
@@ -176,21 +172,51 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
           }
       }
       
-        // Enviar imágenes
-        try {
-          const responseImagenes = await axiosPatri.post('/admin/editarPatrimonioImagenes', formData, {
-            headers: { "Content-Type": "multipart/form-data" }
-          });
-          console.log('Respuesta del servidor (imágenes):', responseImagenes.data);
-        } catch (error) {
-          console.error('Error al enviar imágenes:', error);
-          setSnackbarMensaje("Error al enviar imágenes.");
-          setSnackbarOpen(true);
-          setButtonDis(false);
-          throw error;
+      if ([archivo, imagenCarrousel1, imagenCarrousel2, imagenCarrousel3].some(img => img !== null)) {
+          const formData = new FormData();
+          formData.append('nombre_patrimonio', patri.nombre_patrimonio);
+          formData.append('id_patrimonio', patri.id_patrimonio);
+      
+          if (archivo) {
+            const extension = archivo.name.split('.').pop();
+            formData.append('imagen_card', archivo, `${patri.nombre_patrimonio}_card.${extension}`);
+          }
+          if (imagenCarrousel1) {
+            const extension = imagenCarrousel1.name.split('.').pop();
+            formData.append('imagen_carrousel_1', imagenCarrousel1, `${patri.nombre_patrimonio}_1.${extension}`);
+          }
+          if (imagenCarrousel2) {
+            const extension = imagenCarrousel2.name.split('.').pop();
+            formData.append('imagen_carrousel_2', imagenCarrousel2, `${patri.nombre_patrimonio}_2.${extension}`);
+          }
+          if (imagenCarrousel3) {
+            const extension = imagenCarrousel3.name.split('.').pop();
+            formData.append('imagen_carrousel_3', imagenCarrousel3, `${patri.nombre_patrimonio}_3.${extension}`);
+          }
+      
+          try {
+            const responseImagenes = await axiosPatri.post('/admin/editarPatrimonioImagenes', formData, {
+              headers: { 
+                'Content-Type': 'multipart/form-data'
+              }
+            });
+      
+            console.log('Respuesta del servidor (imágenes):', responseImagenes.data);
+      
+            window.dispatchEvent(new CustomEvent('imagenesActualizadas', {
+              detail: {
+                nombrePatrimonio: patri.nombre_patrimonio
+              }
+            }));
+      
+          } catch (error) {
+            console.error('Error al enviar imágenes:', error);
+            setSnackbarMensaje("Error al enviar imágenes: " + error.message);
+            setSnackbarOpen(true);
+            throw error;
+          }
         }
   
-        // Verificar y agregar archivo si existe
         if (archivo) {
           console.log("Archivo cargado:", archivo);
           formData.append("archivo", archivo);
@@ -198,19 +224,21 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
           console.log("Archivo está undefined");
         }
   
-        // Enviar datos del patrimonio
         const response = await axiosPatri.post('/admin/editarPatrimonio', formularioValues);
         console.log('Respuesta del servidor (datos del patrimonio):', response.data);
   
-        setSnackbarMensaje("Patrimonio editado.");
+        setSnackbarMensaje("Patrimonio editado correctamente.");
         setSnackbarOpen(true);
+        
         setTimeout(() => {
           handleClose();
           setSnackbarOpen(false);
           setButtonDis(false);
+          actualizador();
         }, 1500);
-        actualizador();
+  
         return [response.data];
+  
       } catch (error) {
         console.error("Error al editar el patrimonio:", error);
         setSnackbarMensaje("Error al editar el patrimonio.");
@@ -225,11 +253,6 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
     }
   };
   
-
-  // const handleFileInputChange = (event) => {
-  //   const file = event.target.files[0];
-  //   setArchivo(file);
-  // };
 
   const handleCarrouselFileChange = (event, setter) => {
     const file = event.target.files[0];
@@ -285,12 +308,14 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
     return null;
   }
 
+  
+
   const style = {
     position: "absolute",
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: isMobile ? "90%" : "80%", // Ajusta el ancho según el dispositivo
+    width: isMobile ? "90%" : "80%",
     height: "90%",
     bgcolor: "background.paper",
     borderRadius: "10px",
