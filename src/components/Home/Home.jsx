@@ -148,12 +148,12 @@ const Home = () => {
   };
 
   const irAPermisosVarios = () => {
-    // const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
     const url = new URL(
-      `https://test.smt.gob.ar/`
+      `http://permisos.smt.gob.ar/`
       // `https://ciudaddigital.smt.gob.ar/?destino=boletin`
     );
-    // url.searchParams.append("auth", token);
+    url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
   };
 
@@ -287,13 +287,13 @@ const Home = () => {
           Icono={<FontAwesomeIcon icon={faCat} />}
         />
 
-        {user.id_tusuario == 1  &&
           <Card
-            onClick={() => navigate('/via-publica')}
+            // onClick={() => navigate('/via-publica')}
+            onClick={() => irAPermisosVarios()}
             titulo={"Permisos Varios"}
-            descripcion={"Gestión de permisos varios"}
+            descripcion={"Gestión de permisos para el uso de la vía pública"}
             Icono={<FontAwesomeIcon icon={faFolderOpen} />}
-          />}
+          />
 
         {/* {user.id_tusuario == 1 || user.id_tusuario == 24 &&
           <Card
