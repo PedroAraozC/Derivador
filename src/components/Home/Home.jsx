@@ -21,9 +21,7 @@ import {
   faBus,
   faCashRegister,
   faKitMedical,
-  faHandHoldingMedical,
-  faClipboardQuestion, faBus,
-  faCashRegister
+  faHandHoldingMedical
 } from "@fortawesome/free-solid-svg-icons";
 import Card from "../Card/Card";
 import "./Home.css";
