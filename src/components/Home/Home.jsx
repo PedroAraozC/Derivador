@@ -22,6 +22,8 @@ import {
   faCashRegister,
   faKitMedical,
   faHandHoldingMedical,
+  faClipboardQuestion, faBus,
+  faCashRegister
 } from "@fortawesome/free-solid-svg-icons";
 import Card from "../Card/Card";
 import "./Home.css";
@@ -157,7 +159,7 @@ const Home = () => {
       `https://permisos.smt.gob.ar/?auth=${token}`
       // `https://ciudaddigital.smt.gob.ar/?destino=boletin`
     );
-    // url.searchParams.append("auth", token);
+    url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
   };
   const irAAsitPubica = async () => {
@@ -290,12 +292,12 @@ const Home = () => {
           Icono={<FontAwesomeIcon icon={faMosquito} />}
         />
 
-        <Card
+        {/* <Card
           onClick={() => irADIM()}
           titulo={"DIM 360"}
           descripcion={"Dirección de Ingresos Municipales"}
           Icono={<FontAwesomeIcon icon={faCashRegister} />}
-        />
+        /> */}
 
         <Card
           onClick={() => irACONSULTAPUBLICA()}
@@ -324,14 +326,13 @@ const Home = () => {
           Icono={<FontAwesomeIcon icon={faHandHoldingMedical} />}
         />
 
-        {user.id_tusuario == 1 && (
           <Card
+            // onClick={() => navigate('/via-publica')}
             onClick={() => irAPermisosVarios()}
             titulo={"Permisos Varios"}
-            descripcion={"Gestión de permisos varios"}
+            descripcion={"Gestión de permisos para el uso de la vía pública"}
             Icono={<FontAwesomeIcon icon={faFolderOpen} />}
           />
-        )}
 
         {/* {user.id_tusuario == 1 || user.id_tusuario == 24 &&
           <Card

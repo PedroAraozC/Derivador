@@ -218,6 +218,15 @@ export default function ListaPrueba() {
     window.open(url.toString(), "_blank");
   };
 
+  const irAProgramasSociales = () => {
+    const token = localStorage.getItem("token");
+    const url = new URL(
+      `https://programassociales.smt.gob.ar/?auth=${token}`
+    );
+    url.searchParams.append("auth", token);
+    window.open(url.toString(), "_blank");
+  };
+
   const irAGESTIONTURNOS = () => {
     const token = localStorage.getItem("token");
     const url = new URL(
@@ -317,6 +326,8 @@ export default function ListaPrueba() {
                             ? () => irAAtencionCiudadana()
                             : subItem.descripcion === "Mapa Municipal"
                             ? () => irAMAPA()
+                            : subItem.descripcion === "Programas Sociales"
+                            ? () => irAProgramasSociales()
                             : subItem.descripcion === "gestion de turnos"
                             ? () => irAGESTIONTURNOS()
                             : () => redirigir(`/${subItem.label}`)
