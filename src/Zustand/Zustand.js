@@ -158,8 +158,8 @@ const useStore = create((set, get) => ({
     set({ authenticated: false });
     localStorage.removeItem("token");
     localStorage.removeItem("saveChanges");
-    // const url = new URL(`https://ciudaddigital.smt.gob.ar/`);
-    const url = new URL(`http://181.105.6.205:88/`);
+    const url = new URL(`https://ciudaddigital.smt.gob.ar/`);
+    //const url = new URL(`http://181.105.6.205:88/`);
     url.searchParams.append("logout", true);
     window.open(url.toString(), "_self");
   },
