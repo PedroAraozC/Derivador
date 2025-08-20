@@ -29,6 +29,7 @@ export default function NavBar() {
     setAnchorEl(null);
 
     const url = new URL(`https://perfil.smt.gob.ar/`);
+    //const url = new URL(`http://localhost:5175/`);
     url.searchParams.append("auth", localStorage.getItem("token"));
     url.searchParams.append("origin", "cidituc");
     window.location.href = url.toString();
@@ -84,7 +85,7 @@ export default function NavBar() {
                       open={Boolean(anchorEl)}
                       onClose={handleClose}
                     >
-                      {/* <MenuItem onClick={goToPerfil}>Mi perfil</MenuItem> */}
+                      <MenuItem onClick={goToPerfil}>Mi perfil</MenuItem>
                       <MenuItem onClick={handleLogout}>Cerrar Sesión</MenuItem>
                     </Menu>
                   </div>
