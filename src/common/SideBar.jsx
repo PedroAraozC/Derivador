@@ -202,6 +202,13 @@ export default function ListaPrueba() {
     window.open(url.toString(), "_blank");
   };
 
+    const irAEventos= () => {
+    const token = localStorage.getItem("token");
+    const url = new URL(`http://181.105.6.205:97/`);
+    url.searchParams.append("auth", token);
+    window.open(url.toString(), "_blank");
+  };
+
   const irAMAPA = () => {
     const token = localStorage.getItem("token");
     const url = new URL(
@@ -260,6 +267,22 @@ export default function ListaPrueba() {
           </ListItemIcon>
           <ListItemText primary="INICIO" />
         </ListItemButton>
+
+        {/* EVENTOS SOLO PARA ADMIN */}
+        {
+          user?.id_tusuario === 1 &&
+        <ListItemButton
+          onClick={() => irAEventos()}
+          component="a"
+          className="w-100"
+        >
+          <ListItemIcon>
+            <AccountTreeIcon />
+          </ListItemIcon>
+          <ListItemText primary="EVENTOS" />
+        </ListItemButton>
+        }
+
         {/* Construye cada elemento del menú */}
         {menuItems.map((item, index) => (
           <div key={index} className="d-flex justify-content-between w-100 flex-column">
