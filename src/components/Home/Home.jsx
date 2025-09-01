@@ -62,14 +62,6 @@ const Home = () => {
     window.open(url.toString(), "_blank");
   };
 
-  const irADIM = () => {
-    const token = localStorage.getItem("token");
-    const url = new URL(
-      `https://dim360.complex2real.com/login-cidituc?token=${token}&cuit=${user.documento_persona}`
-    );
-    window.open(url.toString(), "_blank");
-  };
-
   const irACEMA = () => {
     const token = localStorage.getItem("token");
     const url = new URL(
@@ -114,6 +106,14 @@ const Home = () => {
       )}`
     );
 
+    window.open(url.toString(), "_blank");
+  };
+
+  const irADIM = () => {
+    const token = localStorage.getItem("token");
+    const url = new URL(
+      `https://dim360.complex2real.com/login-cidituc?token=${token}&cuit=${user.documento_persona}`
+    );
     window.open(url.toString(), "_blank");
   };
 
@@ -290,6 +290,13 @@ const Home = () => {
           Icono={<FontAwesomeIcon icon={faMosquito} />}
         />
 
+        {/* <Card
+          onClick={() => irADIM()}
+          titulo={"DIM 360"}
+          descripcion={"Dirección de Ingresos Municipales"}
+          Icono={<FontAwesomeIcon icon={faCashRegister} />}
+        /> */}
+
         <Card
           onClick={() => irADIM()}
           titulo={"DIM 360"}
@@ -326,7 +333,7 @@ const Home = () => {
 
         {user.id_tusuario == 1 && (
           <Card
-            onClick={() => irAPermisosVarios()}
+            onClick={() => navigate("/via-publica")}
             titulo={"Permisos Varios"}
             descripcion={"Gestión de permisos varios"}
             Icono={<FontAwesomeIcon icon={faFolderOpen} />}
