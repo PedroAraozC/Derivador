@@ -11,15 +11,28 @@ import {
   FormControl,
   FormHelperText,
   TextareaAutosize,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import "./GasATuCasa.css";
 import axios from "../../config/axios";
 import useStore from "../../Zustand/Zustand";
+import { ArrowBack } from "@mui/icons-material";
+import { Link, useNavigate } from "react-router-dom"; // 👈 agregar useNavigate
 
 const GasATuCasa = () => {
   const { user } = useStore();
+  const [button, setButton] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMensaje, setSnackbarMensaje] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("info");
+  const navigate = useNavigate(); // 👈 inicializar navigate
+  const [formDisabled, setFormDisabled] = useState(false);
 
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
   const [form, setForm] = useState({
     nombre: "",
     apellido: "",
@@ -96,8 +109,8 @@ const GasATuCasa = () => {
   const obtenerLocalidades = async () => {
     try {
       const response = await axios.get("/gas/localidades");
-      const data = await response.json();
-      setLocalidades(data.localidades || []);
+      const data = await response.data.localidades;
+      setLocalidades(data || []);
     } catch (error) {
       console.error("Error al obtener las localidades:", error);
     }
@@ -106,8 +119,8 @@ const GasATuCasa = () => {
   const obtenerBarrios = async () => {
     try {
       const response = await axios.get("/gas/barrios");
-      const data = await response.json();
-      setBarrios(data.barrios || []);
+      const data = await response.data.barrios;
+      setBarrios(data || []);
     } catch (error) {
       console.error("Error al obtener los barrios:", error);
     }
@@ -141,14 +154,49 @@ const GasATuCasa = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validateForm()) return;
+    setButton(true);
+    try {
+      e.preventDefault();
+      if (!validateForm()) return;
 
-    const result = await axios.post("/gas/altaPersonaGas", {
-      form,
-    });
-    console.log("Formulario válido:", form);
-    alert("¡Formulario enviado!");
+      await axios.post("/gas/altaPersonaGas", { form });
+
+      setSnackbarMensaje("¡Formulario enviado con éxito!");
+      setSnackbarSeverity("success");
+      setSnackbarOpen(true);
+
+      setForm({
+        nombre: "",
+        apellido: "",
+        dni: "",
+        telefono: "",
+        correo: "",
+        entreCalles: "",
+        barrio: "",
+        localidad: "",
+        redGasVereda: "",
+        cantidadPersonas: "",
+        comentarios: "",
+        calle: "",
+        numero_sec: "",
+        piso_mz: "",
+        depto_casa: "",
+        codigo_postal: "",
+      });
+
+      setFormDisabled(true); // 👈 bloquea campos
+
+      setTimeout(() => {
+        navigate("/home");
+      }, 3000);
+    } catch (error) {
+      console.error("Error al enviar el formulario:", error);
+      setSnackbarMensaje("Error al enviar el formulario. Intente nuevamente.");
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
+    } finally {
+      setButton(false);
+    }
   };
 
   useEffect(() => {
@@ -179,6 +227,12 @@ const GasATuCasa = () => {
 
   return (
     <div className="gasATuCasa">
+      <Link
+        style={{ textDecoration: "none", padding: 15, width: "fit-content" }}
+        to="/home"
+      >
+        <ArrowBack /> VOLVER
+      </Link>
       <div className="maintenance-container">
         <div className="maintenance-content">
           <Box
@@ -200,11 +254,13 @@ const GasATuCasa = () => {
                 El proyecto <em>"EL GAS LLEGA A TU CASA"</em>
               </strong>{" "}
               tiene como objetivo facilitar la instalación de gas natural dentro
-              de los domicilios (<strong>intralote</strong>). Para poder acceder
-              al servicio, la red de distribución de gas debe pasar por la
-              vereda de la vivienda. La intervención incluye la instalación
-              interna completa y la colocación del medidor.
+              de los domicilios (<strong>intralote</strong>).
+              <br />
+              Para poder acceder al servicio, la red de distribución de gas debe
+              pasar por la vereda de la vivienda. La intervención incluye la
+              instalación interna completa y la colocación del medidor.
             </p>
+
             <div
               style={{
                 display: "flex",
@@ -221,6 +277,7 @@ const GasATuCasa = () => {
                 sx={{ width: "100%" }}
                 error={!!errors.nombre}
                 helperText={errors.nombre}
+                disabled={formDisabled}
               />
               <TextField
                 label="Apellido"
@@ -231,6 +288,7 @@ const GasATuCasa = () => {
                 sx={{ width: "100%" }}
                 error={!!errors.apellido}
                 helperText={errors.apellido}
+                disabled={formDisabled}
               />
             </div>
             <TextField
@@ -246,6 +304,7 @@ const GasATuCasa = () => {
               }}
               error={!!errors.dni}
               helperText={errors.dni}
+              disabled={formDisabled}
             />
             <TextField
               label="Teléfono"
@@ -260,6 +319,7 @@ const GasATuCasa = () => {
               required
               error={!!errors.telefono}
               helperText={errors.telefono}
+              disabled={formDisabled}
             />
             <TextField
               label="Correo electrónico"
@@ -269,6 +329,7 @@ const GasATuCasa = () => {
               required
               error={!!errors.correo}
               helperText={errors.correo}
+              disabled={formDisabled}
             />
             <TextField
               select
@@ -280,6 +341,7 @@ const GasATuCasa = () => {
               error={!!errors.localidad}
               helperText={errors.localidad}
               sx={{ textAlign: "left" }}
+              disabled={formDisabled}
             >
               {localidades?.map((loc) => (
                 <MenuItem key={loc.id_localidad} value={loc.id_localidad}>
@@ -298,6 +360,7 @@ const GasATuCasa = () => {
               error={!!errors.barrio}
               helperText={errors.barrio}
               sx={{ textAlign: "left" }}
+              disabled={formDisabled}
             >
               {barrios?.map((bar) => (
                 <MenuItem key={bar.id_barrio} value={bar.id_barrio}>
@@ -313,6 +376,7 @@ const GasATuCasa = () => {
               onChange={handleChange}
               required
               error={!!errors.calle}
+              disabled={formDisabled}
               helperText={errors.calle}
             />
 
@@ -332,6 +396,7 @@ const GasATuCasa = () => {
                 sx={{ width: "100%" }}
                 error={!!errors.numero_sec}
                 helperText={errors.numero_sec}
+                disabled={formDisabled}
               />
 
               <TextField
@@ -340,6 +405,7 @@ const GasATuCasa = () => {
                 value={form.piso_mz}
                 onChange={handleChange}
                 sx={{ width: "100%" }}
+                disabled={formDisabled}
               />
             </div>
 
@@ -356,6 +422,7 @@ const GasATuCasa = () => {
                 value={form.depto_casa}
                 onChange={handleChange}
                 sx={{ width: "100%" }}
+                disabled={formDisabled}
               />
 
               <TextField
@@ -364,16 +431,18 @@ const GasATuCasa = () => {
                 value={form.codigo_postal}
                 onChange={handleChange}
                 sx={{ width: "100%" }}
+                disabled={formDisabled}
               />
             </div>
             <TextField
-              label="Entre que calles se encuentra - Obsercvaciones"
+              label="Entre que calles se encuentra - Observaciones"
               name="entreCalles"
               value={form.entreCalles}
               onChange={handleChange}
               required
               error={!!errors.entreCalles}
               helperText={errors.entreCalles}
+              disabled={formDisabled}
             />
             <Paper
               sx={{
@@ -395,18 +464,30 @@ const GasATuCasa = () => {
                   required
                   error={!!errors.redGasVereda}
                   helperText={errors.redGasVereda}
+                  disabled={formDisabled}
                 >
-                  <FormControlLabel value="Sí" control={<Radio />} label="Sí" />
-                  <FormControlLabel value="No" control={<Radio />} label="No" />
+                  <FormControlLabel
+                    value="Sí"
+                    control={<Radio />}
+                    label="Sí"
+                    disabled={formDisabled}
+                  />
+                  <FormControlLabel
+                    value="No"
+                    control={<Radio />}
+                    label="No"
+                    disabled={formDisabled}
+                  />
                   <FormControlLabel
                     value="No sé"
                     control={<Radio />}
                     label="No sé"
+                    disabled={formDisabled}
                   />
                 </RadioGroup>
-                {errors.redGasVereda && (
+                {/* {errors.redGasVereda && (
                   <FormHelperText>{errors.redGasVereda}</FormHelperText>
-                )}
+                )} */}
               </FormControl>
             </Paper>
             <TextField
@@ -419,6 +500,7 @@ const GasATuCasa = () => {
               inputProps={{ min: 1 }}
               error={!!errors.cantidadPersonas}
               helperText={errors.cantidadPersonas}
+              disabled={formDisabled}
             />
             <TextareaAutosize
               minRows={4}
@@ -435,18 +517,40 @@ const GasATuCasa = () => {
                 color: "rgba(0, 0, 0, 0.87)",
                 border: "1px solid #c4c4c4",
                 outline: "none",
-                resize:"none"
+                resize: "none",
               }}
               onFocus={(e) => (e.target.style.border = "2px solid #1976d2")}
               onBlur={(e) => (e.target.style.border = "1px solid #c4c4c4")}
+              disabled={formDisabled}
             />
 
-            <Button type="submit" variant="contained" color="primary">
+            <Button
+              type="submit"
+              variant="contained"
+              disabled={button}
+              color="primary"
+              className="submit-button"
+            >
               Enviar
             </Button>
           </Box>
         </div>
       </div>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={600000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity={snackbarSeverity}
+          elevation={6}
+          variant="filled"
+        >
+          {snackbarMensaje}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
