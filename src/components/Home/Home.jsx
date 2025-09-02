@@ -21,7 +21,8 @@ import {
   faBus,
   faCashRegister,
   faKitMedical,
-  faHandHoldingMedical
+  faHandHoldingMedical,
+  faHouseFire,
 } from "@fortawesome/free-solid-svg-icons";
 import Card from "../Card/Card";
 import "./Home.css";
@@ -59,14 +60,6 @@ const Home = () => {
       `https://turnos.smt.gob.ar/?auth=${token}&destino=turnero&rep=${reparticion}`
     );
     url.searchParams.append("auth", token);
-    window.open(url.toString(), "_blank");
-  };
-
-  const irADIM = () => {
-    const token = localStorage.getItem("token");
-    const url = new URL(
-      `https://dim360.complex2real.com/login-cidituc?token=${token}&cuit=${user.documento_persona}`
-    );
     window.open(url.toString(), "_blank");
   };
 
@@ -114,6 +107,14 @@ const Home = () => {
       )}`
     );
 
+    window.open(url.toString(), "_blank");
+  };
+
+  const irADIM = () => {
+    const token = localStorage.getItem("token");
+    const url = new URL(
+      `https://dim360.complex2real.com/login-cidituc?token=${token}&cuit=${user.documento_persona}`
+    );
     window.open(url.toString(), "_blank");
   };
 
@@ -230,6 +231,12 @@ const Home = () => {
           Icono={<FontAwesomeIcon icon={faQrcode} />}
         />
         <Card
+          onClick={() => navigate("/elGasATuCasa")}
+          titulo={"El Gas Llega a tu Casa"}
+          descripcion={"Acceda al servicio de gas natural domiciliario"}
+          Icono={<FontAwesomeIcon icon={faHouseFire} />}
+        />
+        <Card
           onClick={() => irAEXPEDIENTES()}
           titulo={"Expedientes"}
           descripcion={"Ingreso a sistema de expedientes"}
@@ -324,13 +331,13 @@ const Home = () => {
           Icono={<FontAwesomeIcon icon={faHandHoldingMedical} />}
         />
 
-          <Card
-            // onClick={() => navigate('/via-publica')}
-            onClick={() => irAPermisosVarios()}
-            titulo={"Permisos Varios"}
-            descripcion={"Gestión de permisos para el uso de la vía pública"}
-            Icono={<FontAwesomeIcon icon={faFolderOpen} />}
-          />
+        <Card
+          // onClick={() => navigate('/via-publica')}
+          onClick={() => irAPermisosVarios()}
+          titulo={"Permisos Varios"}
+          descripcion={"Gestión de permisos para el uso de la vía pública"}
+          Icono={<FontAwesomeIcon icon={faFolderOpen} />}
+        />
 
         {/* {user.id_tusuario == 1 || user.id_tusuario == 24 &&
           <Card
