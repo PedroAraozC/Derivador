@@ -1,0 +1,78 @@
+.gasATuCasa {
+  --primary-color: #0066ff;
+  --secondary-color: #818cf8;
+  --text-color: #1f2937;
+  --light-text: #6b7280;
+  --bg-color: #f9fafb;
+  --card-bg: #ffffff;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+.gasATuCasa .maintenance-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #f9fafb 0%, #e5e7eb 100%);
+}
+
+.gasATuCasa .maintenance-content {
+  max-width: 800px;
+  width: 100%;
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 10px 25px var(--shadow-color);
+  padding: 3rem;
+  text-align: center;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.gasATuCasa h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.gasATuCasa p {
+  font-size: 1.1rem;
+  color: var(--light-text);
+  margin-bottom: 1rem;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ... lo mismo para button, inputs, etc */
+.gasATuCasa button {
+  padding: 1rem;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.gasATuCasa button:hover {
+  background-color: #0228ff;
+}

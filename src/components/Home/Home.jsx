@@ -22,6 +22,7 @@ import {
   faCashRegister,
   faKitMedical,
   faHandHoldingMedical,
+  faHouseFire,
 } from "@fortawesome/free-solid-svg-icons";
 import Card from "../Card/Card";
 import "./Home.css";
@@ -157,7 +158,7 @@ const Home = () => {
       `https://permisos.smt.gob.ar/?auth=${token}`
       // `https://ciudaddigital.smt.gob.ar/?destino=boletin`
     );
-    // url.searchParams.append("auth", token);
+    url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
   };
   const irAAsitPubica = async () => {
@@ -230,6 +231,12 @@ const Home = () => {
           Icono={<FontAwesomeIcon icon={faQrcode} />}
         />
         <Card
+          onClick={() => navigate("/elGasATuCasa")}
+          titulo={"El Gas Llega a tu Casa"}
+          descripcion={"Acceda al servicio de gas natural domiciliario"}
+          Icono={<FontAwesomeIcon icon={faHouseFire} />}
+        />
+        <Card
           onClick={() => irAEXPEDIENTES()}
           titulo={"Expedientes"}
           descripcion={"Ingreso a sistema de expedientes"}
@@ -298,13 +305,6 @@ const Home = () => {
         /> */}
 
         <Card
-          onClick={() => irADIM()}
-          titulo={"DIM 360"}
-          descripcion={"Dirección de Ingresos Municipales"}
-          Icono={<FontAwesomeIcon icon={faCashRegister} />}
-        />
-
-        <Card
           onClick={() => irACONSULTAPUBLICA()}
           titulo={"Consulta Pública"}
           descripcion={"Programa de participación ciudadana"}
@@ -331,14 +331,13 @@ const Home = () => {
           Icono={<FontAwesomeIcon icon={faHandHoldingMedical} />}
         />
 
-        {user.id_tusuario == 1 && (
-          <Card
-            onClick={() => navigate("/via-publica")}
-            titulo={"Permisos Varios"}
-            descripcion={"Gestión de permisos varios"}
-            Icono={<FontAwesomeIcon icon={faFolderOpen} />}
-          />
-        )}
+        <Card
+          // onClick={() => navigate('/via-publica')}
+          onClick={() => irAPermisosVarios()}
+          titulo={"Permisos Varios"}
+          descripcion={"Gestión de permisos para el uso de la vía pública"}
+          Icono={<FontAwesomeIcon icon={faFolderOpen} />}
+        />
 
         {/* {user.id_tusuario == 1 || user.id_tusuario == 24 &&
           <Card
