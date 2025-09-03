@@ -9,7 +9,6 @@ import {
   Paper,
   MenuItem,
   FormControl,
-  FormHelperText,
   TextareaAutosize,
   Snackbar,
   Alert,
@@ -20,6 +19,8 @@ import axios from "../../config/axios";
 import useStore from "../../Zustand/Zustand";
 import { ArrowBack } from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom"; // 👈 agregar useNavigate
+import Swal from "sweetalert2";
+import { useRef } from "react";
 
 const GasATuCasa = () => {
   const { user } = useStore();
@@ -29,6 +30,25 @@ const GasATuCasa = () => {
   const [snackbarSeverity, setSnackbarSeverity] = useState("info");
   const navigate = useNavigate(); // 👈 inicializar navigate
   const [formDisabled, setFormDisabled] = useState(false);
+
+  const inputRefs = {
+    redGasVereda: useRef(null),
+    localidad: useRef(null),
+    barrio: useRef(null),
+    nombre: useRef(null),
+    apellido: useRef(null),
+    dni: useRef(null),
+    telefono: useRef(null),
+    correo: useRef(null),
+    calle: useRef(null),
+    numero_sec: useRef(null),
+    piso_mz: useRef(null),
+    depto_casa: useRef(null),
+    codigo_postal: useRef(null),
+    entreCalles: useRef(null),
+    cantidadPersonas: useRef(null),
+    comentarios: useRef(null),
+  };
 
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
@@ -51,7 +71,6 @@ const GasATuCasa = () => {
     depto_casa: "",
     codigo_postal: "",
   });
-
   const [errors, setErrors] = useState([]);
 
   const [localidades, setLocalidades] = useState([]);
@@ -61,6 +80,23 @@ const GasATuCasa = () => {
     // Validación básica de correo
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(value);
+  };
+
+  const existeUsuario = async () => {
+    try {
+      if (!user || !user.documento_persona) {
+        console.warn("No hay DNI definido");
+        return false;
+      }
+      const response = await axios.get(
+        `/gas/existeUsuarioGas/${user.documento_persona}`
+      );
+      console.log(response.data.existe);
+      return response.data.existe;
+    } catch (error) {
+      console.error("Error al verificar el usuario:", error);
+      return false;
+    }
   };
 
   const requiredFields = [
@@ -77,31 +113,102 @@ const GasATuCasa = () => {
     "redGasVereda",
     "cantidadPersonas",
   ];
-  const validateForm = () => {
+
+  const validateForm = async () => {
     let newErrors = {};
 
+    if (form.redGasVereda === "No") {
+      newErrors.redGasVereda = "La red de gas debe pasar por su vereda";
+      // Mostrar SweetAlert cuando intenta enviar con "No" seleccionado
+      await Swal.fire({
+        icon: "warning",
+        title: "Atención",
+        text: "Si la red de gas no pasa por su vereda, en este momento no podemos realizar la conexión.",
+        // confirmButtonText: "Entendido",
+        showConfirmButton: false,
+        confirmButtonColor: "#1976d2",
+      });
+
+      setTimeout(() => {
+        if (inputRefs.redGasVereda?.current) {
+          inputRefs.redGasVereda.current.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+        }
+      }, 100);
+
+      setErrors(newErrors);
+      return false;
+    }
+
+    if (!isFieldDisabled("localidad") && form.localidad !== 2) {
+      newErrors.localidad = "Debe ser ciudadano de San Miguel de Tucumán";
+
+      await Swal.fire({
+        icon: "warning",
+        title: "Atención",
+        text: "El beneficio solo está disponible para ciudadanos de Capital, San Miguel de Tucumán.",
+        showConfirmButton: false,
+        confirmButtonColor: "#1976d2",
+      });
+
+      // Hacer scroll hacia el campo localidad después del modal
+      setTimeout(() => {
+        if (inputRefs.localidad?.current) {
+          // Para TextField con select, necesitamos hacer scroll al contenedor del input
+          const inputElement =
+            inputRefs.localidad.current.querySelector("input") ||
+            inputRefs.localidad.current.querySelector('[role="button"]') ||
+            inputRefs.localidad.current;
+
+          inputElement.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+
+          // También hacer focus para resaltar el campo
+          inputElement.focus();
+        }
+      }, 500); // Aumentar el tiempo para asegurar que el modal se cierre
+
+      setErrors(newErrors);
+      return false;
+    }
+
     requiredFields.forEach((field) => {
-      if (!form[field] || form[field].toString().trim() === "") {
-        newErrors[field] = "Campo requerido";
+      if (!isFieldDisabled(field)) {
+        if (!form[field] || form[field].toString().trim() === "") {
+          newErrors[field] = "Campo requerido";
+        }
       }
     });
 
     // Validaciones específicas
-    if (form.correo && !validateCorreo(form.correo)) {
+    if (
+      !isFieldDisabled("correo") &&
+      form.correo &&
+      !validateCorreo(form.correo)
+    ) {
       newErrors.correo = "Correo inválido";
     }
-    if (!/^\d+$/.test(form.dni)) {
+    if (!isFieldDisabled("dni") && !/^\d+$/.test(form.dni)) {
       newErrors.dni = "El CUIL debe contener solo números";
     }
-    if (form.dni.length > 12) {
+    if (!isFieldDisabled("dni") && form.dni.length > 12) {
       newErrors.dni = "Máximo 12 dígitos";
     }
-    if (form.telefono && form.telefono.length > 12) {
+    if (
+      !isFieldDisabled("telefono") &&
+      form.telefono &&
+      form.telefono.length > 12
+    ) {
       newErrors.telefono = "Máximo 12 caracteres";
     }
-    if (!/^\d+$/.test(form.telefono)) {
+    if (!isFieldDisabled("telefono") && !/^\d+$/.test(form.telefono)) {
       newErrors.telefono = "El Teléfono debe contener solo números";
     }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -129,35 +236,127 @@ const GasATuCasa = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
+    // Evitar actualizar errores de campos deshabilitados
+    if (
+      isFieldDisabled(name) &&
+      name !== "localidad" &&
+      name !== "redGasVereda"
+    ) {
+      return;
+    }
+
     if (name === "dni" || name === "telefono") {
       const soloNumeros = value.replace(/\D/g, "");
       if (soloNumeros.length <= 12) {
         setForm({ ...form, [name]: soloNumeros });
+        setErrors({ ...errors, [name]: "" }); // ✅ limpiar error si es válido
       }
       return;
     }
 
+    if (name === "localidad") {
+      if (parseInt(value) !== 2) {
+        setFormDisabled(true);
+      } else {
+        setFormDisabled(false);
+      }
+    }
+
     setForm({ ...form, [name]: value });
 
-    if (name === "correo") {
-      setErrors({
-        ...errors,
-        correo: validateCorreo(value) ? "" : "Correo inválido",
-      });
+    if (errors[name]) {
+      if (name === "correo" && validateCorreo(value)) {
+        setErrors({ ...errors, correo: "" });
+      } else if (value.trim() !== "") {
+        setErrors({ ...errors, [name]: "" });
+      }
     }
   };
 
-  const handleRadioChange = (e) => {
+  const isFieldDisabled = (field) => {
+    if (formDisabled) return true;
+    if (
+      [
+        "calle",
+        "numero_sec",
+        "piso_mz",
+        "depto_casa",
+        "codigo_postal",
+        "entreCalles",
+        "cantidadPersonas",
+      ].includes(field) &&
+      form.localidad != 2
+    ) {
+      return true;
+    }
+    if (["nombre", "apellido", "dni", "telefono", "correo"].includes(field)) {
+      return true; // siempre bloqueados si ya vienen del usuario
+    }
+    return false;
+  };
+
+  const handleRadioChange = async (e) => {
     const { name, value } = e.target;
+
+    if (
+      isFieldDisabled(name) &&
+      name !== "redGasVereda" &&
+      name !== "localidad"
+    ) {
+      return;
+    }
+    if (name === "redGasVereda") {
+      if (value !== "Sí" && value !== "No sé") {
+        await Swal.fire({
+          icon: "warning",
+          title: "Atención",
+          text: "Si la red de gas no pasa por su vereda, en este momento no podemos realizar la conexión.",
+          // confirmButton: "Entendido",
+          showConfirmButton: false,
+          confirmButtonColor: "#1976d2",
+        });
+        if (inputRefs.redGasVereda?.current) {
+          inputRefs.redGasVereda.current.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+        }
+
+        setFormDisabled(true);
+      } else {
+        setFormDisabled(false);
+      }
+    }
+
     setForm({ ...form, [name]: value });
-    setErrors({ ...errors, [name]: "" });
+    setErrors({ ...errors, [name]: "" }); // ✅ limpiar error al seleccionar
   };
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
     setButton(true);
+
     try {
-      e.preventDefault();
-      if (!validateForm()) return;
+      const isValid = await validateForm();
+      if (!isValid) {
+        // Encontrar el primer campo con error
+        const firstErrorField = Object.keys(errors)[0];
+
+        if (firstErrorField && inputRefs[firstErrorField]?.current) {
+          // Retrasar el scroll hasta que el modal se cierre
+          setTimeout(() => {
+            inputRefs[firstErrorField].current.scrollIntoView({
+              behavior: "smooth",
+              block: "center",
+            });
+            // También hacer focus si es necesario
+            inputRefs[firstErrorField].current.focus();
+          }, 500); // Ajustar el tiempo según sea necesario
+        }
+
+        setButton(false);
+        return;
+      }
 
       await axios.post("/gas/altaPersonaGas", { form });
 
@@ -194,31 +393,52 @@ const GasATuCasa = () => {
       setSnackbarMensaje("Error al enviar el formulario. Intente nuevamente.");
       setSnackbarSeverity("error");
       setSnackbarOpen(true);
-    } finally {
       setButton(false);
     }
   };
 
   useEffect(() => {
-    if (user) {
-      setForm((prev) => ({
-        ...prev,
-        nombre: user.nombre_persona || "",
-        apellido: user.apellido_persona || "",
-        dni: user.documento_persona || "",
-        telefono: user.telefono_persona || "",
-        correo: user.email_persona || "",
-        calle: user.domicilio_persona || "",
-        numero_sec: user.numero_sec || "",
-        piso_mz: user.piso_mz || "",
-        depto_casa: user.depto_casa || "",
-        codigo_postal: user.codigo_postal || "",
-        entreCalles: user?.entreCalles || "",
-        barrio: user.id_barrio || "",
-        localidad: user.id_localidad || "",
-      }));
-    }
-  }, [user]);
+    const verificarUsuario = async () => {
+      if (user) {
+        const existe = await existeUsuario();
+        if (existe) {
+          setFormDisabled(true);
+
+          Swal.fire({
+            icon: "info",
+            title: "Ya estás registrado",
+            text: "Tus datos ya se encuentran cargados en el sistema.",
+            showConfirmButton: false,
+            timer: 2500, // se cierra solo en 2.5s
+          });
+
+          setTimeout(() => {
+            navigate("/home");
+          }, 2600); // redirige apenas cierra el alert
+        } else {
+          // si no existe, cargo los datos del usuario en el formulario
+          setForm((prev) => ({
+            ...prev,
+            nombre: user.nombre_persona || "",
+            apellido: user.apellido_persona || "",
+            dni: user.documento_persona || "",
+            telefono: user.telefono_persona || "",
+            correo: user.email_persona || "",
+            calle: user.domicilio_persona || "",
+            numero_sec: user.numero_sec || "",
+            piso_mz: user.piso_mz || "",
+            depto_casa: user.depto_casa || "",
+            codigo_postal: user.codigo_postal || "",
+            entreCalles: user?.entreCalles || "",
+            barrio: user.id_barrio || "",
+            localidad: user.id_localidad || "",
+          }));
+        }
+      }
+    };
+
+    verificarUsuario();
+  }, [user, navigate]);
 
   useEffect(() => {
     obtenerLocalidades();
@@ -228,7 +448,11 @@ const GasATuCasa = () => {
   return (
     <div className="gasATuCasa">
       <Link
-        style={{ textDecoration: "none", padding: 15, width: "fit-content" }}
+        style={{
+          textDecoration: "none",
+          padding: 15,
+          width: "fit-content",
+        }}
         to="/home"
       >
         <ArrowBack /> VOLVER
@@ -260,77 +484,51 @@ const GasATuCasa = () => {
               pasar por la vereda de la vivienda. La intervención incluye la
               instalación interna completa y la colocación del medidor.
             </p>
-
-            <div
-              style={{
-                display: "flex",
-                gap: "5px",
-                justifyContent: "space-between",
+            <Paper
+              sx={{
+                p: 2,
+                pt: 0,
+                borderRadius: 1,
+                border: "0px solid #0000003d",
+                boxShadow: "none",
               }}
             >
-              <TextField
-                label="Nombre"
-                name="nombre"
-                value={form.nombre}
-                onChange={handleChange}
-                required
-                sx={{ width: "100%" }}
-                error={!!errors.nombre}
-                helperText={errors.nombre}
-                disabled={formDisabled}
-              />
-              <TextField
-                label="Apellido"
-                name="apellido"
-                value={form.apellido}
-                onChange={handleChange}
-                required
-                sx={{ width: "100%" }}
-                error={!!errors.apellido}
-                helperText={errors.apellido}
-                disabled={formDisabled}
-              />
-            </div>
-            <TextField
-              label="CUIL"
-              name="dni"
-              value={form.dni}
-              onChange={handleChange}
-              required
-              inputProps={{
-                maxLength: 12,
-                inputMode: "numeric",
-                pattern: "[0-9]*",
-              }}
-              error={!!errors.dni}
-              helperText={errors.dni}
-              disabled={formDisabled}
-            />
-            <TextField
-              label="Teléfono"
-              name="telefono"
-              inputProps={{
-                maxLength: 12,
-                inputMode: "numeric",
-                pattern: "[0-9]*",
-              }}
-              value={form.telefono}
-              onChange={handleChange}
-              required
-              error={!!errors.telefono}
-              helperText={errors.telefono}
-              disabled={formDisabled}
-            />
-            <TextField
-              label="Correo electrónico"
-              name="correo"
-              value={form.correo}
-              onChange={handleChange}
-              required
-              error={!!errors.correo}
-              helperText={errors.correo}
-              disabled={formDisabled}
-            />
+              <FormControl error={!!errors.redGasVereda} sx={{ width: "100%" }}>
+                <FormLabel sx={{ mb: 1 }}>
+                  ¿La red de gas pasa por su vereda?{" "}
+                  <strong style={{ fontWeight: "800" }}>
+                    Requisito excluyente
+                  </strong>
+                </FormLabel>
+                <RadioGroup
+                  name="redGasVereda"
+                  value={form.redGasVereda}
+                  onChange={handleRadioChange}
+                  sx={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    width: "100%",
+                    gap: 2,
+                  }}
+                  required
+                  error={!formDisabled && !!errors.redGasVereda}
+                  ref={inputRefs.redGasVereda}
+                  // //helperText={errors.redGasVereda}
+                >
+                  <FormControlLabel value="Sí" control={<Radio />} label="Sí" />
+                  <FormControlLabel value="No" control={<Radio />} label="No" />
+                  <FormControlLabel
+                    value="No sé"
+                    control={<Radio />}
+                    label="No sé"
+                  />
+                </RadioGroup>
+                {/* {errors.redGasVereda && (
+                  <Form//helperText>{errors.redGasVereda}</Form//helperText>
+                )} */}
+              </FormControl>
+            </Paper>
+
             <TextField
               select
               label="Localidad"
@@ -338,10 +536,10 @@ const GasATuCasa = () => {
               value={form.localidad}
               onChange={handleChange}
               required
-              error={!!errors.localidad}
-              helperText={errors.localidad}
+              error={!formDisabled && !!errors.localidad}
+              inputRef={inputRefs.localidad}
+              // //helperText={errors.localidad}
               sx={{ textAlign: "left" }}
-              disabled={formDisabled}
             >
               {localidades?.map((loc) => (
                 <MenuItem key={loc.id_localidad} value={loc.id_localidad}>
@@ -357,10 +555,11 @@ const GasATuCasa = () => {
               value={form.barrio}
               onChange={handleChange}
               required
-              error={!!errors.barrio}
-              helperText={errors.barrio}
+              error={!formDisabled && !!errors.barrio}
+              // //helperText={errors.barrio}
               sx={{ textAlign: "left" }}
               disabled={formDisabled}
+              inputRef={inputRefs.barrio}
             >
               {barrios?.map((bar) => (
                 <MenuItem key={bar.id_barrio} value={bar.id_barrio}>
@@ -368,6 +567,81 @@ const GasATuCasa = () => {
                 </MenuItem>
               ))}
             </TextField>
+            <div
+              style={{
+                display: "flex",
+                gap: "5px",
+                justifyContent: "space-between",
+              }}
+            >
+              <TextField
+                label="Nombre"
+                name="nombre"
+                value={form.nombre}
+                onChange={handleChange}
+                required
+                sx={{ width: "100%" }}
+                error={!formDisabled && !!errors.nombre}
+                //helperText={errors.nombre}
+                disabled={true}
+                inputRef={inputRefs.nombre}
+              />
+              <TextField
+                label="Apellido"
+                name="apellido"
+                value={form.apellido}
+                onChange={handleChange}
+                required
+                sx={{ width: "100%" }}
+                error={!formDisabled && !!errors.apellido}
+                //helperText={errors.apellido}
+                disabled={true}
+                inputRef={inputRefs.apellido}
+              />
+            </div>
+            <TextField
+              label="CUIL"
+              name="dni"
+              value={form.dni}
+              onChange={handleChange}
+              required
+              inputProps={{
+                maxLength: 12,
+                inputMode: "numeric",
+                pattern: "[0-9]*",
+              }}
+              error={!formDisabled && !!errors.dni}
+              //helperText={errors.dni}
+              disabled={true}
+              inputRef={inputRefs.dni}
+            />
+            <TextField
+              label="Teléfono"
+              name="telefono"
+              inputProps={{
+                maxLength: 12,
+                inputMode: "numeric",
+                pattern: "[0-9]*",
+              }}
+              value={form.telefono}
+              onChange={handleChange}
+              required
+              error={!formDisabled && !!errors.telefono}
+              //helperText={errors.telefono}
+              disabled={true}
+              inputRef={inputRefs.telefono}
+            />
+            <TextField
+              label="Correo electrónico"
+              name="correo"
+              value={form.correo}
+              onChange={handleChange}
+              required
+              error={!formDisabled && !!errors.correo}
+              //helperText={errors.correo}
+              disabled={true}
+              inputRef={inputRefs.correo}
+            />
 
             <TextField
               label="Calle"
@@ -375,9 +649,10 @@ const GasATuCasa = () => {
               value={form.calle}
               onChange={handleChange}
               required
-              error={!!errors.calle}
-              disabled={formDisabled}
-              helperText={errors.calle}
+              error={!formDisabled && !!errors.calle}
+              //helperText={errors.calle}
+              disabled={formDisabled || form.localidad != 2}
+              inputRef={inputRefs.calle}
             />
 
             <div
@@ -394,9 +669,10 @@ const GasATuCasa = () => {
                 onChange={handleChange}
                 required
                 sx={{ width: "100%" }}
-                error={!!errors.numero_sec}
-                helperText={errors.numero_sec}
-                disabled={formDisabled}
+                error={!formDisabled && !!errors.numero_sec}
+                //helperText={errors.numero_sec}
+                disabled={formDisabled || form.localidad != 2}
+                inputRef={inputRefs.numero_sec}
               />
 
               <TextField
@@ -405,7 +681,8 @@ const GasATuCasa = () => {
                 value={form.piso_mz}
                 onChange={handleChange}
                 sx={{ width: "100%" }}
-                disabled={formDisabled}
+                disabled={formDisabled || form.localidad != 2}
+                inputRef={inputRefs.piso_mz}
               />
             </div>
 
@@ -422,7 +699,8 @@ const GasATuCasa = () => {
                 value={form.depto_casa}
                 onChange={handleChange}
                 sx={{ width: "100%" }}
-                disabled={formDisabled}
+                disabled={formDisabled || form.localidad != 2}
+                inputRef={inputRefs.depto_casa}
               />
 
               <TextField
@@ -431,7 +709,8 @@ const GasATuCasa = () => {
                 value={form.codigo_postal}
                 onChange={handleChange}
                 sx={{ width: "100%" }}
-                disabled={formDisabled}
+                disabled={formDisabled || form.localidad != 2}
+                inputRef={inputRefs.codigo_postal}
               />
             </div>
             <TextField
@@ -440,56 +719,12 @@ const GasATuCasa = () => {
               value={form.entreCalles}
               onChange={handleChange}
               required
-              error={!!errors.entreCalles}
-              helperText={errors.entreCalles}
-              disabled={formDisabled}
+              error={!formDisabled && !!errors.entreCalles}
+              //helperText={errors.entreCalles}
+              disabled={formDisabled || form.localidad != 2}
+              inputRef={inputRefs.entreCalles}
             />
-            <Paper
-              sx={{
-                p: 2,
-                borderRadius: 1,
-                border: "1px solid #0000003d",
-                boxShadow: "none",
-              }}
-            >
-              <FormControl error={!!errors.redGasVereda} sx={{ width: "100%" }}>
-                <FormLabel sx={{ mb: 1 }}>
-                  ¿La red de gas pasa por su vereda? (requisito excluyente)
-                </FormLabel>
-                <RadioGroup
-                  name="redGasVereda"
-                  value={form.redGasVereda}
-                  onChange={handleRadioChange}
-                  sx={{ flexDirection: "column" }}
-                  required
-                  error={!!errors.redGasVereda}
-                  helperText={errors.redGasVereda}
-                  disabled={formDisabled}
-                >
-                  <FormControlLabel
-                    value="Sí"
-                    control={<Radio />}
-                    label="Sí"
-                    disabled={formDisabled}
-                  />
-                  <FormControlLabel
-                    value="No"
-                    control={<Radio />}
-                    label="No"
-                    disabled={formDisabled}
-                  />
-                  <FormControlLabel
-                    value="No sé"
-                    control={<Radio />}
-                    label="No sé"
-                    disabled={formDisabled}
-                  />
-                </RadioGroup>
-                {/* {errors.redGasVereda && (
-                  <FormHelperText>{errors.redGasVereda}</FormHelperText>
-                )} */}
-              </FormControl>
-            </Paper>
+
             <TextField
               label="¿Cuántas personas viven en su domicilio?"
               name="cantidadPersonas"
@@ -498,9 +733,10 @@ const GasATuCasa = () => {
               required
               type="number"
               inputProps={{ min: 1 }}
-              error={!!errors.cantidadPersonas}
-              helperText={errors.cantidadPersonas}
-              disabled={formDisabled}
+              error={!formDisabled && !!errors.cantidadPersonas}
+              //helperText={errors.cantidadPersonas}
+              disabled={formDisabled || form.localidad != 2}
+              inputRef={inputRefs.cantidadPersonas}
             />
             <TextareaAutosize
               minRows={4}
@@ -521,7 +757,8 @@ const GasATuCasa = () => {
               }}
               onFocus={(e) => (e.target.style.border = "2px solid #1976d2")}
               onBlur={(e) => (e.target.style.border = "1px solid #c4c4c4")}
-              disabled={formDisabled}
+              disabled={formDisabled || form.localidad != 2}
+              inputRef={inputRefs.comentarios}
             />
 
             <Button
