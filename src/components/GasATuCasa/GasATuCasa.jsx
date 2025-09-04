@@ -117,15 +117,16 @@ const GasATuCasa = () => {
   const validateForm = async () => {
     let newErrors = {};
 
-    if (form.redGasVereda === "No") {
-      newErrors.redGasVereda = "La red de gas debe pasar por su vereda";
-      // Mostrar SweetAlert cuando intenta enviar con "No" seleccionado
+    // 1. Validar que redGasVereda esté seleccionado
+    if (!form.redGasVereda || form.redGasVereda.trim() === "") {
+      newErrors.redGasVereda = "Debe seleccionar una opción";
+
       await Swal.fire({
         icon: "warning",
         title: "Atención",
-        text: "Si la red de gas no pasa por su vereda, en este momento no podemos realizar la conexión.",
-        // confirmButtonText: "Entendido",
+        text: "Debe seleccionar si la red de gas pasa por su vereda.",
         showConfirmButton: false,
+        timer: 3000,
         confirmButtonColor: "#1976d2",
       });
 
@@ -142,7 +143,38 @@ const GasATuCasa = () => {
       return false;
     }
 
-    if (!isFieldDisabled("localidad") && form.localidad !== 2) {
+    // 2. Validar si redGasVereda es "No"
+    if (form.redGasVereda === "No") {
+      newErrors.redGasVereda = "La red de gas debe pasar por su vereda";
+
+      await Swal.fire({
+        icon: "warning",
+        title: "Atención",
+        text: "Si la red de gas no pasa por su vereda, en este momento no podemos realizar la conexión.",
+        showConfirmButton: false,
+        timer: 3000,
+        confirmButtonColor: "#1976d2",
+      });
+
+      setTimeout(() => {
+        if (inputRefs.redGasVereda?.current) {
+          inputRefs.redGasVereda.current.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+        }
+      }, 100);
+
+      setErrors(newErrors);
+      return false;
+    }
+
+    // 3. Validar localidad (tanto si no está seleccionada como si no es la 2)
+    if (
+      !form.localidad ||
+      form.localidad === "" ||
+      parseInt(form.localidad) !== 2
+    ) {
       newErrors.localidad = "Debe ser ciudadano de San Miguel de Tucumán";
 
       await Swal.fire({
@@ -150,32 +182,36 @@ const GasATuCasa = () => {
         title: "Atención",
         text: "El beneficio solo está disponible para ciudadanos de Capital, San Miguel de Tucumán.",
         showConfirmButton: false,
+        timer: 3000,
         confirmButtonColor: "#1976d2",
       });
 
-      // Hacer scroll hacia el campo localidad después del modal
       setTimeout(() => {
         if (inputRefs.localidad?.current) {
-          // Para TextField con select, necesitamos hacer scroll al contenedor del input
-          const inputElement =
-            inputRefs.localidad.current.querySelector("input") ||
-            inputRefs.localidad.current.querySelector('[role="button"]') ||
-            inputRefs.localidad.current;
+          const element = inputRefs.localidad.current;
+          const scrollTarget =
+            element.querySelector?.("input") ||
+            element.querySelector?.('[role="combobox"]') ||
+            element.querySelector?.(".MuiSelect-select") ||
+            element;
 
-          inputElement.scrollIntoView({
-            behavior: "smooth",
-            block: "center",
-          });
-
-          // También hacer focus para resaltar el campo
-          inputElement.focus();
+          if (
+            scrollTarget &&
+            typeof scrollTarget.scrollIntoView === "function"
+          ) {
+            scrollTarget.scrollIntoView({
+              behavior: "smooth",
+              block: "center",
+            });
+          }
         }
-      }, 500); // Aumentar el tiempo para asegurar que el modal se cierre
+      }, 500);
 
       setErrors(newErrors);
       return false;
     }
 
+    // Resto de validaciones de campos requeridos...
     requiredFields.forEach((field) => {
       if (!isFieldDisabled(field)) {
         if (!form[field] || form[field].toString().trim() === "") {
@@ -255,13 +291,25 @@ const GasATuCasa = () => {
     }
 
     if (name === "localidad") {
-      if (parseInt(value) !== 2) {
+      // Mostrar alert inmediatamente si no es la localidad 2
+      if (value && parseInt(value) !== 2) {
+        console.log(value, "value localidad !== 2");
+        Swal.fire({
+          icon: "warning",
+          title: "Atención",
+          text: "El beneficio solo está disponible para ciudadanos de Capital, San Miguel de Tucumán.",
+          showConfirmButton: false,
+          timer: 3000,
+          confirmButtonColor: "#1976d2",
+        });
         setFormDisabled(true);
-      } else {
+      } else if (value && parseInt(value) === 2) {
+        console.log(value, "value localidad == 2");
         setFormDisabled(false);
       }
     }
 
+    console.log(value, "value ");
     setForm({ ...form, [name]: value });
 
     if (errors[name]) {
@@ -306,15 +354,16 @@ const GasATuCasa = () => {
       return;
     }
     if (name === "redGasVereda") {
-      if (value !== "Sí" && value !== "No sé") {
+      if (value === "No") {
         await Swal.fire({
           icon: "warning",
           title: "Atención",
           text: "Si la red de gas no pasa por su vereda, en este momento no podemos realizar la conexión.",
-          // confirmButton: "Entendido",
           showConfirmButton: false,
+          timer: 3000,
           confirmButtonColor: "#1976d2",
         });
+
         if (inputRefs.redGasVereda?.current) {
           inputRefs.redGasVereda.current.scrollIntoView({
             behavior: "smooth",
@@ -323,13 +372,13 @@ const GasATuCasa = () => {
         }
 
         setFormDisabled(true);
-      } else {
+      } else if (value === "Sí" || value === "No sé") {
         setFormDisabled(false);
       }
     }
 
     setForm({ ...form, [name]: value });
-    setErrors({ ...errors, [name]: "" }); // ✅ limpiar error al seleccionar
+    setErrors({ ...errors, [name]: "" });
   };
 
   const handleSubmit = async (e) => {
@@ -339,19 +388,56 @@ const GasATuCasa = () => {
     try {
       const isValid = await validateForm();
       if (!isValid) {
-        // Encontrar el primer campo con error
+        // Find the first field with error
         const firstErrorField = Object.keys(errors)[0];
 
         if (firstErrorField && inputRefs[firstErrorField]?.current) {
-          // Retrasar el scroll hasta que el modal se cierre
           setTimeout(() => {
-            inputRefs[firstErrorField].current.scrollIntoView({
-              behavior: "smooth",
-              block: "center",
-            });
-            // También hacer focus si es necesario
-            inputRefs[firstErrorField].current.focus();
-          }, 500); // Ajustar el tiempo según sea necesario
+            const element = inputRefs[firstErrorField].current;
+
+            // Handle different types of MUI components
+            let scrollTarget;
+
+            if (firstErrorField === "redGasVereda") {
+              // For RadioGroup, scroll to the FormControl container
+              scrollTarget =
+                element.closest?.(".MuiFormControl-root") || element;
+            } else if (
+              firstErrorField === "localidad" ||
+              firstErrorField === "barrio"
+            ) {
+              // For Select fields
+              scrollTarget =
+                element.querySelector?.("input") ||
+                element.querySelector?.('[role="combobox"]') ||
+                element.querySelector?.(".MuiSelect-select") ||
+                element;
+            } else if (firstErrorField === "comentarios") {
+              // For TextareaAutosize, it's already a DOM element
+              scrollTarget = element;
+            } else {
+              // For regular TextFields
+              scrollTarget =
+                element.querySelector?.("input") ||
+                element.querySelector?.("textarea") ||
+                element;
+            }
+
+            if (
+              scrollTarget &&
+              typeof scrollTarget.scrollIntoView === "function"
+            ) {
+              scrollTarget.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+              });
+
+              // Try to focus the element if it supports focus
+              if (typeof scrollTarget.focus === "function") {
+                scrollTarget.focus();
+              }
+            }
+          }, 500);
         }
 
         setButton(false);
@@ -536,7 +622,7 @@ const GasATuCasa = () => {
               value={form.localidad}
               onChange={handleChange}
               required
-              error={!formDisabled && !!errors.localidad}
+              error={formDisabled && !!errors.localidad}
               inputRef={inputRefs.localidad}
               // //helperText={errors.localidad}
               sx={{ textAlign: "left" }}
