@@ -21,19 +21,19 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import "./SideBar.css";
 import { ExpandLess, ExpandMore, Queue } from "@mui/icons-material";
 import useStore from "../Zustand/Zustand";
-import AccountBoxOutlinedIcon from '@mui/icons-material/AccountBoxOutlined';
-import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
-import AutoAwesomeMotionOutlinedIcon from '@mui/icons-material/AutoAwesomeMotionOutlined';
-import BrokenImageOutlinedIcon from '@mui/icons-material/BrokenImageOutlined';
-import BuildOutlinedIcon from '@mui/icons-material/BuildOutlined'
-import BrowserUpdatedOutlinedIcon from '@mui/icons-material/BrowserUpdatedOutlined';
-import ContactPhoneOutlinedIcon from '@mui/icons-material/ContactPhoneOutlined';
-import Diversity3OutlinedIcon from '@mui/icons-material/Diversity3Outlined';
-import HomeWorkOutlinedIcon from '@mui/icons-material/HomeWorkOutlined';
-import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
-import CarCrashIcon from '@mui/icons-material/CarCrash';
-import MapIcon from '@mui/icons-material/Map';
-import ApartmentIcon from '@mui/icons-material/Apartment';
+import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
+import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
+import AutoAwesomeMotionOutlinedIcon from "@mui/icons-material/AutoAwesomeMotionOutlined";
+import BrokenImageOutlinedIcon from "@mui/icons-material/BrokenImageOutlined";
+import BuildOutlinedIcon from "@mui/icons-material/BuildOutlined";
+import BrowserUpdatedOutlinedIcon from "@mui/icons-material/BrowserUpdatedOutlined";
+import ContactPhoneOutlinedIcon from "@mui/icons-material/ContactPhoneOutlined";
+import Diversity3OutlinedIcon from "@mui/icons-material/Diversity3Outlined";
+import HomeWorkOutlinedIcon from "@mui/icons-material/HomeWorkOutlined";
+import MenuBookOutlinedIcon from "@mui/icons-material/MenuBookOutlined";
+import CarCrashIcon from "@mui/icons-material/CarCrash";
+import MapIcon from "@mui/icons-material/Map";
+import ApartmentIcon from "@mui/icons-material/Apartment";
 
 export default function ListaPrueba() {
   const { user, obtenerPermisos, permisos } = useStore();
@@ -78,25 +78,25 @@ export default function ListaPrueba() {
       case "BOLETIN OFICIAL":
         return <AutoAwesomeMotionOutlinedIcon />;
       case "BLOOMBERG":
-          return <BrokenImageOutlinedIcon />;
+        return <BrokenImageOutlinedIcon />;
       case "COMPROBANTES":
-          return <BrowserUpdatedOutlinedIcon />;
+        return <BrowserUpdatedOutlinedIcon />;
       case "ATENCION CIUDADANA":
-          return <ContactPhoneOutlinedIcon />;
+        return <ContactPhoneOutlinedIcon />;
       case "CAPITAL HUMANO":
-          return <Diversity3OutlinedIcon />;
+        return <Diversity3OutlinedIcon />;
       case "EDUCACION":
-          return <MenuBookOutlinedIcon />;
+        return <MenuBookOutlinedIcon />;
       case "PATRIMONIO MUNICIPAL":
-          return <HomeWorkOutlinedIcon />;
+        return <HomeWorkOutlinedIcon />;
       case "CORRALON":
-            return <CarCrashIcon />;
+        return <CarCrashIcon />;
       case "MAPA MUNICIPAL":
-            return <MapIcon />;
+        return <MapIcon />;
       case "GESTION DE TURNOS":
-              return <Queue/>;
+        return <Queue />;
       case "CATASTRO":
-              return <ApartmentIcon/>;
+        return <ApartmentIcon />;
       default:
         return <AccountTreeIcon />;
     }
@@ -140,10 +140,11 @@ export default function ListaPrueba() {
     return menu;
   }, []);
 
-
   const irACATASTRO = () => {
     const token = localStorage.getItem("token");
-    const url = new URL(`https://catastro.smt.gob.ar/?auth=${token}&destino=catastro`);
+    const url = new URL(
+      `https://catastro.smt.gob.ar/?auth=${token}&destino=catastro`
+    );
     url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
   };
@@ -195,14 +196,14 @@ export default function ListaPrueba() {
     window.open(url.toString(), "_blank");
   };
 
-  const irACorralon= () => {
+  const irACorralon = () => {
     const token = localStorage.getItem("token");
     const url = new URL(`http://181.105.6.205:9007/`);
     url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
   };
 
-    const irAEventos= () => {
+  const irAEventos = () => {
     const token = localStorage.getItem("token");
     const url = new URL(`http://181.105.6.205:97/`);
     url.searchParams.append("auth", token);
@@ -211,41 +212,34 @@ export default function ListaPrueba() {
 
   const irAMAPA = () => {
     const token = localStorage.getItem("token");
-    const url = new URL(
-      `https://mapa.smt.gob.ar/?auth=${token}`
-    );
+    const url = new URL(`https://mapa.smt.gob.ar/?auth=${token}`);
     url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
   };
 
   const irAProgramasSociales = () => {
     const token = localStorage.getItem("token");
-    const url = new URL(
-      `https://programassociales.smt.gob.ar/?auth=${token}`
-    );
+    const url = new URL(`https://programassociales.smt.gob.ar/?auth=${token}`);
     url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
   };
 
   const irAGESTIONTURNOS = () => {
     const token = localStorage.getItem("token");
-    const url = new URL(
-      `https://turnos.smt.gob.ar/?auth=${token}#/admin
-
-`
-    );
+    const url = new URL(`https://turnos.smt.gob.ar/?auth=${token}#/admin`);
     url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
   };
 
   const irAAtencionCiudadana = () => {
     const token = localStorage.getItem("token");
-    const url = new URL(
-      `https://ac.smt.gob.ar/?auth=${token}
-
-`
-    );
+    const url = new URL(`https://ac.smt.gob.ar/?auth=${token}`);
     url.searchParams.append("auth", token);
+    window.open(url.toString(), "_blank");
+  };
+  const irAPATRIMONIOMUNICIPAL = () => {
+    const url = new URL(`https://patrimonio.smt.gob.ar/`);
+
     window.open(url.toString(), "_blank");
   };
 
@@ -269,48 +263,60 @@ export default function ListaPrueba() {
         </ListItemButton>
 
         {/* EVENTOS SOLO PARA ADMIN */}
-        {
-          user?.id_tusuario === 1 &&
-        <ListItemButton
-          onClick={() => irAEventos()}
-          component="a"
-          className="w-100"
-        >
-          <ListItemIcon>
-            <AccountTreeIcon />
-          </ListItemIcon>
-          <ListItemText primary="EVENTOS" />
-        </ListItemButton>
-        }
+        {user?.id_tusuario === 1 && (
+          <ListItemButton
+            onClick={() => irAEventos()}
+            component="a"
+            className="w-100"
+          >
+            <ListItemIcon>
+              <AccountTreeIcon />
+            </ListItemIcon>
+            <ListItemText primary="EVENTOS" />
+          </ListItemButton>
+        )}
 
         {/* Construye cada elemento del menú */}
         {menuItems.map((item, index) => (
-          <div key={index} className="d-flex justify-content-between w-100 flex-column">
+          <div
+            key={index}
+            className="d-flex justify-content-between w-100 flex-column"
+          >
             {/* Elemento del menú */}
-            <ListItemButton onClick={() => handleClick(item.label)} className="itemsSidebar">
+            <ListItemButton
+              onClick={() => handleClick(item.label)}
+              className="itemsSidebar"
+            >
               <ListItemIcon>{mapearIcono(item.label)}</ListItemIcon>
               <ListItemText primary={item.label} />
-              {item.subItems && (openList === item.label ? <ExpandLess /> : <ExpandMore />)}
+              {item.subItems &&
+                (openList === item.label ? <ExpandLess /> : <ExpandMore />)}
             </ListItemButton>
 
             {/* Sub-elementos del menú si existen */}
             {item.subItems && (
-              <Collapse in={openList === item.label} timeout="auto" unmountOnExit>
+              <Collapse
+                in={openList === item.label}
+                timeout="auto"
+                unmountOnExit
+              >
                 <List component="div">
                   {item.subItems.map((subItem, subIndex) => (
-                    <ListItemButton key={subIndex} component="a" className="w-100 ps-5 subitemsSidebar">
+                    <ListItemButton
+                      key={subIndex}
+                      component="a"
+                      className="w-100 ps-5 subitemsSidebar"
+                    >
                       <ListItemText
                         primary={subItem.descripcion}
                         onClick={
                           subItem.descripcion === "Gestión Financiera"
                             ? () => irAGAF()
-                            :
-                            subItem.descripcion === "Gerencia de Datos"
-                            ? () => irAGED() :
-                            subItem.descripcion === "Capital Humano"
+                            : subItem.descripcion === "Gerencia de Datos"
+                            ? () => irAGED()
+                            : subItem.descripcion === "Capital Humano"
                             ? () => irACAPHUMANO()
-                            :
-                            subItem.descripcion === "Sistema de Admisión"
+                            : subItem.descripcion === "Sistema de Admisión"
                             ? () => irSAEP()
                             : subItem.descripcion === "Boletín Municipal"
                             ? () => irABOLETIN()
@@ -330,6 +336,8 @@ export default function ListaPrueba() {
                             ? () => irAProgramasSociales()
                             : subItem.descripcion === "gestion de turnos"
                             ? () => irAGESTIONTURNOS()
+                            : subItem.descripcion === "Patrimonio Municipal"
+                            ? () => irAPATRIMONIOMUNICIPAL()
                             : () => redirigir(`/${subItem.label}`)
                         }
                       />
@@ -345,7 +353,10 @@ export default function ListaPrueba() {
       <div className="d-flex flex-column justify-content-center align-items-center">
         <p className="footer text-center mt-5">
           Desarrollado por Dirección de Innovación Tecnológica
-          <span style={{ fontSize: "1.4em", verticalAlign: "-0.1em" }}>©</span> 2024
+          <span style={{ fontSize: "1.4em", verticalAlign: "-0.1em" }}>
+            ©
+          </span>{" "}
+          2024
         </p>
       </div>
     </Box>

@@ -91,7 +91,7 @@ const GasATuCasa = () => {
       const response = await axios.get(
         `/gas/existeUsuarioGas/${user.documento_persona}`
       );
-      console.log(response.data.existe);
+      // console.log(response.data.existe);
       return response.data.existe;
     } catch (error) {
       console.error("Error al verificar el usuario:", error);
@@ -293,7 +293,7 @@ const GasATuCasa = () => {
     if (name === "localidad") {
       // Mostrar alert inmediatamente si no es la localidad 2
       if (value && parseInt(value) !== 2) {
-        console.log(value, "value localidad !== 2");
+        // console.log(value, "value localidad !== 2");
         Swal.fire({
           icon: "warning",
           title: "Atención",
@@ -304,12 +304,12 @@ const GasATuCasa = () => {
         });
         setFormDisabled(true);
       } else if (value && parseInt(value) === 2) {
-        console.log(value, "value localidad == 2");
+        // console.log(value, "value localidad == 2");
         setFormDisabled(false);
       }
     }
 
-    console.log(value, "value ");
+    // console.log(value, "value ");
     setForm({ ...form, [name]: value });
 
     if (errors[name]) {
