@@ -231,7 +231,7 @@ const Home = () => {
           Icono={<FontAwesomeIcon icon={faQrcode} />}
         />
         <Card
-          onClick={() => navigate("/elGasATuCasa")}
+          onClick={() => navigate("/el-gas-llega-a-tu-casa")}
           titulo={"El Gas Llega a tu Casa"}
           descripcion={"Acceda al servicio de gas natural domiciliario"}
           Icono={<FontAwesomeIcon icon={faHouseFire} />}

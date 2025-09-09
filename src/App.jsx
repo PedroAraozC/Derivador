@@ -37,6 +37,7 @@ import Multas from "./pages/Multas/Multas";
 import FormularioBusquedaUsuario from "./components/ValidarUsuarios/FormularioBusquedaUsuario";
 import Solicitud_permisos from "./pages/ViaPublica/Solicitud_permisos";
 import GasATuCasa from "./components/GasATuCasa/GasATuCasa";
+import PanelPersonasGas from "./pages/ElGasLlegaATuCasaBackOffice/PanelPersonasGas";
 // import PrivateRouteAdminLicitaciones from "./routes/PrivateRouteAdminLicitaciones";
 // import PrivateRouteAdminPatrimonio from "./routes/PrivateRouteAdminPatrimonio";
 // import PrivateRouteEmpleadoJerarquico from "./routes/PrivateRouteEmpleadoJerarquico";
@@ -124,8 +125,9 @@ function App() {
               {/* VIA PUBLICA */}
               <Route exact path="/via-publica" element={<PrivateRoute key="via-publica"><Solicitud_permisos/></PrivateRoute>} />
 
-              {/* GAS LLEGA A TU CASA */}
-              <Route exact path="/elGasATuCasa" element={<PrivateRouteAdmin key="elGasATuCasa"><GasATuCasa /></PrivateRouteAdmin>} />
+              {/* OBRAS PUBLICAS */}
+              <Route exact path="/el-gas-llega-a-tu-casa" element={<PrivateRoute key="elGasATuCasa"><GasATuCasa /></PrivateRoute>} />
+              <Route exact path="/el-gas-a-tu-casa-backoffice" element={<PrivateRoute key="elGasATuCasaBackOffice"><PanelPersonasGas /></PrivateRoute>} />
 
             </Routes>
           </ProviderEducacion>
