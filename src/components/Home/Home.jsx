@@ -126,6 +126,15 @@ const Home = () => {
     // url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
   };
+  
+  const irAPRESUPUESTOPARTICIPATIVO = () => {
+    const token = localStorage.getItem("token");
+    const url = new URL(
+      `https://presupuestoparticipativo.smt.gob.ar/ext/api/auth/cidituc/?auth=${token}`
+    );
+    // url.searchParams.append("auth", token);
+    window.open(url.toString(), "_blank");
+  };
 
   // const irAMAPA = () => {
   //   const token = localStorage.getItem("token");
@@ -308,6 +317,12 @@ const Home = () => {
           onClick={() => irACONSULTAPUBLICA()}
           titulo={"Consulta Pública"}
           descripcion={"Programa de participación ciudadana"}
+          Icono={<FontAwesomeIcon icon={faUsers} />}
+        />
+        <Card
+          onClick={() => irAPRESUPUESTOPARTICIPATIVO()}
+          titulo={"Presupuesto Participativo"}
+          descripcion={"Programa de presupuesto participativo."}
           Icono={<FontAwesomeIcon icon={faUsers} />}
         />
 
