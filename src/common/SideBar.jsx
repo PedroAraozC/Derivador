@@ -243,6 +243,13 @@ export default function ListaPrueba() {
     window.open(url.toString(), "_blank");
   };
 
+  const irAEducacion = () => {
+    const token = localStorage.getItem("token");
+    const url = new URL(`https://portal.educacion.smt.gob.ar/?auth=${token}`);
+    url.searchParams.append("auth", token);
+    window.open(url.toString(), "_blank");
+  }
+
   const list = () => (
     <Box
       sx={{ width: 250 }}
@@ -313,32 +320,35 @@ export default function ListaPrueba() {
                           subItem.descripcion === "Gestión Financiera"
                             ? () => irAGAF()
                             : subItem.descripcion === "Gerencia de Datos"
-                            ? () => irAGED()
-                            : subItem.descripcion === "Capital Humano"
-                            ? () => irACAPHUMANO()
-                            : subItem.descripcion === "Sistema de Admisión"
-                            ? () => irSAEP()
-                            : subItem.descripcion === "Boletín Municipal"
-                            ? () => irABOLETIN()
-                            : subItem.descripcion === "Carnet de Manejo"
-                            ? () => irATURNOS()
-                            : subItem.descripcion === "Licitaciones y Concursos"
-                            ? () => irALICITACIONES()
-                            : subItem.descripcion === "Catastro"
-                            ? () => irACATASTRO()
-                            : subItem.descripcion === "Corralón"
-                            ? () => irACorralon()
-                            : subItem.descripcion === "Atención Ciudadana"
-                            ? () => irAAtencionCiudadana()
-                            : subItem.descripcion === "Mapa Municipal"
-                            ? () => irAMAPA()
-                            : subItem.descripcion === "Programas Sociales"
-                            ? () => irAProgramasSociales()
-                            : subItem.descripcion === "gestion de turnos"
-                            ? () => irAGESTIONTURNOS()
-                            : subItem.descripcion === "Patrimonio Municipal"
-                            ? () => irAPATRIMONIOMUNICIPAL()
-                            : () => redirigir(`/${subItem.label}`)
+                              ? () => irAGED()
+                              : subItem.descripcion === "Capital Humano"
+                                ? () => irACAPHUMANO()
+                                : subItem.descripcion === "Sistema de Admisión"
+                                  ? () => irSAEP()
+                                  : subItem.descripcion === "Boletín Municipal"
+                                    ? () => irABOLETIN()
+                                    : subItem.descripcion === "Carnet de Manejo"
+                                      ? () => irATURNOS()
+                                      : subItem.descripcion === "Licitaciones y Concursos"
+                                        ? () => irALICITACIONES()
+                                        : subItem.descripcion === "Catastro"
+                                          ? () => irACATASTRO()
+                                          : subItem.descripcion === "Corralón"
+                                            ? () => irACorralon()
+                                            : subItem.descripcion === "Atención Ciudadana"
+                                              ? () => irAAtencionCiudadana()
+                                              : subItem.descripcion === "Mapa Municipal"
+                                                ? () => irAMAPA()
+                                                : subItem.descripcion === "Programas Sociales"
+                                                  ? () => irAProgramasSociales()
+                                                  : subItem.descripcion === "gestion de turnos"
+                                                    ? () => irAGESTIONTURNOS()
+                                                    : subItem.descripcion === "Patrimonio Municipal"
+                                                      ? () => irAPATRIMONIOMUNICIPAL()
+                                                      : subItem.descripcion === "Panel Educación"
+                                                        ? () => irAEducacion()
+                                                        : () => redirigir(`/${subItem.label}`)
+
                         }
                       />
                     </ListItemButton>

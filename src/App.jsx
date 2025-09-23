@@ -103,7 +103,7 @@ function App() {
 
 
               {/* EDUCACION */}
-              <Route exact path="/panel_educacion" element={<PrivateRoute><PanelEducacion /></PrivateRoute>} />
+              {/* <Route exact path="/panel_educacion" element={<PrivateRoute><PanelEducacion /></PrivateRoute>} /> */}
               <Route exact path="/agregar-establecimiento" element={<PrivateRoute><AgregarEstablecimiento /></PrivateRoute>} />
               <Route exact path="/agregar-caracter" element={<PrivateRoute><AgregarCaracter /></PrivateRoute>} />
               <Route exact path="/agregar-causal" element={<PrivateRoute><AgregarCausal /></PrivateRoute>} />
