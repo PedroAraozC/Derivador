@@ -14,7 +14,7 @@ import {
   // faRoadCircleCheck,
   faTrailer,
   faMosquito,
-  // faPeopleGroup,
+  faPeopleGroup,
   faUsers,
   faCat,
   faClipboardQuestion,
@@ -265,12 +265,12 @@ const Home = () => {
           }
           Icono={<FontAwesomeIcon icon={faIdCard} />}
         />
-        {/* <Card
-          onClick={() => irATURNOS(1710)}
-          titulo={"Tarjeta Ciudadana - SUBE"}
-          descripcion={"Turnos para transferir saldo de ciudadana a SUBE"}
-          Icono={<FontAwesomeIcon icon={faBus} />}
-        /> */}
+        <Card
+          onClick={() => irATURNOS(1510)}
+          titulo={"Campus Educativo Ambiental"}
+          descripcion={"Turnos para actividades en el Campus Ambiental"}
+          Icono={<FontAwesomeIcon icon={faPeopleGroup} />}
+        />
         <Card
           onClick={() => irALICITACIONES()}
           titulo={"Licitaciones"}
