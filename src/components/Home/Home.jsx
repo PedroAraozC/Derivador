@@ -265,12 +265,12 @@ const Home = () => {
           }
           Icono={<FontAwesomeIcon icon={faIdCard} />}
         />
-        <Card
+        {/* <Card
           onClick={() => irATURNOS(1710)}
           titulo={"Tarjeta Ciudadana - SUBE"}
           descripcion={"Turnos para transferir saldo de ciudadana a SUBE"}
           Icono={<FontAwesomeIcon icon={faBus} />}
-        />
+        /> */}
         <Card
           onClick={() => irALICITACIONES()}
           titulo={"Licitaciones"}
