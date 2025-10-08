@@ -254,7 +254,7 @@ const Home = () => {
         <Card
           onClick={() => irATURNOS(1711)}
           titulo={"Licencia de Conducir"}
-          descripcion={"Requsitos para Licencia de conducir"}
+          descripcion={"Requisitos para Licencia de conducir"}
           Icono={<FontAwesomeIcon icon={faIdCard} />}
         />
         <Card
@@ -336,13 +336,13 @@ const Home = () => {
         <Card
           onClick={() => irACEMA()}
           titulo={"Servicios de Población Animal"}
-          descripcion={"Turnos y Requsitos"}
+          descripcion={"Turnos y Requisitos"}
           Icono={<FontAwesomeIcon icon={faCat} />}
         />
         <Card
           onClick={() => irAAsitPubica()}
           titulo={"Turnero Asistencia Pública"}
-          descripcion={"Turnos y Requsitos"}
+          descripcion={"Turnos y Requisitos"}
           Icono={<FontAwesomeIcon icon={faHandHoldingMedical} />}
         />
 
