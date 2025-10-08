@@ -14,7 +14,7 @@ import {
   // faRoadCircleCheck,
   faTrailer,
   faMosquito,
-  // faPeopleGroup,
+  faPeopleGroup,
   faUsers,
   faCat,
   faClipboardQuestion,
@@ -254,7 +254,7 @@ const Home = () => {
         <Card
           onClick={() => irATURNOS(1711)}
           titulo={"Licencia de Conducir"}
-          descripcion={"Requsitos para Licencia de conducir"}
+          descripcion={"Requisitos para Licencia de conducir"}
           Icono={<FontAwesomeIcon icon={faIdCard} />}
         />
         <Card
@@ -265,12 +265,12 @@ const Home = () => {
           }
           Icono={<FontAwesomeIcon icon={faIdCard} />}
         />
-        {/* <Card
-          onClick={() => irATURNOS(1710)}
-          titulo={"Tarjeta Ciudadana - SUBE"}
-          descripcion={"Turnos para transferir saldo de ciudadana a SUBE"}
-          Icono={<FontAwesomeIcon icon={faBus} />}
-        /> */}
+        <Card
+          onClick={() => irATURNOS(1510)}
+          titulo={"Campus Educativo Ambiental"}
+          descripcion={"Turnos para actividades en el Campus Ambiental"}
+          Icono={<FontAwesomeIcon icon={faPeopleGroup} />}
+        />
         <Card
           onClick={() => irALICITACIONES()}
           titulo={"Licitaciones"}
@@ -336,13 +336,13 @@ const Home = () => {
         <Card
           onClick={() => irACEMA()}
           titulo={"Servicios de Población Animal"}
-          descripcion={"Turnos y Requsitos"}
+          descripcion={"Turnos y Requisitos"}
           Icono={<FontAwesomeIcon icon={faCat} />}
         />
         <Card
           onClick={() => irAAsitPubica()}
           titulo={"Turnero Asistencia Pública"}
-          descripcion={"Turnos y Requsitos"}
+          descripcion={"Turnos y Requisitos"}
           Icono={<FontAwesomeIcon icon={faHandHoldingMedical} />}
         />
 
