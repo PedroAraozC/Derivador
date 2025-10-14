@@ -269,20 +269,6 @@ export default function ListaPrueba() {
           <ListItemText primary="INICIO" />
         </ListItemButton>
 
-        {/* EVENTOS SOLO PARA ADMIN */}
-        {user?.id_tusuario === 1 && (
-          <ListItemButton
-            onClick={() => irAEventos()}
-            component="a"
-            className="w-100"
-          >
-            <ListItemIcon>
-              <AccountTreeIcon />
-            </ListItemIcon>
-            <ListItemText primary="EVENTOS" />
-          </ListItemButton>
-        )}
-
         {/* Construye cada elemento del menú */}
         {menuItems.map((item, index) => (
           <div
@@ -347,6 +333,8 @@ export default function ListaPrueba() {
                                                       ? () => irAPATRIMONIOMUNICIPAL()
                                                       : subItem.descripcion === "Panel Educación"
                                                         ? () => irAEducacion()
+                                                        : subItem.descripcion === "ADMINISTRACION DE EVENTOS"
+                                                        ? () => irAEventos()
                                                         : () => redirigir(`/${subItem.label}`)
 
                         }
