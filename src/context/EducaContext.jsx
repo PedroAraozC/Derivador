@@ -19,7 +19,9 @@ const ProviderEducacion = ({ children }) => {
   const [arrayCausal, setArrayCausal] = useState([]);
   const [arrayCausalTabla, setArrayCausalTabla] = useState([]);
   const [arrayCaracterTabla, setArrayCaracterTabla] = useState([]);
-  const [arrayEstablecimientoTabla, setArrayEstablecimientoTabla] = useState([]);
+  const [arrayEstablecimientoTabla, setArrayEstablecimientoTabla] = useState(
+    []
+  );
   const [arrayCaracter, setArrayCaracter] = useState([]);
   const [categoria, setCategoria] = useState([]);
   const [tipologia, setTipologia] = useState([]);
@@ -162,7 +164,7 @@ const ProviderEducacion = ({ children }) => {
     setAuthenticated(false);
     localStorage.removeItem("token");
     localStorage.removeItem("tokenSet");
-    const url = new URL(`http://localhost:5174/`);
+    const url = new URL(`http://181.105.6.205:88/`);
     url.searchParams.append("logout", true);
     window.open(url.toString(), "_self");
   };
@@ -215,7 +217,7 @@ const ProviderEducacion = ({ children }) => {
     } catch (error) {
       console.log(error);
     }
-  }  
+  };
   const obtenerUbicacion = async () => {
     try {
       const resultado = await axiosPatri.get("/admin/listarUbicaciones");
@@ -224,7 +226,7 @@ const ProviderEducacion = ({ children }) => {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
   const obtenerPatrimonios = async () => {
     try {
       const resultado = await axiosPatri.get("/admin/listarPatrimonio");
@@ -233,9 +235,9 @@ const ProviderEducacion = ({ children }) => {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
-  const obtenerGeneros = async () =>{
+  const obtenerGeneros = async () => {
     try {
       const resultado = await axios.get("/admin/listarGenero");
       // console.log(resultado.data.materiales);
@@ -243,8 +245,8 @@ const ProviderEducacion = ({ children }) => {
     } catch (error) {
       console.log(error);
     }
-  }
-  const obtenerTiposDeUsuarios = async () =>{
+  };
+  const obtenerTiposDeUsuarios = async () => {
     try {
       const resultado = await axios.get("/admin/listarTUsuarios");
       // console.log(resultado.data.materiales);
@@ -252,33 +254,35 @@ const ProviderEducacion = ({ children }) => {
     } catch (error) {
       console.log(error);
     }
-  }
-  const obtenerProcesos = async (id) =>{
+  };
+  const obtenerProcesos = async (id) => {
     try {
-      const resultado = await axios.post("/admin/listarProcesos", {id});
+      const resultado = await axios.post("/admin/listarProcesos", { id });
       setProcesos(resultado.data.procesos);
     } catch (error) {
       console.log(error);
     }
-  }
-  const obtenerProcesosSinId = async () =>{
+  };
+  const obtenerProcesosSinId = async () => {
     try {
       const resultado = await axios.get("/admin/listarProcesosSinId");
       setProcesosSinId(resultado.data.procesos);
     } catch (error) {
       console.log(error);
     }
-  }
-  const obtenerPermisosPorTUsuarios = async (id) =>{
+  };
+  const obtenerPermisosPorTUsuarios = async (id) => {
     try {
-      const resultado = await axios.post("/admin/listarPermisosPorTUsuarios", {id});
+      const resultado = await axios.post("/admin/listarPermisosPorTUsuarios", {
+        id,
+      });
       // console.log(resultado.data.materiales);
       setPermisosTUsuarios(resultado.data.permisos);
     } catch (error) {
       console.log(error);
     }
-  }
-  const obtenerTiposDeDocumento = async () =>{
+  };
+  const obtenerTiposDeDocumento = async () => {
     try {
       const resultado = await axios.get("/admin/listarTDocumentos");
       // console.log(resultado.data.materiales);
@@ -286,8 +290,8 @@ const ProviderEducacion = ({ children }) => {
     } catch (error) {
       console.log(error);
     }
-  }
-  const obtenerReparticiones = async () =>{
+  };
+  const obtenerReparticiones = async () => {
     try {
       const resultado = await axios.get("/admin/listarReparticiones");
       // console.log(resultado.data.materiales);
@@ -295,21 +299,23 @@ const ProviderEducacion = ({ children }) => {
     } catch (error) {
       console.log(error);
     }
-  }
-  const obtenerEmpleados = async () =>{
+  };
+  const obtenerEmpleados = async () => {
     try {
       const resultado = await axios.get("/admin/listarEmpleados");
       setEmpleados(resultado.data.empleados);
     } catch (error) {
       console.log(error);
     }
-  }
+  };
   const existeEnPermisoPersona = async (id) => {
     try {
-      const response = await axios.post("/admin/existeEnPermisosPersona", { id });
+      const response = await axios.post("/admin/existeEnPermisosPersona", {
+        id,
+      });
       if (response.status === 200) {
         setExisteEnPP(true);
-        setPermisosPorPersona(response.data.data)
+        setPermisosPorPersona(response.data.data);
       } else {
         setExisteEnPP(false);
       }
@@ -320,8 +326,8 @@ const ProviderEducacion = ({ children }) => {
   };
   const obtenerLinksPanelGestion = async (id) => {
     let datos = {
-      id: id
-    }
+      id: id,
+    };
     try {
       const resultado = await axios.post("/panel_gestion/listarLinks", datos);
       // Actualiza los estados con las convocatorias filtradas y ordenadas
@@ -399,7 +405,7 @@ const ProviderEducacion = ({ children }) => {
         obtenerProcesos,
         procesos,
         obtenerLinksPanelGestion,
-        linksPanelGestion
+        linksPanelGestion,
       }}
     >
       {children}

@@ -22,6 +22,7 @@ import {
   faCashRegister,
   faKitMedical,
   faHandHoldingMedical,
+  faBookTanakh,
 } from "@fortawesome/free-solid-svg-icons";
 import Card from "../Card/Card";
 import "./Home.css";
@@ -155,6 +156,15 @@ const Home = () => {
     const token = localStorage.getItem("token");
     const url = new URL(
       `https://permisos.smt.gob.ar/?auth=${token}`
+      // `https://ciudaddigital.smt.gob.ar/?destino=boletin`
+    );
+    // url.searchParams.append("auth", token);
+    window.open(url.toString(), "_blank");
+  };
+  const irAPermisos = () => {
+    const token = localStorage.getItem("token");
+    const url = new URL(
+      `https://portal.permisos.smt.gob.ar/?auth=${token}`
       // `https://ciudaddigital.smt.gob.ar/?destino=boletin`
     );
     // url.searchParams.append("auth", token);
@@ -322,6 +332,12 @@ const Home = () => {
           titulo={"Turnero Asistencia Pública"}
           descripcion={"Turnos y Requsitos"}
           Icono={<FontAwesomeIcon icon={faHandHoldingMedical} />}
+        />
+        <Card
+          onClick={() => irAPermisos()}
+          titulo={"Permisos Desarrollo"}
+          descripcion={"Permisos Desarrollo"}
+          Icono={<FontAwesomeIcon icon={faBookTanakh} />}
         />
 
         {user.id_tusuario == 1 && (
