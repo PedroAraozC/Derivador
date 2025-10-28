@@ -250,6 +250,13 @@ export default function ListaPrueba() {
     window.open(url.toString(), "_blank");
   }
 
+  const irACortesProgramados = () => {
+    const token = localStorage.getItem("token");
+    const url = new URL(`https://cortes.smt.gob.ar/?auth=${token}`);
+    url.searchParams.append("auth", token);
+    window.open(url.toString(), "_blank");
+  }
+
   const list = () => (
     <Box
       sx={{ width: 250 }}
@@ -333,9 +340,11 @@ export default function ListaPrueba() {
                                                       ? () => irAPATRIMONIOMUNICIPAL()
                                                       : subItem.descripcion === "Panel Educación"
                                                         ? () => irAEducacion()
-                                                        : subItem.descripcion === "ADMINISTRACION DE EVENTOS"
-                                                        ? () => irAEventos()
-                                                        : () => redirigir(`/${subItem.label}`)
+                                                        : subItem.descripcion === "Cortes de Tránsito"
+                                                          ? () => irACortesProgramados()
+                                                          : subItem.descripcion === "ADMINISTRACION DE EVENTOS"
+                                                            ? () => irAEventos()
+                                                            : () => redirigir(`/${subItem.label}`)
 
                         }
                       />
