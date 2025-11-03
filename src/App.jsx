@@ -38,6 +38,7 @@ import FormularioBusquedaUsuario from "./components/ValidarUsuarios/FormularioBu
 import Solicitud_permisos from "./pages/ViaPublica/Solicitud_permisos";
 import GasATuCasa from "./components/GasATuCasa/GasATuCasa";
 import PanelPersonasGas from "./pages/ElGasLlegaATuCasaBackOffice/PanelPersonasGas";
+import PrivateRouteUsuarios from "./routes/PrivateRouteUsuarios";
 // import PrivateRouteAdminLicitaciones from "./routes/PrivateRouteAdminLicitaciones";
 // import PrivateRouteAdminPatrimonio from "./routes/PrivateRouteAdminPatrimonio";
 // import PrivateRouteEmpleadoJerarquico from "./routes/PrivateRouteEmpleadoJerarquico";
@@ -83,7 +84,7 @@ function App() {
               <Route exact path="/reparticion" element={<PrivateRouteAdmin><PanelReparticiones /></PrivateRouteAdmin>} />
               <Route exact path="/permisos-usuario" element={<PrivateRouteAdmin><PermisosTUsuario /></PrivateRouteAdmin>} />
               <Route exact path="/panel_usuario" element={<PrivateRouteAdmin><PanelUsuarios /></PrivateRouteAdmin>} />
-              <Route exact path="/validar_usuarios" element={<PrivateRouteAdmin key="validar_usuarios"><FormularioBusquedaUsuario /></PrivateRouteAdmin>} />
+              <Route exact path="/validar_usuarios" element={<PrivateRouteUsuarios key="validar_usuarios"><FormularioBusquedaUsuario /></PrivateRouteUsuarios>} />
               {/* ADMINISTRADOR GENERAL */}
               
               {/* LICITACION */}

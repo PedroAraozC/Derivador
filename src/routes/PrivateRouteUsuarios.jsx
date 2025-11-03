@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { Box, CircularProgress } from "@mui/material";
 
 // eslint-disable-next-line react/prop-types
-const PrivateRouteAdmin = ({ children }) => {
+const PrivateRouteUsuarios = ({ children }) => {
   const { getAuth, authenticated, loading, user } = useStore();
   
   useEffect(() => {
@@ -16,11 +16,11 @@ const PrivateRouteAdmin = ({ children }) => {
     <Box sx={{ display: "flex" }}>
       <CircularProgress />
     </Box>
-  ) : authenticated && user.id_tusuario == 1 ? (
+  ) : authenticated && (user.id_tusuario == 1 || user.id_tusuario == 40) ? (
     children
   ) : (
     <Navigate to="/login" />
   );
 };
 
-export default PrivateRouteAdmin;
+export default PrivateRouteUsuarios;
