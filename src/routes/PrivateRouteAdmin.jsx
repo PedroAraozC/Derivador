@@ -16,7 +16,7 @@ const PrivateRouteAdmin = ({ children }) => {
     <Box sx={{ display: "flex" }}>
       <CircularProgress />
     </Box>
-  ) : authenticated && user.id_tusuario == 1 ? (
+  ) : authenticated && (user.id_tusuario == 1 || user.id_tusuario == 40) ? (
     children
   ) : (
     <Navigate to="/login" />
