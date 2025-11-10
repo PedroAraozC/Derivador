@@ -30,6 +30,7 @@ import Solicitud_permisos from "./pages/ViaPublica/Solicitud_permisos";
 import GasATuCasa from "./components/GasATuCasa/GasATuCasa";
 import PanelPersonasGas from "./pages/ElGasLlegaATuCasaBackOffice/PanelPersonasGas";
 import ProviderDerivador from "./context/DerivadorContext";
+import PrivateRouteUsuarios from "./routes/PrivateRouteUsuarios";
 
 function App() {
   const url = new URL(window.location.href);
