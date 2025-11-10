@@ -10,7 +10,7 @@ import Paper from "@mui/material/Paper";
 import { Alert, Button, IconButton, Snackbar, TextField } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import { useNavigate } from "react-router-dom";
-import { EducaContext } from "../../../context/EducaContext";
+import { DerivadorContext } from "../../../context/DerivadorContext";
 import ModalPatrimonio from "./ModalPatrimonio";
 import DeleteIcon from "@mui/icons-material/Delete";
 import "./TablaPatrimonioMunicipal.css";
@@ -23,7 +23,7 @@ const TablaPatrimonioMunicipal = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [modalAbierto, setModalAbierto] = useState(false);
   const [patrimonioSeleccionado, setPatrimonioSeleccionado] = useState(null);
-  const { patrimonios, obtenerPatrimonios, refresh } = useContext(EducaContext);
+  const { patrimonios, obtenerPatrimonios, refresh } = useContext(DerivadorContext);
   const [paginatedArray, setPaginatedArray] = useState([]);
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
@@ -32,7 +32,7 @@ const TablaPatrimonioMunicipal = () => {
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
-  const { actualizador } = useContext(EducaContext);
+  const { actualizador } = useContext(DerivadorContext);
   const [errores, setErrores] = useState({});
   const [buttonDis, setButtonDis] = useState(false);
   const [expandedRows, setExpandedRows] = useState({});

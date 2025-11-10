@@ -11,29 +11,17 @@ import {
   ListItemText,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import DvrIcon from "@mui/icons-material/Dvr";
+import QuizIcon from '@mui/icons-material/Quiz';
+import EventIcon from '@mui/icons-material/Event';
+import BadgeIcon from '@mui/icons-material/Badge';
 import AccountTreeIcon from "@mui/icons-material/AccountTree";
-import PersonIcon from "@mui/icons-material/Person";
-import TuneIcon from "@mui/icons-material/Tune";
 import HomeIcon from "@mui/icons-material/Home";
-import QueryStatsIcon from "@mui/icons-material/QueryStats";
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import "./SideBar.css";
-import { ExpandLess, ExpandMore, Queue } from "@mui/icons-material";
+import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import useStore from "../Zustand/Zustand";
 import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
-import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
-import AutoAwesomeMotionOutlinedIcon from "@mui/icons-material/AutoAwesomeMotionOutlined";
-import BrokenImageOutlinedIcon from "@mui/icons-material/BrokenImageOutlined";
 import BuildOutlinedIcon from "@mui/icons-material/BuildOutlined";
-import BrowserUpdatedOutlinedIcon from "@mui/icons-material/BrowserUpdatedOutlined";
-import ContactPhoneOutlinedIcon from "@mui/icons-material/ContactPhoneOutlined";
-import Diversity3OutlinedIcon from "@mui/icons-material/Diversity3Outlined";
-import HomeWorkOutlinedIcon from "@mui/icons-material/HomeWorkOutlined";
-import MenuBookOutlinedIcon from "@mui/icons-material/MenuBookOutlined";
-import CarCrashIcon from "@mui/icons-material/CarCrash";
-import MapIcon from "@mui/icons-material/Map";
-import ApartmentIcon from "@mui/icons-material/Apartment";
 
 export default function ListaPrueba() {
   const { user, obtenerPermisos, permisos } = useStore();
@@ -59,44 +47,18 @@ export default function ListaPrueba() {
 
   const mapearIcono = (nombreOpcion) => {
     switch (nombreOpcion) {
-      case "SERVICIOS":
-        return <DvrIcon />;
-      case "ESTADISTICAS":
-        return <QueryStatsIcon />;
-      case "PARAMETROS":
-        return <TuneIcon />;
-      case "GESTION DE USUARIO":
-        return <PersonIcon />;
-      case "GESTION FINANCIERA":
-        return <AttachMoneyIcon />;
+      case "CONSULTAS":
+        return <QuizIcon />;
+      case "APLICACIONES":
+        return <BadgeIcon />;
+      case "TURNOS":
+        return <EventIcon />;
+      case "TRAMITES":
+        return <ArrowOutwardIcon />;
       case "CONFIGURACIÓN":
         return <BuildOutlinedIcon />;
       case "EDICION DE PERFIL":
         return <AccountBoxOutlinedIcon />;
-      case "PANEL DE GESTION":
-        return <AssessmentOutlinedIcon />;
-      case "BOLETIN OFICIAL":
-        return <AutoAwesomeMotionOutlinedIcon />;
-      case "BLOOMBERG":
-        return <BrokenImageOutlinedIcon />;
-      case "COMPROBANTES":
-        return <BrowserUpdatedOutlinedIcon />;
-      case "ATENCION CIUDADANA":
-        return <ContactPhoneOutlinedIcon />;
-      case "CAPITAL HUMANO":
-        return <Diversity3OutlinedIcon />;
-      case "EDUCACION":
-        return <MenuBookOutlinedIcon />;
-      case "PATRIMONIO MUNICIPAL":
-        return <HomeWorkOutlinedIcon />;
-      case "CORRALON":
-        return <CarCrashIcon />;
-      case "MAPA MUNICIPAL":
-        return <MapIcon />;
-      case "GESTION DE TURNOS":
-        return <Queue />;
-      case "CATASTRO":
-        return <ApartmentIcon />;
       default:
         return <AccountTreeIcon />;
     }
@@ -120,7 +82,7 @@ export default function ListaPrueba() {
       const menuItem = {
         label: permiso.nombre_opcion,
         subItems: [
-          { label: permiso.nombre_proceso, descripcion: permiso.descripcion },
+          { label: permiso.nombre_proceso, descripcion: permiso.descripcion, sistema_externo: permiso.sistema_externo },
         ],
       };
       menu.push(menuItem);
@@ -134,121 +96,25 @@ export default function ListaPrueba() {
         menu[menuItemIndex].subItems.push({
           label: permiso.nombre_proceso,
           descripcion: permiso.descripcion,
+          sistema_externo: permiso.sistema_externo,
         });
       }
     }
     return menu;
   }, []);
 
-  const irACATASTRO = () => {
+  const handleOptionClick = (option) => {
     const token = localStorage.getItem("token");
-    const url = new URL(
-      `https://catastro.smt.gob.ar/?auth=${token}&destino=catastro`
-    );
-    url.searchParams.append("auth", token);
-    window.open(url.toString(), "_blank");
-  };
-  const irATURNOS = () => {
-    const token = localStorage.getItem("token");
-    const url = new URL(
-      `https://turnos.smt.gob.ar/?auth=${token}&destino=turnero&rep=1711`
-    );
-    url.searchParams.append("auth", token);
-    window.open(url.toString(), "_blank");
-  };
-  const irALICITACIONES = () => {
-    const url = new URL(`https://licitaciones.smt.gob.ar`);
-    window.open(url.toString(), "_blank");
+
+    if (option.sistema_externo == null) {
+      navigate(`/${option.label}`);
+    } else {
+      const url = new URL(`${option.sistema_externo}/?auth=${token}`);
+      url.searchParams.append("auth", token);
+      window.open(url.toString(), "_blank");
+    }
   };
 
-  const irAGAF = () => {
-    const token = localStorage.getItem("token");
-    const url = new URL(`http://181.105.6.205:9005/`);
-    url.searchParams.append("auth", token);
-    window.open(url.toString(), "_blank");
-  };
-
-  const irACAPHUMANO = () => {
-    const token = localStorage.getItem("token");
-    const url = new URL(`http://181.105.6.205:93/`);
-    url.searchParams.append("auth", token);
-    window.open(url.toString(), "_blank");
-  };
-  const irAGED = () => {
-    const token = localStorage.getItem("token");
-    const url = new URL(`http://181.105.6.205:9006/`);
-    url.searchParams.append("auth", token);
-    window.open(url.toString(), "_blank");
-  };
-  const irSAEP = () => {
-    const token = localStorage.getItem("token");
-    const url = new URL(`https://admision.smt.gob.ar/`);
-    url.searchParams.append("auth", token);
-    window.open(url.toString(), "_blank");
-  };
-  const irABOLETIN = () => {
-    const token = localStorage.getItem("token");
-    const url = new URL(
-      `https://boletinoficial.smt.gob.ar/?auth=${token}&destino=boletin`
-      // `https://ciudaddigital.smt.gob.ar/?destino=boletin`
-    );
-    url.searchParams.append("auth", token);
-    window.open(url.toString(), "_blank");
-  };
-
-  const irACorralon = () => {
-    const token = localStorage.getItem("token");
-    const url = new URL(`http://181.105.6.205:9007/`);
-    url.searchParams.append("auth", token);
-    window.open(url.toString(), "_blank");
-  };
-
-  const irAEventos = () => {
-    const token = localStorage.getItem("token");
-    const url = new URL(`http://181.105.6.205:97/`);
-    url.searchParams.append("auth", token);
-    window.open(url.toString(), "_blank");
-  };
-
-  const irAMAPA = () => {
-    const token = localStorage.getItem("token");
-    const url = new URL(`https://mapa.smt.gob.ar/?auth=${token}`);
-    url.searchParams.append("auth", token);
-    window.open(url.toString(), "_blank");
-  };
-
-  const irAProgramasSociales = () => {
-    const token = localStorage.getItem("token");
-    const url = new URL(`https://programassociales.smt.gob.ar/?auth=${token}`);
-    url.searchParams.append("auth", token);
-    window.open(url.toString(), "_blank");
-  };
-
-  const irAGESTIONTURNOS = () => {
-    const token = localStorage.getItem("token");
-    const url = new URL(`https://turnos.smt.gob.ar/?auth=${token}#/admin`);
-    url.searchParams.append("auth", token);
-    window.open(url.toString(), "_blank");
-  };
-
-  const irAAtencionCiudadana = () => {
-    const token = localStorage.getItem("token");
-    const url = new URL(`https://ac.smt.gob.ar/?auth=${token}`);
-    url.searchParams.append("auth", token);
-    window.open(url.toString(), "_blank");
-  };
-  const irAPATRIMONIOMUNICIPAL = () => {
-    const url = new URL(`https://patrimonio.smt.gob.ar/`);
-
-    window.open(url.toString(), "_blank");
-  };
-
-  const irAEducacion = () => {
-    const token = localStorage.getItem("token");
-    const url = new URL(`https://portal.educacion.smt.gob.ar/?auth=${token}`);
-    url.searchParams.append("auth", token);
-    window.open(url.toString(), "_blank");
-  }
 
   const irACortesProgramados = () => {
     const token = localStorage.getItem("token");
@@ -277,7 +143,7 @@ export default function ListaPrueba() {
         </ListItemButton>
 
         {/* Construye cada elemento del menú */}
-        {menuItems.map((item, index) => (
+        {menuItems.sort((a,b) =>a.label.localeCompare(b.label)).map((item, index) => (
           <div
             key={index}
             className="d-flex justify-content-between w-100 flex-column"
@@ -301,7 +167,7 @@ export default function ListaPrueba() {
                 unmountOnExit
               >
                 <List component="div">
-                  {item.subItems.map((subItem, subIndex) => (
+                  {item.subItems.sort((a,b) =>a.descripcion.localeCompare(b.descripcion)).map((subItem, subIndex) => (
                     <ListItemButton
                       key={subIndex}
                       component="a"
@@ -309,44 +175,7 @@ export default function ListaPrueba() {
                     >
                       <ListItemText
                         primary={subItem.descripcion}
-                        onClick={
-                          subItem.descripcion === "Gestión Financiera"
-                            ? () => irAGAF()
-                            : subItem.descripcion === "Gerencia de Datos"
-                              ? () => irAGED()
-                              : subItem.descripcion === "Capital Humano"
-                                ? () => irACAPHUMANO()
-                                : subItem.descripcion === "Sistema de Admisión"
-                                  ? () => irSAEP()
-                                  : subItem.descripcion === "Boletín Municipal"
-                                    ? () => irABOLETIN()
-                                    : subItem.descripcion === "Carnet de Manejo"
-                                      ? () => irATURNOS()
-                                      : subItem.descripcion === "Licitaciones y Concursos"
-                                        ? () => irALICITACIONES()
-                                        : subItem.descripcion === "Catastro"
-                                          ? () => irACATASTRO()
-                                          : subItem.descripcion === "Corralón"
-                                            ? () => irACorralon()
-                                            : subItem.descripcion === "Atención Ciudadana"
-                                              ? () => irAAtencionCiudadana()
-                                              : subItem.descripcion === "Mapa Municipal"
-                                                ? () => irAMAPA()
-                                                : subItem.descripcion === "Programas Sociales"
-                                                  ? () => irAProgramasSociales()
-                                                  : subItem.descripcion === "gestion de turnos"
-                                                    ? () => irAGESTIONTURNOS()
-                                                    : subItem.descripcion === "Patrimonio Municipal"
-                                                      ? () => irAPATRIMONIOMUNICIPAL()
-                                                      : subItem.descripcion === "Panel Educación"
-                                                        ? () => irAEducacion()
-                                                        : subItem.descripcion === "Cortes de Tránsito"
-                                                          ? () => irACortesProgramados()
-                                                          : subItem.descripcion === "ADMINISTRACION DE EVENTOS"
-                                                            ? () => irAEventos()
-                                                            : () => redirigir(`/${subItem.label}`)
-
-                        }
+                        onClick={() => handleOptionClick(subItem)}
                       />
                     </ListItemButton>
                   ))}
@@ -363,7 +192,7 @@ export default function ListaPrueba() {
           <span style={{ fontSize: "1.4em", verticalAlign: "-0.1em" }}>
             ©
           </span>{" "}
-          2024
+          2025
         </p>
       </div>
     </Box>

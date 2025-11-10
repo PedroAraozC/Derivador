@@ -2,13 +2,13 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect, useContext } from "react";
 import { Modal, Box, Button, Divider, InputLabel, Switch, TextField, Snackbar, Alert } from "@mui/material";
-import { EducaContext } from "../../../context/EducaContext";
+import { DerivadorContext } from "../../../context/DerivadorContext";
 import axios from "../../../config/axios";
 
 const ModalAgregar = ({ modalAgregarAbierto, handleClose }) => {
     
     const [deviceWidth, setDeviceWidth] = useState(window.innerWidth);
-    const { actualizador } = useContext(EducaContext);
+    const { actualizador } = useContext(DerivadorContext);
     const [errores, setErrores] = useState({});
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMensaje, setSnackbarMensaje] = useState('');

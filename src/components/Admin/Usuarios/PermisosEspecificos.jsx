@@ -2,14 +2,14 @@
 import { useState, useEffect, useContext } from "react";
 import { Modal, Box, Button, Divider, Switch, Snackbar, Alert } from "@mui/material";
 import axios from "../../../config/axios";
-import { EducaContext } from "../../../context/EducaContext";
+import { DerivadorContext } from "../../../context/DerivadorContext";
 import { Spinner } from "react-bootstrap";
 
 const PermisosEspecificos = ({ empleado, modalPermisosAbierto, handleClose, desactivarCheckbox }) => {
     const [deviceWidth, setDeviceWidth] = useState(window.innerWidth);
     const [buttonDis, setButtonDis] = useState(false);
     const [loading, setLoading] = useState(true);  // Estado para el loader
-    const { actualizador, obtenerProcesosSinId, ProcesosSinId, existeEnPermisoPersona, permisosPorPersona } = useContext(EducaContext);
+    const { actualizador, obtenerProcesosSinId, ProcesosSinId, existeEnPermisoPersona, permisosPorPersona } = useContext(DerivadorContext);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMensaje, setSnackbarMensaje] = useState('');
     const [processStates, setProcessStates] = useState({});
@@ -154,7 +154,9 @@ const PermisosEspecificos = ({ empleado, modalPermisosAbierto, handleClose, desa
                             <form className="d-flex flex-column gap-3 justify-content-center align-items-center formAgregarcausal">
                                 <div className="row w-100">
                                     {Array.isArray(ProcesosSinId) &&
-                                        ProcesosSinId.map((pro) => (
+                                        ProcesosSinId
+                                        .filter((pro) => pro.id_opcion === 4)
+                                        .map((pro) => (
                                             <div key={pro.id_proceso} className="col-md-6 col-sm-12 d-flex align-items-center justify-content-between mb-2">
                                                 <p className="mb-0">{pro.descripcion}</p>
                                                 <div className="form-check form-switch">

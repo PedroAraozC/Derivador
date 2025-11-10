@@ -6,7 +6,7 @@ const PanelTUsuarios = () => {
         <div className="container mt-5">
             <h2>Panel Tipo Usuarios</h2>
         </div>
-        <div className="mt-5 container">
+        <div className="container">
             <TablaTUsuarios/>
         </div>
     </>

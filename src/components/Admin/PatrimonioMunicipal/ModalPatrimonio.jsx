@@ -14,7 +14,7 @@ import {
   imageListClasses,
 } from "@mui/material";
 import axios from "../../../config/axios";
-import { EducaContext } from "../../../context/EducaContext";
+import { DerivadorContext } from "../../../context/DerivadorContext";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import "./ModalPatrimonio.css"
 import { AutoFixHigh } from "@mui/icons-material";
@@ -22,7 +22,7 @@ import axiosPatri from "../../../config/axiosPatrimonio";
 
 const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
   const [deviceWidth, setDeviceWidth] = useState(window.innerWidth);
-  const { actualizador } = useContext(EducaContext);
+  const { actualizador } = useContext(DerivadorContext);
   const [imagenCarrousel1, setImagenCarrousel1] = useState(null);
   const [imagenCarrousel2, setImagenCarrousel2] = useState(null);
   const [imagenCarrousel3, setImagenCarrousel3] = useState(null);
@@ -45,7 +45,7 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
     tipologia,
     obtenerUbicacion,
     ubicacion,
-  } = useContext(EducaContext);
+  } = useContext(DerivadorContext);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMensaje, setSnackbarMensaje] = useState("");
   const handleSnackbarClose = () => {

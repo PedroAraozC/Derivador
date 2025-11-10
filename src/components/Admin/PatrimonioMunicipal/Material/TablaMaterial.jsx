@@ -14,7 +14,7 @@ import {
   Checkbox,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { EducaContext } from "../../../../context/EducaContext";
+import { DerivadorContext } from "../../../../context/DerivadorContext";
 import ModalMaterial from "./ModalMaterial";
 
 const TablaMaterial = () => {
@@ -22,7 +22,7 @@ const TablaMaterial = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [modalAbierto, setModalAbierto] = useState(false);
   const [materialSeleccionado, setMaterialSeleccionado] = useState(null);
-  const { material, obtenerMaterial, refresh } = useContext(EducaContext);
+  const { material, obtenerMaterial, refresh } = useContext(DerivadorContext);
   const [paginatedArray, setPaginatedArray] = useState([]);
   const navigate = useNavigate();
 

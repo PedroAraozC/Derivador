@@ -12,7 +12,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { Snackbar } from "@mui/material";
 import Alert from "@mui/material/Alert";
 import axios from "../../../config/axios";
-import { EducaContext } from "../../../context/EducaContext";
+import { DerivadorContext } from "../../../context/DerivadorContext";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import axiosPatri from "../../../config/axiosPatrimonio";
 import { useNavigate } from "react-router-dom";
@@ -43,7 +43,7 @@ const AgregarPatrimonio = () => {
     tipologia,
     obtenerUbicacion,
     ubicacion,
-  } = useContext(EducaContext);
+  } = useContext(DerivadorContext);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMensaje, setSnackbarMensaje] = useState("");
   const handleSnackbarClose = () => {

@@ -11,7 +11,7 @@ import TablePagination from "@mui/material/TablePagination";
 import Paper from "@mui/material/Paper";
 import { Button } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
-import { EducaContext } from "../../../context/EducaContext";
+import { DerivadorContext } from "../../../context/DerivadorContext";
 import ModalGenero from "./ModalGenero";
 import ModalAgregar from "./ModalAgregar";
 
@@ -22,7 +22,7 @@ const TablaGenero = () => {
     const [modalAbierto, setModalAbierto] = useState(false);
     const [modalAgregarAbierto, setModalAgregarAbierto] = useState(false);
     const [generoSeleccionado, setGeneroSeleccionado] = useState(null);
-    const { generos, obtenerGeneros, refresh } = useContext(EducaContext);
+    const { generos, obtenerGeneros, refresh } = useContext(DerivadorContext);
     const [paginatedArray, setPaginatedArray] = useState([]);
 
     //Funcion para listar las convocatorias
