@@ -88,8 +88,6 @@ const NuevaCard = ({ options, titulo, icono: Icono, user }) => {
 
     return (
         <Card
-            onMouseEnter={() => setHovered(true)}
-            onMouseLeave={() => setHovered(false)}
             onClick={() => setHovered(!hovered)}
             sx={{
                 width: '250px',
