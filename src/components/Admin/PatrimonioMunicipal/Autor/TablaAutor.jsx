@@ -12,7 +12,7 @@ import Paper from "@mui/material/Paper";
 import { Button } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import { useNavigate } from "react-router-dom";
-import { EducaContext } from "../../../../context/EducaContext";
+import { DerivadorContext } from "../../../../context/DerivadorContext";
 import ModalAutor from "./ModalAutor";
 
 const TablaAutor = () => {
@@ -20,7 +20,7 @@ const TablaAutor = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [modalAbierto, setModalAbierto] = useState(false);
   const [autorSeleccionado, setAutorSeleccionado] = useState(null);
-  const { autor, obtenerAutor, refresh } = useContext(EducaContext);
+  const { autor, obtenerAutor, refresh } = useContext(DerivadorContext);
   const [paginatedArray, setPaginatedArray] = useState([]);
   const navigate = useNavigate();
 

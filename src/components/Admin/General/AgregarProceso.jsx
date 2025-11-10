@@ -1,134 +1,138 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import { Form, InputGroup, Modal } from "react-bootstrap"
-import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
-import { Switch } from "@mui/material";
+import {
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    TextField,
+    Switch,
+    FormControlLabel,
+    Button,
+    Box,
+} from "@mui/material";
 import Swal from "sweetalert2";
 import axios from "../../../config/axios";
 
-const AgregarProceso = ({ option }) => {
-
-    const [isModalAttachOpen, setIsModalAttachOpen] = useState(false);
-    const [nombre_proceso, setNombre_proceso] = useState("");
+const AgregarProceso = ({ option, isModalOpen, setIsModalOpen }) => {
+    const [nombreProceso, setNombreProceso] = useState("");
     const [descripcion, setDescripcion] = useState("");
     const [habilita, setHabilita] = useState(false);
 
-    const limpia_campos = () => {
-        setNombre_proceso("");
+    const limpiarCampos = () => {
+        setNombreProceso("");
         setDescripcion("");
         setHabilita(false);
     };
-    const closeModalAttach = () => {
-        limpia_campos();
-        setIsModalAttachOpen(false);
+
+    const handleClose = () => {
+        limpiarCampos();
+        setIsModalOpen(false);
     };
-    const agregar = async () => {
+
+    const handleAgregar = async () => {
         const datos = {
-            id_opcion: option.subItems[0].id_opcion,
-            nombre_proceso: nombre_proceso,
-            descripcion: descripcion,
+            id_opcion: option?.subItems?.[0]?.id_opcion,
+            nombre_proceso: nombreProceso.trim(),
+            descripcion: descripcion.trim(),
             habilita: habilita ? "1" : "0",
         };
 
-        if (nombre_proceso.trim() === "" || descripcion.trim() === "") {
-            alert('Formulario incorrecto');
+        if (!datos.nombre_proceso || !datos.descripcion) {
+            Swal.fire({
+                title: "Formulario incompleto",
+                text: "Por favor completa todos los campos.",
+                icon: "warning",
+                confirmButtonText: "Entendido",
+            });
             return;
         }
-        console.log(datos)
+
         try {
             const response = await axios.post("/admin/altaProceso", datos);
-            console.log(response.data);
+            console.log(response)
             Swal.fire({
                 title: "¡Agregado!",
-                text: "Tu proceso ha sido agregado.",
-                icon: "success"
+                text: "El proceso fue agregado correctamente.",
+                icon: "success",
+                timer: 1500,
             });
+            setIsModalOpen(false);
         } catch (error) {
             console.error("Error al agregar el proceso:", error);
-            throw new Error("Error al agregar el proceso");
+            Swal.fire({
+                title: "Error",
+                text: "No se pudo agregar el proceso.",
+                icon: "error",
+            });
         }
-        setIsModalAttachOpen(false);
     };
-
 
     return (
         <>
-            <Modal
-                show={isModalAttachOpen}
-                onHide={closeModalAttach}
-                size="lg"
-                backdrop="static"
-                centered
-                keyboard={false}
-                scrollable={true}
+            <Dialog
+                open={isModalOpen}
+                onClose={(_, reason) => {
+                    // Evita que se cierre al hacer clic fuera o presionar Escape
+                    if (reason !== "backdropClick" && reason !== "escapeKeyDown") {
+                        handleClose();
+                    }
+                }}
+                maxWidth="sm"
+                fullWidth
             >
-                <Modal.Header closeButton>
-                    <Modal.Title>
-                        Agregar PROCESO para {option.nombre_opcion}
-                    </Modal.Title>
-                </Modal.Header>
-                <Modal.Body className="p-4">
-                    <InputGroup>
-                        <Form.Control
-                            id="nombre_proceso"
-                            placeholder="Nombre del Proceso"
-                            value={nombre_proceso}
-                            onChange={(e) => setNombre_proceso(e.target.value)}
-                            className="mb-2"
+                <DialogTitle>Agregar proceso para {option?.nombre_opcion}</DialogTitle>
+                <DialogContent dividers>
+                    <Box display="flex" flexDirection="column" gap={2} mt={1}>
+                        <TextField
+                            label="Nombre del proceso"
+                            variant="outlined"
+                            fullWidth
+                            value={nombreProceso}
+                            onChange={(e) => setNombreProceso(e.target.value)}
+                            required
                         />
-                    </InputGroup>
-                    <InputGroup>
-                        <Form.Control
-                            id="descripcion"
-                            placeholder="Descripcion del Proceso"
+                        <TextField
+                            label="Descripción"
+                            variant="outlined"
+                            fullWidth
                             value={descripcion}
                             onChange={(e) => setDescripcion(e.target.value)}
-                            className="mb-2"
+                            required
                         />
-                    </InputGroup>
-                    <p className="m-0 px-2">HABILITA</p>
-                    <Switch
-                        id={"habilita"}
-                        checked={habilita}
-                        label="Habilita"
-                        onChange={(e) => setHabilita(e.target.checked)}
-                    />
-                </Modal.Body>
-                <Modal.Footer>
-                    <div className="justify-content-center mt-2">
-                        <button
-                            onClick={agregar}
-                            className="btn btn-primary btn-sm m-2"
-                            style={{
-                                float: "right",
-                                backgroundColor: "green",
-                                borderColor: "green",
-                            }}
-                        >
-                            ACEPTAR
-                        </button>
-                        <button
-                            onClick={closeModalAttach}
-                            className="btn btn-secondary btn-sm m-2"
-                            style={{
-                                float: "right",
-                                backgroundColor: "#990000",
-                                borderColor: "#990000",
-                            }}
-                        >
-                            CANCELAR
-                        </button>
-                    </div>
-                </Modal.Footer>
-            </Modal>
-
-            <AddCircleOutlineOutlinedIcon
-                onClick={() => setIsModalAttachOpen(true)}
-                sx={{ fontSize: '25px' }}
-                style={{ cursor: "pointer" }} />
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={habilita}
+                                    onChange={(e) => setHabilita(e.target.checked)}
+                                    color="primary"
+                                />
+                            }
+                            label="Habilitado"
+                        />
+                    </Box>
+                </DialogContent>
+                <DialogActions sx={{ justifyContent: "center", p: 2 }}>
+                    <Button
+                        onClick={handleAgregar}
+                        variant="contained"
+                        color="success"
+                        sx={{ width: 120 }}
+                    >
+                        Aceptar
+                    </Button>
+                    <Button
+                        onClick={handleClose}
+                        variant="contained"
+                        color="error"
+                        sx={{ width: 120 }}
+                    >
+                        Cancelar
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </>
+    );
+};
 
-    )
-}
-
-export default AgregarProceso
+export default AgregarProceso;

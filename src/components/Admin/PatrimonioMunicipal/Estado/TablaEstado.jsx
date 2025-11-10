@@ -13,14 +13,14 @@ import ModalEstado from "./ModalEstado";
 import { Button } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import { useNavigate } from "react-router-dom";
-import { EducaContext } from "../../../../context/EducaContext";
+import { DerivadorContext } from "../../../../context/DerivadorContext";
 
 const TablaEstado = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [modalAbierto, setModalAbierto] = useState(false);
   const [estadoSeleccionada, setEstadoSeleccionada] = useState(null);
-  const { estado, obtenerEstado, refresh } = useContext(EducaContext);
+  const { estado, obtenerEstado, refresh } = useContext(DerivadorContext);
   const [paginatedArray, setPaginatedArray] = useState([]);
   const navigate = useNavigate();
 

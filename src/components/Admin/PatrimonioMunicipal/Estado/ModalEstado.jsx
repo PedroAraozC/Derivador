@@ -12,14 +12,14 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material";
-import { EducaContext } from "../../../../context/EducaContext";
+import { DerivadorContext } from "../../../../context/DerivadorContext";
 import axios from "../../../../config/axios";
 import axiosLici from "../../../../config/axiosLicitaciones";
 import axiosPatri from "../../../../config/axiosPatrimonio";
 
 const ModalEstado = ({ estados, modalAbierto, handleClose }) => {
   const [deviceWidth, setDeviceWidth] = useState(window.innerWidth);
-  const { actualizador } = useContext(EducaContext);
+  const { actualizador } = useContext(DerivadorContext);
   const [errores, setErrores] = useState({});
   const [buttonDis, setButtonDis] = useState(false);
 

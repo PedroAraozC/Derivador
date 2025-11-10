@@ -13,14 +13,14 @@ import ModalTipologia from "./ModalTipologia";
 import { Button } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import { useNavigate } from "react-router-dom";
-import { EducaContext } from "../../../../context/EducaContext";
+import { DerivadorContext } from "../../../../context/DerivadorContext";
 
 const TablaTipologia = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [modalAbierto, setModalAbierto] = useState(false);
   const [tipologiaSeleccionada, setTipologiaSeleccionada] = useState(null);
-  const { tipologia, obtenerTipologia, refresh } = useContext(EducaContext);
+  const { tipologia, obtenerTipologia, refresh } = useContext(DerivadorContext);
   const [paginatedArray, setPaginatedArray] = useState([]);
   const navigate = useNavigate();
 

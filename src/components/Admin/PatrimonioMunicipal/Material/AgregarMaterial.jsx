@@ -5,14 +5,14 @@ import { Snackbar } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import { useNavigate } from "react-router-dom";
 import axios from "../../../../config/axios";
-import { EducaContext } from "../../../../context/EducaContext";
+import { DerivadorContext } from "../../../../context/DerivadorContext";
 import axiosPatri from "../../../../config/axiosPatrimonio";
 
 const AgregarMaterial = () => {
 
   const [errores, setErrores] = useState({});
   const navigate = useNavigate()
-  const { actualizador } = useContext(EducaContext);
+  const { actualizador } = useContext(DerivadorContext);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMensaje, setSnackbarMensaje] = useState('');
   const handleSnackbarClose = () => {

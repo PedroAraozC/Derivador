@@ -2,13 +2,13 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect, useContext } from "react";
 import { Modal, Box, Button, Divider, InputLabel, Switch, TextField, Snackbar, Alert } from "@mui/material";
-import { EducaContext } from "../../../context/EducaContext";
+import { DerivadorContext } from "../../../context/DerivadorContext";
 import axios from "../../../config/axios";
 
 const ModalAgregar = ({ modalAgregarAbierto, handleClose }) => {
     
     const [deviceWidth, setDeviceWidth] = useState(window.innerWidth);
-    const { actualizador } = useContext(EducaContext);
+    const { actualizador } = useContext(DerivadorContext);
     const [errores, setErrores] = useState({});
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMensaje, setSnackbarMensaje] = useState('');
@@ -101,8 +101,8 @@ const ModalAgregar = ({ modalAgregarAbierto, handleClose }) => {
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        width: isMobile ? "90%" : "1200px",
-        height: "50%",
+        width: isMobile ? "90%" : "500px",
+        height: "40%",
         bgcolor: "background.paper",
         border: "none",
         borderRadius: "8px",
@@ -121,7 +121,7 @@ const ModalAgregar = ({ modalAgregarAbierto, handleClose }) => {
                 <Divider />
                 <div className="d-flex flex-column justify-content-center">
                     <form className="d-flex justify-content-around flex-column">
-                        <div className="w-50 d-flex flex-column gap-3 p-2">
+                        <div className="w-100 d-flex flex-column gap-3 p-2">
                             <InputLabel>Nombre</InputLabel>
                             <TextField
                                 placeholder='Ej: Administrador'
@@ -130,7 +130,7 @@ const ModalAgregar = ({ modalAgregarAbierto, handleClose }) => {
                                 value={formularioValues.nombre_tusuario}
                             />
                         </div>
-                        <div className="w-50 d-flex flex-column gap-3 p-2">
+                        <div className="w-100 d-flex flex-column gap-3 p-2">
                             <InputLabel>Observacion</InputLabel>
                             <TextField
                                 placeholder='Max 140 caracteres'

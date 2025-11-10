@@ -11,7 +11,7 @@ import TablePagination from "@mui/material/TablePagination";
 import Paper from "@mui/material/Paper";
 import { Button, TextField } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
-import { EducaContext } from "../../../context/EducaContext";
+import { DerivadorContext } from "../../../context/DerivadorContext";
 import ModalReparticiones from "./ModalReparticiones";
 import ModalAgregar from "./ModalAgregar";
 
@@ -22,7 +22,7 @@ const TablaReparticiones = () => {
     const [modalAbierto, setModalAbierto] = useState(false);
     const [modalAgregarAbierto, setModalAgregarAbierto] = useState(false);
     const [reparticionSeleccionado, setReparticionSeleccionado] = useState(null);
-    const { reparticiones, obtenerReparticiones, refresh } = useContext(EducaContext);
+    const { reparticiones, obtenerReparticiones, refresh } = useContext(DerivadorContext);
     const [paginatedArray, setPaginatedArray] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
 

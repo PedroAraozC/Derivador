@@ -1,19 +1,11 @@
 import Home from "./components/Home/Home";
-// import Login from "./components/Login/Login";
 import { Routes, Route, HashRouter } from "react-router-dom";
 import Layout from "./common/Layout";
 import CapitalHumano from "./pages/CapitalHumano/CapitalHumano";
 import Reclamos from "./pages/EstadisticasReclamos/Reclamos";
 import PrivateRoute from "./routes/PrivateRoute";
-// import { Registro } from "./components/Registro/Registro";
 import PanelAdmin from "./components/Admin/General/PanelAdmin";
 import PanelContratacion from "./components/Admin/Contratacion/PanelContratacion";
-import PanelEducacion from "./components/Admin/Educacion/PanelEducacion";
-import AgregarEstablecimiento from "./components/Admin/Educacion/Establecimientos/AgregarEstablecimiento";
-import AgregarCaracter from "./components/Admin/Educacion/Caracter/AgregarCaracter";
-import AgregarCausal from "./components/Admin/Educacion/Causal/AgregarCausal";
-import AgregarConvocatoria from "./components/Admin/Educacion/Convocatorias/AgregarConvocatoria";
-import ProviderEducacion from "./context/EducaContext";
 import PanelPatrimonioMunicipal from "./components/Admin/PatrimonioMunicipal/PanelPatrimonioMunicipal"
 import AgregarAutor from "./components/Admin/PatrimonioMunicipal/Autor/AgregarAutor"
 import AgregarPatrimonio from "./components/Admin/PatrimonioMunicipal/AgregarPatrimonio";
@@ -29,7 +21,6 @@ import PanelReparticiones from "./components/Admin/Reparticiones/PanelReparticio
 import PermisosTUsuario from "./components/Admin/TiposUsuarios/PermisosTUsuario";
 import PanelUsuarios from "./components/Admin/Usuarios/PanelUsuarios";
 import PrivateRouteAdmin from "./routes/PrivateRouteAdmin";
-import PanelGestion from "./components/PanelGestion/PanelGestion";
 import SuccessPage from "./components/BotonDePagoMacro/SuccessPage";
 import ErrorPage from "./components/BotonDePagoMacro/ErrorPage";
 import Montos from "./components/TribunalDeFaltas/Montos";
@@ -38,10 +29,7 @@ import FormularioBusquedaUsuario from "./components/ValidarUsuarios/FormularioBu
 import Solicitud_permisos from "./pages/ViaPublica/Solicitud_permisos";
 import GasATuCasa from "./components/GasATuCasa/GasATuCasa";
 import PanelPersonasGas from "./pages/ElGasLlegaATuCasaBackOffice/PanelPersonasGas";
-// import PrivateRouteAdminLicitaciones from "./routes/PrivateRouteAdminLicitaciones";
-// import PrivateRouteAdminPatrimonio from "./routes/PrivateRouteAdminPatrimonio";
-// import PrivateRouteEmpleadoJerarquico from "./routes/PrivateRouteEmpleadoJerarquico";
-// import PrivateRouteEducacion from "./routes/PrivateRouteEducacion";
+import ProviderDerivador from "./context/DerivadorContext";
 
 function App() {
   const url = new URL(window.location.href);
@@ -66,11 +54,9 @@ function App() {
     <>
       <HashRouter>
         <Layout>
-          <ProviderEducacion>
+          <ProviderDerivador>
             <Routes>
-              {/* <Route exact path="/*" element={<Home/>} /> */}
               <Route exact path="/*" element={<PrivateRoute key="home"><Home /></PrivateRoute>} />
-              {/* <Route exact path="/registro" element={<Registro />} /> */}
               <Route exact path="/estadistica_rrhh" element={<PrivateRoute key="cap-humano"><CapitalHumano /></PrivateRoute>}/>
               <Route exact path="/estadistica_ac" element={<PrivateRoute key="reclamos"><Reclamos /></PrivateRoute>}/>
 
@@ -101,20 +87,6 @@ function App() {
               <Route exact path="/agregar-ubicacion" element={<PrivateRoute><AgregarUbicacion /></PrivateRoute>} />
               {/*PATRIMONIO*/ }
 
-
-              {/* EDUCACION */}
-              {/* <Route exact path="/panel_educacion" element={<PrivateRoute><PanelEducacion /></PrivateRoute>} /> */}
-              <Route exact path="/agregar-establecimiento" element={<PrivateRoute><AgregarEstablecimiento /></PrivateRoute>} />
-              <Route exact path="/agregar-caracter" element={<PrivateRoute><AgregarCaracter /></PrivateRoute>} />
-              <Route exact path="/agregar-causal" element={<PrivateRoute><AgregarCausal /></PrivateRoute>} />
-              <Route exact path="/agregar-convoca" element={<PrivateRoute><AgregarConvocatoria /></PrivateRoute>} />
-              {/* EDUCACION */}
-
-
-              {/* PANEL DE GESTION */}
-              <Route exact path="/panel_gestion" element={<PrivateRoute><PanelGestion /></PrivateRoute>} />
-              {/* PANEL DE GESTION */}
-
               {/* BOTON DE PAGO */}
               <Route exact path="/LibreDeudaPagoExitoso" element={<PrivateRoute key="success"><SuccessPage/></PrivateRoute>} />
               <Route exact path="/LibreDeudaPagoRechazado" element={<PrivateRoute key="errorPago"><ErrorPage/></PrivateRoute>} />
@@ -130,7 +102,7 @@ function App() {
               <Route exact path="/el-gas-a-tu-casa-backoffice" element={<PrivateRoute key="elGasATuCasaBackOffice"><PanelPersonasGas /></PrivateRoute>} />
 
             </Routes>
-          </ProviderEducacion>
+          </ProviderDerivador>
         </Layout>
       </HashRouter>
     </>

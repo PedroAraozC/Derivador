@@ -3,14 +3,14 @@
 import { useState, useEffect, useContext } from "react";
 import { Modal, Box, Button, Divider, Switch, Snackbar, Alert } from "@mui/material";
 import axios from "../../../config/axios";
-import { EducaContext } from "../../../context/EducaContext";
+import { DerivadorContext } from "../../../context/DerivadorContext";
 import img from '../../../assets/logoMuni-sm.png'
 import './loader.css'
 
 const PermisosProcesoModal = ({ modalAbiertoPPro, handleClose, proceso }) => {
     const [deviceWidth, setDeviceWidth] = useState(window.innerWidth);
     const [buttonDis, setButtonDis] = useState(false);
-    const { actualizador, obtenerPermisosPorTUsuarios, permisosTUsuarios } = useContext(EducaContext);
+    const { actualizador, obtenerPermisosPorTUsuarios, permisosTUsuarios } = useContext(DerivadorContext);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMensaje, setSnackbarMensaje] = useState('');
     const [processStates, setProcessStates] = useState({});

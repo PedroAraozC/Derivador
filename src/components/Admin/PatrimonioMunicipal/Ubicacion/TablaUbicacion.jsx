@@ -12,7 +12,7 @@ import Paper from "@mui/material/Paper";
 import { Button } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import { useNavigate } from "react-router-dom";
-import { EducaContext } from "../../../../context/EducaContext";
+import { DerivadorContext } from "../../../../context/DerivadorContext";
 import ModalUbicacion from "./ModalUbicacion";
 
 const TablaUbicacion = () => {
@@ -20,7 +20,7 @@ const TablaUbicacion = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [modalAbierto, setModalAbierto] = useState(false);
   const [ubicacionSeleccionada, setUbicacionSeleccionada] = useState(null);
-  const { ubicacion, obtenerUbicacion, refresh } = useContext(EducaContext);
+  const { ubicacion, obtenerUbicacion, refresh } = useContext(DerivadorContext);
   const [paginatedArray, setPaginatedArray] = useState([]);
   const navigate = useNavigate();
 
