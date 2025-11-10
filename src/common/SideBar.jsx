@@ -116,6 +116,13 @@ export default function ListaPrueba() {
   };
 
 
+  const irACortesProgramados = () => {
+    const token = localStorage.getItem("token");
+    const url = new URL(`https://cortes.smt.gob.ar/?auth=${token}`);
+    url.searchParams.append("auth", token);
+    window.open(url.toString(), "_blank");
+  }
+
   const list = () => (
     <Box
       sx={{ width: 250 }}

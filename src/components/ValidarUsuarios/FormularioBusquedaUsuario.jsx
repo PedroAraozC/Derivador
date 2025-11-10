@@ -195,6 +195,22 @@ const FormularioBusquedaUsuario = () => {
             inputProps={{ maxLength: 80 }}
           />
           <TextField
+            label="Teléfono"
+            name="telefono_persona"
+            fullWidth
+            margin="normal"
+            value={usuario.telefono_persona}
+            onChange={(e) => {
+              const value = e.target.value;
+              // Permitir solo números enteros
+              if (/^\d*$/.test(value)) {
+                handleChange(e);
+              }
+            }}
+            InputLabelProps={{ shrink: true }}
+            inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', maxLength: 11 }}
+          />
+          <TextField
           type='text'
             label="Clave"
             name="clave"
