@@ -1,11 +1,34 @@
 /* eslint-disable react/prop-types */
 import { Box, Card, CardContent, Typography } from "@mui/material";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useRef } from "react";
 
-const NuevaCard = ({ options, titulo, icono: Icono, user }) => {
-    const [hovered, setHovered] = useState(false);
+const NuevaCard = ({ options, titulo, icono: Icono, user, cardId, isOpen, onOpen, onClose }) => {
+    const cardRef = useRef(null);
     const navigate = useNavigate();
+
+    const handleCardClick = () => {
+        if (isOpen) {
+            onClose();
+        } else {
+            onOpen();
+        }
+    };
+
+    useEffect(() => {
+        if (!isOpen) return;
+
+        const handleClickOutside = (event) => {
+            if (cardRef.current && !cardRef.current.contains(event.target)) {
+                onClose();
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [isOpen, onClose]);
 
     const opcionesOrdenadas = options
         ?.slice()
@@ -88,7 +111,8 @@ const NuevaCard = ({ options, titulo, icono: Icono, user }) => {
 
     return (
         <Card
-            onClick={() => setHovered(!hovered)}
+            ref={cardRef}
+            onClick={() => handleCardClick()}
             sx={{
                 width: '250px',
                 borderRadius: 3,
@@ -107,7 +131,7 @@ const NuevaCard = ({ options, titulo, icono: Icono, user }) => {
                     display: "flex",
                     flexDirection: "column",
                     transition: "max-height .6s ease",
-                    maxHeight: hovered ? '100%' : 60,
+                    maxHeight: isOpen ? '100%' : 60,
                 }}
             >
                 <div className="d-flex gap-2 align-items-center mb-2">
@@ -126,15 +150,20 @@ const NuevaCard = ({ options, titulo, icono: Icono, user }) => {
                 {/* Opciones que aparecen al hover */}
                 <Box
                     sx={{
-                        opacity: hovered ? 1 : 0,
+                        opacity: isOpen ? 1 : 0,
                         transition: "opacity 1s ease",
-                        pointerEvents: hovered ? "auto" : "none",
+                        pointerEvents: isOpen ? "auto" : "none",
                         display: "flex",
                         flexDirection: "column",
                         gap: 1,
                         width: "100%",
                         justifyContent: "center",
                         alignItems: "center",
+                        maxHeight: {
+                            xs: 300, // para pantallas pequeñas
+                            sm: 600, // desde sm en adelante
+                        },
+                        overflowY: "auto",
                     }}
                 >
                     {opcionesOrdenadas?.map((option) => (
