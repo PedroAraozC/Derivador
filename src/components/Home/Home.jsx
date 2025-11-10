@@ -6,14 +6,25 @@ import QuizIcon from '@mui/icons-material/Quiz';
 import EventIcon from '@mui/icons-material/Event';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import BadgeIcon from '@mui/icons-material/Badge';
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const Home = () => {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [openedCard, setOpenedCard] = useState(null);
   const { user, obtenerPermisos, permisos } = useStore();
 
   useEffect(() => {
     obtenerPermisos(user?.id_tusuario, user?.id_persona);
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const permisosHabilitados = permisos.filter(
@@ -60,17 +71,50 @@ const Home = () => {
         </div>
         <div className="mt-4 d-flex gap-3 flex-wrap justify-content-center px-5">
           <div>
-            <NuevaCard options={optionsConsultas} titulo={'Consultas'} icono={QuizIcon} />
+            <NuevaCard 
+              options={optionsConsultas} 
+              titulo={'Consultas'} 
+              icono={QuizIcon} 
+              cardId="consultas"
+              isOpen={openedCard === "consultas"}
+              onOpen={() => setOpenedCard("consultas")}
+              onClose={() => setOpenedCard(null)}
+            />
           </div>
           <div>
-            <NuevaCard options={optionsTramites} titulo={'Trámites'} icono={ArrowOutwardIcon} />
+            <NuevaCard 
+              options={optionsTramites} 
+              titulo={'Trámites'} 
+              icono={ArrowOutwardIcon}
+              cardId="tramites"
+              isOpen={openedCard === "tramites"}
+              onOpen={() => setOpenedCard("tramites")}
+              onClose={() => setOpenedCard(null)}
+            />
           </div>
           <div>
-            <NuevaCard options={optionsTurnos} titulo={'Turnos'} icono={EventIcon} user={user}/>
+            <NuevaCard 
+              options={optionsTurnos} 
+              titulo={'Turnos'} 
+              icono={EventIcon} 
+              user={user}
+              cardId="turnos"
+              isOpen={openedCard === "turnos"}
+              onOpen={() => setOpenedCard("turnos")}
+              onClose={() => setOpenedCard(null)}
+            />
           </div>
           {user.id_tusuario !== 3 ? (
           <div>
-            <NuevaCard options={optionsApps} titulo={'Empleados'} icono={BadgeIcon} />
+            <NuevaCard 
+              options={optionsApps} 
+              titulo={'Empleados'} 
+              icono={BadgeIcon}
+              cardId="empleados"
+              isOpen={openedCard === "empleados"}
+              onOpen={() => setOpenedCard("empleados")}
+              onClose={() => setOpenedCard(null)}
+            />
           </div>
           ) : null
             }
