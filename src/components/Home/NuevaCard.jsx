@@ -105,7 +105,7 @@ const NuevaCard = ({ options, titulo, icono: Icono, user, cardId, isOpen, onOpen
             }
         );
         const data = await resp.json();
-        const url = new URL(`${ data.url }`);
+        const url = new URL(`${data.url}`);
         window.open(url.toString(), "_blank");
     };
 
@@ -114,10 +114,9 @@ const NuevaCard = ({ options, titulo, icono: Icono, user, cardId, isOpen, onOpen
             ref={cardRef}
             onClick={() => handleCardClick()}
             sx={{
-                width: '250px',
+                width: '300px',
                 borderRadius: 3,
                 boxShadow: 3,
-                transition: "all 1s ease",
                 cursor: "pointer",
                 overflow: "hidden",
                 "&:hover": {
@@ -130,8 +129,8 @@ const NuevaCard = ({ options, titulo, icono: Icono, user, cardId, isOpen, onOpen
                 sx={{
                     display: "flex",
                     flexDirection: "column",
-                    transition: "max-height .6s ease",
-                    maxHeight: isOpen ? '100%' : 60,
+                    maxHeight: isOpen ? 800 : 60, // por ejemplo
+                    overflowY: isOpen ? "auto" : "hidden", // ✅
                 }}
             >
                 <div className="d-flex gap-2 align-items-center mb-2">
@@ -147,23 +146,17 @@ const NuevaCard = ({ options, titulo, icono: Icono, user, cardId, isOpen, onOpen
                     </Typography>
                 </div>
 
-                {/* Opciones que aparecen al hover */}
                 <Box
                     sx={{
-                        opacity: isOpen ? 1 : 0,
-                        transition: "opacity 1s ease",
                         pointerEvents: isOpen ? "auto" : "none",
                         display: "flex",
                         flexDirection: "column",
-                        gap: 1,
+                        gap: 0,
                         width: "100%",
                         justifyContent: "center",
                         alignItems: "center",
-                        maxHeight: {
-                            xs: 300, // para pantallas pequeñas
-                            sm: 600, // desde sm en adelante
-                        },
                         overflowY: "auto",
+                        minHeight: isOpen ? 100 : 0,
                     }}
                 >
                     {opcionesOrdenadas?.map((option) => (
