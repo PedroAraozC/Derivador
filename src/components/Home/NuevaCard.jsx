@@ -51,6 +51,12 @@ const NuevaCard = ({ options, titulo, icono: Icono, user, cardId, isOpen, onOpen
                 case "castracion_animal":
                     irATURNOS(1800);
                     break;
+                case "campus_ambiental":
+                    irATURNOS(1510);
+                    break;
+                case "catastro":
+                    irATURNOS(515);
+                    break;
                 case "licencia_conducir":
                     irATURNOS(1711);
                     break;
