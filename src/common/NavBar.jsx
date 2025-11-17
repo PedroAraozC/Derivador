@@ -35,6 +35,16 @@ export default function NavBar() {
     window.location.href = url.toString();
   };
 
+    const goToCambiarClave = () => {
+    setAnchorEl(null);
+
+    const url = new URL(`https://perfil.smt.gob.ar/#/cambiarContraseña/true`);
+    //const url = new URL(`http://localhost:5175/`);
+    url.searchParams.append("auth", localStorage.getItem("token"));
+    url.searchParams.append("origin", "cidituc");
+    window.location.href = url.toString();
+  };
+
   const handleLogout = () => {
     logout();
     // navigate("https://ciudaddigital.smt.gob.ar/");
@@ -85,7 +95,8 @@ export default function NavBar() {
                       open={Boolean(anchorEl)}
                       onClose={handleClose}
                     >
-                      <MenuItem onClick={goToPerfil}>Mi perfil</MenuItem>
+                      <MenuItem onClick={goToPerfil}>Mi Perfil</MenuItem>
+                      <MenuItem onClick={goToCambiarClave}>Cambiar Clave</MenuItem>
                       <MenuItem onClick={handleLogout}>Cerrar Sesión</MenuItem>
                     </Menu>
                   </div>
