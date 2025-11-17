@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import axios from "../../config/axios";
 
-const ModalMultas = ({ openDialog, setOpenModal, user, asunto, campo }) => {
+const ModalMultas = ({ openDialog, setOpenModal, user, asunto, campo, destino }) => {
   const [message, setMessage] = useState("");
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [error, setError] = useState("error");
@@ -98,7 +98,7 @@ const ModalMultas = ({ openDialog, setOpenModal, user, asunto, campo }) => {
               id="email"
               type="email"
               style={{ fontWeight: "bold" }}
-              value="tmfconsultas@smt.gob.ar"
+              value={destino}
             />
           </FormControl>
 

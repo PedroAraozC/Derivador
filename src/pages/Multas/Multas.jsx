@@ -18,8 +18,8 @@ const Multas = () => {
         setOpenModal(true);
       };
 
-      const abrirModal = (asunto,campo) => {
-        setValoresModal({asunto,campo})
+      const abrirModal = (asunto,campo,destino) => {
+        setValoresModal({asunto,campo,destino})
         handleOpenModal();
       }
 
@@ -29,21 +29,21 @@ const Multas = () => {
          <Link style={{ textDecoration: 'none' }} to="/home"><ArrowBack/> VOLVER</Link>
       <div className='d-flex justify-content-center'>
           <Card
-              onClick={() => abrirModal("Consulta de Multas de Tránsito", "Dominio/DNI")}
+              onClick={() => abrirModal("Consulta de Multas de Tránsito", "Dominio/DNI","tmfconsultas@smt.gob.ar")}
               titulo={"Multas de Tránsito"}
               descripcion={"Consulta de Multas por Dominio."}
               Icono={<FontAwesomeIcon icon={faCar} />}
           />
 
           <Card
-             onClick={() => abrirModal("Consulta de Multas de Catastro", "Padrón y Domicilio")}
+             onClick={() => abrirModal("Consulta de Multas de Catastro", "Padrón y Domicilio","tmflibredeuda@smt.gob.ar")}
               titulo={"Multas de Catastro"}
               descripcion={"Consulta de Multas por Padrón y Domicilio."}
               Icono={<FontAwesomeIcon icon={faBuilding} />}
           />
 
           <Card
-              onClick={() => abrirModal("Consulta de Multas de Bromatología", "CUIT y Razón Social")}
+              onClick={() => abrirModal("Consulta de Multas de Bromatología", "CUIT y Razón Social","tmfconsultas@smt.gob.ar")}
               titulo={"Multas de Bromatología"}
               descripcion={"Consulta de Multas por CUIT y razón social."}
               Icono={<FontAwesomeIcon icon={faBowlFood} />}
@@ -55,6 +55,7 @@ const Multas = () => {
               user={user}
               asunto={valoresModal.asunto}
               campo={valoresModal.campo}
+              destino={valoresModal.destino}
           />
 
       </div>
