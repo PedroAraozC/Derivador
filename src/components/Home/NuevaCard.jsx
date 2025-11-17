@@ -63,7 +63,10 @@ const NuevaCard = ({ options, titulo, icono: Icono, user, cardId, isOpen, onOpen
                 default:
                     break;
             }
-        } else {
+        } else if (option.nombre_proceso === "carnet_sanidad") {
+            const url = new URL(`${option.sistema_externo}`);
+            window.open(url.toString(), "_blank");
+        }else {
             const url = new URL(`${option.sistema_externo}/?auth=${token}`);
             url.searchParams.append("auth", token);
             window.open(url.toString(), "_blank");
