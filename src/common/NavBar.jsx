@@ -38,7 +38,7 @@ export default function NavBar() {
     const goToCambiarClave = () => {
     setAnchorEl(null);
 
-    const url = new URL(`https://perfil.smt.gob.ar/#/cambiarContraseña/true`);
+    const url = new URL(`https://perfil.smt.gob.ar//#/redireccion/password`);
     //const url = new URL(`http://localhost:5175/`);
     url.searchParams.append("auth", localStorage.getItem("token"));
     url.searchParams.append("origin", "cidituc");
