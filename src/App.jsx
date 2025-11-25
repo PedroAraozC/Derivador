@@ -31,6 +31,10 @@ import GasATuCasa from "./components/GasATuCasa/GasATuCasa";
 import PanelPersonasGas from "./pages/ElGasLlegaATuCasaBackOffice/PanelPersonasGas";
 import ProviderDerivador from "./context/DerivadorContext";
 import PrivateRouteUsuarios from "./routes/PrivateRouteUsuarios";
+import CargarExcel from "./components/Combustibles/ImportarExcel";
+import ConsumosTable from "./components/Combustibles/verDatosCargados";
+import VehiculosTable from "./components/Combustibles/verDatosVehiculos";
+import MenuCombustibles from "./components/Combustibles/MenuCombustibles";
 
 function App() {
   const url = new URL(window.location.href);
@@ -101,6 +105,12 @@ function App() {
               {/* OBRAS PUBLICAS */}
               <Route exact path="/el-gas-llega-a-tu-casa" element={<PrivateRoute key="elGasATuCasa"><GasATuCasa /></PrivateRoute>} />
               <Route exact path="/el-gas-a-tu-casa-backoffice" element={<PrivateRoute key="elGasATuCasaBackOffice"><PanelPersonasGas /></PrivateRoute>} />
+
+              {/* COMBUSTIBLES */}
+              <Route exact path="/importarExcelCombustibles" element={<PrivateRoute key="importarExcel"><CargarExcel /></PrivateRoute>} />
+              <Route exact path="/leerDatosCombustibles" element={<PrivateRoute key="VerConsumosCombustibles"><ConsumosTable /></PrivateRoute>} />
+              <Route exact path="/leerDatosVehiculos" element={<PrivateRoute key="vehiculosCombustibles"><VehiculosTable /></PrivateRoute>} />
+               <Route exact path="/menuCombustibles" element={<PrivateRoute key="menuCombustibles"><MenuCombustibles/></PrivateRoute>} />
 
             </Routes>
           </ProviderDerivador>
