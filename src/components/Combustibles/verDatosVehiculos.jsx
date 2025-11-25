@@ -265,21 +265,6 @@ const VehiculosTable = () => {
 
   return (
     <>
-      <Box
-        component="header"
-        sx={{
-          bgcolor: "#1976d2",
-          py: 2,
-          px: 2,
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        <img src={logo2} alt="Logo" style={{ height: 60 }} />
-        <Typography variant="h6" color="white" sx={{ ml: 2 }}>
-          Gestión de Vehículos
-        </Typography>
-      </Box>
 
       <Paper sx={{ width: "100%", overflow: "hidden", p: 2 }}>
         {/* Toolbar con búsqueda y botones */}

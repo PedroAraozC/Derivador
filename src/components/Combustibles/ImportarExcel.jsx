@@ -54,22 +54,6 @@ const CargarExcel = () => {
   return (
     <>
       <Box
-        component="header"
-        sx={{
-          bgcolor: "#1976d2",
-          py: 2,
-          px: 2,
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        <img src={logo2} alt="Logo" style={{ height: 60 }} />
-        <Typography variant="h6" color="white" sx={{ ml: 2 }}>
-          Importar Consumos desde Excel
-        </Typography>
-      </Box>
-
-      <Box
         sx={{
           mt: 4,
           display: "flex",
