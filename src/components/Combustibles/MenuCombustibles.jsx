@@ -7,17 +7,14 @@ import { Link } from 'react-router-dom';
 import { ArrowBack } from '@mui/icons-material';
 
 const MenuCombustibles = () => {
-  const handleImportarExcel = () => {
-    window.open('https://ciudaddigital.smt.gob.ar/#/importarExcelCombustibles', '_blank');
+  const openHashRouteInNewTab = (hashPath) => {
+    const base = window.location.href.split('#')[0];
+    window.open(`${base}#${hashPath}`, '_blank');
   };
 
-  const handleGestionarVehiculos = () => {
-    window.open('https://ciudaddigital.smt.gob.ar/#/leerDatosVehiculos', '_blank');
-  };
-
-  const handleVerInformes = () => {
-    window.open('https://ciudaddigital.smt.gob.ar/#/leerDatosCombustibles', '_blank');
-  };
+  const handleImportarExcel = () => openHashRouteInNewTab('/importarExcelCombustibles');
+  const handleGestionarVehiculos = () => openHashRouteInNewTab('/leerDatosVehiculos');
+  const handleVerInformes = () => openHashRouteInNewTab('/leerDatosCombustibles');
 
   return (
     <>
