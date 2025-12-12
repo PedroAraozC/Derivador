@@ -66,6 +66,9 @@ const NuevaCard = ({ options, titulo, icono: Icono, user, cardId, isOpen, onOpen
                 case "asistencia_publica":
                     irAAsitPubica();
                     break;
+                case "revision_medica_ledesma":
+                    irATURNOS(1812);
+                    break;
                 default:
                     break;
             }
