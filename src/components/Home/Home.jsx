@@ -23,6 +23,7 @@ import {
   faKitMedical,
   faHandHoldingMedical,
   faBookTanakh,
+  faChalkboardUser,
 } from "@fortawesome/free-solid-svg-icons";
 import Card from "../Card/Card";
 import "./Home.css";
@@ -170,6 +171,15 @@ const Home = () => {
     // url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
   };
+  const irAPORTALPERSONAL = () => {
+    const token = localStorage.getItem("token");
+    const url = new URL(
+      `https://portal.personal.smt.gob.ar/?auth=${token}`
+      // `https://ciudaddigital.smt.gob.ar/?destino=boletin`
+    );
+    // url.searchParams.append("auth", token);
+    window.open(url.toString(), "_blank");
+  };
   const irAAsitPubica = async () => {
     const tokenAsitencia = "f64b5a5a3efd8ade6bbf6c0b595d08aeef25c5fa";
     const documentoRecortado = user.documento_persona.toString().slice(2, -1);
@@ -227,12 +237,30 @@ const Home = () => {
           descripcion={"Consulta del Carnet Digital"}
           Icono={<FontAwesomeIcon icon={faNotesMedical} />}
         />
+        <Card
+          onClick={() => irACorralonConsultaPublica()}
+          titulo={"Consulta de Vehículo Secuestrado"}
+          descripcion={"Consulta de ingresos al corralón por Dominio."}
+          Icono={<FontAwesomeIcon icon={faTrailer} />}
+        />
+        <Card
+          onClick={() => irACONSULTAPUBLICA()}
+          titulo={"Consulta Pública"}
+          descripcion={"Programa de participación ciudadana"}
+          Icono={<FontAwesomeIcon icon={faUsers} />}
+        />
+        <Card
+          onClick={() => irADENGUE()}
+          titulo={"Consulta sobre Dengue"}
+          descripcion={"Auto consulta dengue."}
+          Icono={<FontAwesomeIcon icon={faMosquito} />}
+        />
         {/* <Card
           onClick={() => irACATASTRO()}
           titulo={"Dirección de Catastro y Edificación"}
           descripcion={"Sistema de consulta y autogestión"}
           Icono={<FontAwesomeIcon icon={faBuildingCircleCheck} />}
-        /> */}
+          /> */}
         <Card
           onClick={() => irACREDENCIAL()}
           titulo={"Credencial"}
@@ -240,16 +268,16 @@ const Home = () => {
           Icono={<FontAwesomeIcon icon={faQrcode} />}
         />
         <Card
+          onClick={() => irADIM()}
+          titulo={"DIM 360"}
+          descripcion={"Dirección de Ingresos Municipales"}
+          Icono={<FontAwesomeIcon icon={faCashRegister} />}
+        />
+        <Card
           onClick={() => irAEXPEDIENTES()}
           titulo={"Expedientes"}
           descripcion={"Ingreso a sistema de expedientes"}
           Icono={<FontAwesomeIcon icon={faFolderOpen} />}
-        />
-        <Card
-          onClick={() => irATURNOS(1711)}
-          titulo={"Licencia de Conducir"}
-          descripcion={"Requsitos para Licencia de conducir"}
-          Icono={<FontAwesomeIcon icon={faIdCard} />}
         />
         <Card
           onClick={() => irATURNOS(241)}
@@ -260,10 +288,10 @@ const Home = () => {
           Icono={<FontAwesomeIcon icon={faIdCard} />}
         />
         <Card
-          onClick={() => irATURNOS(1710)}
-          titulo={"Tarjeta Ciudadana - SUBE"}
-          descripcion={"Turnos para transferir saldo de ciudadana a SUBE"}
-          Icono={<FontAwesomeIcon icon={faBus} />}
+          onClick={() => irATURNOS(1711)}
+          titulo={"Licencia de Conducir"}
+          descripcion={"Requsitos para Licencia de conducir"}
+          Icono={<FontAwesomeIcon icon={faIdCard} />}
         />
         <Card
           onClick={() => irALICITACIONES()}
@@ -273,65 +301,11 @@ const Home = () => {
           }
           Icono={<FontAwesomeIcon icon={faCommentsDollar} />}
         />
-        {/* <Card
-          onClick={() => handleOpenModal()}
-          titulo={"Multas de Tránsito"}
-          descripcion={"Consulta de Multas por Dominio."}
-          Icono={<FontAwesomeIcon icon={faCar} />}
-        /> */}
-
         <Card
           onClick={() => navigate("/multas")}
           titulo={"Multas"}
           descripcion={"Consulta de Multas."}
           Icono={<FontAwesomeIcon icon={faClipboardQuestion} />}
-        />
-
-        <Card
-          onClick={() => irACorralonConsultaPublica()}
-          titulo={"Consulta de Vehículo Secuestrado"}
-          descripcion={"Consulta de ingresos al corralón por Dominio."}
-          Icono={<FontAwesomeIcon icon={faTrailer} />}
-        />
-        <Card
-          onClick={() => irADENGUE()}
-          titulo={"Consulta sobre Dengue"}
-          descripcion={"Auto consulta dengue."}
-          Icono={<FontAwesomeIcon icon={faMosquito} />}
-        />
-
-        <Card
-          onClick={() => irADIM()}
-          titulo={"DIM 360"}
-          descripcion={"Dirección de Ingresos Municipales"}
-          Icono={<FontAwesomeIcon icon={faCashRegister} />}
-        />
-
-        <Card
-          onClick={() => irACONSULTAPUBLICA()}
-          titulo={"Consulta Pública"}
-          descripcion={"Programa de participación ciudadana"}
-          Icono={<FontAwesomeIcon icon={faUsers} />}
-        />
-
-        {/* <Card
-          onClick={() => handleOpenModalLibreDeuda()}
-          titulo={"Libre Deuda Catastro"}
-          descripcion={"Solicitar Libre Deuda en Catastro y Edificación"}
-          Icono={<FontAwesomeIcon icon={faRoadCircleCheck} />}
-        /> */}
-
-        <Card
-          onClick={() => irACEMA()}
-          titulo={"Servicios de Población Animal"}
-          descripcion={"Turnos y Requsitos"}
-          Icono={<FontAwesomeIcon icon={faCat} />}
-        />
-        <Card
-          onClick={() => irAAsitPubica()}
-          titulo={"Turnero Asistencia Pública"}
-          descripcion={"Turnos y Requsitos"}
-          Icono={<FontAwesomeIcon icon={faHandHoldingMedical} />}
         />
         <Card
           onClick={() => irAPermisos()}
@@ -348,6 +322,45 @@ const Home = () => {
             Icono={<FontAwesomeIcon icon={faFolderOpen} />}
           />
         )}
+        <Card
+          onClick={() => irAPORTALPERSONAL()}
+          titulo={"Portal de Personal"}
+          descripcion={
+            "Acceso a información laboral y administrativa del personal municipal."
+          }
+          Icono={<FontAwesomeIcon icon={faChalkboardUser} />}
+        />
+        <Card
+          onClick={() => irACEMA()}
+          titulo={"Servicios de Población Animal"}
+          descripcion={"Turnos y Requsitos"}
+          Icono={<FontAwesomeIcon icon={faCat} />}
+        />
+        <Card
+          onClick={() => irATURNOS(1710)}
+          titulo={"Tarjeta Ciudadana - SUBE"}
+          descripcion={"Turnos para transferir saldo de ciudadana a SUBE"}
+          Icono={<FontAwesomeIcon icon={faBus} />}
+        />
+        <Card
+          onClick={() => irAAsitPubica()}
+          titulo={"Turnero Asistencia Pública"}
+          descripcion={"Turnos y Requsitos"}
+          Icono={<FontAwesomeIcon icon={faHandHoldingMedical} />}
+        />
+        {/* <Card
+          onClick={() => handleOpenModal()}
+          titulo={"Multas de Tránsito"}
+          descripcion={"Consulta de Multas por Dominio."}
+          Icono={<FontAwesomeIcon icon={faCar} />}
+        /> */}
+
+        {/* <Card
+          onClick={() => handleOpenModalLibreDeuda()}
+          titulo={"Libre Deuda Catastro"}
+          descripcion={"Solicitar Libre Deuda en Catastro y Edificación"}
+          Icono={<FontAwesomeIcon icon={faRoadCircleCheck} />}
+        /> */}
 
         {/* {user.id_tusuario == 1 || user.id_tusuario == 24 &&
           <Card
