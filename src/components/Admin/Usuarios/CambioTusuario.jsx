@@ -26,7 +26,7 @@ const CambioTusuario = ({ empleado, modalCambioTUsuario, handleClose }) => {
     useEffect(() => {
         obtenerProcesos(tipoDeUsuario)
     }, [tipoDeUsuario])
-    
+
 
     const getInitialProcessStates = () => {
         if (!Array.isArray(procesos)) return {};
@@ -51,15 +51,15 @@ const CambioTusuario = ({ empleado, modalCambioTUsuario, handleClose }) => {
     const handleInputChange = (event) => {
         const { value } = event.target;
         let newValue = value;
-    
+
         setTipoDeUsuario(newValue);
     };
 
     const cambiarTipoDeUsuario = async () => {
         setButtonDis(true);
         let datos = {
-            id_persona : empleado.id_persona,
-            id : tipoDeUsuario
+            id_persona: empleado.id_persona,
+            id: tipoDeUsuario
         }
         console.log(datos)
         try {
@@ -111,6 +111,13 @@ const CambioTusuario = ({ empleado, modalCambioTUsuario, handleClose }) => {
         overflowY: 'auto',
     };
 
+    const procesosOrdenados = Array.isArray(procesos)
+        ? [...procesos]
+            .filter((pro) => pro.id_opcion === 4)
+            .sort((a, b) => a.descripcion.localeCompare(b.descripcion, 'es'))
+        : [];
+
+
     return (
         <Modal open={modalCambioTUsuario} onClose={handleClose}>
             <Box sx={style}>
@@ -141,21 +148,22 @@ const CambioTusuario = ({ empleado, modalCambioTUsuario, handleClose }) => {
                 <div className="d-flex flex-column justify-content-center">
                     <form className="d-flex flex-column gap-3 justify-content-center align-items-center formAgregarcausal">
                         <div className="row w-100">
-                            {Array.isArray(procesos) &&
-                                procesos
-                                .filter((pro) => pro.id_opcion === 4)
-                                .map((pro) => (
-                                    <div key={pro.id_permiso_tusuario} className="col-md-6 col-sm-12 d-flex align-items-center justify-content-between mb-2">
-                                        <p className="mb-0">{pro.descripcion}</p>
-                                        <div className="form-check form-switch">
-                                            <Switch
-                                                checked={processStates[pro.id_permiso_tusuario] === 1}
-                                                onChange={() => handleSwitchChange(pro.id_permiso_tusuario)}
-                                                disabled
-                                            />
-                                        </div>
+                            {procesosOrdenados.map((pro) => (
+                                <div
+                                    key={pro.id_permiso_tusuario}
+                                    className="col-md-6 col-sm-12 d-flex align-items-center justify-content-between mb-2"
+                                >
+                                    <p className="mb-0">{pro.descripcion}</p>
+                                    <div className="form-check form-switch">
+                                        <Switch
+                                            checked={processStates[pro.id_permiso_tusuario] === 1}
+                                            onChange={() => handleSwitchChange(pro.id_permiso_tusuario)}
+                                            disabled
+                                        />
                                     </div>
-                                ))}
+                                </div>
+                            ))}
+
                         </div>
                     </form>
                     <Button
