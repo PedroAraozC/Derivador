@@ -83,7 +83,9 @@ const TablaUsuarios = () => {
                         <TableHead>
                             <TableRow>
                                 <TableCell>Afiliado</TableCell>
+                                <TableCell>ID Persona</TableCell>
                                 <TableCell align="left">Nombre</TableCell>
+                                <TableCell align="left">ID Rep</TableCell>
                                 <TableCell align="left">Repartición</TableCell>
                                 <TableCell align="left">Email</TableCell>
                                 <TableCell align="center">Acciones</TableCell>
@@ -93,8 +95,10 @@ const TablaUsuarios = () => {
                             {paginatedArray?.map((e) => (
                                 <TableRow key={e.id_persona}>
                                     <TableCell>{e.afiliado}</TableCell>
+                                    <TableCell>{e.id_persona}</TableCell>
                                     <TableCell align="left">{`${e.nombre_persona} ${e.apellido_persona}`}</TableCell>
-                                    <TableCell align="left">{e.nombre_reparticion}</TableCell>
+                                    <TableCell align="left">{e.id_reparticion}</TableCell>
+                                    <TableCell align="left">{`${e.nombre_reparticion} (${e.item})`}</TableCell>
                                     <TableCell align="left">{e.email_persona}</TableCell>
                                     <TableCell align="center">
                                         <KeyOutlinedIcon
