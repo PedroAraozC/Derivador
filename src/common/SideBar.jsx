@@ -115,6 +115,21 @@ export default function ListaPrueba() {
     }
   };
 
+const redirigirGAF = () => {
+  const token = localStorage.getItem("token");
+  if (!token) return;
+
+  const url = `https://gafdesarrollo.smt.gob.ar/?auth=${encodeURIComponent(token)}`;
+
+  const nueva = window.open(url, "_blank", "noopener,noreferrer");
+
+  // Borra la URL con token del historial de la pestaña nueva
+  if (nueva) {
+    nueva.onload = () => {
+      nueva.history.replaceState(null, "", "/");
+    };
+  }
+};
 
   const list = () => (
     <Box
@@ -134,6 +149,20 @@ export default function ListaPrueba() {
           </ListItemIcon>
           <ListItemText primary="INICIO" />
         </ListItemButton>
+
+        {
+          user.documento_persona == "20257712304" &&
+          <ListItemButton
+            onClick={redirigirGAF}
+            className="w-100"
+          >
+            <ListItemIcon>
+              <HomeIcon />
+            </ListItemIcon>
+            <ListItemText primary="GAF PRUEBAS" />
+          </ListItemButton>
+        }
+
 
         {/* Construye cada elemento del menú */}
         {menuItems.sort((a,b) =>a.label.localeCompare(b.label)).map((item, index) => (
