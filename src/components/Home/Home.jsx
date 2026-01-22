@@ -24,6 +24,7 @@ import {
   faHandHoldingMedical,
   faBookTanakh,
   faChalkboardUser,
+  faFolderClosed,
 } from "@fortawesome/free-solid-svg-icons";
 import Card from "../Card/Card";
 import "./Home.css";
@@ -48,7 +49,7 @@ const Home = () => {
   const irABOLETIN = () => {
     const token = localStorage.getItem("token");
     const url = new URL(
-      `https://boletinoficial.smt.gob.ar/?auth=${token}&destino=boletin`
+      `https://boletinoficial.smt.gob.ar/?auth=${token}&destino=boletin`,
       // `https://ciudaddigital.smt.gob.ar/?destino=boletin`
     );
     url.searchParams.append("auth", token);
@@ -58,7 +59,7 @@ const Home = () => {
   const irATURNOS = (reparticion) => {
     const token = localStorage.getItem("token");
     const url = new URL(
-      `https://turnos.smt.gob.ar/?auth=${token}&destino=turnero&rep=${reparticion}`
+      `https://turnos.smt.gob.ar/?auth=${token}&destino=turnero&rep=${reparticion}`,
     );
     url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
@@ -67,7 +68,7 @@ const Home = () => {
   const irADIM = () => {
     const token = localStorage.getItem("token");
     const url = new URL(
-      `https://dim360.complex2real.com/login-cidituc?token=${token}&cuit=${user.documento_persona}`
+      `https://dim360.complex2real.com/login-cidituc?token=${token}&cuit=${user.documento_persona}`,
     );
     window.open(url.toString(), "_blank");
   };
@@ -75,7 +76,7 @@ const Home = () => {
   const irACEMA = () => {
     const token = localStorage.getItem("token");
     const url = new URL(
-      `https://turnos.smt.gob.ar/?auth=${token}&destino=turnero&rep=1800`
+      `https://turnos.smt.gob.ar/?auth=${token}&destino=turnero&rep=1800`,
     );
     url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
@@ -84,7 +85,7 @@ const Home = () => {
   const irACREDENCIAL = () => {
     const token = localStorage.getItem("token");
     const url = new URL(
-      `https://ciudaddigital.smt.gob.ar/#/credencialesCiudadano/${user.documento_persona}`
+      `https://ciudaddigital.smt.gob.ar/#/credencialesCiudadano/${user.documento_persona}`,
     );
     url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
@@ -112,8 +113,8 @@ const Home = () => {
   const irACARNETSANIDAD = () => {
     const url = new URL(
       `http://181.105.6.205:82/cs/index_cd.php?dni=${cuilToDni(
-        user.documento_persona.toString()
-      )}`
+        user.documento_persona.toString(),
+      )}`,
     );
 
     window.open(url.toString(), "_blank");
@@ -122,7 +123,7 @@ const Home = () => {
   const irACONSULTAPUBLICA = () => {
     const token = localStorage.getItem("token");
     const url = new URL(
-      `http://consultapublica.smt.gob.ar/ext/auth/cidituc/?auth=${token}`
+      `http://consultapublica.smt.gob.ar/ext/auth/cidituc/?auth=${token}`,
     );
     // url.searchParams.append("auth", token);
     window.open(url.toString(), "_blank");
@@ -146,7 +147,7 @@ const Home = () => {
   const irADENGUE = () => {
     // const token = localStorage.getItem("token");
     const url = new URL(
-      `https://test.smt.gob.ar/`
+      `https://test.smt.gob.ar/`,
       // `https://ciudaddigital.smt.gob.ar/?destino=boletin`
     );
     // url.searchParams.append("auth", token);
@@ -156,7 +157,7 @@ const Home = () => {
   const irAPermisosVarios = () => {
     const token = localStorage.getItem("token");
     const url = new URL(
-      `https://permisos.smt.gob.ar/?auth=${token}`
+      `https://permisos.smt.gob.ar/?auth=${token}`,
       // `https://ciudaddigital.smt.gob.ar/?destino=boletin`
     );
     // url.searchParams.append("auth", token);
@@ -165,7 +166,7 @@ const Home = () => {
   const irAPermisos = () => {
     const token = localStorage.getItem("token");
     const url = new URL(
-      `https://portal.permisos.smt.gob.ar/?auth=${token}`
+      `https://portal.permisos.smt.gob.ar/?auth=${token}`,
       // `https://ciudaddigital.smt.gob.ar/?destino=boletin`
     );
     // url.searchParams.append("auth", token);
@@ -174,7 +175,7 @@ const Home = () => {
   const irAPORTALPERSONAL = () => {
     const token = localStorage.getItem("token");
     const url = new URL(
-      `https://portal.personal.smt.gob.ar/?auth=${token}`
+      `https://portal.personal.smt.gob.ar/?auth=${token}`,
       // `https://ciudaddigital.smt.gob.ar/?destino=boletin`
     );
     // url.searchParams.append("auth", token);
@@ -203,7 +204,7 @@ const Home = () => {
             : "",
           genero: user.id_genero == 1 ? "F" : "M",
         }),
-      }
+      },
     );
     const data = await resp.json();
     const url = new URL(`${data.url}`);
@@ -311,7 +312,7 @@ const Home = () => {
           onClick={() => irAPermisos()}
           titulo={"Permisos Desarrollo"}
           descripcion={"Permisos Desarrollo"}
-          Icono={<FontAwesomeIcon icon={faBookTanakh} />}
+          Icono={<FontAwesomeIcon icon={faFolderClosed} />}
         />
 
         {user.id_tusuario == 1 && (
