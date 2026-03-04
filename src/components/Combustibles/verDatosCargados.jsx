@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import {
   Table,
   TableBody,
@@ -14,6 +14,7 @@ import {
   Checkbox,
   Button,
   Toolbar,
+  TextField,
 } from "@mui/material";
 import axios from "../../config/axios";
 import logo2 from "../../assets/Logo_SMT_neg_4.png";
@@ -27,6 +28,28 @@ const ConsumosTable = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [selected, setSelected] = useState([]); // filas seleccionadas
+  // rango de fechas para borrar
+  const [deleteRange, setDeleteRange] = useState({ desde: "", hasta: "" });
+
+  // filtrado local según rango de fechas seleccionado para borrar
+  const consumosFiltrados = useMemo(() => {
+    if (!deleteRange.desde && !deleteRange.hasta) return consumos;
+
+    return consumos.filter((row) => {
+      const fecha = moment
+        .tz(row.fecha_hora, "YYYY-MM-DD HH:mm:ss", "America/Argentina/Buenos_Aires")
+        .format("YYYY-MM-DD");
+
+      if (deleteRange.desde && deleteRange.hasta) {
+        return fecha >= deleteRange.desde && fecha <= deleteRange.hasta;
+      } else if (deleteRange.desde) {
+        return fecha >= deleteRange.desde;
+      } else if (deleteRange.hasta) {
+        return fecha <= deleteRange.hasta;
+      }
+      return true;
+    });
+  }, [consumos, deleteRange]);
 
   const fetchData = async () => {
     try {
@@ -54,7 +77,9 @@ const ConsumosTable = () => {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelected = consumos.map((row) => row.id);
+      // seleccionar sólo los que aparecen en la tabla (posiblemente filtrados)
+      const base = deleteRange.desde || deleteRange.hasta ? consumosFiltrados : consumos;
+      const newSelected = base.map((row) => row.id);
       setSelected(newSelected);
       return;
     }
@@ -92,32 +117,80 @@ const ConsumosTable = () => {
     }
   };
 
+  const handleDeleteRange = async () => {
+    if (!deleteRange.desde || !deleteRange.hasta) return;
+
+    // ids de los consumos que aparecen en la tabla filtrada
+    const idsAEliminar = consumosFiltrados.map(r => r.id);
+    if (idsAEliminar.length === 0) return;
+
+    try {
+      await axios.post("/combustibles/consumos/eliminar", { ids: idsAEliminar });
+      fetchData();
+      setDeleteRange({ desde: "", hasta: "" });
+      setSelected([]);
+    } catch (error) {
+      console.error("Error al eliminar consumos por rango de fechas:", error);
+    }
+  };
+
   if (loading) return <CircularProgress />;
 
   return (
     <>
       <Paper sx={{ width: "100%", overflow: "hidden", p: 2 }}>
-        {/* Toolbar con botón eliminar */}
+        {/* Toolbar con botones borrar y rango de fechas */}
         <Toolbar
           sx={{
             display: "flex",
             justifyContent: "space-between",
+            flexWrap: "wrap",
+            gap: 1,
           }}
         >
-          <Typography variant="subtitle1">
-            {selected.length > 0
-              ? `${selected.length} seleccionados`
-              : "Sin selección"}
-          </Typography>
-          {selected.length > 0 && (
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1, flexWrap: "wrap" }}>
+            <Typography variant="subtitle1">
+              {selected.length > 0
+                ? `${selected.length} seleccionados`
+                : "Sin selección"}
+            </Typography>
+            {selected.length > 0 && (
+              <Button
+                variant="contained"
+                color="error"
+                onClick={handleDelete}
+              >
+                Eliminar seleccionados
+              </Button>
+            )}
+          </Box>
+
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1, flexWrap: "wrap" }}>
+            <TextField
+              label="Desde"
+              type="date"
+              size="small"
+              InputLabelProps={{ shrink: true }}
+              value={deleteRange.desde}
+              onChange={(e) => setDeleteRange(prev => ({ ...prev, desde: e.target.value }))}
+            />
+            <TextField
+              label="Hasta"
+              type="date"
+              size="small"
+              InputLabelProps={{ shrink: true }}
+              value={deleteRange.hasta}
+              onChange={(e) => setDeleteRange(prev => ({ ...prev, hasta: e.target.value }))}
+            />
             <Button
               variant="contained"
               color="error"
-              onClick={handleDelete}
+              onClick={handleDeleteRange}
+              disabled={!(deleteRange.desde && deleteRange.hasta)}
             >
-              Eliminar
+              Eliminar por rango
             </Button>
-          )}
+          </Box>
         </Toolbar>
 
         <TableContainer>
@@ -128,11 +201,11 @@ const ConsumosTable = () => {
                   <Checkbox
                     indeterminate={
                       selected.length > 0 &&
-                      selected.length < consumos.length
+                      selected.length < consumosFiltrados.length
                     }
                     checked={
-                      consumos.length > 0 &&
-                      selected.length === consumos.length
+                      consumosFiltrados.length > 0 &&
+                      selected.length === consumosFiltrados.length
                     }
                     onChange={handleSelectAllClick}
                   />
@@ -150,7 +223,7 @@ const ConsumosTable = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {consumos
+              {consumosFiltrados
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => {
                   const isItemSelected = isSelected(row.id);
@@ -188,7 +261,7 @@ const ConsumosTable = () => {
         {/* Paginación */}
         <TablePagination
           component="div"
-          count={consumos.length}
+          count={consumosFiltrados.length}
           page={page}
           onPageChange={handleChangePage}
           rowsPerPage={rowsPerPage}
