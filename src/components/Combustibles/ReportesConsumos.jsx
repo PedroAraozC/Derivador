@@ -62,16 +62,29 @@ const ReportesConsumos = ({ consumos }) => {
       // Filtro por rango de fechas
       let cumpleFecha = true;
       if (fechas.desde || fechas.hasta) {
-        const fechaConsumo = parseISO(consumo.fecha_hora);
-        if (fechas.desde && fechas.hasta) {
-          cumpleFecha = isWithinInterval(fechaConsumo, {
-            start: startOfDay(fechas.desde),
-            end: endOfDay(fechas.hasta)
-          });
-        } else if (fechas.desde) {
-          cumpleFecha = fechaConsumo >= startOfDay(fechas.desde);
-        } else if (fechas.hasta) {
-          cumpleFecha = fechaConsumo <= endOfDay(fechas.hasta);
+        // parseISO puede lanzar error si consumo.fecha_hora es null o inválida
+        let fechaConsumo = null;
+        if (consumo.fecha_hora) {
+          try {
+            fechaConsumo = parseISO(consumo.fecha_hora);
+          } catch (e) {
+            fechaConsumo = null;
+          }
+        }
+        if (fechaConsumo) {
+          if (fechas.desde && fechas.hasta) {
+            cumpleFecha = isWithinInterval(fechaConsumo, {
+              start: startOfDay(fechas.desde),
+              end: endOfDay(fechas.hasta)
+            });
+          } else if (fechas.desde) {
+            cumpleFecha = fechaConsumo >= startOfDay(fechas.desde);
+          } else if (fechas.hasta) {
+            cumpleFecha = fechaConsumo <= endOfDay(fechas.hasta);
+          }
+        } else {
+          // si no hay fecha válida, no cumple el filtro de fechas
+          cumpleFecha = false;
         }
       }
       
