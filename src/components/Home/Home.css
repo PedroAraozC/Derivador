@@ -10,11 +10,11 @@
 }
 
 
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
     .fondoHome {
         height: 130dvh;
     }
-} 
+}  */
 
 .fondoHome::after {
     content: "";
