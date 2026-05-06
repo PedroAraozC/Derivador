@@ -65,7 +65,7 @@ const NuevaCard = ({
           irATURNOS(515);
           break;
         case "licencia_conducir":
-          irATURNOS(1711);
+          irATURNOS(1721);
           break;
         case "ficha_medica":
           irATURNOS(241);
