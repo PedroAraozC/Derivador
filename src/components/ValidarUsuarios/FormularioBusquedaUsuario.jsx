@@ -237,6 +237,35 @@ const FormularioBusquedaUsuario = () => {
               <MenuItem value="NO">NO</MenuItem>
             </Select>
           </FormControl>
+          {
+            !usuario?.id_empleado ?
+           <FormControl fullWidth margin="normal">
+            <InputLabel>Es empleado</InputLabel>
+            <Select
+              name="es_empleado"
+              value={usuario?.esEmpleado ? 'SI' : 'NO'}
+              label="Es empleado"
+              onChange={(e) =>
+                setUsuario((prev) => ({
+                  ...prev,
+                  esEmpleado: e.target.value === 'SI',
+                }))
+              }
+            >
+              <MenuItem value="SI">SI</MenuItem>
+              <MenuItem value="NO">NO</MenuItem>
+            </Select>
+          </FormControl>
+          :
+          <TextField
+            label="Nro de afiliado"
+            fullWidth
+            margin="normal"
+            value={usuario?.afiliado || ''}
+            InputLabelProps={{ shrink: true }}
+            disabled
+          />
+          }
           <TextField
             label="Intentos Fallidos"
             name="ingreso_fallido"
