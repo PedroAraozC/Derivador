@@ -186,8 +186,9 @@ const NuevaCard = ({
         sx={{
           display: "flex",
           flexDirection: "column",
-          maxHeight: isOpen ? 800 : 60, // por ejemplo
-          overflowY: isOpen ? "auto" : "hidden", // ✅
+          maxHeight: isOpen ? "70vh" : 60,
+          overflow: "hidden",
+          height: "100%",
         }}
       >
         <div className="d-flex gap-2 align-items-center mb-2">
@@ -208,12 +209,11 @@ const NuevaCard = ({
             pointerEvents: isOpen ? "auto" : "none",
             display: "flex",
             flexDirection: "column",
-            gap: 0,
             width: "100%",
-            justifyContent: "center",
             alignItems: "center",
             overflowY: "auto",
-            minHeight: isOpen ? 100 : 0,
+            flex: 1,
+            minHeight: 0,
           }}
         >
           {opcionesOrdenadas?.map((option) => (
