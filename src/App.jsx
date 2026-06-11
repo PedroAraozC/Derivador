@@ -35,6 +35,7 @@ import CargarExcel from "./components/Combustibles/ImportarExcel";
 import ConsumosTable from "./components/Combustibles/verDatosCargados";
 import VehiculosTable from "./components/Combustibles/verDatosVehiculos";
 import MenuCombustibles from "./components/Combustibles/MenuCombustibles";
+import MigueWidget from "./components/MigueWidget/MigueWidget";
 
 function App() {
   const url = new URL(window.location.href);
@@ -116,6 +117,7 @@ function App() {
           </ProviderDerivador>
         </Layout>
       </HashRouter>
+      <MigueWidget />
     </>
   );
 }
