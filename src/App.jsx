@@ -110,7 +110,7 @@ function App() {
               <Route exact path="/importarExcelCombustibles" element={<PrivateRoute key="importarExcel"><CargarExcel /></PrivateRoute>} />
               <Route exact path="/leerDatosCombustibles" element={<PrivateRoute key="VerConsumosCombustibles"><ConsumosTable /></PrivateRoute>} />
               <Route exact path="/leerDatosVehiculos" element={<PrivateRoute key="vehiculosCombustibles"><VehiculosTable /></PrivateRoute>} />
-               <Route exact path="/menuCombustibles" element={<PrivateRoute key="menuCombustibles"><MenuCombustibles/></PrivateRoute>} />
+              <Route exact path="/menuCombustibles" element={<PrivateRoute key="menuCombustibles"><MenuCombustibles/></PrivateRoute>} />
 
             </Routes>
           </ProviderDerivador>

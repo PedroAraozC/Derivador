@@ -22,6 +22,7 @@ import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import useStore from "../Zustand/Zustand";
 import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
 import BuildOutlinedIcon from "@mui/icons-material/BuildOutlined";
+import { registrarAccesoExterno } from "../helpers/registrarAccesoExterno";
 
 export default function ListaPrueba() {
   const { user, obtenerPermisos, permisos } = useStore();
@@ -109,6 +110,7 @@ export default function ListaPrueba() {
     if (option.sistema_externo == null) {
       navigate(`/${option.label}`);
     } else {
+      registrarAccesoExterno(option.id_proceso, user);
       const url = new URL(`${option.sistema_externo}/?auth=${token}`);
       url.searchParams.append("auth", token);
       window.open(url.toString(), "_blank");

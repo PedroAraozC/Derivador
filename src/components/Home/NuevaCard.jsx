@@ -2,13 +2,13 @@
 import { Box, Card, CardContent, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef } from "react";
+import { registrarAccesoExterno } from "../../helpers/registrarAccesoExterno";
 
 const NuevaCard = ({
   options,
   titulo,
   icono: Icono,
   user,
-  cardId,
   isOpen,
   onOpen,
   onClose,
@@ -50,7 +50,12 @@ const NuevaCard = ({
 
     if (option.sistema_externo == null) {
       navigate(`/${option.nombre_proceso}`);
-    } else if (option.id_opcion === 6) {
+      return;
+    }
+
+    registrarAccesoExterno(option.id_proceso, option.id_opcion, user);
+
+    if (option.id_opcion === 6) {
       switch (option.nombre_proceso) {
         case "tarjeta_sube":
           irATURNOS(1710);
