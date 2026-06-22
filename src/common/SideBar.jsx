@@ -16,6 +16,7 @@ import EventIcon from '@mui/icons-material/Event';
 import BadgeIcon from '@mui/icons-material/Badge';
 import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import HomeIcon from "@mui/icons-material/Home";
+import InsightsIcon from "@mui/icons-material/Insights";
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import "./SideBar.css";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
@@ -162,6 +163,20 @@ const redirigirGAF = () => {
               <HomeIcon />
             </ListItemIcon>
             <ListItemText primary="GAF PRUEBAS" />
+          </ListItemButton>
+        }
+
+        {/* Dashboard de sistemas externos (solo Administrador General) */}
+        {
+          user.id_tusuario == 1 &&
+          <ListItemButton
+            onClick={() => redirigir("/dashboard-sistemas")}
+            className="w-100"
+          >
+            <ListItemIcon>
+              <InsightsIcon />
+            </ListItemIcon>
+            <ListItemText primary="DASHBOARD SISTEMAS" />
           </ListItemButton>
         }
 
