@@ -35,6 +35,8 @@ import CargarExcel from "./components/Combustibles/ImportarExcel";
 import ConsumosTable from "./components/Combustibles/verDatosCargados";
 import VehiculosTable from "./components/Combustibles/verDatosVehiculos";
 import MenuCombustibles from "./components/Combustibles/MenuCombustibles";
+import DashboardSistemas from "./pages/DashboardSistemas/DashboardSistemas";
+import MigueWidget from "./components/MigueWidget/MigueWidget";
 
 function App() {
   const url = new URL(window.location.href);
@@ -74,6 +76,7 @@ function App() {
               <Route exact path="/reparticion" element={<PrivateRouteAdmin><PanelReparticiones /></PrivateRouteAdmin>} />
               <Route exact path="/permisos-usuario" element={<PrivateRouteAdmin><PermisosTUsuario /></PrivateRouteAdmin>} />
               <Route exact path="/panel_usuario" element={<PrivateRouteAdmin><PanelUsuarios /></PrivateRouteAdmin>} />
+              <Route exact path="/dashboard-sistemas" element={<PrivateRouteAdmin><DashboardSistemas /></PrivateRouteAdmin>} />
               <Route exact path="/validar_usuarios" element={<PrivateRouteUsuarios key="validar_usuarios"><FormularioBusquedaUsuario /></PrivateRouteUsuarios>} />
               {/* ADMINISTRADOR GENERAL */}
               
@@ -110,12 +113,13 @@ function App() {
               <Route exact path="/importarExcelCombustibles" element={<PrivateRoute key="importarExcel"><CargarExcel /></PrivateRoute>} />
               <Route exact path="/leerDatosCombustibles" element={<PrivateRoute key="VerConsumosCombustibles"><ConsumosTable /></PrivateRoute>} />
               <Route exact path="/leerDatosVehiculos" element={<PrivateRoute key="vehiculosCombustibles"><VehiculosTable /></PrivateRoute>} />
-               <Route exact path="/menuCombustibles" element={<PrivateRoute key="menuCombustibles"><MenuCombustibles/></PrivateRoute>} />
+              <Route exact path="/menuCombustibles" element={<PrivateRoute key="menuCombustibles"><MenuCombustibles/></PrivateRoute>} />
 
             </Routes>
           </ProviderDerivador>
         </Layout>
       </HashRouter>
+      <MigueWidget />
     </>
   );
 }

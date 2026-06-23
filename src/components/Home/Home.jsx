@@ -71,10 +71,11 @@ const Home = () => {
         </div>
         <div className="mt-4 d-flex gap-3 flex-wrap justify-content-center px-5">
           <div>
-            <NuevaCard 
-              options={optionsConsultas} 
-              titulo={'Consultas'} 
-              icono={QuizIcon} 
+            <NuevaCard
+              options={optionsConsultas}
+              titulo={'Consultas'}
+              icono={QuizIcon}
+              user={user}
               cardId="consultas"
               isOpen={openedCard === "consultas"}
               onOpen={() => setOpenedCard("consultas")}
@@ -82,10 +83,11 @@ const Home = () => {
             />
           </div>
           <div>
-            <NuevaCard 
-              options={optionsTramites} 
-              titulo={'Trámites'} 
+            <NuevaCard
+              options={optionsTramites}
+              titulo={'Trámites'}
               icono={ArrowOutwardIcon}
+              user={user}
               cardId="tramites"
               isOpen={openedCard === "tramites"}
               onOpen={() => setOpenedCard("tramites")}
@@ -106,10 +108,11 @@ const Home = () => {
           </div>
           {user.id_tusuario !== 3 ? (
           <div>
-            <NuevaCard 
-              options={optionsApps} 
-              titulo={'Empleados'} 
+            <NuevaCard
+              options={optionsApps}
+              titulo={'Empleados'}
               icono={BadgeIcon}
+              user={user}
               cardId="empleados"
               isOpen={openedCard === "empleados"}
               onOpen={() => setOpenedCard("empleados")}
