@@ -36,6 +36,7 @@ import ConsumosTable from "./components/Combustibles/verDatosCargados";
 import VehiculosTable from "./components/Combustibles/verDatosVehiculos";
 import MenuCombustibles from "./components/Combustibles/MenuCombustibles";
 import DashboardSistemas from "./pages/DashboardSistemas/DashboardSistemas";
+import MigueWidget from "./components/MigueWidget/MigueWidget";
 import EstadisticasPersonales from "./pages/DashboardSistemas/EstadisticasPersonales";
 
 function App() {
@@ -120,6 +121,7 @@ function App() {
           </ProviderDerivador>
         </Layout>
       </HashRouter>
+      <MigueWidget />
     </>
   );
 }
