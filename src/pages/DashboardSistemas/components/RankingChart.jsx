@@ -54,6 +54,7 @@ const RankingChart = ({
     },
   };
 
+  
   const total = items.reduce((acc, i) => acc + i.accesos, 0);
 
   return (
