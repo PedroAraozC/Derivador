@@ -36,6 +36,7 @@ import ConsumosTable from "./components/Combustibles/verDatosCargados";
 import VehiculosTable from "./components/Combustibles/verDatosVehiculos";
 import MenuCombustibles from "./components/Combustibles/MenuCombustibles";
 import DashboardSistemas from "./pages/DashboardSistemas/DashboardSistemas";
+import EstadisticasPersonales from "./pages/DashboardSistemas/EstadisticasPersonales";
 
 function App() {
   const url = new URL(window.location.href);
@@ -76,6 +77,7 @@ function App() {
               <Route exact path="/permisos-usuario" element={<PrivateRouteAdmin><PermisosTUsuario /></PrivateRouteAdmin>} />
               <Route exact path="/panel_usuario" element={<PrivateRouteAdmin><PanelUsuarios /></PrivateRouteAdmin>} />
               <Route exact path="/dashboard-sistemas" element={<PrivateRouteAdmin><DashboardSistemas /></PrivateRouteAdmin>} />
+              <Route exact path="/estadisticas-personales" element={<PrivateRouteAdmin><EstadisticasPersonales /></PrivateRouteAdmin>} />
               <Route exact path="/validar_usuarios" element={<PrivateRouteUsuarios key="validar_usuarios"><FormularioBusquedaUsuario /></PrivateRouteUsuarios>} />
               {/* ADMINISTRADOR GENERAL */}
               

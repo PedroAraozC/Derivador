@@ -17,7 +17,12 @@ const nf = new Intl.NumberFormat("es-AR");
  * Ranking reutilizable: barra horizontal + tabla.
  * items: [{ label, accesos }]
  */
-const RankingChart = ({ items = [], color = "#1976d2", etiquetaColumna = "Nombre" }) => {
+const RankingChart = ({
+  items = [],
+  color = "#1976d2",
+  etiquetaColumna = "Nombre",
+  etiquetaValor = "Accesos",
+}) => {
   if (!items.length) {
     return (
       <Typography variant="body2" color="text.secondary" sx={{ py: 4, textAlign: "center" }}>
@@ -30,7 +35,7 @@ const RankingChart = ({ items = [], color = "#1976d2", etiquetaColumna = "Nombre
     labels: items.map((i) => i.label),
     datasets: [
       {
-        label: "Accesos",
+        label: etiquetaValor,
         data: items.map((i) => i.accesos),
         backgroundColor: color,
         borderRadius: 4,
@@ -63,7 +68,7 @@ const RankingChart = ({ items = [], color = "#1976d2", etiquetaColumna = "Nombre
             <TableRow>
               <TableCell>#</TableCell>
               <TableCell>{etiquetaColumna}</TableCell>
-              <TableCell align="right">Accesos</TableCell>
+              <TableCell align="right">{etiquetaValor}</TableCell>
               <TableCell align="right">%</TableCell>
             </TableRow>
           </TableHead>
