@@ -13,7 +13,8 @@ import {
 } from "@mui/material";
 import PrintIcon from "@mui/icons-material/Print";
 import SearchIcon from "@mui/icons-material/Search";
-import InsightsIcon from "@mui/icons-material/Insights";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import { useNavigate } from "react-router-dom";
 
 // Registro de Chart.js (una sola vez para toda la página)
 import {
@@ -65,6 +66,7 @@ const hoy = new Date();
 const inicioMes = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
 
 const DashboardSistemas = () => {
+  const navigate = useNavigate();
   const [fechaDesde, setFechaDesde] = useState(toInputDate(inicioMes));
   const [fechaHasta, setFechaHasta] = useState(toInputDate(hoy));
 
@@ -92,7 +94,7 @@ const DashboardSistemas = () => {
       setResumen(resResumen.data);
       setEvolucion(resEvolucion.data);
       setProcesos(
-        resProcesos.data.map((p) => ({ label: p.nombre_proceso, accesos: p.accesos }))
+        resProcesos.data.map((p) => ({ label: p.descripcion, accesos: p.accesos }))
       );
       setOpciones(
         resOpciones.data.map((o) => ({ label: o.nombre_opcion, accesos: o.accesos }))
@@ -141,18 +143,6 @@ const DashboardSistemas = () => {
           mb: 3,
         }}
       >
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1, flexGrow: 1 }}>
-          <InsightsIcon color="primary" sx={{ fontSize: 34 }} />
-          <Box>
-            <Typography variant="h5" fontWeight={700}>
-              Dashboard de Sistemas Externos
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Accesos a sistemas externos del Municipio
-            </Typography>
-          </Box>
-        </Box>
-
         <Box
           component="form"
           onSubmit={handleBuscar}
@@ -192,6 +182,17 @@ const DashboardSistemas = () => {
             Imprimir
           </Button>
         </Box>
+
+        <Button
+          type="button"
+          variant="contained"
+          color="secondary"
+          startIcon={<PeopleAltIcon />}
+          onClick={() => navigate("/estadisticas-personales")}
+          sx={{ ml: "auto" }}
+        >
+          Estadísticas Personales
+        </Button>
       </Box>
 
       {error && (
@@ -215,7 +216,7 @@ const DashboardSistemas = () => {
           {/* Encabezado visible solo en impresión */}
           <Box sx={{ mb: 2 }}>
             <Typography variant="h5" fontWeight={700}>
-              Dashboard de Sistemas Externos
+              Interacción de ciudadanos con la plataforma
             </Typography>
             <Typography variant="body2" color="text.secondary">
               Período: {rangoTexto}
