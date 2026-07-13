@@ -38,6 +38,9 @@ import MenuCombustibles from "./components/Combustibles/MenuCombustibles";
 import DashboardSistemas from "./pages/DashboardSistemas/DashboardSistemas";
 import MigueWidget from "./components/MigueWidget/MigueWidget";
 import EstadisticasPersonales from "./pages/DashboardSistemas/EstadisticasPersonales";
+import ConsultaPublica from "./pages/ConsultaPublica/ConsultaPublica";
+import VerReclamo from "./pages/ConsultaPublica/VerReclamo";
+import AgregarReclamo from "./pages/ConsultaPublica/NuevoReclamo/AgregarReclamo";
 
 function App() {
   const url = new URL(window.location.href);
@@ -106,6 +109,11 @@ function App() {
               
               {/* VIA PUBLICA */}
               <Route exact path="/via-publica" element={<PrivateRoute key="via-publica"><Solicitud_permisos/></PrivateRoute>} />
+
+              {/* CONSULTA PUBLICA */}
+              <Route exact path="/consulta-publica" element={<PrivateRoute key="consulta-publica"><ConsultaPublica /></PrivateRoute>} />
+              <Route exact path="/ver_reclamo/:id" element={<PrivateRoute key="consulta-publica"><VerReclamo /></PrivateRoute>} />
+              <Route exact path="/consulta-publica/agregar-reclamo" element={<PrivateRoute key="agregar-reclamo"><AgregarReclamo /></PrivateRoute>} />
 
               {/* OBRAS PUBLICAS */}
               <Route exact path="/el-gas-llega-a-tu-casa" element={<PrivateRoute key="elGasATuCasa"><GasATuCasa /></PrivateRoute>} />
