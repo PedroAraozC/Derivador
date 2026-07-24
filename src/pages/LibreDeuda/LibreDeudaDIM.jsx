@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import {
   HomeWork as HomeWorkIcon,
-  Storefront as StorefrontIcon,
+  Church as ChurchIcon,
 } from "@mui/icons-material";
 import React from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -169,7 +169,7 @@ const LibreDeudaDIM = () => {
                   className="iconBox"
                   sx={iconStyles}
                 >
-                  <StorefrontIcon sx={{ fontSize: 36 }} />
+                  <ChurchIcon sx={{ fontSize: 36 }} />
                 </Box>
                 <Typography variant="h5" fontWeight="bold" color="primary.main">
                   Libre Deuda C.I.S.C.A.
@@ -179,8 +179,8 @@ const LibreDeudaDIM = () => {
                   color="text.secondary"
                   maxWidth={300}
                 >
-                  Contribución sobre la actividad comercial, industrial y de
-                  servicios para comercios y establecimientos.
+                  Contribución que incide sobre los cementerios. Solicite la
+                  constancia para servicios y mantenimiento en cementerios municipales.
                 </Typography>
               </CardContent>
             </CardActionArea>
