@@ -200,7 +200,7 @@ const LibreDeuda = () => {
                   color="text.secondary"
                   maxWidth={300}
                 >
-                  Inicie una nueva solicitud de libre deuda de impuestos de
+                  Inicie una nueva solicitud de libre deuda de infracciones de
                   catastro y tránsito.
                 </Typography>
               </CardContent>
