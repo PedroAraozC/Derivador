@@ -67,8 +67,8 @@ const VerReclamo = () => {
         let decPart = clean.slice(2);
         return sign * parseFloat(intPart + "." + decPart);
     }
-    const lat = parseLat(reclamo?.coorde1);
-    const lng = parseLng(reclamo?.coorde2);
+    const lat = parseLat(reclamo?.latitud);
+    const lng = parseLng(reclamo?.longitud);
 
 
     const obtenerReclamo = async (id) => {

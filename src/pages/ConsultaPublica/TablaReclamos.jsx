@@ -24,6 +24,20 @@ import { useNavigate } from 'react-router-dom';
 import { ListarCategorias, ListarColoresEstados, ListarEstados } from './funcionesReclamos';
 
 const TablaReclamos = ({ data }) => {
+    const formatearFecha = (valor) => {
+        if (!valor) return '';
+
+        const fecha = new Date(valor);
+        if (Number.isNaN(fecha.getTime())) return '';
+
+        return new Intl.DateTimeFormat('es-AR', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            timeZone: 'UTC',
+        }).format(fecha);
+    };
+
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(15);
 
@@ -135,7 +149,6 @@ const TablaReclamos = ({ data }) => {
                         <TableHead>
                             <TableRow>
                                 <TableCell>ID</TableCell>
-                                <TableCell>Distrito</TableCell>
                                 <TableCell>Solicitante / Dirección</TableCell>
                                 <TableCell>Asunto</TableCell>
                                 <TableCell>Categoria / Tipo de Reclamo</TableCell>
@@ -169,8 +182,7 @@ const TablaReclamos = ({ data }) => {
                                         }}
                                     >
                                         <TableCell sx={{ fontSize: 11 }}>{row.id_reclamo}</TableCell>
-                                        <TableCell sx={{ fontSize: 11 }}>{row.DISTRITO}</TableCell>
-                                        <TableCell sx={{ fontSize: 11 }}>{row.apellido_nombre} <br />{row.direccion?.substring(0, 40)}{row.direccion?.length > 40 ? '...' : ''}</TableCell>
+                                        <TableCell sx={{ fontSize: 11 }}>{row.apellido_nombre} / {row.direccion?.substring(0, 40)}{row.direccion?.length > 40 ? '...' : ''}</TableCell>
                                         <TableCell
                                             sx={{
                                                 fontSize: 11,
@@ -184,11 +196,11 @@ const TablaReclamos = ({ data }) => {
                                             {row.asunto}
                                         </TableCell>
                                         <TableCell sx={{ fontSize: 11 }}>
-                                            {row.nombre_categoria} / {row.corto_treclamo}
+                                            {row.nombre_categoria} / {row.nombre_treclamo}
                                         </TableCell>
                                         <TableCell sx={{ fontSize: 11 }}>{row.nombre_estado}</TableCell>
                                         <TableCell sx={{ fontSize: 11 }}>
-                                            {new Date(row.fecha_hora_inicio).toLocaleDateString()}
+                                            {formatearFecha(row.fecha_ingreso || row.fecha_inicio)}
                                         </TableCell>
                                         <TableCell sx={{ fontSize: 11 }}>
                                             <IconButton onClick={() => verReclamo(row.id_reclamo, row)}>
