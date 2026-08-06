@@ -144,9 +144,16 @@ const MigueWidget = () => {
     setLoading(true);
 
     try {
+      // Si el ciudadano está logueado, mandamos su token (mismo SSO de CidiTuc) para
+      // que Migue pueda operar identificado (consultar turnos, etc.). Sin token, el
+      // backend responde en modo anónimo/informativo.
+      const token = localStorage.getItem("token");
       const res = await fetch(`${API_URL}/api/chat`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: token } : {}),
+        },
         body: JSON.stringify({ mensaje: texto, sessionId: sessionId.current }),
       });
 
