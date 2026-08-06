@@ -16,12 +16,14 @@ import EventIcon from '@mui/icons-material/Event';
 import BadgeIcon from '@mui/icons-material/Badge';
 import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import HomeIcon from "@mui/icons-material/Home";
+import InsightsIcon from "@mui/icons-material/Insights";
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import "./SideBar.css";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import useStore from "../Zustand/Zustand";
 import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
 import BuildOutlinedIcon from "@mui/icons-material/BuildOutlined";
+import { registrarAccesoExterno } from "../helpers/registrarAccesoExterno";
 
 export default function ListaPrueba() {
   const { user, obtenerPermisos, permisos } = useStore();
@@ -109,6 +111,7 @@ export default function ListaPrueba() {
     if (option.sistema_externo == null) {
       navigate(`/${option.label}`);
     } else {
+      registrarAccesoExterno(option.id_proceso, user);
       const url = new URL(`${option.sistema_externo}/?auth=${token}`);
       url.searchParams.append("auth", token);
       window.open(url.toString(), "_blank");
@@ -160,6 +163,20 @@ const redirigirGAF = () => {
               <HomeIcon />
             </ListItemIcon>
             <ListItemText primary="GAF PRUEBAS" />
+          </ListItemButton>
+        }
+
+        {/* Dashboard de sistemas externos (solo Administrador General) */}
+        {
+          user.id_tusuario == 1 &&
+          <ListItemButton
+            onClick={() => redirigir("/dashboard-sistemas")}
+            className="w-100"
+          >
+            <ListItemIcon>
+              <InsightsIcon />
+            </ListItemIcon>
+            <ListItemText primary="DASHBOARD SISTEMAS" />
           </ListItemButton>
         }
 
