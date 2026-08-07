@@ -31,6 +31,7 @@ const useStore = create((set, get) => ({
 
   login: async (values) => {
     set({ botonState: true });
+    let loginResult = null;
     try {
       set({ errors: "" });
       const { data } = await axios.post("/usuarios/login", values);
@@ -43,6 +44,7 @@ const useStore = create((set, get) => ({
       axiosLici.defaults.headers.common["Authorization"] = data.token;
       axiosMuni.defaults.headers.common["Authorization"] = data.token;
       localStorage.setItem("token", data.token);
+      loginResult = { token: data.token };
     } catch (error) {
       set({
         errors:
@@ -54,6 +56,7 @@ const useStore = create((set, get) => ({
       });
     }
     set({ botonState: false });
+    return loginResult;
   },
 
   obtenerPermisos: async (idTusuario, idPersona) => {

@@ -6,7 +6,7 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { Alert, Button, Snackbar } from "@mui/material";
 import useStore from "../../Zustand/Zustand";
 import { LOGIN_VALUES } from "../../helpers/constantes";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { RestablecerClave } from "./RestablecerClave";
 import { ReenviarValidacion } from "./ReenviarValidacion";
 
@@ -16,6 +16,9 @@ const Login = () => {
   const [values, setValues] = useState(LOGIN_VALUES);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const isUrbaniaFlow = queryParams.get("next") === "urbania";
   const [modalAbierto, setModalAbierto] = useState(false);
   const [modalAbierto2, setModalAbierto2] = useState(false);
   // const abrirModal = () => setModalAbierto(true);
@@ -55,23 +58,49 @@ const Login = () => {
     } else return false;
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     // Realizar el login con el estado y funciones proporcionadas por el store
     e.preventDefault();
 
     const flag = handleErrors(values);
 
     if (!flag) {
-      login(values);
+      const result = await login(values);
+
+      if (result?.token && isUrbaniaFlow) {
+        const callbackUrl = import.meta.env.VITE_APP_URBANIA_CALLBACK_URL;
+        if (!callbackUrl) {
+          setErrors("Falta configurar el regreso a UrbanIA.");
+          return;
+        }
+
+        const url = new URL(callbackUrl);
+        url.searchParams.set("auth", result.token);
+        const state = queryParams.get("state");
+        if (state) url.searchParams.set("state", state);
+
+        // Derivador solo intermedia la autenticación. UrbanIA recibe el token
+        // una vez y Derivador no conserva una sesión reutilizable.
+        localStorage.removeItem("token");
+        window.location.replace(url.toString());
+      }
     }
   };
 
   useEffect(() => {
-    if (authenticated) {
+    if (isUrbaniaFlow) {
+      // Obliga a ingresar las credenciales en cada inicio de sesión de UrbanIA,
+      // incluso si otra persona usó Derivador anteriormente en este navegador.
+      localStorage.removeItem("token");
+    }
+  }, [isUrbaniaFlow]);
+
+  useEffect(() => {
+    if (authenticated && !isUrbaniaFlow) {
       navigate("/home");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authenticated]);
+  }, [authenticated, isUrbaniaFlow]);
 
   useEffect(() => {
     if (errors !== "") {
