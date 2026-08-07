@@ -43,6 +43,7 @@ import VerReclamo from "./pages/ConsultaPublica/VerReclamo";
 import AgregarReclamo from "./pages/ConsultaPublica/NuevoReclamo/AgregarReclamo";
 import LibreDeuda from "./pages/LibreDeuda/LibreDeuda";
 import LibreDeudaDIM from "./pages/LibreDeuda/LibreDeudaDIM";
+import Login from "./components/Login/Login";
 
 function App() {
   const url = new URL(window.location.href);
@@ -72,6 +73,7 @@ function App() {
         <Layout>
           <ProviderDerivador>
             <Routes>
+              <Route exact path="/login" element={<Login />} />
               <Route
                 exact
                 path="/*"
