@@ -10,6 +10,28 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { RestablecerClave } from "./RestablecerClave";
 import { ReenviarValidacion } from "./ReenviarValidacion";
 
+/**
+ * Aplicaciones externas que se autentican a través de Derivador.
+ *
+ * Cada una llega como `/login?next=<clave>` y vuelve a la URL de su variable de
+ * entorno con el token en `auth`. Sumar una aplicación es agregar una entrada
+ * acá y su variable al .env: el flujo de abajo no se toca.
+ *
+ * Es un Map y no un objeto a propósito: con un objeto, un `next` como
+ * `constructor` devolvería algo heredado del prototipo y el flujo arrancaría
+ * con una configuración inexistente.
+ */
+const APPS_EXTERNAS = new Map([
+  ["urbania", { nombre: "UrbanIA", callbackUrl: import.meta.env.VITE_APP_URBANIA_CALLBACK_URL }],
+  [
+    "elcop",
+    {
+      nombre: "el Portal del Becario de ELCOP",
+      callbackUrl: import.meta.env.VITE_APP_ELCOP_CALLBACK_URL
+    }
+  ]
+]);
+
 const Login = () => {
   const { authenticated, botonState, login, errors, setErrors } = useStore();
   const [showPassword, setShowPassword] = useState(false);
@@ -18,7 +40,8 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const isUrbaniaFlow = queryParams.get("next") === "urbania";
+  // La aplicación externa que pidió el ingreso, o null si es un login normal.
+  const appExterna = APPS_EXTERNAS.get(queryParams.get("next")) ?? null;
   const [modalAbierto, setModalAbierto] = useState(false);
   const [modalAbierto2, setModalAbierto2] = useState(false);
   // const abrirModal = () => setModalAbierto(true);
@@ -67,10 +90,10 @@ const Login = () => {
     if (!flag) {
       const result = await login(values);
 
-      if (result?.token && isUrbaniaFlow) {
-        const callbackUrl = import.meta.env.VITE_APP_URBANIA_CALLBACK_URL;
+      if (result?.token && appExterna) {
+        const { nombre, callbackUrl } = appExterna;
         if (!callbackUrl) {
-          setErrors("Falta configurar el regreso a UrbanIA.");
+          setErrors(`Falta configurar el regreso a ${nombre}.`);
           return;
         }
 
@@ -79,8 +102,8 @@ const Login = () => {
         const state = queryParams.get("state");
         if (state) url.searchParams.set("state", state);
 
-        // Derivador solo intermedia la autenticación. UrbanIA recibe el token
-        // una vez y Derivador no conserva una sesión reutilizable.
+        // Derivador solo intermedia la autenticación. La aplicación recibe el
+        // token una vez y Derivador no conserva una sesión reutilizable.
         localStorage.removeItem("token");
         window.location.replace(url.toString());
       }
@@ -88,19 +111,19 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (isUrbaniaFlow) {
-      // Obliga a ingresar las credenciales en cada inicio de sesión de UrbanIA,
-      // incluso si otra persona usó Derivador anteriormente en este navegador.
+    if (appExterna) {
+      // Obliga a ingresar las credenciales en cada ingreso a una aplicación
+      // externa, incluso si otra persona usó Derivador antes en este navegador.
       localStorage.removeItem("token");
     }
-  }, [isUrbaniaFlow]);
+  }, [appExterna]);
 
   useEffect(() => {
-    if (authenticated && !isUrbaniaFlow) {
+    if (authenticated && !appExterna) {
       navigate("/home");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authenticated, isUrbaniaFlow]);
+  }, [authenticated, appExterna]);
 
   useEffect(() => {
     if (errors !== "") {
