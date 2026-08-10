@@ -93,7 +93,9 @@ const Login = () => {
       if (result?.token && appExterna) {
         const { nombre, callbackUrl } = appExterna;
         if (!callbackUrl) {
-          setErrors(`Falta configurar el regreso a ${nombre}.`);
+          // "hacia" y no "a": los nombres de las aplicaciones pueden empezar con
+          // artículo, y "a el Portal del Becario" queda mal escrito.
+          setErrors(`Falta configurar el regreso hacia ${nombre}.`);
           return;
         }
 
