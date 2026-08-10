@@ -10,6 +10,24 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { RestablecerClave } from "./RestablecerClave";
 import { ReenviarValidacion } from "./ReenviarValidacion";
 
+/**
+ * Regreso a UrbanIA despues del login. Va hardcodeado, igual que los destinos
+ * de cidituc (turnos, hub-ia, juventudyaccion) en su PrivateRoute: asi el build
+ * de produccion no depende de que alguien acuerde de setear una variable.
+ *
+ * Es tambien la lista blanca del flujo: Derivador entrega un token de sesion,
+ * asi que el destino NO puede venir de la URL. Si viniera, cualquiera podria
+ * armar "?next=urbania&callback=sitio-malicioso" y llevarse el token.
+ */
+const URBANIA_CALLBACK_URL = "https://urban-ia-kappa.vercel.app/auth/cidituc/callback";
+const URBANIA_CALLBACK_URL_LOCAL = "http://localhost:3000/auth/cidituc/callback";
+
+function urbaniaCallbackUrl() {
+  const { hostname } = window.location;
+  const enLocal = hostname === "localhost" || hostname === "127.0.0.1";
+  return enLocal ? URBANIA_CALLBACK_URL_LOCAL : URBANIA_CALLBACK_URL;
+}
+
 const Login = () => {
   const { authenticated, botonState, login, errors, setErrors } = useStore();
   const [showPassword, setShowPassword] = useState(false);
@@ -68,13 +86,7 @@ const Login = () => {
       const result = await login(values);
 
       if (result?.token && isUrbaniaFlow) {
-        const callbackUrl = import.meta.env.VITE_APP_URBANIA_CALLBACK_URL;
-        if (!callbackUrl) {
-          setErrors("Falta configurar el regreso a UrbanIA.");
-          return;
-        }
-
-        const url = new URL(callbackUrl);
+        const url = new URL(urbaniaCallbackUrl());
         url.searchParams.set("auth", result.token);
         const state = queryParams.get("state");
         if (state) url.searchParams.set("state", state);
