@@ -42,11 +42,17 @@ const APPS_EXTERNAS = new Map([
  *
  * La variable, cuando existe, sigue mandando: esto es solo la red de seguridad.
  * Si se agregan las VITE_APP_*_CALLBACK_URL a .env.production, este mapa deja
- * de usarse solo. ELCOP no tiene respaldo porque no conozco su dominio: si le
- * pasa lo mismo, se suma una linea aca.
+ * de usarse solo.
+ *
+ * ELCOP quedaba sin respaldo por no conocer su dominio, y le paso lo mismo: el
+ * bundle desplegado de cidituc.smt.gob.ar sale con `callbackUrl: void 0` para
+ * las dos aplicaciones. El dominio es landing-elcop.vercel.app, confirmado por
+ * ELCOP, y es distinto del patron del resto porque no es un subdominio de
+ * smt.gob.ar.
  */
 const RESPALDO_CALLBACK = new Map([
-  ["urbania", "https://urban-ia-kappa.vercel.app/auth/cidituc/callback"]
+  ["urbania", "https://urban-ia-kappa.vercel.app/auth/cidituc/callback"],
+  ["elcop", "https://landing-elcop.vercel.app/auth/cidituc/callback"]
 ]);
 
 /**
