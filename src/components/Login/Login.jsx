@@ -11,21 +11,53 @@ import { RestablecerClave } from "./RestablecerClave";
 import { ReenviarValidacion } from "./ReenviarValidacion";
 
 /**
- * Regreso a UrbanIA despues del login. Va hardcodeado, igual que los destinos
- * de cidituc (turnos, hub-ia, juventudyaccion) en su PrivateRoute: asi el build
- * de produccion no depende de que alguien acuerde de setear una variable.
+ * Aplicaciones externas que se autentican a través de Derivador.
  *
- * Es tambien la lista blanca del flujo: Derivador entrega un token de sesion,
- * asi que el destino NO puede venir de la URL. Si viniera, cualquiera podria
- * armar "?next=urbania&callback=sitio-malicioso" y llevarse el token.
+ * Cada una llega como `/login?next=<clave>` y vuelve a la URL de su variable de
+ * entorno con el token en `auth`. Sumar una aplicación es agregar una entrada
+ * acá y su variable al .env: el flujo de abajo no se toca.
+ *
+ * Es un Map y no un objeto a propósito: con un objeto, un `next` como
+ * `constructor` devolvería algo heredado del prototipo y el flujo arrancaría
+ * con una configuración inexistente.
  */
-const URBANIA_CALLBACK_URL = "https://urban-ia-kappa.vercel.app/auth/cidituc/callback";
-const URBANIA_CALLBACK_URL_LOCAL = "http://localhost:3000/auth/cidituc/callback";
+const APPS_EXTERNAS = new Map([
+  ["urbania", { nombre: "UrbanIA", callbackUrl: import.meta.env.VITE_APP_URBANIA_CALLBACK_URL }],
+  [
+    "elcop",
+    {
+      nombre: "el Portal del Becario de ELCOP",
+      callbackUrl: import.meta.env.VITE_APP_ELCOP_CALLBACK_URL
+    }
+  ]
+]);
 
-function urbaniaCallbackUrl() {
+/**
+ * Regreso de respaldo, por si la variable de entorno no llega al build.
+ *
+ * Vite hornea las VITE_* al compilar y `.env.production` hoy solo define
+ * VITE_MIGUE_API_URL: sin este respaldo el build sale con el regreso vacio y el
+ * ingreso corta con "Falta configurar el regreso" YA con el usuario
+ * autenticado. Paso en produccion con UrbanIA el 2026-08-10.
+ *
+ * La variable, cuando existe, sigue mandando: esto es solo la red de seguridad.
+ * Si se agregan las VITE_APP_*_CALLBACK_URL a .env.production, este mapa deja
+ * de usarse solo. ELCOP no tiene respaldo porque no conozco su dominio: si le
+ * pasa lo mismo, se suma una linea aca.
+ */
+const RESPALDO_CALLBACK = new Map([
+  ["urbania", "https://urban-ia-kappa.vercel.app/auth/cidituc/callback"]
+]);
+
+/**
+ * En local el regreso sale del .env.local de cada quien: el respaldo apunta a
+ * produccion y sacaria al desarrollador de su entorno en medio de una prueba.
+ */
+function regresoDe(next, callbackUrl) {
+  if (callbackUrl) return callbackUrl;
   const { hostname } = window.location;
-  const enLocal = hostname === "localhost" || hostname === "127.0.0.1";
-  return enLocal ? URBANIA_CALLBACK_URL_LOCAL : URBANIA_CALLBACK_URL;
+  if (hostname === "localhost" || hostname === "127.0.0.1") return null;
+  return RESPALDO_CALLBACK.get(next) ?? null;
 }
 
 const Login = () => {
@@ -36,7 +68,8 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const isUrbaniaFlow = queryParams.get("next") === "urbania";
+  // La aplicación externa que pidió el ingreso, o null si es un login normal.
+  const appExterna = APPS_EXTERNAS.get(queryParams.get("next")) ?? null;
   const [modalAbierto, setModalAbierto] = useState(false);
   const [modalAbierto2, setModalAbierto2] = useState(false);
   // const abrirModal = () => setModalAbierto(true);
@@ -85,14 +118,23 @@ const Login = () => {
     if (!flag) {
       const result = await login(values);
 
-      if (result?.token && isUrbaniaFlow) {
-        const url = new URL(urbaniaCallbackUrl());
+      if (result?.token && appExterna) {
+        const { nombre, callbackUrl } = appExterna;
+        const regreso = regresoDe(queryParams.get("next"), callbackUrl);
+        if (!regreso) {
+          // "hacia" y no "a": los nombres de las aplicaciones pueden empezar con
+          // artículo, y "a el Portal del Becario" queda mal escrito.
+          setErrors(`Falta configurar el regreso hacia ${nombre}.`);
+          return;
+        }
+
+        const url = new URL(regreso);
         url.searchParams.set("auth", result.token);
         const state = queryParams.get("state");
         if (state) url.searchParams.set("state", state);
 
-        // Derivador solo intermedia la autenticación. UrbanIA recibe el token
-        // una vez y Derivador no conserva una sesión reutilizable.
+        // Derivador solo intermedia la autenticación. La aplicación recibe el
+        // token una vez y Derivador no conserva una sesión reutilizable.
         localStorage.removeItem("token");
         window.location.replace(url.toString());
       }
@@ -100,19 +142,19 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (isUrbaniaFlow) {
-      // Obliga a ingresar las credenciales en cada inicio de sesión de UrbanIA,
-      // incluso si otra persona usó Derivador anteriormente en este navegador.
+    if (appExterna) {
+      // Obliga a ingresar las credenciales en cada ingreso a una aplicación
+      // externa, incluso si otra persona usó Derivador antes en este navegador.
       localStorage.removeItem("token");
     }
-  }, [isUrbaniaFlow]);
+  }, [appExterna]);
 
   useEffect(() => {
-    if (authenticated && !isUrbaniaFlow) {
+    if (authenticated && !appExterna) {
       navigate("/home");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authenticated, isUrbaniaFlow]);
+  }, [authenticated, appExterna]);
 
   useEffect(() => {
     if (errors !== "") {
