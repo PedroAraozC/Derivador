@@ -32,6 +32,34 @@ const APPS_EXTERNAS = new Map([
   ]
 ]);
 
+/**
+ * Regreso de respaldo, por si la variable de entorno no llega al build.
+ *
+ * Vite hornea las VITE_* al compilar y `.env.production` hoy solo define
+ * VITE_MIGUE_API_URL: sin este respaldo el build sale con el regreso vacio y el
+ * ingreso corta con "Falta configurar el regreso" YA con el usuario
+ * autenticado. Paso en produccion con UrbanIA el 2026-08-10.
+ *
+ * La variable, cuando existe, sigue mandando: esto es solo la red de seguridad.
+ * Si se agregan las VITE_APP_*_CALLBACK_URL a .env.production, este mapa deja
+ * de usarse solo. ELCOP no tiene respaldo porque no conozco su dominio: si le
+ * pasa lo mismo, se suma una linea aca.
+ */
+const RESPALDO_CALLBACK = new Map([
+  ["urbania", "https://urban-ia-kappa.vercel.app/auth/cidituc/callback"]
+]);
+
+/**
+ * En local el regreso sale del .env.local de cada quien: el respaldo apunta a
+ * produccion y sacaria al desarrollador de su entorno en medio de una prueba.
+ */
+function regresoDe(next, callbackUrl) {
+  if (callbackUrl) return callbackUrl;
+  const { hostname } = window.location;
+  if (hostname === "localhost" || hostname === "127.0.0.1") return null;
+  return RESPALDO_CALLBACK.get(next) ?? null;
+}
+
 const Login = () => {
   const { authenticated, botonState, login, errors, setErrors } = useStore();
   const [showPassword, setShowPassword] = useState(false);
@@ -92,14 +120,15 @@ const Login = () => {
 
       if (result?.token && appExterna) {
         const { nombre, callbackUrl } = appExterna;
-        if (!callbackUrl) {
+        const regreso = regresoDe(queryParams.get("next"), callbackUrl);
+        if (!regreso) {
           // "hacia" y no "a": los nombres de las aplicaciones pueden empezar con
           // artículo, y "a el Portal del Becario" queda mal escrito.
           setErrors(`Falta configurar el regreso hacia ${nombre}.`);
           return;
         }
 
-        const url = new URL(callbackUrl);
+        const url = new URL(regreso);
         url.searchParams.set("auth", result.token);
         const state = queryParams.get("state");
         if (state) url.searchParams.set("state", state);
