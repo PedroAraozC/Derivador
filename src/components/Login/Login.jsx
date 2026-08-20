@@ -35,23 +35,31 @@ const APPS_EXTERNAS = new Map([
 /**
  * Regreso de respaldo, por si la variable de entorno no llega al build.
  *
- * Vite hornea las VITE_* al compilar y `.env.production` hoy solo define
+ * Vite hornea las VITE_* al compilar y `.env.production` solo define
  * VITE_MIGUE_API_URL: sin este respaldo el build sale con el regreso vacio y el
  * ingreso corta con "Falta configurar el regreso" YA con el usuario
  * autenticado. Paso en produccion con UrbanIA el 2026-08-10.
  *
- * La variable, cuando existe, sigue mandando: esto es solo la red de seguridad.
- * Si se agregan las VITE_APP_*_CALLBACK_URL a .env.production, este mapa deja
- * de usarse solo.
+ * La variable, cuando existe, sigue mandando: regresoDe() la mira primero. Pero
+ * hoy ninguna VITE_APP_*_CALLBACK_URL llega al build --el bundle desplegado de
+ * cidituc.smt.gob.ar sale con `callbackUrl: void 0` para las dos aplicaciones--,
+ * asi que en los hechos ESTE MAPA es el que gobierna el regreso. Mantenerlo al
+ * dia no es opcional.
  *
- * ELCOP quedaba sin respaldo por no conocer su dominio, y le paso lo mismo: el
- * bundle desplegado de cidituc.smt.gob.ar sale con `callbackUrl: void 0` para
- * las dos aplicaciones. El dominio es landing-elcop.vercel.app, confirmado por
- * ELCOP, y es distinto del patron del resto porque no es un subdominio de
- * smt.gob.ar.
+ * ELCOP: el dominio es landing-elcop.vercel.app, confirmado por ELCOP, y es
+ * distinto del patron del resto porque no es un subdominio de smt.gob.ar.
+ *
+ * UrbanIA: del 2026-08-10 al 2026-08-19 esta entrada quedo con el dominio viejo
+ * de Vercel, despues de que el sitio se mudara a urbania.smt.gob.ar. El sintoma
+ * no fue un error claro sino uno enganoso: el PRIMER intento de ingresar fallaba
+ * con "la solicitud de acceso vencio o no coincide" --la cookie con el state la
+ * pone urbania.smt.gob.ar y no viaja al dominio de Vercel-- y el SEGUNDO entraba
+ * normal, porque para entonces la persona ya estaba parada en el dominio viejo y
+ * ahi cookie y regreso volvian a coincidir. Quedaba "andando" en el sitio
+ * equivocado.
  */
 const RESPALDO_CALLBACK = new Map([
-  ["urbania", "https://urban-ia-kappa.vercel.app/auth/cidituc/callback"],
+  ["urbania", "https://urbania.smt.gob.ar/auth/cidituc/callback"],
   ["elcop", "https://landing-elcop.vercel.app/auth/cidituc/callback"]
 ]);
 
