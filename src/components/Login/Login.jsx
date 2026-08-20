@@ -40,23 +40,27 @@ const APPS_EXTERNAS = new Map([
  * ingreso corta con "Falta configurar el regreso" YA con el usuario
  * autenticado. Paso en produccion con UrbanIA el 2026-08-10.
  *
- * ESTE MAPA NO ES UN ADORNO: como la variable no se usa en produccion, ES el
- * que gobierna el regreso. Mantenerlo al dia no es opcional.
+ * La variable, cuando existe, sigue mandando: regresoDe() la mira primero. Pero
+ * hoy ninguna VITE_APP_*_CALLBACK_URL llega al build --el bundle desplegado de
+ * cidituc.smt.gob.ar sale con `callbackUrl: void 0` para las dos aplicaciones--,
+ * asi que en los hechos ESTE MAPA es el que gobierna el regreso. Mantenerlo al
+ * dia no es opcional.
  *
- * Del 2026-08-10 al 2026-08-19 apunto al dominio viejo de UrbanIA en Vercel,
- * despues de que el sitio se mudara a urbania.smt.gob.ar. El sintoma no fue un
- * error claro sino uno enganoso: el PRIMER intento de ingresar fallaba con "la
- * solicitud de acceso vencio o no coincide" --la cookie del state vive en
- * urbania.smt.gob.ar y no viaja al dominio de Vercel-- y el SEGUNDO entraba,
- * porque para entonces la persona ya estaba parada en el dominio viejo y ahi
- * todo cerraba. Quedaba "andando" en el sitio equivocado.
+ * ELCOP: el dominio es landing-elcop.vercel.app, confirmado por ELCOP, y es
+ * distinto del patron del resto porque no es un subdominio de smt.gob.ar.
  *
- * La variable, si algun dia se usa, sigue mandando: regresoDe() la mira primero.
- * ELCOP no tiene respaldo porque no conozco su dominio: si le pasa lo mismo, se
- * suma una linea aca.
+ * UrbanIA: del 2026-08-10 al 2026-08-19 esta entrada quedo con el dominio viejo
+ * de Vercel, despues de que el sitio se mudara a urbania.smt.gob.ar. El sintoma
+ * no fue un error claro sino uno enganoso: el PRIMER intento de ingresar fallaba
+ * con "la solicitud de acceso vencio o no coincide" --la cookie con el state la
+ * pone urbania.smt.gob.ar y no viaja al dominio de Vercel-- y el SEGUNDO entraba
+ * normal, porque para entonces la persona ya estaba parada en el dominio viejo y
+ * ahi cookie y regreso volvian a coincidir. Quedaba "andando" en el sitio
+ * equivocado.
  */
 const RESPALDO_CALLBACK = new Map([
-  ["urbania", "https://urbania.smt.gob.ar/auth/cidituc/callback"]
+  ["urbania", "https://urbania.smt.gob.ar/auth/cidituc/callback"],
+  ["elcop", "https://landing-elcop.vercel.app/auth/cidituc/callback"]
 ]);
 
 /**
