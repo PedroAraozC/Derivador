@@ -35,18 +35,28 @@ const APPS_EXTERNAS = new Map([
 /**
  * Regreso de respaldo, por si la variable de entorno no llega al build.
  *
- * Vite hornea las VITE_* al compilar y `.env.production` hoy solo define
+ * Vite hornea las VITE_* al compilar y `.env.production` solo define
  * VITE_MIGUE_API_URL: sin este respaldo el build sale con el regreso vacio y el
  * ingreso corta con "Falta configurar el regreso" YA con el usuario
  * autenticado. Paso en produccion con UrbanIA el 2026-08-10.
  *
- * La variable, cuando existe, sigue mandando: esto es solo la red de seguridad.
- * Si se agregan las VITE_APP_*_CALLBACK_URL a .env.production, este mapa deja
- * de usarse solo. ELCOP no tiene respaldo porque no conozco su dominio: si le
- * pasa lo mismo, se suma una linea aca.
+ * ESTE MAPA NO ES UN ADORNO: como la variable no se usa en produccion, ES el
+ * que gobierna el regreso. Mantenerlo al dia no es opcional.
+ *
+ * Del 2026-08-10 al 2026-08-19 apunto al dominio viejo de UrbanIA en Vercel,
+ * despues de que el sitio se mudara a urbania.smt.gob.ar. El sintoma no fue un
+ * error claro sino uno enganoso: el PRIMER intento de ingresar fallaba con "la
+ * solicitud de acceso vencio o no coincide" --la cookie del state vive en
+ * urbania.smt.gob.ar y no viaja al dominio de Vercel-- y el SEGUNDO entraba,
+ * porque para entonces la persona ya estaba parada en el dominio viejo y ahi
+ * todo cerraba. Quedaba "andando" en el sitio equivocado.
+ *
+ * La variable, si algun dia se usa, sigue mandando: regresoDe() la mira primero.
+ * ELCOP no tiene respaldo porque no conozco su dominio: si le pasa lo mismo, se
+ * suma una linea aca.
  */
 const RESPALDO_CALLBACK = new Map([
-  ["urbania", "https://urban-ia-kappa.vercel.app/auth/cidituc/callback"]
+  ["urbania", "https://urbania.smt.gob.ar/auth/cidituc/callback"]
 ]);
 
 /**
