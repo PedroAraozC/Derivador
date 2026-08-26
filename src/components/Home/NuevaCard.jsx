@@ -61,7 +61,8 @@ const NuevaCard = ({
           irATURNOS(1710);
           break;
         case "castracion_animal":
-          irATURNOS(1800);
+          // irATURNOS(1800);
+          irACASTRACION();
           break;
         case "campus_ambiental":
           irATURNOS(1510);
@@ -94,6 +95,14 @@ const NuevaCard = ({
     }
   };
 
+  const irACASTRACION = () => {
+    const token = localStorage.getItem("token");
+    const url = new URL(
+      `https://animales.smt.gob.ar/`
+    );
+    url.searchParams.append("auth", token);
+    window.open(url.toString(), "_blank");
+  };
   const irATURNOS = (reparticion) => {
     const token = localStorage.getItem("token");
     const url = new URL(
