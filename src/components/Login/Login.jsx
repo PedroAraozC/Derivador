@@ -29,6 +29,13 @@ const APPS_EXTERNAS = new Map([
       nombre: "el Portal del Becario de ELCOP",
       callbackUrl: import.meta.env.VITE_APP_ELCOP_CALLBACK_URL
     }
+  ],
+  [
+    "sanmiguelino",
+    {
+      nombre: "El Sanmiguelino",
+      callbackUrl: import.meta.env.VITE_APP_SANMIGUELINO_CALLBACK_URL
+    }
   ]
 ]);
 
@@ -57,10 +64,15 @@ const APPS_EXTERNAS = new Map([
  * normal, porque para entonces la persona ya estaba parada en el dominio viejo y
  * ahi cookie y regreso volvian a coincidir. Quedaba "andando" en el sitio
  * equivocado.
+ *
+ * El Sanmiguelino: el diario digital del municipio. Hoy vive en Vercel; si mas
+ * adelante se muda a un subdominio de smt.gob.ar, esta entrada se cambia EN EL
+ * MISMO deploy que la mudanza, por lo que le paso a UrbanIA justo arriba.
  */
 const RESPALDO_CALLBACK = new Map([
   ["urbania", "https://urbania.smt.gob.ar/auth/cidituc/callback"],
-  ["elcop", "https://landing-elcop.vercel.app/auth/cidituc/callback"]
+  ["elcop", "https://landing-elcop.vercel.app/auth/cidituc/callback"],
+  ["sanmiguelino", "https://el-sanmiguelino.vercel.app/auth/cidituc/callback"]
 ]);
 
 /**
