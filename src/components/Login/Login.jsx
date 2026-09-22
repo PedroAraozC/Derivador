@@ -36,6 +36,13 @@ const APPS_EXTERNAS = new Map([
       nombre: "El Sanmiguelino",
       callbackUrl: import.meta.env.VITE_APP_SANMIGUELINO_CALLBACK_URL
     }
+  ],
+  [
+    "presupuesto-participativo",
+    {
+      nombre: "el Presupuesto Participativo",
+      callbackUrl: import.meta.env.VITE_APP_PRESUPUESTO_CALLBACK_URL
+    }
   ]
 ]);
 
@@ -68,11 +75,20 @@ const APPS_EXTERNAS = new Map([
  * El Sanmiguelino: el diario digital del municipio. Hoy vive en Vercel; si mas
  * adelante se muda a un subdominio de smt.gob.ar, esta entrada se cambia EN EL
  * MISMO deploy que la mudanza, por lo que le paso a UrbanIA justo arriba.
+ *
+ * Presupuesto Participativo: nace directo en el subdominio definitivo para no
+ * repetir la mudanza de UrbanIA. Eso pide un orden: presupuestoparticipativo
+ * .smt.gob.ar tiene que resolver ANTES de que se despliegue este cambio, o la
+ * entrada va a estar bien y el regreso igual va a fallar.
  */
 const RESPALDO_CALLBACK = new Map([
   ["urbania", "https://urbania.smt.gob.ar/auth/cidituc/callback"],
   ["elcop", "https://landing-elcop.vercel.app/auth/cidituc/callback"],
-  ["sanmiguelino", "https://el-sanmiguelino.vercel.app/auth/cidituc/callback"]
+  ["sanmiguelino", "https://el-sanmiguelino.vercel.app/auth/cidituc/callback"],
+  [
+    "presupuesto-participativo",
+    "https://presupuestoparticipativo.smt.gob.ar/auth/cidituc/callback"
+  ]
 ]);
 
 /**
