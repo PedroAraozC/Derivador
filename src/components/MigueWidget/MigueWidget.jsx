@@ -23,7 +23,11 @@ const TEASERS = [
   "Estoy para ayudarte 😊",
 ];
 
-const SALUDO_INICIAL =
+// Texto de respaldo, sólo si el backend no contesta el menú (está caído o el
+// menú guiado está apagado). El saludo REAL viene de GET /api/menu: si se
+// escribiera acá, al primer cambio del árbol el portal y los demás canales
+// estarían diciendo cosas distintas.
+const SALUDO_RESPALDO =
   "¡Hola! Soy Migue, el asistente virtual de la Municipalidad de San Miguel de Tucumán. ¿En qué puedo ayudarte?";
 
 // =====================================================
@@ -53,6 +57,30 @@ function renderConLinks(texto) {
   });
 }
 
+// El aviso aceptado se recuerda por VERSIÓN, no con un simple "ya lo vio". Si
+// el texto cambia de fondo, en el backend se sube la versión y al vecino se le
+// vuelve a pedir: sin eso, un cambio silencioso dejaría a todo el mundo habiendo
+// aceptado algo que nunca leyó.
+const CLAVE_AVISO = "migueAvisoAceptado";
+
+function avisoAceptado(version) {
+  try {
+    return localStorage.getItem(CLAVE_AVISO) === version;
+  } catch {
+    // Modo incógnito o storage bloqueado: se vuelve a pedir cada vez, que es
+    // el lado correcto en el que equivocarse.
+    return false;
+  }
+}
+
+function guardarAviso(version) {
+  try {
+    localStorage.setItem(CLAVE_AVISO, version);
+  } catch {
+    /* sin storage el aviso reaparece la próxima; no es motivo para frenar */
+  }
+}
+
 function getSessionId() {
   let id = localStorage.getItem("migueSessionId");
   if (!id) {
@@ -77,6 +105,15 @@ const MigueWidget = () => {
   const [teaserText, setTeaserText] = useState("");
   const [teaserVisible, setTeaserVisible] = useState(false);
   const [teaserDismissed, setTeaserDismissed] = useState(false);
+
+  // Botones del menú guiado. Vienen del backend (GET /api/menu y el campo
+  // `menu` de cada respuesta): acá no hay ninguna lista de opciones escrita a
+  // mano, justamente para que no se desincronice del árbol real.
+  const [menu, setMenu] = useState(null); // { camino, opciones:[...], volver }
+
+  // Aviso previo. Mientras `aviso` tenga contenido, es lo único que se ve: el
+  // vecino no puede escribir ni elegir hasta aceptarlo.
+  const [aviso, setAviso] = useState(null); // { version, titulo, encabezado, puntos, boton }
 
   const sessionId = useRef(getSessionId());
   const listRef = useRef(null);
@@ -117,17 +154,65 @@ const MigueWidget = () => {
     }
   }, [messages, loading]);
 
-  // --- Saludo inicial al abrir por primera vez ---
+  // --- Menú de bienvenida al abrir por primera vez ---
+  // Se pide al backend en vez de escribirlo acá: es el mismo menú que ve el
+  // vecino por Telegram y por WhatsApp. El endpoint es estático y no pasa por
+  // el límite de mensajes, así que abrir el chat no le come el cupo a nadie.
   useEffect(() => {
-    if (open) {
-      if (messages.length === 0) {
-        setMessages([{ from: "bot", text: SALUDO_INICIAL }]);
+    if (!open) return;
+    setTimeout(() => inputRef.current && inputRef.current.focus(), 150);
+    if (messages.length > 0) return;
+
+    let vigente = true;
+    (async () => {
+      // Primero el aviso: si esta persona no aceptó la versión vigente, no se
+      // carga el menú todavía. Que el aviso no cargue no puede dejar el chat
+      // inutilizable, así que ante un error se sigue de largo.
+      try {
+        const av = await (await fetch(`${API_URL}/api/aviso`)).json();
+        if (!vigente) return;
+        if (av && av.version && !avisoAceptado(av.version)) {
+          setAviso(av);
+          return;
+        }
+      } catch {
+        /* sin aviso disponible, se sigue al menú */
       }
-      // Foco en el input
-      setTimeout(() => inputRef.current && inputRef.current.focus(), 150);
-    }
+      if (vigente) cargarMenu();
+    })();
+    return () => { vigente = false; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
+
+  const cargarMenu = async () => {
+    try {
+      const data = await (await fetch(`${API_URL}/api/menu`)).json();
+      if (data.habilitado && data.texto) {
+        setMessages([{ from: "bot", text: data.texto }]);
+        setMenu({ camino: data.camino, opciones: data.opciones, volver: data.volver });
+      } else {
+        setMessages([{ from: "bot", text: SALUDO_RESPALDO }]);
+      }
+    } catch {
+      setMessages([{ from: "bot", text: SALUDO_RESPALDO }]);
+    }
+  };
+
+  // Aceptar el aviso. Se guarda del lado del vecino para no volver a mostrarlo,
+  // y se avisa al backend, que es el registro que sirve del lado del municipio.
+  // Si ese registro falla, el vecino pasa igual: no tiene por qué pagar él un
+  // problema nuestro de red.
+  const aceptarAviso = () => {
+    const version = aviso.version;
+    guardarAviso(version);
+    setAviso(null);
+    fetch(`${API_URL}/api/aviso/aceptar`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sessionId: sessionId.current }),
+    }).catch(() => {});
+    cargarMenu();
+  };
 
   const toggleOpen = () => {
     setTeaserDismissed(true);
@@ -135,12 +220,13 @@ const MigueWidget = () => {
     setOpen((o) => !o);
   };
 
-  const enviar = async () => {
-    const texto = input.trim();
-    if (!texto || loading) return;
-
-    setMessages((prev) => [...prev, { from: "user", text: texto }]);
-    setInput("");
+  // Mandar al backend. `cuerpo` es { mensaje } cuando el vecino escribió, o
+  // { opcion: { camino, clave } } cuando tocó un botón. En el segundo caso el
+  // texto de la consulta lo resuelve el backend contra su propio árbol: el
+  // front no lo conoce y por eso no puede quedar desincronizado.
+  const consultar = async (cuerpo, textoMostrado) => {
+    setMessages((prev) => [...prev, { from: "user", text: textoMostrado }]);
+    setMenu(null);
     setLoading(true);
 
     try {
@@ -154,7 +240,7 @@ const MigueWidget = () => {
           "Content-Type": "application/json",
           ...(token ? { Authorization: token } : {}),
         },
-        body: JSON.stringify({ mensaje: texto, sessionId: sessionId.current }),
+        body: JSON.stringify({ ...cuerpo, sessionId: sessionId.current }),
       });
 
       const data = await res.json().catch(() => ({}));
@@ -167,6 +253,8 @@ const MigueWidget = () => {
         ...prev,
         { from: "bot", text: data.respuesta || "Disculpá, no pude generar una respuesta." },
       ]);
+      // Si la respuesta es un nodo del menú, vienen los botones para pintarlo.
+      if (data.menu) setMenu(data.menu);
     } catch (err) {
       setMessages((prev) => [
         ...prev,
@@ -178,6 +266,46 @@ const MigueWidget = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const enviar = async () => {
+    const texto = input.trim();
+    if (!texto || loading) return;
+    setInput("");
+    await consultar({ mensaje: texto }, texto);
+  };
+
+  // Abrir un submenú o volver al menú principal: es texto que el backend ya
+  // tiene armado, así que no pasa por el chat ni por el modelo. Se ve al toque.
+  const abrirMenu = async (camino) => {
+    if (loading) return;
+    setLoading(true);
+    try {
+      const url = camino ? `${API_URL}/api/menu?camino=${encodeURIComponent(camino)}` : `${API_URL}/api/menu`;
+      const data = await (await fetch(url)).json();
+      if (data.texto) {
+        setMessages((prev) => [...prev, { from: "bot", text: data.texto }]);
+        setMenu({ camino: data.camino, opciones: data.opciones, volver: data.volver });
+      }
+    } catch {
+      /* si falla, el vecino sigue teniendo el campo de texto */
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Tocar una opción. Un camino del menú principal puede abrir un submenú o
+  // disparar la consulta directo; el backend nos dijo cuál en el campo `submenu`.
+  const elegir = async (opcion) => {
+    if (loading) return;
+    if (menu && menu.camino === null) {
+      if (opcion.submenu) return abrirMenu(opcion.clave);
+      return consultar({ opcion: { camino: opcion.clave } }, `${opcion.icono} ${opcion.titulo}`);
+    }
+    return consultar(
+      { opcion: { camino: menu.camino, clave: opcion.clave } },
+      `${opcion.icono} ${opcion.titulo}`
+    );
   };
 
   const onKeyDown = (e) => {
@@ -203,6 +331,25 @@ const MigueWidget = () => {
             </button>
           </div>
 
+          {/* Aviso previo. Mientras esté, ocupa el lugar de los mensajes y del
+              campo de texto: la aceptación tiene que ser una decisión, no algo
+              que se saltea escribiendo por al lado. */}
+          {aviso && (
+            <div className="migue-aviso">
+              <h3 className="migue-aviso-titulo">{aviso.titulo}</h3>
+              <p className="migue-aviso-texto">{aviso.encabezado}</p>
+              <ul className="migue-aviso-puntos">
+                {aviso.puntos.map((p, i) => (
+                  <li key={i}>{p}</li>
+                ))}
+              </ul>
+              <button className="migue-aviso-btn" onClick={aceptarAviso}>
+                {aviso.boton}
+              </button>
+            </div>
+          )}
+
+          {!aviso && (
           <div className="migue-messages" ref={listRef}>
             {messages.map((m, i) => (
               <div key={i} className={`migue-msg migue-msg-${m.from}`}>
@@ -216,8 +363,46 @@ const MigueWidget = () => {
                 <span></span>
               </div>
             )}
-          </div>
 
+            {/* Caminos del menú guiado. No obligan a nada: el campo de texto
+                sigue habilitado y el vecino puede escribir lo que quiera. */}
+            {!loading && menu && menu.opciones && menu.opciones.length > 0 && (
+              <div className="migue-opciones">
+                {menu.opciones.map((o) => (
+                  <button
+                    key={o.clave}
+                    className="migue-opcion"
+                    onClick={() => elegir(o)}
+                    title={o.detalle || o.titulo}
+                  >
+                    <span className="migue-opcion-icono">{o.icono}</span>
+                    <span>{o.titulo}</span>
+                  </button>
+                ))}
+                {menu.volver && (
+                  <button className="migue-opcion migue-opcion-volver" onClick={() => abrirMenu(null)}>
+                    <span className="migue-opcion-icono">←</span>
+                    <span>Volver al menú</span>
+                  </button>
+                )}
+              </div>
+            )}
+
+            {/* Después de una respuesta no queda ningún botón, y el vecino que
+                venía navegando se queda sin salida visible. Este "volver" suelto
+                se la devuelve sin llenar la pantalla de opciones. */}
+            {!loading && !menu && messages.length > 1 && (
+              <div className="migue-opciones">
+                <button className="migue-opcion migue-opcion-volver" onClick={() => abrirMenu(null)}>
+                  <span className="migue-opcion-icono">←</span>
+                  <span>Volver al menú</span>
+                </button>
+              </div>
+            )}
+          </div>
+          )}
+
+          {!aviso && (
           <div className="migue-input-bar">
             <textarea
               ref={inputRef}
@@ -238,6 +423,7 @@ const MigueWidget = () => {
               ➤
             </button>
           </div>
+          )}
         </div>
       )}
 

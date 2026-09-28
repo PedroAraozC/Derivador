@@ -205,6 +205,122 @@
 }
 .migue-msg-user a { color: #fff; }
 
+/* Aviso previo.
+   Ocupa todo el cuerpo del panel porque reemplaza a los mensajes y al campo de
+   texto: si compartiera pantalla con el chat, el vecino escribiría sin leerlo. */
+.migue-aviso {
+  flex: 1;
+  overflow-y: auto;
+  padding: 18px 16px 16px;
+  background: #fafbfc;
+  display: flex;
+  flex-direction: column;
+}
+
+.migue-aviso-titulo {
+  margin: 0 0 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1c2b36;
+}
+
+.migue-aviso-texto {
+  margin: 0 0 12px;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: #37474f;
+}
+
+.migue-aviso-puntos {
+  margin: 0 0 18px;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.migue-aviso-puntos li {
+  font-size: 0.83rem;
+  line-height: 1.4;
+  color: #4b5b66;
+}
+
+.migue-aviso-btn {
+  margin-top: auto;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 14px;
+  background: var(--migue-azul);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.migue-aviso-btn:hover,
+.migue-aviso-btn:focus-visible {
+  background: var(--migue-azul-osc);
+}
+
+/* Caminos del menú guiado.
+   Van pegados al último mensaje del bot, alineados a la izquierda como él, para
+   que se lean como parte de lo que Migue acaba de decir y no como una barra de
+   herramientas aparte. Una opción por fila: los títulos son largos y en dos
+   columnas se cortan. */
+.migue-opciones {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 2px;
+  align-self: flex-start;
+  max-width: 88%;
+  animation: migue-msg-in 0.2s ease;
+}
+
+.migue-opcion {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid var(--migue-azul);
+  border-radius: 14px;
+  background: #fff;
+  color: var(--migue-azul);
+  font-size: 0.86rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.migue-opcion:hover,
+.migue-opcion:focus-visible {
+  background: var(--migue-azul);
+  color: #fff;
+}
+
+.migue-opcion-icono {
+  flex: 0 0 auto;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+/* "Volver" es navegación, no un camino: se distingue para que no compita
+   visualmente con las opciones de verdad. */
+.migue-opcion-volver {
+  border-color: #cfd8dd;
+  color: #62727d;
+  font-weight: 500;
+}
+.migue-opcion-volver:hover,
+.migue-opcion-volver:focus-visible {
+  background: #eceff1;
+  color: #37474f;
+}
+
 /* Indicador de "escribiendo..." */
 .migue-typing {
   display: flex;
