@@ -115,6 +115,9 @@ const MigueWidget = () => {
   // vecino no puede escribir ni elegir hasta aceptarlo.
   const [aviso, setAviso] = useState(null); // { version, titulo, encabezado, puntos, boton }
 
+  // Vinculación de Telegram en curso, para no disparar dos enlaces seguidos.
+  const [vinculando, setVinculando] = useState(false);
+
   const sessionId = useRef(getSessionId());
   const listRef = useRef(null);
   const inputRef = useRef(null);
@@ -195,6 +198,41 @@ const MigueWidget = () => {
       }
     } catch {
       setMessages([{ from: "bot", text: SALUDO_RESPALDO }]);
+    }
+  };
+
+  // Vincular Telegram. Sólo tiene sentido con sesión iniciada: el vínculo se
+  // crea a partir de la identidad del token, que es lo que hace que el vecino
+  // no tenga que escribir ninguna credencial en el chat de Telegram.
+  const vincularTelegram = async () => {
+    const token = localStorage.getItem("token");
+    if (!token || vinculando) return;
+    setVinculando(true);
+    try {
+      const res = await fetch(`${API_URL}/api/telegram/codigo`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: token },
+      });
+      const data = await res.json();
+      if (!res.ok || !data.enlace) throw new Error(data.error || "No se pudo generar el enlace");
+      setMessages((prev) => [
+        ...prev,
+        {
+          from: "bot",
+          text:
+            "Te abrí Telegram para vincular tu cuenta. Si no se abrió solo, entrá desde este enlace:\n" +
+            `${data.enlace}\n\n` +
+            "El enlace vale por 5 minutos y se usa una sola vez.",
+        },
+      ]);
+      window.open(data.enlace, "_blank", "noopener,noreferrer");
+    } catch (err) {
+      setMessages((prev) => [
+        ...prev,
+        { from: "bot", text: "No pude generar el enlace para vincular Telegram. Probá de nuevo en un momento." },
+      ]);
+    } finally {
+      setVinculando(false);
     }
   };
 
@@ -379,6 +417,19 @@ const MigueWidget = () => {
                     <span>{o.titulo}</span>
                   </button>
                 ))}
+                {/* Vincular Telegram: sólo en el menú principal y sólo con
+                    sesión iniciada, porque el vínculo se arma con la identidad
+                    del token. Sin sesión no habría de dónde sacarla. */}
+                {menu.camino === null && !!localStorage.getItem("token") && (
+                  <button
+                    className="migue-opcion migue-opcion-vincular"
+                    onClick={vincularTelegram}
+                    disabled={vinculando}
+                  >
+                    <span className="migue-opcion-icono">✈️</span>
+                    <span>{vinculando ? "Generando enlace..." : "Vincular mi Telegram"}</span>
+                  </button>
+                )}
                 {menu.volver && (
                   <button className="migue-opcion migue-opcion-volver" onClick={() => abrirMenu(null)}>
                     <span className="migue-opcion-icono">←</span>

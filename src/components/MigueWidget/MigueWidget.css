@@ -308,6 +308,17 @@
   line-height: 1;
 }
 
+/* Vincular Telegram es una acción, no un tema de consulta: el borde punteado
+   la distingue de los caminos para que no compita con ellos. */
+.migue-opcion-vincular {
+  border-style: dashed;
+}
+
+.migue-opcion-vincular:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
 /* "Volver" es navegación, no un camino: se distingue para que no compita
    visualmente con las opciones de verdad. */
 .migue-opcion-volver {
