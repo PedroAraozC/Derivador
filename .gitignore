@@ -25,4 +25,8 @@ dist-ssr
 .env
 .env.example
 .env.produccion
+.env.local
 
+
+# Config local de Claude Code
+.claude/
