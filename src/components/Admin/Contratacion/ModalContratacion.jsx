@@ -1,7 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { useState, useEffect, useRef } from "react";
-import { Modal, Box, Button, Divider, InputLabel, MenuItem, Select, Switch, TextField, Snackbar, Alert, } from "@mui/material";
+import { Modal, Box, Button, Divider, InputLabel, MenuItem, Select, Switch, TextField, Snackbar, Alert, FormControl, FormControlLabel, Grid, IconButton, Typography } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import UploadFileIcon from "@mui/icons-material/UploadFile";
+import SaveIcon from "@mui/icons-material/Save";
 import axios from "../../../config/axiosLicitaciones";
 import useStore from "../../../Zustand/Zustand";
 // import LaunchIcon from "@mui/icons-material/Launch";
@@ -64,6 +67,12 @@ const ModalContratacion = ({ contratacion, modalAbierto, handleClose, modoEdicio
             const fechaApertura = new Date(contratacion.fecha_apertura);
             const fechaPresentacionFormatted = `${fechaPresentacion.getFullYear()}-${(fechaPresentacion.getMonth() + 1).toString().padStart(2, '0')}-${fechaPresentacion.getDate().toString().padStart(2, '0')}`;
             const fechaAperturaFormatted = `${fechaApertura.getFullYear()}-${(fechaApertura.getMonth() + 1).toString().padStart(2, '0')}-${fechaApertura.getDate().toString().padStart(2, '0')}`;
+            // La fecha límite es opcional: puede venir null desde la base de datos
+            let fechaLimiteFormatted = "";
+            if (contratacion.fecha_limite) {
+                const fechaLimite = new Date(contratacion.fecha_limite);
+                fechaLimiteFormatted = `${fechaLimite.getFullYear()}-${(fechaLimite.getMonth() + 1).toString().padStart(2, '0')}-${fechaLimite.getDate().toString().padStart(2, '0')}`;
+            }
             setFormularioValues({
                 id: contratacion.id_contratacion,
                 nombre_contratacion: contratacion.nombre_contratacion,
@@ -77,7 +86,8 @@ const ModalContratacion = ({ contratacion, modalAbierto, handleClose, modoEdicio
                 fecha_apertura: fechaAperturaFormatted,
                 hora_apertura: contratacion.hora_apertura,
                 habilita: contratacion.habilita,
-                detalle: contratacion.detalle
+                detalle: contratacion.detalle,
+                fecha_limite: fechaLimiteFormatted,
             });
             setDatosOld(`CONTRATACION_${contratacion.num_instrumento}_EXPTE_${contratacion.expte}.pdf`)
         }
@@ -165,183 +175,286 @@ const ModalContratacion = ({ contratacion, modalAbierto, handleClose, modoEdicio
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        width: "90%", // Ajusta el ancho según el dispositivo
-        height: "95%",
+        width: { xs: "95%", md: 860 },
+        maxWidth: "95%",
+        maxHeight: "95vh",
         bgcolor: "background.paper",
-        border: "2px solid #000",
+        borderRadius: 2,
         boxShadow: 24,
-        p: 4,
+        display: "flex",
+        flexDirection: "column",
+        overflow: "hidden",
+        outline: "none",
     }
+
+    const SeccionTitulo = ({ children }) => (
+        <Typography variant="overline" sx={{ display: "block", color: "text.secondary", fontWeight: 600, letterSpacing: 1, mb: 1.5 }}>
+            {children}
+        </Typography>
+    );
 
     return (
         <Modal open={modalAbierto} onClose={handleClose}>
             <Box sx={style}>
-                <div className="d-flex justify-content-around align-items-center mb-3">
-                    <p style={{ fontSize: "1rem", margin: 0 }}>
-                        Detalle : {contratacion?.id_contratacion}
-                    </p>
-                </div>
-                <Divider />
-                <div className="d-flex flex-column">
+                {/* Encabezado */}
+                <Box sx={{ px: 3, py: 2, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 2, borderBottom: 1, borderColor: "divider" }}>
+                    <Box sx={{ minWidth: 0 }}>
+                        <Typography variant="h6" sx={{ fontWeight: 600, lineHeight: 1.2 }}>Editar contratación</Typography>
+                        <Typography variant="body2" color="text.secondary" noWrap>
+                            #{contratacion?.id_contratacion} · {contratacion?.nombre_contratacion}
+                        </Typography>
+                    </Box>
+                    <IconButton onClick={handleClose} size="small" aria-label="Cerrar">
+                        <CloseIcon />
+                    </IconButton>
+                </Box>
 
-                <div className="d-flex justify-content-center">
-                    <form className="d-flex gap-5" onSubmit={(event) => editarContratacion(event, formularioValues)} encType="multipart/form-data">
-                        <div className="d-flex flex-column">
-                            <TextField
-                                label="Nombre Contratación"
-                                variant="outlined"
-                                sx={{ marginTop: 5, width: 300 }}
-                                onChange={handleInputChange}
-                                name="nombre_contratacion"
-                                value={formularioValues.nombre_contratacion}
-                                required={true}
-                            />
-                            <InputLabel sx={{ marginTop: 2 }}>Tipo de Contratación</InputLabel>
-                            <Select
-                                value={formularioValues.id_tcontratacion}
-                                onChange={handleInputChange}
-                                name="id_tcontratacion"
-                                sx={{ width: 300, marginBottom: 2 }}
-                                required={true}
-                            >
-                                {Array.isArray(tiposContratacion) &&
-                                    tiposContratacion.map((e) => (
-                                        <MenuItem
-                                            key={e.id_tcontratacion}
-                                            value={e.id_tcontratacion}
-                                        >
-                                            {e.nombre_tcontratacion}
-                                        </MenuItem>
-                                    ))}
-                            </Select>
-                            <InputLabel>Fecha Presentación</InputLabel>
-                            <TextField
-                                type="date"
-                                onChange={handleInputChange}
-                                name="fecha_presentacion"
-                                value={formularioValues.fecha_presentacion}
-                                sx={{ width: 300, marginTop: 2 }}
-                                required={true}
-                            />
-                            <InputLabel sx={{ marginTop: 2 }}>Hora Presentación</InputLabel>
-                            <TextField
-                                placeholder="Ej: 09:00:00"
-                                onChange={handleInputChange}
-                                name="hora_presentacion"
-                                value={formularioValues.hora_presentacion}
-                                sx={{ width: 300, marginTop: 2 }}
-                                required={true}
-                            />
-                            <TextField
-                                id="standard-basic"
-                                label="Num de Instrumento"
-                                variant="outlined"
-                                sx={{ marginTop: 5, width: 300 }}
-                                onChange={handleInputChange}
-                                name="num_instrumento"
-                                value={formularioValues.num_instrumento}
-                                required={true}
-                            />
-                            <TextField
-                                id="standard-basic"
-                                label="Valor de Pliego"
-                                variant="outlined"
-                                sx={{ marginTop: 5, width: 300 }}
-                                onChange={handleInputChange}
-                                name="valor_pliego"
-                                value={formularioValues.valor_pliego}
-                                required={true}
-                            />
-                        </div>
-                        <div className="d-flex flex-column">
-                            <TextField
-                                id="standard-basic"
-                                label="Expte"
-                                variant="outlined"
-                                sx={{ marginTop: 5, width: 300 }}
-                                onChange={handleInputChange}
-                                name="expte"
-                                value={formularioValues.expte}
-                                required={true}
-                            />
-                            <InputLabel sx={{ marginTop: 2 }}>Tipo de Instrumento</InputLabel>
-                            <Select
-                                value={formularioValues.id_tinstrumento}
-                                onChange={handleInputChange}
-                                name="id_tinstrumento"
-                                sx={{ width: 300 }}
-                                required={true}
-                            >
-                                {Array.isArray(instrumentosC) &&
-                                    instrumentosC.map((e) => (
-                                        <MenuItem
-                                            key={e.id_tinstrumento}
-                                            value={e.id_tinstrumento}
-                                        >
-                                            {e.nombre_tinstrumento}
-                                        </MenuItem>
-                                    ))}
-                            </Select>
+                {/* Contenido */}
+                <Box sx={{ px: 3, py: 2.5, overflowY: "auto", flex: 1 }}>
+                    <form onSubmit={(event) => editarContratacion(event, formularioValues)} encType="multipart/form-data">
+                        <SeccionTitulo>Datos generales</SeccionTitulo>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <TextField
+                                    label="Nombre Contratación"
+                                    size="small"
+                                    fullWidth
+                                    onChange={handleInputChange}
+                                    name="nombre_contratacion"
+                                    value={formularioValues.nombre_contratacion ?? ""}
+                                    required={true}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <FormControl fullWidth size="small" required>
+                                    <InputLabel id="label-tcontratacion">Tipo de Contratación</InputLabel>
+                                    <Select
+                                        labelId="label-tcontratacion"
+                                        label="Tipo de Contratación"
+                                        value={formularioValues.id_tcontratacion ?? ""}
+                                        onChange={handleInputChange}
+                                        name="id_tcontratacion"
+                                    >
+                                        {Array.isArray(tiposContratacion) &&
+                                            tiposContratacion.map((e) => (
+                                                <MenuItem key={e.id_tcontratacion} value={e.id_tcontratacion}>
+                                                    {e.nombre_tcontratacion}
+                                                </MenuItem>
+                                            ))}
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <FormControl fullWidth size="small" required>
+                                    <InputLabel id="label-tinstrumento">Tipo de Instrumento</InputLabel>
+                                    <Select
+                                        labelId="label-tinstrumento"
+                                        label="Tipo de Instrumento"
+                                        value={formularioValues.id_tinstrumento ?? ""}
+                                        onChange={handleInputChange}
+                                        name="id_tinstrumento"
+                                    >
+                                        {Array.isArray(instrumentosC) &&
+                                            instrumentosC.map((e) => (
+                                                <MenuItem key={e.id_tinstrumento} value={e.id_tinstrumento}>
+                                                    {e.nombre_tinstrumento}
+                                                </MenuItem>
+                                            ))}
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={12} sm={4}>
+                                <TextField
+                                    label="Num de Instrumento"
+                                    size="small"
+                                    fullWidth
+                                    onChange={handleInputChange}
+                                    name="num_instrumento"
+                                    value={formularioValues.num_instrumento ?? ""}
+                                    required={true}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={4}>
+                                <TextField
+                                    label="Expte"
+                                    size="small"
+                                    fullWidth
+                                    onChange={handleInputChange}
+                                    name="expte"
+                                    value={formularioValues.expte ?? ""}
+                                    required={true}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={4}>
+                                <TextField
+                                    label="Valor de Pliego"
+                                    size="small"
+                                    fullWidth
+                                    placeholder="Ej: 100000.00"
+                                    onChange={handleInputChange}
+                                    name="valor_pliego"
+                                    value={formularioValues.valor_pliego ?? ""}
+                                    required={true}
+                                />
+                            </Grid>
+                        </Grid>
 
-                            <InputLabel sx={{ marginTop: 2 }}>Fecha Apertura</InputLabel>
-                            <TextField
-                                type="date"
-                                onChange={handleInputChange}
-                                name="fecha_apertura"
-                                value={formularioValues.fecha_apertura}
-                                sx={{ width: 300, marginTop: 2 }}
-                                required={true}
-                            />
-                            <InputLabel sx={{ marginTop: 2 }}>Hora Apertura</InputLabel>
-                            <TextField
-                                placeholder="Ej: 09:00:00"
-                                onChange={handleInputChange}
-                                name="hora_apertura"
-                                value={formularioValues.hora_apertura}
-                                sx={{ width: 300, marginTop: 2 }}
-                                required={true}
-                            />
-                            <InputLabel sx={{marginTop: 3}}>Detalle</InputLabel>
-                            <textarea
-                                placeholder="Información Adicional..."
-                                onChange={handleInputChange}
-                                name="detalle"
-                                value={formularioValues.detalle}
-                                style={{ width: 300, borderRadius: 5, padding: 5,  }}
-                            />
-                            <InputLabel sx={{ marginTop: 2 }}>HABILITA</InputLabel>
-                            <Switch
-                                checked={formularioValues.habilita === 1}
-                                onChange={handleHabilitarChange}
-                                name="habilita"
-                                sx={{ marginTop: 2 }}
-                            />
-                            <InputLabel sx={{marginTop: 5}}>EDITAR PLIEGO (OBLIGATORIO)</InputLabel>
-                            <input
-                                type="file"
-                                accept=".pdf"
-                                ref={fileInputRef}
-                                onChange={handleFileInputChange}
-                                required={true}
-                                style={{ width: 300, paddingTop: 5, paddingBottom: 30 }}
-                            />
-                        </div>
-                        
+                        <Divider sx={{ my: 3 }} />
+
+                        <SeccionTitulo>Fechas</SeccionTitulo>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12} sm={6} md={3}>
+                                <TextField
+                                    label="Fecha Presentación"
+                                    type="date"
+                                    size="small"
+                                    fullWidth
+                                    InputLabelProps={{ shrink: true }}
+                                    onChange={handleInputChange}
+                                    name="fecha_presentacion"
+                                    value={formularioValues.fecha_presentacion ?? ""}
+                                    required={true}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6} md={3}>
+                                <TextField
+                                    label="Hora Presentación"
+                                    size="small"
+                                    fullWidth
+                                    placeholder="09:00:00"
+                                    InputLabelProps={{ shrink: true }}
+                                    onChange={handleInputChange}
+                                    name="hora_presentacion"
+                                    value={formularioValues.hora_presentacion ?? ""}
+                                    required={true}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6} md={3}>
+                                <TextField
+                                    label="Fecha Apertura"
+                                    type="date"
+                                    size="small"
+                                    fullWidth
+                                    InputLabelProps={{ shrink: true }}
+                                    onChange={handleInputChange}
+                                    name="fecha_apertura"
+                                    value={formularioValues.fecha_apertura ?? ""}
+                                    required={true}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6} md={3}>
+                                <TextField
+                                    label="Hora Apertura"
+                                    size="small"
+                                    fullWidth
+                                    placeholder="09:00:00"
+                                    InputLabelProps={{ shrink: true }}
+                                    onChange={handleInputChange}
+                                    name="hora_apertura"
+                                    value={formularioValues.hora_apertura ?? ""}
+                                    required={true}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6} md={3}>
+                                <TextField
+                                    label="Fecha Límite (opcional)"
+                                    type="date"
+                                    size="small"
+                                    fullWidth
+                                    InputLabelProps={{ shrink: true }}
+                                    onChange={handleInputChange}
+                                    name="fecha_limite"
+                                    value={formularioValues.fecha_limite ?? ""}
+                                    required={false}
+                                    helperText="Dejar vacío si no tiene fecha límite"
+                                />
+                            </Grid>
+                        </Grid>
+
+                        <Divider sx={{ my: 3 }} />
+
+                        <SeccionTitulo>Documentación y detalle</SeccionTitulo>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <TextField
+                                    label="Detalle"
+                                    size="small"
+                                    fullWidth
+                                    multiline
+                                    minRows={3}
+                                    placeholder="Información Adicional..."
+                                    onChange={handleInputChange}
+                                    name="detalle"
+                                    value={formularioValues.detalle ?? ""}
+                                />
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                                <Box sx={{ p: 2, border: "1px dashed", borderColor: "divider", borderRadius: 2, height: "100%" }}>
+                                    <Typography variant="subtitle2" sx={{ mb: 1 }}>Pliego (obligatorio)</Typography>
+                                    <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, flexWrap: "wrap" }}>
+                                        <Button component="label" variant="outlined" size="small" startIcon={<UploadFileIcon />}>
+                                            Seleccionar PDF
+                                            <input
+                                                type="file"
+                                                accept=".pdf"
+                                                ref={fileInputRef}
+                                                onChange={handleFileInputChange}
+                                                required={true}
+                                                hidden
+                                            />
+                                        </Button>
+                                        <Typography variant="body2" color={archivo ? "text.primary" : "text.secondary"} noWrap sx={{ minWidth: 0 }}>
+                                            {archivo ? archivo.name : "Ningún archivo seleccionado"}
+                                        </Typography>
+                                    </Box>
+                                </Box>
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                                <Box sx={{ p: 2, border: "1px solid", borderColor: "divider", borderRadius: 2, height: "100%", display: "flex", alignItems: "center" }}>
+                                    <FormControlLabel
+                                        control={
+                                            <Switch
+                                                checked={formularioValues.habilita === 1}
+                                                onChange={handleHabilitarChange}
+                                                name="habilita"
+                                            />
+                                        }
+                                        label={
+                                            <Box>
+                                                <Typography variant="subtitle2">Habilitada</Typography>
+                                            </Box>
+                                        }
+                                    />
+                                </Box>
+                            </Grid>
+                        </Grid>
                     </form>
-                    <div className="ps-4">
 
-                    <InputLabel sx={{ marginTop: 4 }}>EDITAR ANEXO #OPCIONAL</InputLabel>
-                    <form className="d-flex flex-column">
-                    <input
-                        type="file"
-                        accept=".pdf"
-                        ref={anexoInputRef}
-                        onChange={handleFileInputChangeAnexo}
-                        required={false}
-                        style={{ width: 400, paddingTop: 5, paddingBottom: 30 }}
-                        />
-                    <Button variant="contained" onClick={editarAnexo} disabled={buttonDisAnexo}>Editar</Button>
-                    </form>
+                    <Divider sx={{ my: 3 }} />
+
+                    <SeccionTitulo>Anexo (opcional)</SeccionTitulo>
+                    <Box component="form" sx={{ p: 2, border: "1px dashed", borderColor: "divider", borderRadius: 2, bgcolor: "action.hover" }}>
+                        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, flexWrap: "wrap" }}>
+                            <Button component="label" variant="outlined" size="small" startIcon={<UploadFileIcon />}>
+                                Seleccionar PDF
+                                <input
+                                    type="file"
+                                    accept=".pdf"
+                                    ref={anexoInputRef}
+                                    onChange={handleFileInputChangeAnexo}
+                                    required={false}
+                                    hidden
+                                />
+                            </Button>
+                            <Typography variant="body2" color={anexo ? "text.primary" : "text.secondary"} noWrap sx={{ flex: 1, minWidth: 120 }}>
+                                {anexo ? anexo.name : "Ningún archivo seleccionado"}
+                            </Typography>
+                            <Button variant="contained" size="small" onClick={editarAnexo} disabled={buttonDisAnexo}>
+                                Editar anexo
+                            </Button>
+                        </Box>
+                    </Box>
+
                     {errores ? (
                         <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
                             <Alert onClose={handleSnackbarClose} severity="info" elevation={6} variant="filled">
@@ -349,17 +462,17 @@ const ModalContratacion = ({ contratacion, modalAbierto, handleClose, modoEdicio
                             </Alert>
                         </Snackbar>
                     ) : <></>}
-                    </div>
-                    </div>
+                </Box>
 
-                    <Button
-                        onClick={() => editarContratacion(formularioValues)}
-                        className="mt-3"
-                        variant="outlined"
-                        >
+                {/* Pie */}
+                <Box sx={{ px: 3, py: 2, display: "flex", justifyContent: "flex-end", gap: 1.5, borderTop: 1, borderColor: "divider", bgcolor: "background.default" }}>
+                    <Button onClick={handleClose} variant="text" color="inherit">
+                        Cancelar
+                    </Button>
+                    <Button onClick={() => editarContratacion(formularioValues)} variant="contained" startIcon={<SaveIcon />}>
                         Guardar cambios
                     </Button>
-                </div>
+                </Box>
             </Box>
         </Modal>
     );
