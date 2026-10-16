@@ -43,6 +43,13 @@ const APPS_EXTERNAS = new Map([
       nombre: "el Presupuesto Participativo",
       callbackUrl: import.meta.env.VITE_APP_PRESUPUESTO_CALLBACK_URL
     }
+  ],
+  [
+    "estudia",
+    {
+      nombre: "SMT EstudIA",
+      callbackUrl: import.meta.env.VITE_APP_ESTUDIA_CALLBACK_URL
+    }
   ]
 ]);
 
@@ -80,6 +87,10 @@ const APPS_EXTERNAS = new Map([
  * repetir la mudanza de UrbanIA. Eso pide un orden: presupuestoparticipativo
  * .smt.gob.ar tiene que resolver ANTES de que se despliegue este cambio, o la
  * entrada va a estar bien y el regreso igual va a fallar.
+ *
+ * SMT EstudIA: la plataforma de las escuelas municipales, ya en su subdominio
+ * definitivo (estudia.smt.gob.ar). Solo deja entrar a quien ya tiene cuenta en
+ * EstudIA con ese DNI; a los demas se lo explica EstudIA al volver.
  */
 const RESPALDO_CALLBACK = new Map([
   ["urbania", "https://urbania.smt.gob.ar/auth/cidituc/callback"],
@@ -88,7 +99,8 @@ const RESPALDO_CALLBACK = new Map([
   [
     "presupuesto-participativo",
     "https://presupuestoparticipativo.smt.gob.ar/auth/cidituc/callback"
-  ]
+  ],
+  ["estudia", "https://estudia.smt.gob.ar/auth/cidituc/callback"]
 ]);
 
 /**
