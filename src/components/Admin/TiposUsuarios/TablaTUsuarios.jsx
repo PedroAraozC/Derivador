@@ -9,8 +9,9 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TablePagination from "@mui/material/TablePagination";
 import Paper from "@mui/material/Paper";
-import { Button } from "@mui/material";
+import { Button, IconButton, Tooltip } from "@mui/material";
 import { DerivadorContext } from "../../../context/DerivadorContext";
+import EstadoChip from "../../../common/EstadoChip";
 import ModalTUsuarios from "./ModalTUsuarios";
 import ModalAgregar from "./ModalAgregar";
 import PermisosTUsuario from "./PermisosTUsuario";
@@ -88,13 +89,14 @@ const TablaTUsuarios = () => {
                                         <TableCell>{tusuario.id_tusuario}</TableCell>
                                         <TableCell>{tusuario.nombre_tusuario}</TableCell>
                                         <TableCell sx={{ textAlign: 'center' }}>
-                                            {tusuario.habilita == 1 ? 'SI' : 'NO'}
+                                            <EstadoChip habilitado={tusuario.habilita == 1} textoSi="Sí" textoNo="No" />
                                         </TableCell>
                                         <TableCell sx={{ textAlign: 'center' }}>
-                                            <KeyOutlinedIcon
-                                                onClick={() => abrirModalPermisos(tusuario)}
-                                                style={{ cursor: 'pointer' }}
-                                            />
+                                            <Tooltip title="Editar permisos">
+                                                <IconButton size="small" color="primary" onClick={() => abrirModalPermisos(tusuario)}>
+                                                    <KeyOutlinedIcon fontSize="small" />
+                                                </IconButton>
+                                            </Tooltip>
                                         </TableCell>
                                         <TableCell sx={{ textAlign: 'center' }}>
                                             <Button

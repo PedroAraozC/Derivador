@@ -179,8 +179,8 @@ const ModalContratacion = ({ contratacion, modalAbierto, handleClose, modoEdicio
         maxWidth: "95%",
         maxHeight: "95vh",
         bgcolor: "background.paper",
-        borderRadius: 2,
-        boxShadow: 24,
+        borderRadius: "20px",
+        boxShadow: "var(--cd-sombra-modal)",
         display: "flex",
         flexDirection: "column",
         overflow: "hidden",
@@ -195,7 +195,7 @@ const ModalContratacion = ({ contratacion, modalAbierto, handleClose, modoEdicio
 
     return (
         <Modal open={modalAbierto} onClose={handleClose}>
-            <Box sx={style}>
+            <Box sx={style} className="cd-modal">
                 {/* Encabezado */}
                 <Box sx={{ px: 3, py: 2, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 2, borderBottom: 1, borderColor: "divider" }}>
                     <Box sx={{ minWidth: 0 }}>

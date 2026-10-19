@@ -245,13 +245,15 @@ export default function TablaOpciones() {
             left: "50%",
             transform: "translate(-50%, -50%)",
             bgcolor: "background.paper",
-            p: 4,
-            borderRadius: 2,
-            boxShadow: 24,
-            width: 400,
+            p: { xs: 3, md: 4 },
+            borderRadius: "20px",
+            boxShadow: "var(--cd-sombra-modal)",
+            width: { xs: "94%", sm: 440 },
+            outline: "none",
           }}
+          className="cd-modal"
         >
-          <h3>Agregar nueva opción</h3>
+          <h3 className="cd-modal__titulo">Agregar nueva opción</h3>
           <form onSubmit={handleAddOption}>
             <TextField
               fullWidth

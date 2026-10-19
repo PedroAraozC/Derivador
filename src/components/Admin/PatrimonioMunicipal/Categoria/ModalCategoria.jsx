@@ -135,27 +135,30 @@ const ModalCategoria = ({ categorias, modalAbierto, handleClose }) => {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: isMobile ? "100%" : "500px", // Ajusta el ancho según el dispositivo
+    width: isMobile ? "94%" : "480px",
     // height: "50%",
     bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 4,
+    boxShadow: "var(--cd-sombra-modal)",
+    p: { xs: 3, md: 4 },
+    borderRadius: "20px",
+    maxHeight: "92vh",
+    overflowY: "auto",
+    outline: "none",
   };
 
   return (
     <>
     <Modal open={modalAbierto} onClose={handleClose}>
-      <Box sx={style}>
-        <div className="d-flex justify-content-around align-items-center mb-3">
-          <p style={{ fontSize: "1rem", margin: 0 }}>
+      <Box sx={style} className="cd-modal">
+        <div className="cd-modal__cabecera">
+          <p className="cd-modal__titulo">
             Detalle de la Categoria: {categorias.id_categoria}
           </p>
         </div>
         <Divider />
         <div className="d-flex flex-column justify-content-center">
           <form className="d-flex flex-column flex-xxl-row gap-5 justify-content-center align-items-center formAgregarcausal">
-            <div className="w-50 d-flex flex-column gap-3 p-2">
+            <div className="w-100 d-flex flex-column gap-2 p-2">
               <InputLabel>ESTADO</InputLabel>
               <TextField
                 placeholder={`${categorias.nombre_categoria}`}
@@ -165,7 +168,7 @@ const ModalCategoria = ({ categorias, modalAbierto, handleClose }) => {
                 sx={{ width: "100%", minHeight: "56px" }} 
               />
             </div>
-            <div className="d-flex flex-column gap-3 w-50 p-2">
+            <div className="d-flex flex-column gap-2 w-100 p-2">
               <div className="d-flex align-items-center">
                 <p className="m-0">Habilita:</p>
                 <Switch
@@ -178,7 +181,7 @@ const ModalCategoria = ({ categorias, modalAbierto, handleClose }) => {
           </form>
           <Button
             onClick={() => editarCategoria()}
-            className="mt-3 w-50 d-flex align-self-center"
+            className="mt-3 w-100 d-flex align-self-center"
             variant="outlined"
           >
             Guardar cambios

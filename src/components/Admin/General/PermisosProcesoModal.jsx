@@ -104,21 +104,22 @@ const PermisosProcesoModal = ({ modalAbiertoPPro, handleClose, proceso }) => {
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        width: isMobile ? "90%" : "80%",
-        height: "60%",
+        width: isMobile ? "94%" : "min(1100px, 92vw)",
         bgcolor: "background.paper",
-        borderRadius: "10px",
-        boxShadow: 24,
-        p: 4,
+        borderRadius: "20px",
+        boxShadow: "var(--cd-sombra-modal)",
+        p: { xs: 3, md: 4 },
         overflowY: 'auto',
+        maxHeight: "92vh",
+        outline: "none",
     };
 
 
     return (
         <Modal open={modalAbiertoPPro} onClose={handleClose}>
-            <Box sx={style}>
-                <div className="d-flex justify-content-around align-items-center mb-3">
-                    <h2 style={{ fontSize: "1.3rem", margin: 0 }}>
+            <Box sx={style} className="cd-modal">
+                <div className="cd-modal__cabecera">
+                    <h2 className="cd-modal__titulo">
                         Permisos para {proceso.descripcion}
                     </h2>
                 </div>

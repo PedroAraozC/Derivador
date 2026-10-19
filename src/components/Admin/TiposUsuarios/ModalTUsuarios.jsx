@@ -116,28 +116,29 @@ const ModalTUsuarios = ({ tusuarios, modalAbierto, handleClose }) => {
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        width: isMobile ? "90%" : "1200px",
-        height: "50%",
+        width: isMobile ? "94%" : "640px",
         bgcolor: "background.paper",
-        border: "none",
-        borderRadius: "8px",
-        boxShadow: 24,
-        p: 4,
+        borderRadius: "20px",
+        boxShadow: "var(--cd-sombra-modal)",
+        p: { xs: 3, md: 4 },
+        maxHeight: "92vh",
+        overflowY: "auto",
+        outline: "none",
     };
 
 
     return (
         <Modal open={modalAbierto} onClose={handleClose}>
-            <Box sx={style}>
-                <div className="d-flex justify-content-around align-items-center mb-3">
-                    <p style={{ fontSize: "1rem", margin: 0 }}>
+            <Box sx={style} className="cd-modal">
+                <div className="cd-modal__cabecera">
+                    <p className="cd-modal__titulo">
                         Detalle del Tipo de Usuario: {tusuarios.id_tusuario}
                     </p>
                 </div>
                 <Divider />
                 <div className="d-flex flex-column justify-content-center">
                     <form className="d-flex justify-content-around flex-column">
-                        <div className="w-50 d-flex flex-column gap-3 p-2">
+                        <div className="w-100 d-flex flex-column gap-2 p-2">
                             <InputLabel>Nombre</InputLabel>
                             <TextField
                                 placeholder={`${tusuarios.nombre_tusuario}`}
@@ -146,7 +147,7 @@ const ModalTUsuarios = ({ tusuarios, modalAbierto, handleClose }) => {
                                 value={formularioValues.nombre_tusuario}
                             />
                         </div>
-                        <div className="w-50 d-flex flex-column gap-3 p-2">
+                        <div className="w-100 d-flex flex-column gap-2 p-2">
                             <InputLabel>Observacion</InputLabel>
                             <TextField
                                 placeholder={`${tusuarios.observacion}`}
@@ -155,7 +156,7 @@ const ModalTUsuarios = ({ tusuarios, modalAbierto, handleClose }) => {
                                 value={formularioValues.observacion}
                             />
                         </div>
-                        <div className="d-flex flex-column gap-3 w-50 p-2">
+                        <div className="d-flex flex-column gap-2 w-100 p-2">
                             <div className="d-flex align-items-center">
                                 <p className="m-0">Habilita:</p>
                                 <Switch

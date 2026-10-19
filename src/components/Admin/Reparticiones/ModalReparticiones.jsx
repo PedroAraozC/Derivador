@@ -122,28 +122,29 @@ const ModalReparticiones = ({ reparticiones, modalAbierto, handleClose }) => {
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        width: isMobile ? "90%" : "1200px",
-        height: "70%",
+        width: isMobile ? "94%" : "640px",
         bgcolor: "background.paper",
-        border: "none",
-        borderRadius: "8px",
-        boxShadow: 24,
-        p: 4,
+        borderRadius: "20px",
+        boxShadow: "var(--cd-sombra-modal)",
+        p: { xs: 3, md: 4 },
+        maxHeight: "92vh",
+        overflowY: "auto",
+        outline: "none",
     };
 
 
     return (
         <Modal open={modalAbierto} onClose={handleClose}>
-            <Box sx={style}>
-                <div className="d-flex justify-content-around align-items-center mb-3">
-                    <p style={{ fontSize: "1rem", margin: 0 }}>
+            <Box sx={style} className="cd-modal">
+                <div className="cd-modal__cabecera">
+                    <p className="cd-modal__titulo">
                         Detalle de la Reparticion: {reparticiones.id_reparticion}
                     </p>
                 </div>
                 <Divider />
                 <div className="d-flex flex-column justify-content-center">
                 <form className="d-flex justify-content-around">
-                        <div className="w-50 d-flex flex-column gap-3 p-2">
+                        <div className="w-100 d-flex flex-column gap-2 p-2">
                             <InputLabel>Item</InputLabel>
                             <TextField
                                 placeholder='Ej: 110'
@@ -173,7 +174,7 @@ const ModalReparticiones = ({ reparticiones, modalAbierto, handleClose }) => {
                                     value={formularioValues.secretaria}
                                 />
                         </div>
-                        <div className="w-50 d-flex flex-column gap-3 p-2">
+                        <div className="w-100 d-flex flex-column gap-2 p-2">
                             <InputLabel>Vigente desde</InputLabel>
                             <TextField
                                 type="date"

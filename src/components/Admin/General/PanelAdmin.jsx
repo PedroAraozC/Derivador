@@ -1,6 +1,8 @@
 import { Button } from "@mui/material"
+import ListAltOutlinedIcon from "@mui/icons-material/ListAltOutlined";
 import TablaOpciones from "./TablaOpciones";
 import { useState } from "react";
+import EncabezadoPagina from "../../../common/EncabezadoPagina";
 
 const PanelAdmin = () => {
 
@@ -9,17 +11,29 @@ const PanelAdmin = () => {
     const listarOpciones = async ()=>{
         setMostrarTabla(true)
     }
-    
+
 
   return (
     <>
-        <div className="container d-flex align-items-center gap-3 mt-5">
-            <h2 className="m-0">ADMINISTRADOR MENU</h2>
-            <Button variant="contained" onClick={listarOpciones}>Listar Opciones</Button>
+        <div className="container">
+            <EncabezadoPagina
+                sup="Configuración"
+                titulo="Administrador de menú"
+                subtitulo="Opciones y procesos que componen el menú del portal."
+                acciones={
+                    <Button
+                        variant={mostrarTabla ? "outlined" : "contained"}
+                        startIcon={<ListAltOutlinedIcon />}
+                        onClick={listarOpciones}
+                    >
+                        Listar Opciones
+                    </Button>
+                }
+            />
         </div>
-        <div className="container justify-content-center mt-5">
+        <div className="container justify-content-center">
             <div className="d-flex flex-column">
-                {mostrarTabla? 
+                {mostrarTabla?
                 <TablaOpciones /> : <></>
                 }
             </div>

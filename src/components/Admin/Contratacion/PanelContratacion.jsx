@@ -7,6 +7,7 @@ import { useState, useEffect, useRef } from "react";
 import useStore from "../../../Zustand/Zustand";
 import axios from "../../../config/axiosLicitaciones";
 import TablaContratacion from "./TablaContratacion";
+import EncabezadoPagina from "../../../common/EncabezadoPagina";
 
 const PanelContratacion = () => {
   const [addContratacion, setAddContratacion] = useState(false);
@@ -153,23 +154,27 @@ const validarFormulario = () => {
 
   return (
     <>
-      <div className="container mt-4">
-        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, alignItems: "center", justifyContent: "space-between", mb: 3 }}>
-          <Typography variant="h5" sx={{ fontWeight: 600 }}>Panel de Contrataciones</Typography>
-          <Stack direction="row" spacing={1} sx={{ flexWrap: "wrap", rowGap: 1 }}>
-            <Button
-              variant={addContratacion ? "outlined" : "contained"}
-              color={addContratacion ? "error" : "primary"}
-              startIcon={addContratacion ? <CloseIcon /> : <AddIcon />}
-              onClick={cancelarContratacion}
-            >
-              {addContratacion ? "Cancelar" : "Agregar Contratación"}
-            </Button>
-            <Button variant="outlined" startIcon={<ListAltIcon />} onClick={() => setAddContratacion(false)}>
-              Listar Contrataciones
-            </Button>
-          </Stack>
-        </Box>
+      <div className="container">
+        <EncabezadoPagina
+          sup="Configuración"
+          titulo="Panel de Contrataciones"
+          subtitulo="Alta, edición y publicación de licitaciones y contrataciones."
+          acciones={
+            <Stack direction="row" spacing={1} sx={{ flexWrap: "wrap", rowGap: 1 }}>
+              <Button
+                variant={addContratacion ? "outlined" : "contained"}
+                color={addContratacion ? "error" : "primary"}
+                startIcon={addContratacion ? <CloseIcon /> : <AddIcon />}
+                onClick={cancelarContratacion}
+              >
+                {addContratacion ? "Cancelar" : "Agregar Contratación"}
+              </Button>
+              <Button variant="outlined" startIcon={<ListAltIcon />} onClick={() => setAddContratacion(false)}>
+                Listar Contrataciones
+              </Button>
+            </Stack>
+          }
+        />
 
         {addContratacion ? (
           <Paper variant="outlined" sx={{ p: { xs: 2, md: 3 }, borderRadius: 2, maxWidth: 960, mx: "auto", mb: 5 }}>

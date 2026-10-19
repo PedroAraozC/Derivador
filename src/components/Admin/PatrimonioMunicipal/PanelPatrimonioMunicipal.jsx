@@ -8,6 +8,18 @@ import Autor from "./Autor/Autor";
 import Ubicacion from "./Ubicacion/Ubicacion";
 import Patrimonio from "./Patrimonio";
 import Banner from "./Banner/Banner"
+import EncabezadoPagina from "../../../common/EncabezadoPagina";
+
+const SECCIONES = [
+    { id: 'patrimonios', label: 'Patrimonios' },
+    { id: 'categoria', label: 'Categoría' },
+    { id: 'tipologia', label: 'Tipología' },
+    { id: 'material', label: 'Material' },
+    { id: 'estado', label: 'Estado' },
+    { id: 'autor', label: 'Autor' },
+    { id: 'ubicacion', label: 'Ubicación' },
+    { id: 'banner', label: 'Banner' },
+];
 
 const PanelEducacion = () => {
     const [tablaVisible, setTablaVisible] = useState('patrimonios');
@@ -18,16 +30,24 @@ const PanelEducacion = () => {
 
     return (
         <>
-            <div className="px-5 mt-5 d-flex justify-content-center flex-wrap gap-3 mb-5">
-                <h2>Panel Patrimonio Municipal</h2>
-                <Button variant="outlined" onClick={verTabla('patrimonios')}>Patrimonios</Button>
-                <Button variant="outlined" onClick={verTabla('categoria')}>Categoria</Button>
-                <Button variant="outlined" onClick={verTabla('tipologia')}>Tipologia</Button>
-                <Button variant="outlined" onClick={verTabla('material')}>Material</Button>
-                <Button variant="outlined" onClick={verTabla('estado')}>Estado</Button>
-                <Button variant="outlined" onClick={verTabla('autor')}>Autor</Button>
-                <Button variant="outlined" onClick={verTabla('ubicacion')}>Ubicacion</Button>
-                <Button variant="outlined" onClick={verTabla('banner')}>Banner</Button>
+            <div className="container">
+                <EncabezadoPagina
+                    sup="Configuración"
+                    titulo="Patrimonio Municipal"
+                    subtitulo="Inventario de bienes patrimoniales y sus catálogos auxiliares."
+                />
+                <div className="cd-encabezado__acciones mb-4">
+                    {SECCIONES.map((seccion) => (
+                        <Button
+                            key={seccion.id}
+                            size="small"
+                            variant={tablaVisible === seccion.id ? 'contained' : 'outlined'}
+                            onClick={verTabla(seccion.id)}
+                        >
+                            {seccion.label}
+                        </Button>
+                    ))}
+                </div>
             </div>
             <div>
                 {tablaVisible === 'patrimonios' && <Patrimonio />}

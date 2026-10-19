@@ -30,3 +30,7 @@ dist-ssr
 
 # Config local de Claude Code
 .claude/
+
+# Skills de agentes (npx skills add) y su lockfile
+.agents/
+skills-lock.json

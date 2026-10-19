@@ -1,12 +1,17 @@
 import TablaGenero from "./TablaGenero"
+import EncabezadoPagina from "../../../common/EncabezadoPagina"
 
 const PanelGenero = () => {
   return (
     <>
-        <div className="container mt-5">
-            <h2>Panel Género</h2>
+        <div className="container">
+            <EncabezadoPagina
+                sup="Configuración"
+                titulo="Géneros"
+                subtitulo="Valores disponibles para el campo género de las personas."
+            />
         </div>
-        <div className="mt-5 container">
+        <div className="container">
             <TablaGenero/>
         </div>
     </>

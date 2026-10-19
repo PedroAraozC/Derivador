@@ -1,12 +1,17 @@
 import TablaTDocumento from "./TablaTDocumento"
+import EncabezadoPagina from "../../../common/EncabezadoPagina"
 
 const PanelTDocumento = () => {
   return (
     <>
-        <div className="container mt-5">
-            <h2>Panel Tipo Documento</h2>
+        <div className="container">
+            <EncabezadoPagina
+                sup="Configuración"
+                titulo="Tipos de documento"
+                subtitulo="Documentos de identidad aceptados al registrar personas."
+            />
         </div>
-        <div className="mt-5 container">
+        <div className="container">
             <TablaTDocumento/>
         </div>
     </>

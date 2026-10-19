@@ -1,295 +1,179 @@
-/* eslint-disable react/prop-types */
 import "./Home.css";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
+import ArrowForwardRoundedIcon from "@mui/icons-material/ArrowForwardRounded";
+import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import useStore from "../../Zustand/Zustand";
-import NuevaCard from "./NuevaCard";
-import QuizIcon from '@mui/icons-material/Quiz';
-import EventIcon from '@mui/icons-material/Event';
-import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
-import BadgeIcon from '@mui/icons-material/Badge';
-import { useEffect, useState } from "react";
+import OpcionesSeccion from "./OpcionesSeccion";
+import { construirSecciones } from "../../helpers/seccionesHome";
+import isotipo from "../../assets/logoMuni-sm.png";
+
+const normalizar = (texto = "") =>
+  texto
+    .toString()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase();
 
 const Home = () => {
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-  const [openedCard, setOpenedCard] = useState(null);
   const { user, obtenerPermisos, permisos } = useStore();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [busqueda, setBusqueda] = useState("");
+  const listaRef = useRef(null);
 
   useEffect(() => {
     obtenerPermisos(user?.id_tusuario, user?.id_persona);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const secciones = useMemo(
+    () => construirSecciones(permisos, user),
+    [permisos, user]
+  );
+
+  const seccionParam = searchParams.get("seccion");
+  const seccionActiva =
+    secciones.find((seccion) => seccion.id === seccionParam) ||
+    secciones.find((seccion) => seccion.options.length > 0) ||
+    secciones[0];
+
+  const seleccionarSeccion = (id) => {
+    setBusqueda("");
+    setSearchParams({ seccion: id }, { replace: true });
+  };
+
+  const desplazarALista = () => {
+    if (!listaRef.current) return;
+    const reducirMovimiento = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    listaRef.current.scrollIntoView({
+      behavior: reducirMovimiento ? "auto" : "smooth",
+      block: "start",
+    });
+  };
+
+  // Al elegir una sección (tarjeta o barra de navegación) se baja hasta la lista
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
+    if (seccionParam) desplazarALista();
+  }, [seccionParam]);
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  // Búsqueda visual sobre todas las opciones habilitadas
+  const termino = normalizar(busqueda.trim());
+  const resultados = termino
+    ? secciones.flatMap((seccion) =>
+        seccion.options
+          .filter(
+            (opcion) =>
+              normalizar(opcion.descripcion).includes(termino) ||
+              normalizar(opcion.nombre_proceso).includes(termino)
+          )
+          .map((opcion) => ({
+            ...opcion,
+            seccionColor: seccion.color,
+            seccionIcono: seccion.icono,
+          }))
+      )
+    : null;
 
-  const permisosHabilitados = permisos.filter(
-    (permiso) =>
-      permiso.ver === 1 &&
-      permiso.nombre_opcion !== "EDICION DE PERFIL" &&
-      permiso.nombre_opcion !== "CONFIGURACIÓN"
-  );
-
-  // 2️⃣ Divide los permisos según la categoría (opción)
-  const optionsConsultas = permisosHabilitados.filter(
-    (p) => p.nombre_opcion?.toUpperCase() === "CONSULTAS"
-  );
-
-  const optionsTramites = permisosHabilitados.filter(
-    (p) => p.nombre_opcion?.toUpperCase() === "TRÁMITES" || p.nombre_opcion?.toUpperCase() === "TRAMITES"
-  );
-
-  const optionsTurnos = permisosHabilitados.filter(
-    (p) => p.nombre_opcion?.toUpperCase() === "TURNOS"
-  );
-
-  const optionsApps = permisosHabilitados.filter(
-    (p) => p.nombre_opcion?.toUpperCase() === "APLICACIONES" || p.sistema_externo === 1
-  );
-
-  // const [openModal, setOpenModal] = useState(false);
-
-  // const handleOpenModal = () => {
-  //   setOpenModal(true);
-  // };
-
-  // const handleOpenModalLibreDeuda = () => {
-  //   setOpenModalLibreDeuda(true);
-  // };
-
-  // const navigate = useNavigate();
+  const handleBuscar = (evento) => {
+    evento.preventDefault();
+    desplazarALista();
+  };
 
   return (
-    <>
-      <div className="pb-5 fondoHome">
-        <div className="container pt-5 px-5">
-          <h4>Hola {user.nombre_persona}, que quieres hacer hoy?</h4>
+    <div className="cd-shell cd-home">
+      <div className="cd-home__contenedor">
+        <section className="cd-hero">
+          <div className="cd-hero__arte" aria-hidden="true" />
+          <img className="cd-hero__isotipo" src={isotipo} alt="" aria-hidden="true" />
+
+          <div className="cd-hero__contenido">
+            <div className="cd-hero__sup">Hola, {user?.nombre_persona}</div>
+            <h1 className="cd-hero__titulo">
+              Municipalidad de
+              <br />
+              <span>la Ciudad de San Miguel de Tucumán</span>
+            </h1>
+            <p className="cd-hero__texto">
+              Realizá tus trámites, sacá turnos y accedé a toda la información
+              municipal desde un solo lugar.
+            </p>
+
+            <form className="cd-buscador" role="search" onSubmit={handleBuscar}>
+              <SearchRoundedIcon className="cd-buscador__icono" />
+              <input
+                type="search"
+                value={busqueda}
+                onChange={(e) => setBusqueda(e.target.value)}
+                placeholder="¿Qué trámite estás buscando?"
+                aria-label="Buscar trámites, turnos o información"
+              />
+              <button
+                type="submit"
+                className="cd-buscador__boton"
+                aria-label="Buscar"
+              >
+                <ArrowForwardRoundedIcon />
+              </button>
+            </form>
+          </div>
+        </section>
+
+        <div className="cd-secciones">
+          {secciones.map((seccion) => {
+            const Icono = seccion.icono;
+            const activa = !resultados && seccionActiva?.id === seccion.id;
+            return (
+              <button
+                key={seccion.id}
+                type="button"
+                className={`cd-seccion${activa ? " cd-seccion--activa" : ""}`}
+                onClick={() => seleccionarSeccion(seccion.id)}
+                aria-pressed={activa}
+              >
+                <span className={`cd-tile cd-tile--${seccion.color}`}>
+                  <Icono />
+                </span>
+                <span className="cd-seccion__textos">
+                  <span className="cd-seccion__titulo">{seccion.titulo}</span>
+                  <span className="cd-seccion__sub">{seccion.subtitulo}</span>
+                </span>
+                <ChevronRightRoundedIcon className="cd-chevron" />
+              </button>
+            );
+          })}
         </div>
-        <div className="mt-4 d-flex gap-3 flex-wrap justify-content-center px-5">
-          <div>
-            <NuevaCard
-              options={optionsConsultas}
-              titulo={'Consultas'}
-              icono={QuizIcon}
+
+        <div ref={listaRef}>
+          {resultados ? (
+            <OpcionesSeccion
+              key="busqueda"
+              titulo="Resultados"
+              subtitulo={`Coincidencias para “${busqueda.trim()}”`}
+              icono={SearchRoundedIcon}
+              color="azul"
+              options={resultados}
               user={user}
-              cardId="consultas"
-              isOpen={openedCard === "consultas"}
-              onOpen={() => setOpenedCard("consultas")}
-              onClose={() => setOpenedCard(null)}
+              mensajeVacio="No encontramos opciones con ese nombre. Probá con otra palabra."
             />
-          </div>
-          <div>
-            <NuevaCard
-              options={optionsTramites}
-              titulo={'Trámites'}
-              icono={ArrowOutwardIcon}
-              user={user}
-              cardId="tramites"
-              isOpen={openedCard === "tramites"}
-              onOpen={() => setOpenedCard("tramites")}
-              onClose={() => setOpenedCard(null)}
-            />
-          </div>
-          <div>
-            <NuevaCard 
-              options={optionsTurnos} 
-              titulo={'Turnos'} 
-              icono={EventIcon} 
-              user={user}
-              cardId="turnos"
-              isOpen={openedCard === "turnos"}
-              onOpen={() => setOpenedCard("turnos")}
-              onClose={() => setOpenedCard(null)}
-            />
-          </div>
-          {user.id_tusuario !== 3 ? (
-          <div>
-            <NuevaCard
-              options={optionsApps}
-              titulo={'Empleados'}
-              icono={BadgeIcon}
-              user={user}
-              cardId="empleados"
-              isOpen={openedCard === "empleados"}
-              onOpen={() => setOpenedCard("empleados")}
-              onClose={() => setOpenedCard(null)}
-            />
-          </div>
-          ) : null
-            }
+          ) : (
+            seccionActiva && (
+              <OpcionesSeccion
+                key={seccionActiva.id}
+                titulo={seccionActiva.titulo}
+                subtitulo={seccionActiva.subtitulo}
+                icono={seccionActiva.icono}
+                color={seccionActiva.color}
+                options={seccionActiva.options}
+                user={user}
+              />
+            )
+          )}
         </div>
       </div>
-      {/* <div className="contPadreHome">
-        <div className="cardsContHome">
-          <Card
-            onClick={() => irABOLETIN()}
-            titulo={"Boletin Oficial"}
-            descripcion={
-              "Publicación Digital que contiene la normativa municipal y actos de gobierno"
-            }
-            Icono={<FontAwesomeIcon icon={faNewspaper} />}
-          />
-          <Card
-            onClick={() => irACARNETSANIDAD()}
-            titulo={"Carnet de Sanidad"}
-            descripcion={"Consulta del Carnet Digital"}
-            Icono={<FontAwesomeIcon icon={faNotesMedical} />}
-          />
-          <Card
-            onClick={() => irACATASTRO()}
-            titulo={"Dirección de Catastro y Edificación"}
-            descripcion={"Sistema de consulta y autogestión"}
-            Icono={<FontAwesomeIcon icon={faBuildingCircleCheck} />}
-          />
-          <Card
-            onClick={() => irACREDENCIAL()}
-            titulo={"Credencial"}
-            descripcion={"Ver credencial digital"}
-            Icono={<FontAwesomeIcon icon={faQrcode} />}
-          />
-          <Card
-            onClick={() => navigate("/el-gas-llega-a-tu-casa")}
-            titulo={"El Gas Llega a tu Casa"}
-            descripcion={"Acceda al servicio de gas natural domiciliario"}
-            Icono={<FontAwesomeIcon icon={faHouseFire} />}
-          />
-          <Card
-            onClick={() => irAEXPEDIENTES()}
-            titulo={"Expedientes"}
-            descripcion={"Ingreso a sistema de expedientes"}
-            Icono={<FontAwesomeIcon icon={faFolderOpen} />}
-          />
-          <Card
-            onClick={() => irATURNOS(1711)}
-            titulo={"Licencia de Conducir"}
-            descripcion={"Requisitos para Licencia de conducir"}
-            Icono={<FontAwesomeIcon icon={faIdCard} />}
-          />
-          <Card
-            onClick={() => irATURNOS(241)}
-            titulo={"Ficha Médica Escolar"}
-            descripcion={
-              "Turnos para obtención de ficha médica en inicio escolar"
-            }
-            Icono={<FontAwesomeIcon icon={faIdCard} />}
-          />
-          <Card
-            onClick={() => irATURNOS(1510)}
-            titulo={"Campus Educativo Ambiental"}
-            descripcion={"Turnos para actividades en el Campus Ambiental"}
-            Icono={<FontAwesomeIcon icon={faPeopleGroup} />}
-          />
-          <Card
-            onClick={() => irALICITACIONES()}
-            titulo={"Licitaciones"}
-            descripcion={
-              "Convocatoria para la contratación de bienes, obras y servicios."
-            }
-            Icono={<FontAwesomeIcon icon={faCommentsDollar} />}
-          />
-          <Card
-            onClick={() => handleOpenModal()}
-            titulo={"Multas de Tránsito"}
-            descripcion={"Consulta de Multas por Dominio."}
-            Icono={<FontAwesomeIcon icon={faCar} />}
-          />
-
-          <Card
-            onClick={() => navigate("/multas")}
-            titulo={"Multas"}
-            descripcion={"Consulta de Multas."}
-            Icono={<FontAwesomeIcon icon={faClipboardQuestion} />}
-          />
-
-          <Card
-            onClick={() => irACorralonConsultaPublica()}
-            titulo={"Consulta de Vehículo Secuestrado"}
-            descripcion={"Consulta de ingresos al corralón por Dominio."}
-            Icono={<FontAwesomeIcon icon={faTrailer} />}
-          />
-          <Card
-            onClick={() => irADENGUE()}
-            titulo={"Consulta sobre Dengue"}
-            descripcion={"Auto consulta dengue."}
-            Icono={<FontAwesomeIcon icon={faMosquito} />}
-          />
-
-          <Card
-            onClick={() => irADIM()}
-            titulo={"DIM 360"}
-            descripcion={"Dirección de Ingresos Municipales"}
-            Icono={<FontAwesomeIcon icon={faCashRegister} />}
-          />
-
-          <Card
-            onClick={() => irACONSULTAPUBLICA()}
-            titulo={"Consulta Pública"}
-            descripcion={"Programa de participación ciudadana"}
-            Icono={<FontAwesomeIcon icon={faUsers} />}
-          />
-          <Card
-            onClick={() => irAPRESUPUESTOPARTICIPATIVO()}
-            titulo={"Presupuesto Participativo"}
-            descripcion={"Programa de presupuesto participativo."}
-            Icono={<FontAwesomeIcon icon={faUsers} />}
-          />
-
-          <Card
-            onClick={() => handleOpenModalLibreDeuda()}
-            titulo={"Libre Deuda Catastro"}
-            descripcion={"Solicitar Libre Deuda en Catastro y Edificación"}
-            Icono={<FontAwesomeIcon icon={faRoadCircleCheck} />}
-          />
-
-          <Card
-            onClick={() => irACEMA()}
-            titulo={"Servicios de Población Animal"}
-            descripcion={"Turnos y Requisitos"}
-            Icono={<FontAwesomeIcon icon={faCat} />}
-          />
-          <Card
-            onClick={() => irAAsitPubica()}
-            titulo={"Turnero Asistencia Pública"}
-            descripcion={"Turnos y Requisitos"}
-            Icono={<FontAwesomeIcon icon={faHandHoldingMedical} />}
-          />
-
-          <Card
-            // onClick={() => navigate('/via-publica')}
-            onClick={() => irAPermisosVarios()}
-            titulo={"Permisos Varios"}
-            descripcion={"Gestión de permisos para el uso de la vía pública"}
-            Icono={<FontAwesomeIcon icon={faFolderOpen} />}
-          />
-
-          {user.id_tusuario == 1 || user.id_tusuario == 24 &&
-            <Card
-              onClick={() => irAMAPA()}
-              titulo={"Mapa Municipal"}
-              descripcion={""}
-              Icono={<FontAwesomeIcon icon={faMap} />}
-            />
-          }
-        </div>
-
-        <ModalMultas
-          openDialog={openModal}
-          setOpenModal={setOpenModal}
-          user={user}
-        />
-
-        <ModalLibreDeuda
-          openDialog={openModalLibreDeuda}
-          setOpenModal={setOpenModalLibreDeuda}
-          user={user}
-        />
-      </div> */}
-    </>
-
+    </div>
   );
 };
 

@@ -12,7 +12,9 @@ import Paper from "@mui/material/Paper";
 import EditIcon from '@mui/icons-material/Edit';
 import ModalContratacion from "./ModalContratacion";
 import Checkbox from "@mui/material/Checkbox";
+import { IconButton, Tooltip } from "@mui/material";
 import useStore from "../../../Zustand/Zustand";
+import EstadoChip from "../../../common/EstadoChip";
 
 const TablaContratacion = () => {
     // eslint-disable-next-line no-unused-vars
@@ -76,7 +78,7 @@ const TablaContratacion = () => {
 
     return (
         <>
-            <div className="mt-5 mb-5 container">
+            <div className="mt-2 mb-5 container">
                 <TableContainer component={Paper}>
                     <Table>
                         <TableHead>
@@ -109,9 +111,15 @@ const TablaContratacion = () => {
                                         <TableCell>{contratacion.nombre_contratacion}</TableCell>
                                         <TableCell>{contratacion.expte}</TableCell>
                                         <TableCell align="center">{contratacion.id_tcontratacion}</TableCell>
-                                        <TableCell align="center">{contratacion.habilita === 1 ? "Habilitado" : "Deshabilitado"}</TableCell>
                                         <TableCell align="center">
-                                            <EditIcon onClick={ ()=> abrirModal(contratacion)}/>
+                                            <EstadoChip habilitado={contratacion.habilita === 1} />
+                                        </TableCell>
+                                        <TableCell align="center">
+                                            <Tooltip title="Ver / editar">
+                                                <IconButton size="small" color="primary" onClick={() => abrirModal(contratacion)}>
+                                                    <EditIcon fontSize="small" />
+                                                </IconButton>
+                                            </Tooltip>
                                         </TableCell>
                                     </TableRow>
                                 ))}

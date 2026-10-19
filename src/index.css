@@ -4,7 +4,7 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: "Poppins";
+  font-family: var(--cd-font, "Poppins", sans-serif);
 }
 .layoutHeight {
   height: 100dvh;
@@ -18,7 +18,7 @@
 }
 
 body {
-  font-family: "Poppins", sans-serif;
+  font-family: var(--cd-font, "Poppins", sans-serif);
   /* background: linear-gradient(45deg, #141f27, #1b384a); */
 }
 .css-yfo96e {

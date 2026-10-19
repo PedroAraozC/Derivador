@@ -1,0 +1,247 @@
+/* =====================================================================
+   Ciudad Digital — hoja global del nuevo aspecto
+   Tokens, tipografía del sistema y piezas compartidas (encabezados de
+   página, modales, chips). Sólo presentación.
+   ===================================================================== */
+:root {
+  --cd-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI",
+    Inter, Roboto, system-ui, sans-serif;
+  --cd-bg: #f4f6fb;
+  --cd-surface: #ffffff;
+  --cd-text: #0f172a;
+  --cd-text-2: #475569;
+  --cd-text-3: #94a3b8;
+  --cd-border: rgba(15, 23, 42, 0.08);
+  --cd-accent: #1f89f6;
+  --cd-accent-fuerte: #0b63c9;
+  --cd-accent-suave: #e8f2fe;
+  --cd-radio-lg: 20px;
+  --cd-radio-md: 14px;
+  --cd-radio-sm: 10px;
+  --cd-sombra-sm: 0 1px 2px rgba(15, 23, 42, 0.04), 0 4px 14px rgba(15, 23, 42, 0.05);
+  --cd-sombra-md: 0 2px 6px rgba(15, 23, 42, 0.05), 0 14px 36px rgba(15, 23, 42, 0.09);
+  --cd-sombra-modal: 0 24px 64px rgba(15, 23, 42, 0.22), 0 2px 8px rgba(15, 23, 42, 0.08);
+  --cd-azul: #1f89f6;
+  --cd-azul-bg: #e8f2fe;
+  --cd-violeta: #8b5cf6;
+  --cd-violeta-bg: #f1ebfe;
+  --cd-verde: #16a34a;
+  --cd-verde-bg: #e6f7ec;
+  --cd-naranja: #f59e0b;
+  --cd-naranja-bg: #fdf2dc;
+  --cd-vidrio: rgba(255, 255, 255, 0.78);
+  --cd-hover: rgba(15, 23, 42, 0.04);
+  --cd-superficie-alt: #f8fafc;
+  --cd-peligro: #dc2626;
+  --cd-peligro-bg: #fee2e2;
+  --cd-hero-borde: rgba(255, 255, 255, 0.8);
+  --cd-hero-fondo: linear-gradient(135deg, #e6f1ff 0%, #f3f8ff 50%, #ffffff 100%);
+  --cd-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --cd-nav-alto: 64px;
+}
+
+/* ---------- Modo nocturno (data-tema="oscuro" en <html>) ---------- */
+:root[data-tema="oscuro"] {
+  color-scheme: dark;
+  --cd-bg: #0b1220;
+  --cd-surface: #111a2b;
+  --cd-text: #e5e7eb;
+  --cd-text-2: #94a3b8;
+  --cd-text-3: #64748b;
+  --cd-border: rgba(255, 255, 255, 0.08);
+  --cd-accent: #1f89f6;
+  --cd-accent-fuerte: #4da3ff;
+  --cd-accent-suave: rgba(31, 137, 246, 0.16);
+  --cd-sombra-sm: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 14px rgba(0, 0, 0, 0.35);
+  --cd-sombra-md: 0 2px 6px rgba(0, 0, 0, 0.35), 0 14px 36px rgba(0, 0, 0, 0.5);
+  --cd-sombra-modal: 0 24px 64px rgba(0, 0, 0, 0.6), 0 2px 8px rgba(0, 0, 0, 0.4);
+  --cd-azul-bg: rgba(31, 137, 246, 0.16);
+  --cd-violeta-bg: rgba(139, 92, 246, 0.18);
+  --cd-verde-bg: rgba(22, 163, 74, 0.18);
+  --cd-naranja-bg: rgba(245, 158, 11, 0.18);
+  --cd-vidrio: rgba(17, 26, 43, 0.72);
+  --cd-hover: rgba(255, 255, 255, 0.06);
+  --cd-superficie-alt: #172238;
+  --cd-peligro: #f87171;
+  --cd-peligro-bg: rgba(239, 68, 68, 0.16);
+  --cd-hero-borde: rgba(255, 255, 255, 0.06);
+  --cd-hero-fondo: linear-gradient(135deg, #0f2140 0%, #0f1a2e 50%, #111a2b 100%);
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--cd-bg);
+  color: var(--cd-text);
+}
+
+/* Títulos sueltos de los paneles (h2/h3 sin clase) */
+h1, h2, h3, h4 {
+  letter-spacing: -0.02em;
+}
+
+/* ---------- Encabezado de página ---------- */
+.cd-encabezado {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px 16px;
+  margin: 28px 0 20px;
+}
+.cd-encabezado__izquierda {
+  min-width: 0;
+}
+.cd-encabezado__volver {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  margin: 0 0 8px -6px;
+  padding: 4px 10px 4px 4px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--cd-text-2);
+  cursor: pointer;
+  transition: color 150ms var(--cd-ease), background-color 150ms var(--cd-ease),
+    transform 100ms ease-out;
+}
+.cd-encabezado__volver .MuiSvgIcon-root {
+  font-size: 18px;
+}
+.cd-encabezado__volver:hover {
+  color: var(--cd-accent-fuerte);
+  background: var(--cd-hover);
+}
+.cd-encabezado__volver:active {
+  transform: scale(0.97);
+}
+.cd-encabezado__sup {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cd-accent);
+  margin-bottom: 6px;
+}
+.cd-encabezado__titulo {
+  margin: 0;
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  color: var(--cd-text);
+}
+.cd-encabezado__sub {
+  margin: 6px 0 0;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: var(--cd-text-2);
+  max-width: 64ch;
+}
+.cd-encabezado__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ---------- Superficie genérica (tarjeta blanca) ---------- */
+.cd-superficie {
+  background: var(--cd-surface);
+  border: 1px solid var(--cd-border);
+  border-radius: var(--cd-radio-lg);
+  box-shadow: var(--cd-sombra-sm);
+}
+
+/* ---------- Modales (Box dentro de MUI Modal) ---------- */
+.cd-modal {
+  font-family: var(--cd-font);
+}
+.cd-modal .cd-modal__cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.cd-modal .cd-modal__titulo {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--cd-text);
+}
+.cd-modal .cd-modal__sub {
+  margin: 4px 0 0;
+  font-size: 0.85rem;
+  color: var(--cd-text-2);
+}
+.cd-modal .cd-modal__ayuda {
+  margin: 0 0 14px;
+  font-size: 0.82rem;
+  color: var(--cd-text-3);
+}
+.cd-modal > .MuiDivider-root {
+  margin-bottom: 16px;
+}
+.cd-modal form {
+  width: 100%;
+}
+/* Etiquetas sueltas (InputLabel fuera de FormControl) */
+.cd-modal .MuiInputLabel-root:not(.MuiInputLabel-formControl) {
+  position: static;
+  transform: none;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--cd-text-2);
+  margin-bottom: -4px;
+}
+/* Etiquetas tipo "Habilita:" junto a un switch */
+.cd-modal p.m-0 {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--cd-text-2);
+}
+.cd-modal .MuiButton-root.mt-3 {
+  align-self: flex-start;
+}
+@media (max-width: 600px) {
+  .cd-modal .cd-modal__titulo {
+    font-size: 1.05rem;
+  }
+}
+
+/* ---------- Tablas: celdas de acciones ---------- */
+.cd-acciones {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ---------- Accesibilidad ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .cd-encabezado__volver {
+    transition: none;
+  }
+}
+
+/* ---------- Terceros en modo nocturno ---------- */
+[data-tema="oscuro"] .swal2-popup {
+  background: var(--cd-surface);
+  color: var(--cd-text);
+}
+[data-tema="oscuro"] .swal2-title,
+[data-tema="oscuro"] .swal2-html-container {
+  color: inherit;
+}
+[data-tema="oscuro"] .react-loading-skeleton {
+  --base-color: #1e293b;
+  --highlight-color: #334155;
+}

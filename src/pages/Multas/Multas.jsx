@@ -5,8 +5,7 @@ import useStore from '../../Zustand/Zustand';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Card from '../../components/Card/Card';
 import { faBuilding } from '@fortawesome/free-regular-svg-icons';
-import { Link } from 'react-router-dom';
-import { ArrowBack } from '@mui/icons-material';
+import EncabezadoPagina from '../../common/EncabezadoPagina';
 
 const Multas = () => {
     const { user } = useStore();
@@ -25,9 +24,15 @@ const Multas = () => {
 
   return (
     <>
-    
-         <Link style={{ textDecoration: 'none' }} to="/home"><ArrowBack/> VOLVER</Link>
-      <div className='d-flex justify-content-center'>
+      <div className="container">
+        <EncabezadoPagina
+          volver="/home"
+          sup="Consultas"
+          titulo="Consulta de multas"
+          subtitulo="Elegí el tipo de multa. La consulta se envía por correo al Tribunal de Faltas."
+        />
+      </div>
+      <div className='container d-flex justify-content-center flex-wrap pb-5'>
           <Card
               onClick={() => abrirModal("Consulta de Multas de Tránsito", "Dominio/DNI","tmfconsultas@smt.gob.ar")}
               titulo={"Multas de Tránsito"}

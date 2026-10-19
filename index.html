@@ -6,6 +6,25 @@
     <link rel="icon" type="image/svg+xml" href="/src/assets/logoMuni-sm.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CiDiTuc</title>
+    <!-- Aplica el tema guardado antes de que cargue React para evitar el flash claro -->
+    <script>
+      (function () {
+        var tema = null;
+        try {
+          tema = localStorage.getItem("tema");
+        } catch (e) {
+          tema = null;
+        }
+        if (tema !== "oscuro" && tema !== "claro") {
+          tema = window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "oscuro"
+            : "claro";
+        }
+        var html = document.documentElement;
+        html.dataset.tema = tema;
+        html.setAttribute("data-bs-theme", tema === "oscuro" ? "dark" : "light");
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

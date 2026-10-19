@@ -11,9 +11,10 @@ import TableRow from "@mui/material/TableRow";
 import TablePagination from "@mui/material/TablePagination";
 import Paper from "@mui/material/Paper";
 import EditIcon from '@mui/icons-material/Edit';
-import { Alert, Snackbar } from "@mui/material";
+import { Alert, IconButton, Snackbar, Tooltip } from "@mui/material";
 import ModalEditarOficina from "./ModalEditarMonto";
 import axios from "../../config/axios";
+import EstadoChip from "../../common/EstadoChip";
 
 const TablaCalles = ({calles, setCalles, callesTipo, getCalles}) => {
     const [page, setPage] = useState(0);
@@ -98,10 +99,27 @@ const TablaCalles = ({calles, setCalles, callesTipo, getCalles}) => {
                                         <TableCell>{ofi.monto_det}</TableCell>
                                     <TableCell>{Number(ofi.precio)}</TableCell>
                               
-                                        <TableCell align="center">{ofi.estado === 1 ? "Habilitado" : "Deshabilitado"}</TableCell>
                                         <TableCell align="center">
-                                            <EditIcon onClick={() => abrirModalEditar(ofi)} sx={{cursor: 'pointer'}}/>
-                                            <DeleteIcon onClick={ofi.estado === 1 ? () => deshabilitarCalle(ofi) : ()=>console.log("e")} sx={{marginLeft: 2, cursor: 'pointer'}}/>
+                                            <EstadoChip habilitado={ofi.estado === 1} />
+                                        </TableCell>
+                                        <TableCell align="center">
+                                            <span className="cd-acciones">
+                                                <Tooltip title="Editar">
+                                                    <IconButton size="small" color="primary" onClick={() => abrirModalEditar(ofi)}>
+                                                        <EditIcon fontSize="small" />
+                                                    </IconButton>
+                                                </Tooltip>
+                                                <Tooltip title={ofi.estado === 1 ? "Deshabilitar" : "Ya está deshabilitado"}>
+                                                    <IconButton
+                                                        size="small"
+                                                        color="error"
+                                                        sx={{ opacity: ofi.estado === 1 ? 1 : 0.4 }}
+                                                        onClick={ofi.estado === 1 ? () => deshabilitarCalle(ofi) : ()=>console.log("e")}
+                                                    >
+                                                        <DeleteIcon fontSize="small" />
+                                                    </IconButton>
+                                                </Tooltip>
+                                            </span>
                                         </TableCell>
                                     </TableRow>
                                 ))}

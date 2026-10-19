@@ -315,13 +315,14 @@ const ModalPatrimonio = ({ patrimonio, modalAbierto, handleClose }) => {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: isMobile ? "90%" : "80%",
-    height: "90%",
+    width: isMobile ? "94%" : "min(1100px, 92vw)",
+    maxHeight: "92vh",
     bgcolor: "background.paper",
-    borderRadius: "10px",
-    boxShadow: 24,
-    p: 4,
-    overflowY: "auto"
+    borderRadius: "20px",
+    boxShadow: "var(--cd-sombra-modal)",
+    p: { xs: 3, md: 4 },
+    overflowY: "auto",
+    outline: "none",
   };
 ""
 console.log(nombreViejo, "viejo");
@@ -329,9 +330,9 @@ console.log(nombreViejo, "viejo");
   return (
     <>
     <Modal open={modalAbierto}>
-      <Box sx={style}>
-        <div className="d-flex justify-content-around align-items-center mb-3">
-          <p style={{ fontSize: "1rem", margin: 0 }}>
+      <Box sx={style} className="cd-modal">
+        <div className="cd-modal__cabecera">
+          <p className="cd-modal__titulo">
             Detalle del patrimonio: {patrimonio.id_patrimonio}
           </p>
         </div>

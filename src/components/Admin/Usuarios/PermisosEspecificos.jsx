@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect, useContext } from "react";
-import { Modal, Box, Button, Divider, Switch, Snackbar, Alert } from "@mui/material";
+import { useState, useEffect, useContext, useMemo } from "react";
+import { Modal, Box, Button, Divider, Snackbar, Alert, Chip, CircularProgress } from "@mui/material";
 import axios from "../../../config/axios";
 import { DerivadorContext } from "../../../context/DerivadorContext";
-import { Spinner } from "react-bootstrap";
+import TransferenciaPermisos from "./TransferenciaPermisos";
 
 const PermisosEspecificos = ({ empleado, modalPermisosAbierto, handleClose, desactivarCheckbox }) => {
     const [deviceWidth, setDeviceWidth] = useState(window.innerWidth);
@@ -45,7 +45,7 @@ const PermisosEspecificos = ({ empleado, modalPermisosAbierto, handleClose, desa
         setProcessStates({});
         setPermisosModificados([]);
         handleClose();
-        desactivarCheckbox();
+        desactivarCheckbox?.();
     };
 
     // Sincroniza el array de permisosModificados completo
@@ -59,12 +59,15 @@ const PermisosEspecificos = ({ empleado, modalPermisosAbierto, handleClose, desa
         }
     }, [processStates, ProcesosSinId]);
 
-    const handleSwitchChange = (id) => {
-        setProcessStates(prevStates => ({
-            ...prevStates,
-            [id]: prevStates[id] === 1 ? 0 : 1,
-        }));
-        console.log(permisosModificados)
+    // Asigna (ver = 1) o quita (ver = 0) un conjunto de permisos
+    const moverPermisos = (ids, ver) => {
+        setProcessStates(prevStates => {
+            const nuevos = { ...prevStates };
+            ids.forEach((id) => {
+                nuevos[id] = ver;
+            });
+            return nuevos;
+        });
     };
 
     const establecerPermisosEspeciales = async () => {
@@ -113,6 +116,20 @@ const PermisosEspecificos = ({ empleado, modalPermisosAbierto, handleClose, desa
 
     const isMobile = deviceWidth <= 600;
 
+    // Ítems que muestra la transfer list (mismo filtro que antes: id_opcion === 4)
+    const itemsPermisos = useMemo(
+        () =>
+            (Array.isArray(ProcesosSinId) ? ProcesosSinId : [])
+                .filter((pro) => pro.id_opcion === 4)
+                .map((pro) => ({
+                    id: pro.id_proceso,
+                    descripcion: pro.descripcion,
+                    detalle: pro.nombre_proceso,
+                })),
+        [ProcesosSinId]
+    );
+    const cantidadAsignados = itemsPermisos.filter((item) => processStates[item.id] === 1).length;
+
     if (!empleado) {
         return null;
     }
@@ -122,13 +139,14 @@ const PermisosEspecificos = ({ empleado, modalPermisosAbierto, handleClose, desa
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        width: isMobile ? "90%" : "80%",
-        height: "90%",
+        width: isMobile ? "94%" : "min(1100px, 92vw)",
+        maxHeight: "92vh",
         bgcolor: "background.paper",
-        borderRadius: "10px",
-        boxShadow: 24,
-        p: 4,
+        borderRadius: "20px",
+        boxShadow: "var(--cd-sombra-modal)",
+        p: { xs: 3, md: 4 },
         overflowY: 'auto',
+        outline: "none",
     };
 
     return (
@@ -138,56 +156,56 @@ const PermisosEspecificos = ({ empleado, modalPermisosAbierto, handleClose, desa
                 if (reason !== "backdropClick") return;
             }}
         >
-            <Box sx={style}>
+            <Box sx={style} className="cd-modal">
                 {loading ? (
-                    <Spinner />
+                    <Box sx={{ display: "flex", justifyContent: "center", py: 6 }}>
+                        <CircularProgress />
+                    </Box>
                 ) : (
                     <>
-                        <div className="d-flex justify-content-around align-items-center mb-3">
-                            <h2 style={{ fontSize: "1.3rem", margin: 0 }}>
-                                Permisos específicos de {empleado.nombre_persona}
-                            </h2>
-                            <p className="m-0" style={{ fontSize: '1.3rem' }}>{empleado.nombre_tusuario}</p>
+                        <div className="cd-modal__cabecera">
+                            <div>
+                                <h2 className="cd-modal__titulo">Permisos específicos</h2>
+                                <p className="cd-modal__sub">
+                                    {empleado.nombre_persona} {empleado.apellido_persona}
+                                    {empleado.nombre_tusuario ? ` · ${empleado.nombre_tusuario}` : ""}
+                                </p>
+                            </div>
+                            <Chip
+                                size="small"
+                                color={cantidadAsignados > 0 ? "primary" : "default"}
+                                variant={cantidadAsignados > 0 ? "filled" : "outlined"}
+                                label={`${cantidadAsignados} de ${itemsPermisos.length} asignados`}
+                            />
                         </div>
                         <Divider />
-                        <div className="d-flex flex-column justify-content-center">
-                            <form className="d-flex flex-column gap-3 justify-content-center align-items-center formAgregarcausal">
-                                <div className="row w-100">
-                                    {Array.isArray(ProcesosSinId) &&
-                                        ProcesosSinId
-                                        .filter((pro) => pro.id_opcion === 4)
-                                        .map((pro) => (
-                                            <div key={pro.id_proceso} className="col-md-6 col-sm-12 d-flex align-items-center justify-content-between mb-2">
-                                                <p className="mb-0">{pro.descripcion}</p>
-                                                <div className="form-check form-switch">
-                                                    <Switch
-                                                        checked={processStates[pro.id_proceso] === 1}
-                                                        onChange={() => handleSwitchChange(pro.id_proceso)}
-                                                    />
-                                                </div>
-                                            </div>
-                                        ))}
-                                </div>
-                            </form>
-                            <div className="d-flex gap-3 align-items-center justify-content-center mt-3">
-                                <Button
-                                    onClick={handleSubmit}
-                                    className="mt-3"
-                                    variant="outlined"
-                                    disabled={buttonDis}
-                                >
-                                    Guardar cambios
-                                </Button>
-                                <Button
-                                    onClick={handleCloseModal}
-                                    className="mt-3"
-                                    variant="outlined"
-                                    color="secondary"
-                                >
-                                    Cancelar
-                                </Button>
-                            </div>
 
+                        <p className="cd-modal__ayuda">
+                            Marcá uno o varios permisos y usá las flechas, o hacé doble clic sobre un permiso para moverlo.
+                        </p>
+
+                        <TransferenciaPermisos
+                            items={itemsPermisos}
+                            estaAsignado={(id) => processStates[id] === 1}
+                            onMover={moverPermisos}
+                            etiquetaDisponibles="Disponibles"
+                            etiquetaAsignados="Asignados"
+                        />
+
+                        <div className="d-flex gap-2 align-items-center justify-content-end mt-4 flex-wrap">
+                            <Button
+                                onClick={handleCloseModal}
+                                variant="outlined"
+                            >
+                                Cancelar
+                            </Button>
+                            <Button
+                                onClick={handleSubmit}
+                                variant="contained"
+                                disabled={buttonDis}
+                            >
+                                Guardar cambios
+                            </Button>
                         </div>
                     </>
                 )}

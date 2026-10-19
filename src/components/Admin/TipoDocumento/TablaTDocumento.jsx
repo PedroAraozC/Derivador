@@ -14,6 +14,7 @@ import Checkbox from "@mui/material/Checkbox";
 import { DerivadorContext } from "../../../context/DerivadorContext";
 import ModalTUsuarios from "./ModalTDocumento";
 import ModalAgregar from "./ModalAgregar";
+import EstadoChip from "../../../common/EstadoChip";
 
 
 const TablaTDocumento = () => {
@@ -95,7 +96,7 @@ const TablaTDocumento = () => {
                             <TableRow>
                                 <TableCell></TableCell>
                                 <TableCell>ID</TableCell>
-                                <TableCell>Tipo de Usuario</TableCell>
+                                <TableCell>Tipo de Documento</TableCell>
                                 <TableCell sx={{ textAlign: 'center' }}>Habilitado</TableCell>
                             </TableRow>
                         </TableHead>
@@ -118,7 +119,9 @@ const TablaTDocumento = () => {
                                         <TableCell>
                                             {tdocumento.nombre_tdocumento}
                                         </TableCell>
-                                        <TableCell sx={{ textAlign: 'center' }}>{tdocumento.habilita == 1 ? 'SI' : ('NO')}</TableCell>
+                                        <TableCell sx={{ textAlign: 'center' }}>
+                                            <EstadoChip habilitado={tdocumento.habilita == 1} textoSi="Sí" textoNo="No" />
+                                        </TableCell>
                                     </TableRow>
                                 ))}
                         </TableBody>

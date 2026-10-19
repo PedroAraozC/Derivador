@@ -15,8 +15,8 @@ import {
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import NoteAddIcon from "@mui/icons-material/NoteAdd";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import PrivacyTipIcon from "@mui/icons-material/PrivacyTip";
+import EncabezadoPagina from "../../common/EncabezadoPagina";
 
 const LibreDeuda = () => {
   const navigate = useNavigate();
@@ -64,46 +64,15 @@ const LibreDeuda = () => {
   const token = localStorage.getItem("token");
 
   return (
-    <Box backgroundColor="#f5f5f5b7" minHeight="90dvh" p={{ xs: 2, md: 0.5 }}>
-      <div className="d-flex justify-content-between align-items-center ">
-        <div
-          className="no-print"
-          onClick={() => navigate(-1)}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            cursor: "pointer",
-            marginTop: 20,
-            marginLeft: 25,
-          }}
-        >
-          <ArrowBackIcon sx={{ color: "black", marginRight: 1 }} />
-          <span style={{ color: "black", fontSize: "1rem" }}>Volver</span>
-        </div>
+    <Box minHeight="90dvh" px={{ xs: 2, md: 3 }} pb={6}>
+      <div className="container">
+        <EncabezadoPagina
+          volver
+          sup="Trámites"
+          titulo="Portal de Libre Deuda"
+          subtitulo="Seleccione la operación que desea realizar."
+        />
       </div>
-      <Box
-        sx={{
-          paddingTop: 0,
-          display: "flex",
-          justifyContent: "center",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: 2,
-          paddingBottom: 3,
-        }}
-      >
-        <Typography fontSize="2.5rem" fontWeight="800" color="#0076b6">
-          Portal de Libre Deuda
-        </Typography>
-        <Typography
-          variant="body1"
-          color="text.secondary"
-          mt={1}
-          maxWidth={560}
-        >
-          Seleccione la operación que desea realizar.
-        </Typography>
-      </Box>
 
       <Grid container spacing={{ xs: 2, md: 3 }} justifyContent="center">
         <Grid

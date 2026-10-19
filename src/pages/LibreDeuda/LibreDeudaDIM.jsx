@@ -11,12 +11,9 @@ import {
   Church as ChurchIcon,
 } from "@mui/icons-material";
 import React from "react";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { useNavigate } from "react-router-dom"; 
+import EncabezadoPagina from "../../common/EncabezadoPagina";
 
 const LibreDeudaDIM = () => {
-
-  const navigate = useNavigate();
 
   const cardStyles = {
     display: "flex",
@@ -59,39 +56,15 @@ const LibreDeudaDIM = () => {
   };
 
   return (
-    <Box backgroundColor="#f5f5f5b7" minHeight="90dvh" p={{ xs: 2, md: 0.5 }}>
-      <div className="d-flex justify-content-between align-items-center ">
-        <div
-          className="no-print"
-          onClick={() => navigate(-1)}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            cursor: "pointer",
-            marginTop: 20,
-            marginLeft: 25,
-          }}
-        >
-          <ArrowBackIcon sx={{ color: "black", marginRight: 1 }} />
-          <span style={{ color: "black", fontSize: "1rem" }}>Volver</span>
-        </div>
+    <Box minHeight="90dvh" px={{ xs: 2, md: 3 }} pb={6}>
+      <div className="container">
+        <EncabezadoPagina
+          volver
+          sup="Trámites · DIM"
+          titulo="Generar Libre Deuda"
+          subtitulo="Seleccione la categoría correspondiente para iniciar su solicitud."
+        />
       </div>
-      {/* Encabezado */}
-      <Box
-        sx={{ paddingTop: 0, display:"flex", justifyContent:"center", flexDirection:"column", alignItems:"center", gap: 2, paddingBottom: 3 }}
-      >
-        <Typography fontSize="2.5rem" fontWeight="800" color="#0076b6">
-          Generar Libre Deuda
-        </Typography>
-        <Typography
-          variant="body1"
-          color="text.secondary"
-          mt={1}
-          maxWidth={560}
-        >
-          Seleccione la categoría correspondiente para iniciar su solicitud.
-        </Typography>
-      </Box>
 
       {/* Grid de opciones */}
       <Grid container spacing={{ xs: 2, md: 3 }} justifyContent="center">

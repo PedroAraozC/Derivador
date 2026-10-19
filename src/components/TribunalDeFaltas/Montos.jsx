@@ -1,5 +1,8 @@
-import { Box, Button, Skeleton, TextField } from "@mui/material"
+import { Box, Button, InputAdornment, Skeleton, TextField } from "@mui/material"
+import AddRoundedIcon from "@mui/icons-material/AddRounded";
+import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { useState } from "react";
+import EncabezadoPagina from "../../common/EncabezadoPagina";
 import ModalAgregarCalle from "./ModalAgregarMonto";
 import TablaCalles from "./TablaMontos";
 import axios from "../../config/axios";
@@ -35,27 +38,31 @@ const Montos = () => {
     
     return (
       <>
-        <div className="container d-flex justify-content-between align-items-center mt-3 gap-3">
-          <h2>Tribunal Municipal de Faltas</h2>
-          <Button variant="contained" onClick={() => abrirModalAgregar(true)}>
-            Nuevo
-          </Button>
-        </div>
-
-        <div className="mt-3 d-flex justify-content-center">
+        <div className="container">
+          <EncabezadoPagina
+            sup="Configuración"
+            titulo="Tribunal Municipal de Faltas"
+            subtitulo="Montos vigentes por concepto de infracción."
+            acciones={
+              <Button variant="contained" startIcon={<AddRoundedIcon />} onClick={() => abrirModalAgregar(true)}>
+                Nuevo
+              </Button>
+            }
+          />
           <TextField
-            label="Concepto"
+            label="Buscar por concepto"
             variant="outlined"
+            size="small"
             value={searchTerm}
             onChange={handleSearchChange}
-            sx={{
-              width: {
-                xs: 300, // Ancho para pantallas pequeñas (mobile)
-                sm: 400, // Ancho para pantallas pequeñas-medias
-                md: 500, // Ancho para pantallas medianas
-                lg: 600, // Ancho para pantallas grandes
-              },
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchRoundedIcon fontSize="small" />
+                </InputAdornment>
+              ),
             }}
+            sx={{ width: { xs: "100%", sm: 420 } }}
           />
         </div>
 

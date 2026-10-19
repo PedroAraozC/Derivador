@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { useState, useEffect, useContext } from "react";
-import { Modal, Box, Button, Divider, Switch, Snackbar, Alert, Select, MenuItem } from "@mui/material";
+import { Modal, Box, Button, Divider, Switch, Snackbar, Alert, Select, MenuItem, FormControl, InputLabel } from "@mui/material";
 import axios from "../../../config/axios";
 import { DerivadorContext } from "../../../context/DerivadorContext";
 
@@ -102,13 +102,14 @@ const CambioTusuario = ({ empleado, modalCambioTUsuario, handleClose }) => {
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        width: isMobile ? "90%" : "80%",
-        height: "90%",
+        width: isMobile ? "94%" : "min(1100px, 92vw)",
+        maxHeight: "92vh",
         bgcolor: "background.paper",
-        borderRadius: "10px",
-        boxShadow: 24,
-        p: 4,
+        borderRadius: "20px",
+        boxShadow: "var(--cd-sombra-modal)",
+        p: { xs: 3, md: 4 },
         overflowY: 'auto',
+        outline: "none",
     };
 
     const procesosOrdenados = Array.isArray(procesos)
@@ -120,18 +121,28 @@ const CambioTusuario = ({ empleado, modalCambioTUsuario, handleClose }) => {
 
     return (
         <Modal open={modalCambioTUsuario} onClose={handleClose}>
-            <Box sx={style}>
-                <div className="d-flex justify-content-around align-items-center mb-3">
-                    <h2 style={{ fontSize: "1.3rem", margin: 0 }}>
-                        Permisos para {empleado.nombre_persona}
-                    </h2>
-                    <p>Tipo de usuario :</p>
+            <Box sx={style} className="cd-modal">
+                <div className="cd-modal__cabecera">
+                    <div>
+                        <h2 className="cd-modal__titulo">
+                            Tipo de usuario de {empleado.nombre_persona}
+                        </h2>
+                        <p className="cd-modal__sub">
+                            Los permisos listados abajo son los que hereda del tipo elegido.
+                        </p>
+                    </div>
+                </div>
+                <Divider />
+                <FormControl size="small" sx={{ minWidth: { xs: "100%", sm: 320 }, mb: 3 }} required>
+                    <InputLabel id="label-cambio-tusuario">Tipo de usuario</InputLabel>
                     <Select
-                        value={tipoDeUsuario}
+                        labelId="label-cambio-tusuario"
+                        label="Tipo de usuario"
+                        // Siempre controlado: si arranca en undefined, MUI fija el modo
+                        // "no controlado" y no refleja el valor hasta volver a montar el modal.
+                        value={tipoDeUsuario ?? ""}
                         onChange={handleInputChange}
                         name="id_tusuario"
-                        sx={{ width: 400 }}
-                        required={true}
                     >
                         {Array.isArray(tusuarios) &&
                             tusuarios.map((t) => (
@@ -143,8 +154,7 @@ const CambioTusuario = ({ empleado, modalCambioTUsuario, handleClose }) => {
                                 </MenuItem>
                             ))}
                     </Select>
-                </div>
-                <Divider />
+                </FormControl>
                 <div className="d-flex flex-column justify-content-center">
                     <form className="d-flex flex-column gap-3 justify-content-center align-items-center formAgregarcausal">
                         <div className="row w-100">

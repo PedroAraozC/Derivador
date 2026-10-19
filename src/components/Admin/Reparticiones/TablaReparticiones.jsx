@@ -14,6 +14,7 @@ import Checkbox from "@mui/material/Checkbox";
 import { DerivadorContext } from "../../../context/DerivadorContext";
 import ModalReparticiones from "./ModalReparticiones";
 import ModalAgregar from "./ModalAgregar";
+import EstadoChip from "../../../common/EstadoChip";
 
 
 const TablaReparticiones = () => {
@@ -110,7 +111,7 @@ const TablaReparticiones = () => {
                             <TableRow>
                                 <TableCell></TableCell>
                                 <TableCell>ID</TableCell>
-                                <TableCell>Tipo de Usuario</TableCell>
+                                <TableCell>Repartición</TableCell>
                                 <TableCell sx={{ textAlign: 'center' }}>Habilitado</TableCell>
                             </TableRow>
                         </TableHead>
@@ -133,7 +134,9 @@ const TablaReparticiones = () => {
                                         <TableCell>
                                             {reparti.nombre_reparticion}
                                         </TableCell>
-                                        <TableCell sx={{ textAlign: 'center' }}>{reparti.habilita == 1 ? 'SI' : ('NO')}</TableCell>
+                                        <TableCell sx={{ textAlign: 'center' }}>
+                                            <EstadoChip habilitado={reparti.habilita == 1} textoSi="Sí" textoNo="No" />
+                                        </TableCell>
                                     </TableRow>
                                 ))}
                         </TableBody>

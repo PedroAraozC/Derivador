@@ -14,6 +14,7 @@ import Checkbox from "@mui/material/Checkbox";
 import { DerivadorContext } from "../../../context/DerivadorContext";
 import ModalGenero from "./ModalGenero";
 import ModalAgregar from "./ModalAgregar";
+import EstadoChip from "../../../common/EstadoChip";
 
 
 const TablaGenero = () => {
@@ -118,7 +119,9 @@ const TablaGenero = () => {
                                         <TableCell>
                                             {genero.nombre_genero}
                                         </TableCell>
-                                        <TableCell sx={{ textAlign: 'center' }}>{genero.habilita == 1 ? 'SI' : ('NO')}</TableCell>
+                                        <TableCell sx={{ textAlign: 'center' }}>
+                                            <EstadoChip habilitado={genero.habilita == 1} textoSi="Sí" textoNo="No" />
+                                        </TableCell>
                                     </TableRow>
                                 ))}
                         </TableBody>

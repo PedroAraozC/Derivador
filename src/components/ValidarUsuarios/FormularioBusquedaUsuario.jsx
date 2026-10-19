@@ -15,6 +15,7 @@ import {
 import axios from '../../config/axios';
 import { validarClave } from '../../utils/validarClave';
 import { patronEmail } from '../../utils/PatternEmail';
+import EncabezadoPagina from '../../common/EncabezadoPagina';
 
 const FormularioBusquedaUsuario = () => {
   const [buscarPorCuil, setBuscarPorCuil] = useState(true);
@@ -88,11 +89,13 @@ const FormularioBusquedaUsuario = () => {
   };
 
   return (
-    <Box p={3} maxWidth={500} mx="auto">
-      <Typography variant="h5" gutterBottom>
-        Buscar Usuario
-      </Typography>
-
+    <Box maxWidth={600} mx="auto" px={2} pb={6}>
+      <EncabezadoPagina
+        sup="Configuración"
+        titulo="Validar usuarios"
+        subtitulo="Buscá una persona por CUIL o email para revisar y actualizar sus datos de acceso."
+      />
+      <Box className="cd-superficie" p={{ xs: 2.5, md: 3 }}>
       <FormGroup row>
         <FormControlLabel
           control={
@@ -295,6 +298,7 @@ const FormularioBusquedaUsuario = () => {
           </Button>
         </Box>
       )}
+      </Box>
     </Box>
   );
 };

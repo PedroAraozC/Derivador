@@ -6,11 +6,9 @@ export const DerivadorContext = createContext();
 
 // eslint-disable-next-line react/prop-types
 const ProviderDerivador = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [authenticated, setAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true);
+  // La autenticación (user, authenticated, getAuth, logout) vive en el store de Zustand.
+  // Este Context sólo conserva los fetchers de los paneles de administración.
   const [refresh, setRefresh] = useState(null);
-  const [selected, setSelected] = useState([]);
   const [categoria, setCategoria] = useState([]);
   const [tipologia, setTipologia] = useState([]);
   const [material, setMaterial] = useState([]);
@@ -28,33 +26,6 @@ const ProviderDerivador = ({ children }) => {
   const [ProcesosSinId, setProcesosSinId] = useState([]);
   const [existeEnPP, setExisteEnPP] = useState(null);
   const [permisosPorPersona, setPermisosPorPersona] = useState(null);
-
-  const getAuth = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        setLoading(false);
-        return setAuthenticated(false);
-      }
-      axios.defaults.headers.common["Authorization"] = token;
-      const { data } = await axios.get("/usuarios/authStatus");
-      setUser(data.usuarioSinContraseña);
-      setAuthenticated(true);
-    } catch (error) {
-      setAuthenticated(false);
-      // toast.error("Error de autenticación. Ingrese nuevamente");
-    }
-    setLoading(false);
-  };
-
-  const logout = () => {
-    setAuthenticated(false);
-    localStorage.removeItem("token");
-    localStorage.removeItem("tokenSet");
-    const url = new URL(`http://localhost:5174/`);
-    url.searchParams.append("logout", true);
-    window.open(url.toString(), "_self");
-  };
 
   const actualizador = () => {
     setRefresh(!refresh);
@@ -220,15 +191,6 @@ const ProviderDerivador = ({ children }) => {
         obtenerEmpleados,
         obtenerPermisosPorTUsuarios,
         permisosTUsuarios,
-        user,
-        authenticated,
-        setAuthenticated,
-        loading,
-        getAuth,
-        setLoading,
-        logout,
-        selected,
-        setSelected,
         actualizador,
         refresh,
         obtenerCategoria,

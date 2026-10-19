@@ -1,43 +1,21 @@
 /* eslint-disable react/prop-types */
-import { Box, Card, CardContent, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useRef } from "react";
+import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
+import OpenInNewRoundedIcon from "@mui/icons-material/OpenInNewRounded";
 import { registrarAccesoExterno } from "../../helpers/registrarAccesoExterno";
 
-const NuevaCard = ({
-  options,
+// Lista de opciones de una sección del Home.
+// La lógica de apertura de cada opción es la misma que tenía NuevaCard.
+const OpcionesSeccion = ({
   titulo,
+  subtitulo,
   icono: Icono,
+  color = "azul",
+  options,
   user,
-  isOpen,
-  onOpen,
-  onClose,
+  mensajeVacio = "No tenés opciones habilitadas en esta sección.",
 }) => {
-  const cardRef = useRef(null);
   const navigate = useNavigate();
-
-  const handleCardClick = () => {
-    if (isOpen) {
-      onClose();
-    } else {
-      onOpen();
-    }
-  };
-
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const handleClickOutside = (event) => {
-      if (cardRef.current && !cardRef.current.contains(event.target)) {
-        onClose();
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isOpen, onClose]);
 
   const opcionesOrdenadas = options?.slice().sort((a, b) =>
     (a.descripcion || "").localeCompare(b.descripcion || "", "es", {
@@ -181,77 +159,56 @@ const NuevaCard = ({
   };
 
   return (
-    <Card
-      ref={cardRef}
-      onClick={() => handleCardClick()}
-      sx={{
-        width: "300px",
-        borderRadius: 3,
-        boxShadow: 3,
-        cursor: "pointer",
-        overflow: "hidden",
-        "&:hover": {
-          boxShadow: 6,
-          transform: "scale(1.00)",
-        },
-      }}
-    >
-      <CardContent
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          maxHeight: isOpen ? "70vh" : 60,
-          overflow: "hidden",
-          height: "100%",
-        }}
-      >
-        <div className="d-flex gap-2 align-items-center mb-2">
-          {Icono && <Icono style={{ fontSize: 25, color: "#1976d2" }} />}
-          <Typography
-            variant="h6"
-            sx={{
-              fontWeight: "bold",
-              color: "#1976d2",
-            }}
-          >
-            {titulo}
-          </Typography>
+    <section className="cd-lista cd-aparecer" aria-label={titulo}>
+      <div className="cd-lista__cabecera">
+        {Icono && (
+          <span className={`cd-tile cd-tile--${color}`}>
+            <Icono />
+          </span>
+        )}
+        <div>
+          <h2 className="cd-lista__titulo">{titulo}</h2>
+          {subtitulo && <p className="cd-lista__sub">{subtitulo}</p>}
         </div>
+      </div>
 
-        <Box
-          sx={{
-            pointerEvents: isOpen ? "auto" : "none",
-            display: "flex",
-            flexDirection: "column",
-            width: "100%",
-            alignItems: "center",
-            overflowY: "auto",
-            flex: 1,
-            minHeight: 0,
-          }}
-        >
-          {opcionesOrdenadas?.map((option) => (
-            <Box
-              key={option.id_proceso}
-              onClick={() => handleOptionClick(option)}
-              sx={{
-                p: 1,
-                borderRadius: 2,
-                width: "90%",
-                "&:hover": {
-                  backgroundColor: "#f0f4ff",
-                },
-              }}
-            >
-              <Typography variant="body2" sx={{ color: "#333" }}>
-                {option.descripcion || "S/N"}
-              </Typography>
-            </Box>
-          ))}
-        </Box>
-      </CardContent>
-    </Card>
+      {opcionesOrdenadas?.length ? (
+        <div className="cd-opciones">
+          {opcionesOrdenadas.map((option) => {
+            const IconoOpcion = option.seccionIcono || Icono;
+            return (
+              <button
+                key={option.id_proceso}
+                type="button"
+                className="cd-opcion"
+                onClick={() => handleOptionClick(option)}
+              >
+                <span
+                  className={`cd-tile cd-tile--${option.seccionColor || color}`}
+                >
+                  {IconoOpcion && <IconoOpcion />}
+                </span>
+                <span className="cd-opcion__textos">
+                  <span className="cd-opcion__nombre">
+                    {option.descripcion || "S/N"}
+                  </span>
+                  {option.sistema_externo != null && (
+                    <span className="cd-opcion__meta">
+                      <OpenInNewRoundedIcon />
+                      Se abre en una pestaña nueva
+                    </span>
+                  )}
+                </span>
+                <ChevronRightRoundedIcon className="cd-chevron" />
+              </button>
+            );
+          })}
+        </div>
+      ) : (
+        <div className="cd-vacio">{mensajeVacio}</div>
+      )}
+    </section>
   );
 };
 
-export default NuevaCard;
+export default OpcionesSeccion;

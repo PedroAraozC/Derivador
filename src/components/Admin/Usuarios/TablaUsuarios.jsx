@@ -11,7 +11,8 @@ import { DerivadorContext } from "../../../context/DerivadorContext";
 import CambioTusuario from "./CambioTusuario";
 import KeyOutlinedIcon from '@mui/icons-material/KeyOutlined';
 import AccessibilityNewOutlinedIcon from '@mui/icons-material/AccessibilityNewOutlined';
-import { TextField } from "@mui/material";
+import { IconButton, InputAdornment, TextField, Tooltip } from "@mui/material";
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import PermisosEspecificos from "./PermisosEspecificos";
 
 const TablaUsuarios = () => {
@@ -71,12 +72,20 @@ const TablaUsuarios = () => {
         <>
             <div className="mt-5 mb-5 container">
                 <TextField
-                    label="Buscar..."
+                    label="Buscar por nombre, afiliado o documento"
                     variant="outlined"
+                    size="small"
                     value={searchTerm}
                     onChange={handleSearchChange}
-                    className="mb-5"
-                    fullWidth
+                    className="mb-4"
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <SearchRoundedIcon fontSize="small" />
+                            </InputAdornment>
+                        ),
+                    }}
+                    sx={{ width: { xs: "100%", sm: 420 } }}
                 />
                 <TableContainer component={Paper}>
                     <Table>
@@ -101,16 +110,18 @@ const TablaUsuarios = () => {
                                     <TableCell align="left">{`${e.nombre_reparticion} (${e.item})`}</TableCell>
                                     <TableCell align="left">{e.email_persona}</TableCell>
                                     <TableCell align="center">
-                                        <KeyOutlinedIcon
-                                            onClick={() => abrirModalCambioTUsuario(e)}
-                                            style={{ cursor: 'pointer', marginRight: '10px' }}
-                                            titleAccess="Cambiar tipo de usuario"
-                                        />
-                                        <AccessibilityNewOutlinedIcon
-                                            onClick={() => abrirModalPermisos(e)}
-                                            style={{ cursor: 'pointer' }}
-                                            titleAccess="Editar permisos específicos"
-                                        />
+                                        <span className="cd-acciones">
+                                            <Tooltip title="Cambiar tipo de usuario">
+                                                <IconButton size="small" color="primary" onClick={() => abrirModalCambioTUsuario(e)}>
+                                                    <KeyOutlinedIcon fontSize="small" />
+                                                </IconButton>
+                                            </Tooltip>
+                                            <Tooltip title="Editar permisos específicos">
+                                                <IconButton size="small" color="primary" onClick={() => abrirModalPermisos(e)}>
+                                                    <AccessibilityNewOutlinedIcon fontSize="small" />
+                                                </IconButton>
+                                            </Tooltip>
+                                        </span>
                                     </TableCell>
                                 </TableRow>
                             ))}

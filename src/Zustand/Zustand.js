@@ -29,6 +29,14 @@ const useStore = create((set, get) => ({
 
   botonState: false,
 
+  // Preferencia de tema. El valor inicial ya lo resolvió el script inline de index.html.
+  modoNocturno: document.documentElement.dataset.tema === "oscuro",
+  alternarModoNocturno: () => {
+    const oscuro = !get().modoNocturno;
+    localStorage.setItem("tema", oscuro ? "oscuro" : "claro");
+    set({ modoNocturno: oscuro });
+  },
+
   login: async (values) => {
     set({ botonState: true });
     let loginResult = null;

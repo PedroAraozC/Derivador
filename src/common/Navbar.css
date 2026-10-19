@@ -1,26 +1,342 @@
-.logoMuni2 {
-  height: 80px !important;
-  padding: 10px;
+/* Los tokens (--cd-*) viven en src/styles/ciudadDigital.css */
+.cd-shell,
+.cd-shell * {
+  font-family: var(--cd-font);
 }
-.linksSidebar {
-  text-decoration: none;
-  color: #000;
-  margin-top: 10px;
+
+/* ---------- Barra de navegación ---------- */
+.cd-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1100;
+  background: var(--cd-vidrio);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--cd-border);
 }
-.linksSidebar:hover {
-  color: #1f89f6;
-  text-decoration: underline;
+
+.cd-nav__inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  height: var(--cd-nav-alto);
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
-.css-ciy9n4-MuiPaper-root-MuiAppBar-root {
-  background-color: #1f89f6 !important;
+
+.cd-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px 4px 4px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 150ms var(--cd-ease), transform 100ms ease-out;
 }
-.css-hip9hq-MuiPaper-root-MuiAppBar-root {
-  background-color: #1f89f6 !important;
+.cd-brand:hover {
+  background: var(--cd-hover);
 }
-.logOut {
-  margin-top: 35px;
-  margin-left: -25px;
+.cd-brand:active {
+  transform: scale(0.97);
 }
-.footer{
-  font-size: small;
+.cd-brand img {
+  height: 36px;
+  width: auto;
+  display: block;
+}
+.cd-brand__texto {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1;
+}
+.cd-brand__sup {
+  font-size: 0.56rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: var(--cd-accent);
+}
+.cd-brand__nombre {
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--cd-accent-fuerte);
+}
+
+.cd-tabs {
+  display: none;
+}
+@media (min-width: 900px) {
+  .cd-tabs {
+    display: flex;
+    align-items: stretch;
+    height: 100%;
+    margin-left: 20px;
+    gap: 2px;
+  }
+}
+
+.cd-tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  height: var(--cd-nav-alto);
+  border: 0;
+  background: transparent;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: var(--cd-text-2);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 150ms var(--cd-ease), opacity 100ms ease-out;
+}
+.cd-tab .MuiSvgIcon-root {
+  font-size: 18px;
+}
+.cd-tab:hover {
+  color: var(--cd-text);
+}
+.cd-tab:active {
+  opacity: 0.6;
+}
+.cd-tab--activa {
+  color: var(--cd-accent);
+  font-weight: 600;
+}
+.cd-tab--activa::after {
+  content: "";
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 0;
+  height: 2px;
+  border-radius: 2px 2px 0 0;
+  background: var(--cd-accent);
+}
+.cd-tab__chevron {
+  margin-left: -2px;
+  transition: transform 200ms var(--cd-ease);
+}
+.cd-tab__chevron--abierto {
+  transform: rotate(180deg);
+}
+
+.cd-nav__derecha {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cd-usuario {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px 4px 4px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--cd-text);
+  cursor: pointer;
+  transition: background-color 150ms var(--cd-ease), border-color 150ms var(--cd-ease),
+    transform 100ms ease-out;
+}
+.cd-usuario:hover {
+  background: var(--cd-hover);
+  border-color: var(--cd-border);
+}
+.cd-usuario:active {
+  transform: scale(0.97);
+}
+.cd-usuario__nombre {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cd-usuario__chevron {
+  font-size: 18px !important;
+  color: var(--cd-text-3);
+}
+
+.cd-hamburguesa {
+  display: inline-flex;
+}
+
+/* Toggle de tema (IconButton MUI en NavBar.jsx) */
+.cd-nav__tema {
+  color: var(--cd-text-2);
+}
+.cd-nav__tema:hover {
+  background: var(--cd-hover);
+  color: var(--cd-text);
+}
+@media (min-width: 900px) {
+  .cd-hamburguesa {
+    display: none !important;
+  }
+}
+
+/* ---------- Menús flotantes (MUI Menu) ---------- */
+.cd-menu .MuiPaper-root {
+  margin-top: 8px;
+  min-width: 220px;
+  border-radius: var(--cd-radio-md);
+  border: 1px solid var(--cd-border);
+  background: var(--cd-vidrio);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  backdrop-filter: blur(24px) saturate(180%);
+  box-shadow: var(--cd-sombra-md);
+  padding: 6px;
+}
+.cd-menu .MuiList-root {
+  padding: 0;
+}
+.cd-menu .MuiMenuItem-root {
+  border-radius: var(--cd-radio-sm);
+  font-family: var(--cd-font);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--cd-text);
+  min-height: 38px;
+  gap: 10px;
+}
+.cd-menu .MuiMenuItem-root .MuiListItemIcon-root {
+  min-width: 0;
+  color: var(--cd-text-2);
+}
+.cd-menu .MuiMenuItem-root .MuiSvgIcon-root {
+  font-size: 18px;
+}
+.cd-menu .MuiMenuItem-root:hover {
+  background: var(--cd-accent-suave);
+  color: var(--cd-accent-fuerte);
+}
+.cd-menu .MuiMenuItem-root:hover .MuiListItemIcon-root {
+  color: var(--cd-accent-fuerte);
+}
+.cd-menu__cabecera {
+  padding: 8px 12px 10px;
+}
+.cd-menu__cabecera strong {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--cd-text);
+}
+.cd-menu__cabecera span {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--cd-text-3);
+  margin-top: 2px;
+}
+.cd-menu__salir {
+  color: var(--cd-peligro) !important;
+}
+.cd-menu__salir .MuiListItemIcon-root {
+  color: var(--cd-peligro) !important;
+}
+.cd-menu__salir:hover {
+  background: var(--cd-peligro-bg) !important;
+}
+
+/* ---------- Drawer móvil ---------- */
+.cd-drawer .MuiDrawer-paper {
+  width: min(320px, 86vw);
+  border-radius: 0 var(--cd-radio-lg) var(--cd-radio-lg) 0;
+  background: var(--cd-vidrio);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  backdrop-filter: blur(24px) saturate(180%);
+  box-shadow: var(--cd-sombra-md);
+}
+.cd-drawer__contenido {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 14px 12px 16px;
+}
+.cd-drawer__cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4px 10px;
+}
+.cd-drawer__grupo {
+  margin-top: 14px;
+}
+.cd-drawer__titulo {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cd-text-3);
+  padding: 0 12px 6px;
+}
+.cd-drawer__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: var(--cd-radio-sm);
+  background: transparent;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--cd-text);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 150ms var(--cd-ease), transform 100ms ease-out;
+}
+.cd-drawer__item .MuiSvgIcon-root {
+  font-size: 20px;
+  color: var(--cd-text-2);
+}
+.cd-drawer__item:hover {
+  background: var(--cd-hover);
+}
+.cd-drawer__item:active {
+  transform: scale(0.98);
+}
+.cd-drawer__item--activo {
+  background: var(--cd-accent-suave);
+  color: var(--cd-accent-fuerte);
+}
+.cd-drawer__item--activo .MuiSvgIcon-root {
+  color: var(--cd-accent);
+}
+.cd-drawer__pie {
+  margin-top: auto;
+  padding: 16px 12px 0;
+  font-size: 0.72rem;
+  line-height: 1.4;
+  color: var(--cd-text-3);
+}
+
+/* ---------- Accesibilidad ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .cd-nav *,
+  .cd-drawer *,
+  .cd-menu * {
+    transition-duration: 0.01ms !important;
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .cd-nav,
+  .cd-menu .MuiPaper-root,
+  .cd-drawer .MuiDrawer-paper {
+    background: var(--cd-surface);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
 }

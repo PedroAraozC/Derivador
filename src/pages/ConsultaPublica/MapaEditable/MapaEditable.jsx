@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Alert, Button, Snackbar } from "@mui/material";
 import './mapa.css';
 import axios from "../../../config/axiosAC";
-import { DerivadorContext } from "../../../context/DerivadorContext";
+import useStore from "../../../Zustand/Zustand";
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents, useMap } from "react-leaflet";
 import L from "leaflet";
 import Swal from "sweetalert2";
@@ -64,7 +64,7 @@ const MapCenterUpdater = ({ position }) => {
 };
 
 const MapaEditable = ({ datos, markerPosition, setMarkerPosition, setFormularioValues, setErrors }) => {
-    const { user } = useContext(DerivadorContext);
+    const { user } = useStore();
     const [buttonDis, setButtonDis] = useState(false);
     const [snackbarMensaje, setSnackbarMensaje] = useState("");
     const [snackbarOpen, setSnackbarOpen] = useState(false);
